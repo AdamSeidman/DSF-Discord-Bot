@@ -1,4 +1,4 @@
-const utils = require('./fact-utilities')
+const utils = require('../fact_gen/fact-utilities')
 
 module.exports = {
     handle: function (msg) {

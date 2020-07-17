@@ -1,4 +1,4 @@
-var msgHandler = require('./message-handler')
+var msgHandler = require('./handlers/message-handler')
 const token = require('./token').token
 const Discord = require('discord.js')
 const bot = new Discord.Client()
