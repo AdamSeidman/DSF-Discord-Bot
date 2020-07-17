@@ -1,0 +1,22 @@
+{
+  "name": "dsf-discord-bot",
+  "version": "1.0.0",
+  "description": "Daily Stupid Facts Robot for Discord Servers",
+  "main": "dsf-bot.js",
+  "scripts": {
+    "test": "start ./test/test_page.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdamSeidman/DSF-Discord-Bot.git"
+  },
+  "author": "Adam Seidman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdamSeidman/DSF-Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/AdamSeidman/DSF-Discord-Bot#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
