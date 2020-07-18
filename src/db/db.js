@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose()
-require('../dsf-bot')
 
 var dbList = ['serverInfo']
 var db = {removeArr: []}

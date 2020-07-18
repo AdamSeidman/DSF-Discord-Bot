@@ -7,8 +7,8 @@ const bot = new Discord.Client()
 bot.login(token)
 
 bot.on('ready', () => {
-    scheduler.scheduleDailyChannels()
-    console.log('Facts are online, B')
+    scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
+    console.log('DSF Robot Intitialized')
 })
 
 bot.on('message', msg => {

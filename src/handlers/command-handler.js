@@ -36,7 +36,7 @@ var sendHelpMessage = function (msg) {
         helpEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('DSF Commands List')
-            .setDescription(`Enter '${prefix}' folled by desired command.`)
+            .setDescription(`Enter '${prefix}' followed by desired command.`)
             .addFields(...helpMessages)
     }
     msg.channel.send(helpEmbed)
@@ -45,7 +45,7 @@ var sendHelpMessage = function (msg) {
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
-    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last 1-10 messages in the channel.'},
+    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'}
 ]
 

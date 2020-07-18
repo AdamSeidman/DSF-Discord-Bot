@@ -1,6 +1,6 @@
 const db = require('../db/db')
 
-var getDailyChannels = function () {
+var getDailyChannels = function (clientChannels, arr) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
     if (!serverInfo) {
@@ -8,19 +8,20 @@ var getDailyChannels = function () {
         console.log(serverInfo)
         return []
     }
-    let arr = []
-    serverInfo.database.all('SELECT * FROM Dailies', [], (err, rows) => {
+    serverInfo.database.each('SELECT * FROM Dailies', (err, row) => {
         if (err) {
-            console.error(err)
+            console.log('Error getting daily channels:\nRow-')
+            console.log(row)
+            console.log(err)
         } else {
-            console.log(rows)
+            let el = clientChannels.find(x => x.name === row.Name && x.id === row.ID)
+            if (el !== undefined) {
+                arr.push(el)
+            }
         }
-        rows.forEach(row => {
-            arr.push(row)
-        })
     })
     serverInfo.close()
-    return arr
+    //return arr
 }
 
 var addDailyChannel = function (channel) {
