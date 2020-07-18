@@ -1,25 +1,29 @@
-const serverInfoHandler = require('./server-info-handler')
+const serverHandler = require('./server-info-handler')
 
 var dailyChannels = undefined
 
 var schedDailyChannels = function () {
     if (dailyChannels != undefined) return
-    dailyChannels = serverInfoHandler.getDailyChannels()
+    dailyChannels = serverHandler.getDailyChannelsDB()
     console.log('todo') // TODO set up scheduler
 }
 
-var isChannelScheduled = function (channel) {
+var addDailyChannel = function(channel) {
     let foundChannel = false
-    dailyChannels.map(x => x.id).forEach(item => {
+    dailyChannels.map(x => x.ID).forEach(item => {
         if (channel.id === item) {
             foundChannel = true
             return
         }
     })
-    return foundChannel
+    if (foundChannel) {
+        channel.send('Channel already set up.')
+    } else {
+        serverHandler.addDailyChannelDB(channel)
+    }
 }
 
 module.exports = {
     scheduleDailyChannels: schedDailyChannels,
-    isChannelScheduled: isChannelScheduled
+    addDailyChannel: addDailyChannel
 }   

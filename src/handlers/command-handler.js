@@ -1,4 +1,4 @@
-const serverInfoHandler = require('./server-info-handler')
+const scheduler = require('./scheduling-handler')
 
 var deleteFunction = function (msg, args) {
     if (args.length < 2) {
@@ -14,7 +14,7 @@ var deleteFunction = function (msg, args) {
 }
 
 var setupDailyChannel = function (msg) {
-    serverInfoHandler.addDailyChannel(msg.channel)
+    scheduler.addDailyChannel(msg.channel)
 }
 
 var commandArray = [

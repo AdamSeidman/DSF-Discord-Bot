@@ -1,13 +1,13 @@
-var msgHandler = require('./handlers/message-handler')
-var serverInfo = require('./handlers/server-info-handler')
 const token = require('./token').token
 const Discord = require('discord.js')
+const scheduler = require('./handlers/scheduling-handler')
+const msgHandler = require('./handlers/message-handler')
 
 const bot = new Discord.Client()
 bot.login(token)
 
 bot.on('ready', () => {
-    console.log(serverInfo.getDailyChannels())
+    scheduler.scheduleDailyChannels()
     console.log('Facts are online, B')
 })
 

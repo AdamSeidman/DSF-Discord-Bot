@@ -1,5 +1,4 @@
 const db = require('../db/db')
-const scheduler = require('./scheduling-handler')
 
 var getDailyChannels = function () {
     db.setUpDatabases()
@@ -28,11 +27,6 @@ var addDailyChannel = function (channel) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
 
-    if (scheduler.isChannelScheduled(channel)) {
-        channel.send('Channel already set up.')
-        return
-    }
-
     serverInfo.database.run(`INSERT INTO Dailies (Name, ID) VALUES ('${channel.name}', '${channel.id}')`, [], function (err) {
         if (err) {
             console.log(err)
@@ -44,6 +38,6 @@ var addDailyChannel = function (channel) {
 }
 
 module.exports = {
-    getDailyChannels: getDailyChannels,
-    addDailyChannel: addDailyChannel
+    getDailyChannelsDB: getDailyChannels,
+    addDailyChannelDB: addDailyChannel
 }
