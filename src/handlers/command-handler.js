@@ -50,5 +50,6 @@ var commandArray = [
 ]
 
 module.exports = {
-    commands: commandArray
+    commands: commandArray,
+    prefix: prefix
 }

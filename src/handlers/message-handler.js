@@ -1,7 +1,6 @@
 const utils = require('../fact_gen/fact-utilities')
 const commands = require('./command-handler').commands
-
-const prefix = 'dsf!'
+const prefix = require('./command-handler').prefix
 
 module.exports = {
     handle: function (msg) {
