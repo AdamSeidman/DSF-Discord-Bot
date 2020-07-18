@@ -4,13 +4,13 @@ const facts = require('./fact-templates').facts
 module.exports = {
     getRandomFact: function () {
         if(rand(1500) === 420) {
-            return "Hitler did nothing wrong."
+            return 'Hitler did nothing wrong.'
         } else if (rand(900) === 60) {
-            return "Fact machine broken."
+            return 'Fact machine broken.'
         }
-        let resFact = constructFact(randItemFromArray(facts)) + "."
+        let resFact = constructFact(randItemFromArray(facts)) + '.'
         if (resFact.length <= 2) {
-            return "Fact machine actually broke."
+            return 'Fact machine actually broke.'
         }
         return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
     }
@@ -29,17 +29,17 @@ var index = {
         let c = rand(MAX_RAND)
         while (c === (a+b) || c === (a-b) || c === (a*b)) {
             if (c < MAX_RAND / 3) {
-                --c;
+                --c
             } else if (c > MAX_RAND / 3) {
-                ++c;
+                ++c
             } else {
-                c = rand(MAX_RAND);
+                c = rand(MAX_RAND)
             }
         }
         numQueue.push(c)
         numQueue.push(b)
         numQueue.push(a)
-        return ""
+        return ''
     },
     getFromQueue: () => (numQueue.pop()).toString()
 }
@@ -47,7 +47,7 @@ var constructFact = function (fact) {
     if (fact === undefined || fact.fact === undefined) {
         return undefined
     }
-    let result = ""
+    let result = ''
     fact.fact.forEach(item => {
         if (item instanceof Array && item.length <= 1) {
             item = index[item[0]]
@@ -77,17 +77,17 @@ var randItemFromArray = function (arr, look) {
 }
 var pluralize = function (str) {
     if (str === undefined || str.length === 0) {
-        return ""
+        return ''
     }
     switch(str.slice(-1)) {
-        case "x":
-        case "s":
-        case "h":
-            return str + "es"
-        case "y":
-            return str.slice(0, str.length - 1) + "ies"
+    case 'x':
+    case 's':
+    case 'h':
+        return str + 'es'
+    case 'y':
+        return str.slice(0, str.length - 1) + 'ies'
     }
-    return str + "s";
+    return str + 's'
 }
 var rand = function (max) {
     if (max === undefined) {

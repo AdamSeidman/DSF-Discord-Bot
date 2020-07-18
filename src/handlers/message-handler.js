@@ -1,5 +1,7 @@
 const utils = require('../fact_gen/fact-utilities')
 
+const prefix = 'dsf!'
+
 module.exports = {
     handle: function (msg) {
         let message = msg.content.toLowerCase().trim()
@@ -8,24 +10,24 @@ module.exports = {
             return
         }
     
-        if (message.slice(0,4) === "dsf!") {
-            //handleDictionaryFunction(msg, commands, message.slice(4).trim())
+        if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
+            //handleDictionaryFunction(msg, commands, message.slice(prefix.length).trim())
             return // TODO
         } else if (handleDictionaryFunction(msg, knownPhrases, message)) {
             return
-        } else if ((message = hasDictionaryTerm(message.split(" "))) !== "") {
+        } else if ((message = hasDictionaryTerm(message.split(' '))) !== '') {
             handleDictionaryTerm(msg, message)
         }
     }
 }
 
 const knownPhrases = [
-    {phrase: "fact please", response:
+    {phrase: 'fact please', response:
         function (msg) {
             msg.reply(utils.getRandomFact())
         }
     },
-    {phrase: "loud fact please", response:
+    {phrase: 'loud fact please', response:
         function (msg) {
             msg.channel.send(utils.getRandomFact(), {tts: true})
         }
@@ -39,7 +41,7 @@ var hasDictionaryTerm = function (arr) {
             return arr[0]
         }
     }
-    return ""
+    return ''
 }
 
 const dictionaryTerms = [
@@ -50,8 +52,8 @@ const dictionaryTerms = [
 
 var handleDictionaryTerm = function (msg, message) {
     msg.channel.send(`Did someone say ${message}?`)
-    msg.channel.send("This calls for a fact!")
-    msg.channel.send("Ready? Here it is:")
+    msg.channel.send('This calls for a fact!')
+    msg.channel.send('Ready? Here it is:')
     msg.channel.send(utils.getRandomFact())
 }
 
