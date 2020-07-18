@@ -37,5 +37,6 @@ module.exports = {facts: [
     {fact: [
         'I\'d be ', ['happy', 'more than willing', 'willing'], ' to bet that ', ['person'], [' does not ', ' doesn\'t ', ' may not ',  ' could potentially '], 'taste like a ', ['blank']
     ], cantRecurse: true},
-    {fact: [['I\'ll', 'I will', 'I can'], ' bet you $', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true}
+    {fact: [['I\'ll', 'I will', 'I can'], ' bet you ', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true},
+    {fact: [['blank'], [' isn\'t a vegetable', ' is not a fruit']]}
 ]}

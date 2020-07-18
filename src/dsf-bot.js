@@ -7,7 +7,7 @@ const bot = new Discord.Client()
 bot.login(token)
 
 bot.on('ready', () => {
-    // dbHandler.setUpDatabases() TODO
+    console.log(serverInfo.getDailyChannels())
     console.log('Facts are online, B')
 })
 

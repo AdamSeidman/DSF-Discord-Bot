@@ -1,4 +1,5 @@
 const utils = require('../fact_gen/fact-utilities')
+const commands = require('./command-handler').commands
 
 const prefix = 'dsf!'
 
@@ -20,23 +21,6 @@ module.exports = {
         }
     }
 }
-
-const commands = [
-    {phrase: 'delete', response: 
-        function (msg, args) {
-            if (args.length < 2) {
-                msg.channel.send('Delete command requires an argument.')
-            } else {
-                const parsed = Number.parseInt(args[1])
-                if (Number.isNaN(parsed) || parsed < 1 || parsed > 10) {
-                    msg.channel.send('Argument should be number from 1-10.')
-                    return
-                }
-                msg.channel.bulkDelete(parsed + 1)
-            }
-        }
-    }
-]
 
 const knownPhrases = [
     {phrase: 'fact please', response:
