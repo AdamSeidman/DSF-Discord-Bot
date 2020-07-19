@@ -33,10 +33,11 @@ module.exports = {facts: [
     {fact: [
         'although ', ['you\'ve never', 'you may have never'], ' seen both ', ['person'], ' and ', ['person'], ' in the same ', ['room', 'country', 'place'], ', they are ', ['most ', ''], 'likely not the same person'
     ]},
-    {fact: [['blank']], cantRecurse: true},
+    {fact: [['', 'I am not a ', 'You are probably not a '], ['blank']], cantRecurse: true},
     {fact: [
         'I\'d be ', ['happy', 'more than willing', 'willing'], ' to bet that ', ['person'], [' does not ', ' doesn\'t ', ' may not ',  ' could potentially '], 'taste like a ', ['blank']
     ], cantRecurse: true},
     {fact: [['I\'ll', 'I will', 'I can'], ' bet you ', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true},
-    {fact: [['blank'], [' isn\'t a vegetable', ' is not a fruit']]}
+    {fact: [['blank'], [' isn\'t a vegetable', ' is not a fruit']]},
+    {fact: ['a ', ['blank'], [' is not', ' isn\'t'], ' a ', ['continent', 'country', 'river', 'prison cell']]}
 ]}

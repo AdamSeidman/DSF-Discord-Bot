@@ -47,7 +47,7 @@ var hasDictionaryTerm = function (arr) {
 const dictionaryTerms = [
     'ludicrous', 'senseless', 'shortsighted', 'trivial', 'fact', 'dumb', 'unintelligent', 'brainless', 'intelligent', 'deficient', 'dense', 'dim', 'meaningless',
     'mindless', 'moron', 'moronic', 'nonsensical', 'stupid', 'pointless', 'simpleminded', 'slow', 'thick-headed', 'unthinking', 'witless', 'dull', 'foolish', 'ill-advised', 
-    'irrelevant', 'relevant', 'laughable', 'unfunny', 'imbecile', 'inane'
+    'irrelevant', 'relevant', 'laughable', 'unfunny', 'imbecile', 'inane', 'idiotic', 'idiot', 'bruh'
 ]
 
 var handleDictionaryTerm = function (msg, message) {
