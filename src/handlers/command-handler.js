@@ -1,5 +1,6 @@
 const scheduler = require('./scheduling-handler')
 const Discord = require('discord.js')
+const utils = require('../fact_gen/fact-utilities')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -46,7 +47,9 @@ var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
-    {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'}
+    {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
+    {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.'},
+    {phrase: 'lie', response: true, helpMsg: 'Sends a lie.'}
 ]
 
 module.exports = {

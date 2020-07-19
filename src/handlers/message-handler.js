@@ -21,17 +21,19 @@ module.exports = {
     }
 }
 
-const knownPhrases = [
-    {phrase: 'fact please', response:
-        function (msg) {
-            msg.reply(utils.getRandomFact())
-        }
-    },
-    {phrase: 'loud fact please', response:
-        function (msg) {
-            msg.channel.send(utils.getRandomFact(), {tts: true})
-        }
+var sendMsg = function (msg, loud, lie) {
+    if (loud) {
+        msg.channel.send(utils.getRandomFact(lie), {tts: true})
+    } else {
+        msg.reply(utils.getRandomFact(lie))
     }
+}
+
+const knownPhrases = [
+    {phrase: 'fact please', response: msg => sendMsg(msg)},
+    {phrase: 'loud fact please', response: msg => sendMsg(msg, true)},
+    {phrase: 'lie please', response: msg => sendMsg(msg, false, true)},
+    {phrase: 'loud lie please', response: msg => {sendMsg(msg, true, true)}}
 ]
 
 var hasDictionaryTerm = function (arr) {
@@ -64,9 +66,13 @@ var handleDictionaryFunction = function (msg, dictionary, searchTerm, args) {
             searchTerm = [searchTerm]
         }
         searchTerm.forEach(item => {
-            let tempDict = dictionary.filter(term => term.phrase === item)
-            if (tempDict.length > 0) {
-                tempDict[0].response(msg, args)
+            let tempDict = dictionary.find(term => term.phrase === item)
+            if (tempDict !== undefined) {
+                if (typeof(tempDict.response) === 'boolean') {
+                    msg.channel.send(utils.getRandomFact(tempDict))
+                } else {
+                    tempDict.response(msg, args)
+                }
                 foundTerm = true
                 return
             }

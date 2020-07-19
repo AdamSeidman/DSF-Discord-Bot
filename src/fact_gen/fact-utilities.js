@@ -2,13 +2,13 @@ var items = require('./random-items')
 const facts = require('./fact-templates').facts
 
 module.exports = {
-    getRandomFact: function () {
+    getRandomFact: function (isLie) {
         if(rand(1500) === 420) {
             return 'Hitler did nothing wrong.'
         } else if (rand(900) === 60) {
             return 'Fact machine broken.'
         }
-        let resFact = constructFact(randItemFromArray(facts)) + '.'
+        let resFact = constructFact(randItemFromArray(facts), isLie) + '.'
         if (resFact.length <= 2) {
             return 'Fact machine actually broke.'
         }
@@ -20,7 +20,7 @@ const MAX_RAND = 98
 var index = {
     blank: items.blank,
     person: items.person,
-    fact: () => constructFact(randItemFromArray(facts, true)),
+    fact: (isLie) => constructFact(randItemFromArray(facts, true), isLie),
     blanks: () => pluralize(randItemFromArray(index.blank)),
     number: () => rand(MAX_RAND),
     prepareMath: () => {
@@ -43,17 +43,23 @@ var index = {
     },
     getFromQueue: () => (numQueue.pop()).toString()
 }
-var constructFact = function (fact) {
+var constructFact = function (fact, isLie) {
     if (fact === undefined || fact.fact === undefined) {
         return undefined
     }
     let result = ''
     fact.fact.forEach(item => {
-        if (item instanceof Array && item.length <= 1) {
+        if (item.lie !== undefined) {
+            if (isLie) {
+                item = item.lie
+            } else {
+                item = item.truth
+            }
+        } else if (item instanceof Array && item.length <= 1) {
             item = index[item[0]]
         }
         if (item instanceof Function) {
-            result += item()
+            result += item(isLie)
         } else if (item instanceof Array) {
             result += randItemFromArray(item)
         } else {
