@@ -1,6 +1,5 @@
 const scheduler = require('./scheduling-handler')
 const Discord = require('discord.js')
-const utils = require('../fact_gen/fact-utilities')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
