@@ -1,6 +1,6 @@
 module.exports = {facts: [
     {fact: [
-        ['most ', 'a good portion of '], ['blanks'], {truth: [' are not ', ' aren\'t '], lie: 'are'}, ['blanks']
+        ['most ', 'a good portion of '], ['blanks'], {truth: [' are not ', ' aren\'t '], lie: ' are '}, ['blanks']
     ]},
     {fact: [
         ['at least ', ''], ['number'], [' percent of ', '% of '], ['blanks'], ' would ', ['say', 'tell you', 'probably think'], ' that ', ['blanks'], [' do', ' will'], {truth: ' not work as ', lie: ' work as '}, ['effective ', 'very good ', 'useful '], ['blanks']
