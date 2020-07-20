@@ -14,9 +14,9 @@ module.exports = {facts: [
     {fact: [
         'if you ', ['were to ask ', 'asked '], ['person'], ' what their ', ['least ', ''], 'favorite ', ['blank'], ' is, they would', {lie: '', truth: ['n\'t ', ' probably not ']}, {truth: ['respond', 'answer'], lie: ''},
         {truth: ' because they are ', lie: ' rise from the dead and tell you the answer'}, {truth: ['most likely ', ''], lie: ''}, {truth: ['dead', 'not alive'], lie: ''}
-    ], cantBeLie: true},
+    ]},
     {fact: [
-        'it is a ', ['known ', ''], 'fact that facts are ', {lie: 'never', truth: ['sometimes ', 'typically ', '']}, 'facts'
+        'it is a ', ['known ', ''], 'fact that facts are ', {lie: 'never ', truth: ['sometimes ', 'typically ', '']}, 'facts'
     ]},
     {fact: [{truth: 'some', lie: 'most'}, ' sources are convinced that ', ['fact']], cantRecurse: true},
     {fact: ['it has been confirmed that ', ['fact']], cantRecurse: true},
@@ -36,7 +36,7 @@ module.exports = {facts: [
     ]},
     {fact: [{truth: ['', 'I am not a ', 'You are probably not a '], lie: ''}, ['blank'], {truth: '', lie: '\'nt'}], cantRecurse: true},
     {fact: [
-        'I\'d be ', ['happy', 'more than willing', 'willing'], ' to bet that ', ['person'], {lie: '', truth: [' does not ', ' doesn\'t ', ' may not ',  ' could potentially ']}, {lie: 'tastes', truth: 'taste'}, ' like a ', ['blank']
+        'I\'d be ', ['happy', 'more than willing', 'willing'], ' to bet that ', ['person'], {lie: ' ', truth: [' does not ', ' doesn\'t ', ' may not ',  ' could potentially ']}, {lie: 'tastes', truth: 'taste'}, ' like a ', ['blank']
     ], cantRecurse: true},
     {fact: [['I\'ll', 'I will', 'I can'], ' bet you ', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true},
     {fact: [['blank'], {truth: [' is not', ' isn\'t'], lie: ' is'}, [' a vegetable', ' a fruit']]},
