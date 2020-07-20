@@ -22,7 +22,7 @@ var setupDailyChannel = function (msg) {
 }
 
 var deleteDailyChannel = function (msg) {
-    msg.channel.send('Sorry, but this feature has not been set up yet.')
+    scheduler.removeDailyChannel(msg.channel)
 }
 
 var sendHelpMessage = function (msg) {

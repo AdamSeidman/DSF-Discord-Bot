@@ -55,7 +55,8 @@ var constructFact = function (fact, isLie) {
             } else {
                 item = item.truth
             }
-        } else if (item instanceof Array && item.length <= 1) {
+        }
+        if (item instanceof Array && item.length <= 1) {
             item = index[item[0]]
         }
         if (item instanceof Function) {

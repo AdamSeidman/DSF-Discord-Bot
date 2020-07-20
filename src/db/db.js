@@ -18,7 +18,7 @@ var setup = function () {
         })
     }
     db.removeArr.forEach(index => {
-        dbList = dbList.splice(0, index-1).concat(dbList.splice(index))
+        dbList = dbList.slice(0, index).concat(dbList.slice(index + 1))
     })
     delete db.removeArr
 }
