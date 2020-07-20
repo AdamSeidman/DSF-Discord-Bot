@@ -40,5 +40,8 @@ module.exports = {facts: [
     ], cantRecurse: true},
     {fact: [['I\'ll', 'I will', 'I can'], ' bet you ', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true},
     {fact: [['blanks'], {truth: [' are not', ' aren\'t'], lie: ' are'}, [' vegetables', ' fruits']]},
-    {fact: [['blanks'], {truth: [' aren not', ' aren\'t'], lie: ' are'}, ' a ', ['continent', 'country', 'river', 'prison cell']]}
+    {fact: [['blanks'], {truth: [' are not', ' aren\'t'], lie: ' are'}, ' a ', ['continent', 'country', 'river', 'prison cell']]},
+    {fact: ['any ', ['blank'], {lie: 'will have committed more felonies', truth: ' may or may not be '}, {truth: ['larger', 'smaller'], lie: ''}, ' than a ', ['blank']]},
+    {fact: [['there is', 'there\'s'], {truth: ' probably', lie: ' definitely'}, ' a world record for the world\'s ', ['largest ', 'smallest '], {truth: ['blank'], lie: ['person']}]},
+    {fact: ['one in every ', ['number'], ' ', ['blanks'], {truth: [' may', ' may not'], lie: ' will always'}, ' smell like a ', ['blank']]}
 ]}
