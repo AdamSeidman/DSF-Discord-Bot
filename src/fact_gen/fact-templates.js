@@ -21,7 +21,7 @@ module.exports = {facts: [
     {fact: [{truth: 'some', lie: 'most'}, ' sources are convinced that ', ['fact']], cantRecurse: true},
     {fact: ['it has been confirmed that ', ['fact']], cantRecurse: true},
     {fact: [
-        ['person'], {truth: [' has never eaten ', ' will never eat '], lie: ' has eaten '}, ['an entire ', 'a whole ', 'a '], ['blank'], [' for fun', ' for money', '']
+        ['person'], {truth: [' has never eaten ', ' will never eat '], lie: ' has eaten '}, 'an entire ', ['blank'], [' for fun', ' for money', '']
     ]},
     {fact: [
         ['I can', 'I\'d be happy to'], ' assure you that at least ', ['number'], [' percent of ', ' '], ['blanks'], {truth: [' are not', ' aren\'t'], lie: ' are'}, ' sentient'
@@ -39,6 +39,6 @@ module.exports = {facts: [
         'I\'d be ', ['happy', 'more than willing', 'willing'], ' to bet that ', ['person'], {lie: ' ', truth: [' does not ', ' doesn\'t ', ' may not ',  ' could potentially ']}, {lie: 'tastes', truth: 'taste'}, ' like a ', ['blank']
     ], cantRecurse: true},
     {fact: [['I\'ll', 'I will', 'I can'], ' bet you ', ['number'], ' ', ['blanks'], ' that ', ['fact']], cantRecurse: true},
-    {fact: [['blank'], {truth: [' is not', ' isn\'t'], lie: ' is'}, [' a vegetable', ' a fruit']]},
-    {fact: ['a ', ['blank'], {truth: [' is not', ' isn\'t'], lie: ' is'}, ' a ', ['continent', 'country', 'river', 'prison cell']]}
+    {fact: [['blanks'], {truth: [' are not', ' aren\'t'], lie: ' are'}, [' vegetables', ' fruits']]},
+    {fact: [['blanks'], {truth: [' aren not', ' aren\'t'], lie: ' are'}, ' a ', ['continent', 'country', 'river', 'prison cell']]}
 ]}
