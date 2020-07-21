@@ -1,6 +1,6 @@
-const utils = require('../fact_gen/fact-utilities')
-const commands = require('./command-handler').commands
-const prefix = require('./command-handler').prefix
+const utils = require('./facts')
+const commands = require('./commands').commands
+const prefix = require('./commands').prefix
 
 module.exports = {
     handle: function (msg) {

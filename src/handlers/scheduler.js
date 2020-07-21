@@ -1,6 +1,6 @@
-const serverHandler = require('./server-info-handler')
+const serverHandler = require('./server-info')
 const schedule = require('node-schedule')
-const utils = require('../fact_gen/fact-utilities')
+const utils = require('./facts')
 
 var dailyChannels = undefined
 

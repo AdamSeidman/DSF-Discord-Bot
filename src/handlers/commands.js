@@ -1,4 +1,4 @@
-const scheduler = require('./scheduling-handler')
+const scheduler = require('./scheduler')
 const Discord = require('discord.js')
 
 var helpEmbed = undefined

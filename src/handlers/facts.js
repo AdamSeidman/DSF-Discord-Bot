@@ -1,4 +1,4 @@
-var itemHandler = require('./random-item-handler')
+var itemHandler = require('./random-items')
 const facts = require('../fact_gen/fact-templates').facts
 
 const PREP_PREFIX = 'prepare'

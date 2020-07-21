@@ -1,7 +1,7 @@
 const token = require('./token').token
 const Discord = require('discord.js')
-const scheduler = require('./handlers/scheduling-handler')
-const msgHandler = require('./handlers/message-handler')
+const scheduler = require('./handlers/scheduler')
+const msgHandler = require('./handlers/messages')
 
 const bot = new Discord.Client()
 bot.login(token)

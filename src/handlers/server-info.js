@@ -21,7 +21,6 @@ var getDailyChannels = function (clientChannels, arr) {
         }
     })
     serverInfo.close()
-    //return arr
 }
 
 var addDailyChannel = function (channel) {
