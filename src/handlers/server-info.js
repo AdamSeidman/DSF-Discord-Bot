@@ -8,16 +8,10 @@ var getDailyChannels = function (clientChannels, arr) {
         console.log(serverInfo)
         return []
     }
-    serverInfo.database.each('SELECT * FROM Dailies', (err, row) => {
-        if (err) {
-            console.log('Error getting daily channels:\nRow-')
-            console.log(row)
-            console.log(err)
-        } else {
-            let el = clientChannels.find(x => x.name === row.Name && x.id === row.ID)
-            if (el !== undefined) {
-                arr.push(el)
-            }
+    serverInfo.forEach('Dailies', row => {
+        let el = clientChannels.find(x => x.name === row.Name && x.id === row.ID)
+        if (el !== undefined) {
+            arr.push(el)
         }
     })
     serverInfo.close()

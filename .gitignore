@@ -1,5 +1,4 @@
 node_modules/
-test/
 token.js
 *.db
 temp.txt

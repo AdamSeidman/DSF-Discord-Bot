@@ -22,48 +22,32 @@ var setup = function () {
             console.log('Error: No random items.')
             console.log(randomItems)
         } else {
-            randomItems.database.each('SELECT * FROM Items', (err, row) => {
-                if (err) {
-                    console.log('Error reading in item:\nItem-')
-                    console.log(row)
-                    console.log(err)
+            randomItems.forEach('Items', row => {
+                if (row.isAlive) {
+                    animals.push(row)
                 } else {
-                    if (row.isAlive) {
-                        animals.push(row)
-                    } else {
-                        nonLivingItems.push(row)
-                    }
-                    items.push(row)
+                    nonLivingItems.push(row)
                 }
+                items.push(row)
             })
 
-            randomItems.database.each('SELECT * FROM People', (err, row) => {
-                if (err) {
-                    console.log('Error reading in person:\nPerson-')
-                    console.log(row)
-                    console.log(err)
+            randomItems.forEach('People', row => {
+                if (row.isAlive) {
+                    alive.push(row)
                 } else {
-                    if (row.isAlive) {
-                        alive.push(row)
-                    } else {
-                        dead.push(row)
-                    }
-                    people.push(row)
+                    dead.push(row)
                 }
+                people.push(row)
             })
             /*
-            randomItems.database.each('SELECT * FROM Facts', (err, row) => {
-                if (err) {
-                    console.log('Error reading in fact:\nFact-')
-                    console.log(row)
-                    console.log(err)
-                } else {
-                    if (!(row.cantRecurse || false)) {
-                        recursiveFacts.push(row)
-                    }
-                    facts.push(row)
+            randomItems.forEach('Facts', row => {
+                if (!(row.cantRecurse || false)) {
+                    recursiveFacts.push(row)
                 }
+                facts.push(row)
             }) */ // TODO REMOVE!!!!!!!!!!!!!
+
+            randomItems.close()
         }
     }
 }

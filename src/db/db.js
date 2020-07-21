@@ -41,6 +41,17 @@ var getDB = function(dbName) {
             }
         })
     }
+    result.forEach = function (table, callback) {
+        result.database.each(`SELECT * FROM ${table}`, (err, row) => {
+            if (err) {
+                console.log(`Error in reading sql (Table: ${table}) with foreach:\nRow-`)
+                console.log(row)
+                console.log(err)
+            } else {
+                callback(row)
+            }
+        })
+    }
     return result
 }
 
