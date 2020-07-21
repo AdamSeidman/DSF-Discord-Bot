@@ -51,7 +51,7 @@ var setup = function () {
                     people.push(row)
                 }
             })
-
+            /*
             randomItems.database.each('SELECT * FROM Facts', (err, row) => {
                 if (err) {
                     console.log('Error reading in fact:\nFact-')
@@ -63,7 +63,7 @@ var setup = function () {
                     }
                     facts.push(row)
                 }
-            })
+            }) */ // TODO REMOVE!!!!!!!!!!!!!
         }
     }
 }

@@ -9,10 +9,13 @@ module.exports = {facts: [
         ['prepareMath'], ['getFromQueue'], [' plus ', ' minus ', ' multiplied by '], ['getFromQueue'], {lie: ' does ', truth: [' does not ', ' doesn\'t ']}, ['tend to equal ', 'equal '], ['getFromQueue']
     ]},
     {fact: [
-        ['person'], {truth: [' once existed', ' is dead', ' was a person', ' no longer exists'], lie: [' never really existed', ' is alive and well']}
+        ['dead'], {truth: [' once existed', ' is dead', ' was a person', ' no longer exists'], lie: [' never really existed', ' is alive and well']}
     ]},
     {fact: [
-        'if you ', ['were to ask ', 'asked '], ['person'], ' what their ', ['least ', ''], 'favorite ', ['blank'], ' is, they would', {lie: '', truth: ['n\'t ', ' probably not ']}, {truth: ['respond', 'answer'], lie: ''},
+        ['alive'], {lie: [' once existed', ' is dead', ' was a person', ' no longer exists'], truth: [' never really existed', ' is alive and well']}
+    ]},
+    {fact: [
+        'if you ', ['were to ask ', 'asked '], ['dead'], ' what their ', ['least ', ''], 'favorite ', ['blank'], ' is, they would', {lie: '', truth: ['n\'t ', ' probably not ']}, {truth: ['respond', 'answer'], lie: ''},
         {truth: ' because they are ', lie: ' rise from the dead and tell you the answer'}, {truth: ['most likely ', ''], lie: ''}, {truth: ['dead', 'not alive'], lie: ''}
     ]},
     {fact: [
@@ -24,10 +27,10 @@ module.exports = {facts: [
         ['person'], {truth: [' has never eaten ', ' will never eat '], lie: ' has eaten '}, 'an entire ', ['blank'], [' for fun', ' for money', '']
     ]},
     {fact: [
-        ['I can', 'I\'d be happy to'], ' assure you that at least ', ['number'], [' percent of ', ' '], ['blanks'], {truth: [' are not', ' aren\'t'], lie: ' are'}, ' sentient'
+        ['I can', 'I\'d be happy to'], ' assure you that at least ', ['number'], [' percent of ', ' '], ['items'], {truth: [' are not', ' aren\'t'], lie: ' are'}, ' sentient'
     ], cantRecurse: true},
     {fact: [
-        ['most people who ', 'some people who '], ['attempt to ', 'try to ', '', ''], ['eat ', 'consume '], ['blanks'], ' will ', ['probably ', ''], {truth: 'die', lie: 'live forever'}, {lie: '', truth: [' immediately', '']}
+        ['most people who ', 'some people who '], ['attempt to ', 'try to ', '', ''], ['eat ', 'consume '], ['items'], ' will ', ['probably ', ''], {truth: 'die', lie: 'live forever'}, {lie: '', truth: [' immediately', '']}
     ]},
     {fact: [['person'], {truth: ' is not a ', lie: ' is a '}, ['blank']]},
     {fact: [['blanks'], {truth: ' may function as ', lie: ' will always function as '}, ['blanks'], {truth: ', but that is not', lie: ' because that is'}, ' their intended purpose']},

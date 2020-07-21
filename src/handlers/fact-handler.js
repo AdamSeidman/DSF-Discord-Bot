@@ -1,5 +1,8 @@
-var items = require('./random-items')
-const facts = require('./fact-templates').facts
+var itemHandler = require('./random-item-handler')
+const facts = require('../fact_gen/fact-templates').facts
+
+const PREP_PREFIX = 'prepare'
+const MAX_RAND = 98
 
 module.exports = {
     getRandomFact: function (isLie) {
@@ -16,14 +19,69 @@ module.exports = {
     }
 }
 
-const MAX_RAND = 98
+var lastItem = undefined
+var lastPerson = undefined
+
+var personPrepared = false
+var itemPrepared = false
+
+var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
+    let item = undefined
+    if (isPerson) {
+        if (personPrepared) {
+            item = lastPerson
+        } else if (isAlive === undefined) {
+            item = itemHandler.getAllPeople()
+        } else if (isAlive) {
+            item = itemHandler.getAlivePeople()
+        } else {
+            item = itemHandler.getDeadPeople()
+        }
+    } else {
+        if (itemPrepared) {
+            item = lastItem
+        } else if (isAlive === undefined) {
+            item = itemHandler.getAllItems()
+        } else if (isAlive) {
+            item = itemHandler.getAnimals()
+        } else {
+            item = itemHandler.getItems()
+        }
+    }
+
+    if (item instanceof Array) {
+        item = randItemFromArray(item)
+    }
+    if (isPerson) {
+        lastPerson = item
+    } else {
+        lastItem = item
+    }
+
+    if (isPlural) {
+        item = item.plural
+    } else {
+        item = item.name
+    }
+    if (isEmpty) {
+        return ''
+    }
+    return item
+}
+
 var index = {
-    blank: items.blank,
-    person: items.person,
+    blank: (isLie, prep) => prepareTerm(prep, false, false),
+    person: (isLie, prep) => prepareTerm(prep, false, true),
+    item: (isLie, prep) => prepareTerm(prep, false, false, false),
+    animal: (isLie, prep) => prepareTerm(prep, false, false, true),
+    alive: (isLie, prep) => prepareTerm(prep, false, true, true),
+    dead: (isLie, prep) => prepareTerm(prep, false, true, false),
+    animals: (isLie, prep) => prepareTerm(prep, true, false, true),
+    items: (isLie, prep) => prepareTerm(prep, true, false, false),
+    blanks: (isLie, prep) => prepareTerm(prep, true, false),
     fact: (isLie) => constructFact(randItemFromArray(facts, true), isLie),
-    blanks: () => pluralize(randItemFromArray(index.blank)),
     number: () => rand(MAX_RAND),
-    prepareMath: () => {
+    math: () => {
         let a = rand(MAX_RAND)
         let b = rand(MAX_RAND)
         let c = rand(MAX_RAND)
@@ -56,8 +114,12 @@ var constructFact = function (fact, isLie) {
                 item = item.truth
             }
         }
-        if (item instanceof Array && item.length <= 1) {
-            item = index[item[0]]
+        if (item instanceof Array && item.length === 1) {
+            const isPrep = item[0].slice(0, PREP_PREFIX.length) === PREP_PREFIX
+            if (isPrep) {
+                item[0] = item[0].slice(PREP_PREFIX.length).toLowerCase()
+            }
+            item = index[item[0]](isLie, isPrep)
         }
         if (item instanceof Function) {
             result += item(isLie)
@@ -81,20 +143,6 @@ var randItemFromArray = function (arr, look) {
         }
     }
     return result
-}
-var pluralize = function (str) {
-    if (str === undefined || str.length === 0) {
-        return ''
-    }
-    switch(str.slice(-1)) {
-    case 'x':
-    case 's':
-    case 'h':
-        return str + 'es'
-    case 'y':
-        return str.slice(0, str.length - 1) + 'ies'
-    }
-    return str + 's'
 }
 var rand = function (max) {
     if (max === undefined) {
