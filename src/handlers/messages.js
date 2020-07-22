@@ -69,7 +69,7 @@ var handleDictionaryFunction = function (msg, dictionary, searchTerm, args) {
             let tempDict = dictionary.find(term => term.phrase === item)
             if (tempDict !== undefined) {
                 if (typeof(tempDict.response) === 'boolean') {
-                    msg.channel.send(utils.getRandomFact(tempDict))
+                    msg.channel.send(utils.getRandomFact(tempDict.response))
                 } else {
                     tempDict.response(msg, args)
                 }
