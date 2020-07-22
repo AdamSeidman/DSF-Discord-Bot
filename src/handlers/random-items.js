@@ -1,21 +1,22 @@
 const db = require('../db/db')
 
-var items = []
-var animals = []
-var nonLivingItems = []
-var people = []
-var alive = []
-var dead = []
-var facts = []
-var recursiveFacts = []
+var lists = {
+    items: [],
+    animals: [],
+    nonLivingItems: [],
+    people: [],
+    alive: [],
+    dead: [],
+    facts: [],
+    recursiveFacts: []
+}
 
 var getArray = function (arr) {
-    setup()
-    return arr || []
+    return lists[arr] || []
 }
 
 var setup = function () {
-    if (items.length === 0) {
+    if (lists.items.length === 0) {
         db.setUpDatabases()
         let randomItems = db.getDatabase('randomItems')
         if (!randomItems) {
@@ -24,41 +25,43 @@ var setup = function () {
         } else {
             randomItems.forEach('Items', row => {
                 if (row.isAlive) {
-                    animals.push(row)
+                    lists.animals.push(row)
                 } else {
-                    nonLivingItems.push(row)
+                    lists.nonLivingItems.push(row)
                 }
-                items.push(row)
+                lists.items.push(row)
             })
 
             randomItems.forEach('People', row => {
                 if (row.isAlive) {
-                    alive.push(row)
+                    lists.alive.push(row)
                 } else {
-                    dead.push(row)
+                    lists.dead.push(row)
                 }
-                people.push(row)
+                lists.people.push(row)
             })
             /*
             randomItems.forEach('Facts', row => {
                 if (!(row.cantRecurse || false)) {
-                    recursiveFacts.push(row)
+                    lists.recursiveFacts.push(row)
                 }
-                facts.push(row)
+                lists.facts.push(row)
             }) */ // TODO REMOVE!!!!!!!!!!!!!
 
+            console.log('Random Items Setup Complete!')
             randomItems.close()
         }
     }
 }
 
 module.exports = {
-    getAllItems: () => getArray(items),
-    getAnimals: () => getArray(animals),
-    getItems: () => getArray(nonLivingItems),
-    getAllPeople: () => getArray(people),
-    getAlivePeople: () => getArray(alive),
-    getDeadPeople: () => getArray(dead),
-    getAllFacts: () => getArray(facts),
-    getRecursiveFacts: () => getArray(recursiveFacts)
+    getAllItems: () => getArray('items'),
+    getAnimals: () => getArray('animals'),
+    getItems: () => getArray('nonLivingItems'),
+    getAllPeople: () => getArray('people'),
+    getAlivePeople: () => getArray('alive'),
+    getDeadPeople: () => getArray('dead'),
+    getAllFacts: () => getArray('facts'),
+    getRecursiveFacts: () => getArray('recursiveFacts'),
+    setupItems: setup
 }
