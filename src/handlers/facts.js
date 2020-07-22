@@ -1,5 +1,4 @@
 var itemHandler = require('./random-items')
-const facts = require('../fact_gen/fact-templates').facts
 
 const PREP_PREFIX = 'prepare'
 const MAX_RAND = 98
@@ -11,7 +10,7 @@ module.exports = {
         } else if (rand(900) === 60) {
             return 'Fact machine broken.'
         }
-        let resFact = constructFact(randItemFromArray(facts), isLie) + '.'
+        let resFact = constructFact(randItemFromArray(itemHandler.getAllFacts()), isLie) + '.'
         if (resFact.length <= 2) {
             return 'Fact machine actually broke.'
         }
@@ -79,7 +78,7 @@ var index = {
     animals: (isLie, prep) => prepareTerm(prep, true, false, true),
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
-    fact: (isLie) => constructFact(randItemFromArray(facts, true), isLie),
+    fact: (isLie) => constructFact(randItemFromArray(itemHandler.getRecursiveFacts()), isLie),
     number: () => rand(MAX_RAND),
     math: () => {
         let a = rand(MAX_RAND)
@@ -131,18 +130,11 @@ var constructFact = function (fact, isLie) {
     })
     return result
 }
-var randItemFromArray = function (arr, look) {
+var randItemFromArray = function (arr) {
     if (arr === undefined || arr.length <= 1) {
         return undefined
     }
-    let result = undefined
-    while (result === undefined) {
-        result = arr[Math.floor(Math.random() * arr.length)]
-        if (look !== undefined && result.cantRecurse) {
-            result = undefined
-        }
-    }
-    return result
+    return arr[Math.floor(Math.random() * arr.length)]
 }
 var rand = function (max) {
     if (max === undefined) {

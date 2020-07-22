@@ -40,13 +40,14 @@ var setup = function () {
                 }
                 lists.people.push(row)
             })
-            /*
+            
             randomItems.forEach('Facts', row => {
-                if (!(row.cantRecurse || false)) {
+                row.fact = JSON.parse(row.fact)
+                if (row.canRecurse) {
                     lists.recursiveFacts.push(row)
                 }
                 lists.facts.push(row)
-            }) */ // TODO REMOVE!!!!!!!!!!!!!
+            })
 
             console.log('Random Items Setup Complete!')
             randomItems.close()
