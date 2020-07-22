@@ -1,4 +1,4 @@
-const serverHandler = require('./server-info')
+const serverHandler = require('../db/handlers/server-info')
 const schedule = require('node-schedule')
 const utils = require('./facts')
 

@@ -1,4 +1,5 @@
 @ECHO OFF
+CD ..
 
 IF EXIST temp.txt DEL /F temp.txt
 TASKLIST /NH /FI "WINDOWTITLE EQ DSF Robot" > temp.txt

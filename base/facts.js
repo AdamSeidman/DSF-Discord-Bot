@@ -1,4 +1,4 @@
-var itemHandler = require('./random-items')
+var itemHandler = require('../db/handlers/random-items')
 
 const PREP_PREFIX = 'prepare'
 const MAX_RAND = 98

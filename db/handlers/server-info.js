@@ -1,4 +1,4 @@
-const db = require('../db/db')
+const db = require('../db')
 
 var getDailyChannels = function (clientChannels, arr) {
     db.setUpDatabases()
