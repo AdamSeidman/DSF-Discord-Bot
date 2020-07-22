@@ -1,9 +1,16 @@
 const utils = require('./facts')
 const commands = require('./commands').commands
 const prefix = require('./commands').prefix
+const getAdjectives = require('../db/handlers/random-items').getAdjectives
+
+var dictionaryTerms = undefined
 
 module.exports = {
     handle: function (msg) {
+        if (dictionaryTerms === undefined) {
+            dictionaryTerms = getAdjectives()
+        }
+
         let message = msg.content.toLowerCase().trim()
     
         if (message.length <= 3) {
@@ -45,12 +52,6 @@ var hasDictionaryTerm = function (arr) {
     }
     return ''
 }
-
-const dictionaryTerms = [
-    'ludicrous', 'senseless', 'shortsighted', 'trivial', 'fact', 'dumb', 'unintelligent', 'brainless', 'intelligent', 'deficient', 'dense', 'dim', 'meaningless',
-    'mindless', 'moron', 'moronic', 'nonsensical', 'stupid', 'pointless', 'simpleminded', 'slow', 'thick-headed', 'unthinking', 'witless', 'dull', 'foolish', 'ill-advised', 
-    'irrelevant', 'relevant', 'laughable', 'unfunny', 'imbecile', 'inane', 'idiotic', 'idiot', 'bruh'
-]
 
 var handleDictionaryTerm = function (msg, message) {
     msg.channel.send(`Did someone say ${message}?`)

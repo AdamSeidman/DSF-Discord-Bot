@@ -8,7 +8,8 @@ var lists = {
     alive: [],
     dead: [],
     facts: [],
-    recursiveFacts: []
+    recursiveFacts: [],
+    adjectives: []
 }
 
 var getArray = function (arr) {
@@ -49,6 +50,10 @@ var setup = function () {
                 lists.facts.push(row)
             })
 
+            randomItems.forEach('Adjectives', row => {
+                lists.adjectives.push(row.term.toLowerCase())
+            })
+
             console.log('Random Items Setup Complete!')
             randomItems.close()
         }
@@ -64,5 +69,6 @@ module.exports = {
     getDeadPeople: () => getArray('dead'),
     getAllFacts: () => getArray('facts'),
     getRecursiveFacts: () => getArray('recursiveFacts'),
+    getAdjectives: () => getArray('adjectives'),
     setupItems: setup
 }
