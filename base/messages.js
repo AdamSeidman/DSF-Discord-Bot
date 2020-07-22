@@ -1,7 +1,8 @@
-const utils = require('./facts')
+const facts = require('./facts')
 const commands = require('./commands').commands
 const prefix = require('./commands').prefix
 const getAdjectives = require('../db/handlers/random-items').getAdjectives
+const utils = require('./utils')
 
 var dictionaryTerms = undefined
 
@@ -12,7 +13,6 @@ module.exports = {
         }
 
         let message = msg.content.toLowerCase().trim()
-    
         if (message.length <= 3) {
             return
         }
@@ -20,19 +20,22 @@ module.exports = {
         if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
             message = message.slice(prefix.length).trim()
             handleDictionaryFunction(msg, commands, message.split(' '), message.split(' '))
-        } else if (handleDictionaryFunction(msg, knownPhrases, message)) {
-            return
-        } else if ((message = hasDictionaryTerm(message.split(' '))) !== '') {
-            handleDictionaryTerm(msg, message)
+        } else {
+            message = utils.stripPunctuation(message)
+            if (handleDictionaryFunction(msg, knownPhrases, message)) {
+                return
+            } else if ((message = hasDictionaryTerm(message.split(' '))) !== '') {
+                handleDictionaryTerm(msg, message)
+            }
         }
     }
 }
 
 var sendMsg = function (msg, loud, lie) {
     if (loud) {
-        msg.channel.send(utils.getRandomFact(lie), {tts: true})
+        msg.channel.send(facts.getRandomFact(lie), {tts: true})
     } else {
-        msg.reply(utils.getRandomFact(lie))
+        msg.reply(facts.getRandomFact(lie))
     }
 }
 
@@ -57,7 +60,7 @@ var handleDictionaryTerm = function (msg, message) {
     msg.channel.send(`Did someone say ${message}?`)
     msg.channel.send('This calls for a fact!')
     msg.channel.send('Ready? Here it is:')
-    msg.channel.send(utils.getRandomFact())
+    msg.channel.send(facts.getRandomFact())
 }
 
 var handleDictionaryFunction = function (msg, dictionary, searchTerm, args) {
@@ -70,7 +73,7 @@ var handleDictionaryFunction = function (msg, dictionary, searchTerm, args) {
             let tempDict = dictionary.find(term => term.phrase === item)
             if (tempDict !== undefined) {
                 if (typeof(tempDict.response) === 'boolean') {
-                    msg.channel.send(utils.getRandomFact(tempDict.response))
+                    msg.channel.send(facts.getRandomFact(tempDict.response))
                 } else {
                     tempDict.response(msg, args)
                 }

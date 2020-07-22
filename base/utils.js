@@ -24,8 +24,14 @@ var getRandomString = function (defaultCallback) {
     }
 }
 
+var stripPunctuation = function (str) {
+    /* eslint-disable-next-line */
+    return str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').replace(/\s{2,}/g,' ')
+}
+
 module.exports = {
     randomNumber: randomNumber,
     randomArrayItem: randomIArrayItem,
-    getRandomString: getRandomString
+    getRandomString: getRandomString,
+    stripPunctuation: stripPunctuation
 }
