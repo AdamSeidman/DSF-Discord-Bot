@@ -7,7 +7,7 @@ const utils = require('./utils')
 var dictionaryTerms = undefined
 
 module.exports = {
-    handle: function (msg) {
+    handle: function (msg, isDM) {
         if (dictionaryTerms === undefined) {
             dictionaryTerms = getAdjectives()
         }
@@ -18,8 +18,12 @@ module.exports = {
         }
     
         if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
-            message = message.slice(prefix.length).trim()
-            handleDictionaryFunction(msg, commands, message.split(' '), message.split(' '))
+            if (isDM) {
+                msg.reply('Sorry, commands only work in standard text channels.')
+            } else {
+                message = message.slice(prefix.length).trim()
+                handleDictionaryFunction(msg, commands, message.split(' '), message.split(' '))
+            }
         } else {
             message = utils.stripPunctuation(message)
             if (handleDictionaryFunction(msg, knownPhrases, message)) {

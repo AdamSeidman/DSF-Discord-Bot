@@ -7,7 +7,7 @@ var randomNumber = function (max) {
     return Math.ceil(Math.random() * max) + 1
 }
 
-var randomIArrayItem = function (arr) {
+var randomArrayItem = function (arr) {
     if (arr === undefined || arr.length <= 1) {
         return undefined
     }
@@ -31,7 +31,7 @@ var stripPunctuation = function (str) {
 
 module.exports = {
     randomNumber: randomNumber,
-    randomArrayItem: randomIArrayItem,
+    randomArrayItem: randomArrayItem,
     getRandomString: getRandomString,
     stripPunctuation: stripPunctuation
 }

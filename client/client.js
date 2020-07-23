@@ -14,7 +14,7 @@ bot.on('ready', () => {
 })
 
 bot.on('message', msg => {
-    if (!msg.member.user.bot) {
-        msgHandler.handle(msg)
+    if (!msg.author.bot) {
+        msgHandler.handle(msg, msg.member === null)
     }
 })
