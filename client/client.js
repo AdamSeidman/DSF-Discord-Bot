@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
 const msgHandler = require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
+const setupWebServers = require('../base/web').setupWebServers
 
 const bot = new Discord.Client()
 bot.login(token)
@@ -11,6 +12,7 @@ bot.on('ready', () => {
     itemHandler.setupItems()
     scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
     console.log('DSF Robot Intitialized')
+    setupWebServers()
 })
 
 bot.on('message', msg => {
