@@ -61,6 +61,7 @@ var setup = function () {
 }
 
 var refresh = function () {
+    console.log('Item Refresh Requested.')
     lists = {
         items: [],
         animals: [],

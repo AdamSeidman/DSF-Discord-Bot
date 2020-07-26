@@ -1,7 +1,6 @@
 const facts = require('./facts')
-const commands = require('./commands').commands
-const prefix = require('./commands').prefix
-const getAdjectives = require('../db/handlers/random-items').getAdjectives
+const { commands, prefix } = require('./commands')
+const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
 
 var dictionaryTerms = undefined

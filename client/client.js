@@ -1,4 +1,4 @@
-const token = require('./token').token
+const { token } = require('./token')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
 const msgHandler = require('../base/messages')
