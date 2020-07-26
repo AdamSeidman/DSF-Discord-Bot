@@ -6,9 +6,50 @@
     <title>DSF Client</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./index.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
-<body>
-    client goes here
-    <button onclick="sendRefresh()">refresh</button>
+<body class="dark">
+    <div class="ml-4 mt-4 main-content">
+        <div class="text-center mb-5">
+            <h1 class="dsf-header">Daily Stupid Facts</h1>
+        </div>
+        <div class="col-12">
+            <div class="col-3 inline">
+                <form>
+                    <div class="form-group">
+                        <label for="nameInput" class="text-light">Full Name:&nbsp;</label>
+                        <input class="form-control" id="nameInput" placeHolder="name">
+                    </div>
+                </form>
+            </div>
+            <div class="col-3 inline">
+                <form>
+                    <div class="form-group">
+                        <label for="itemNameInput" class="text-light">Item Name:&nbsp;</label>
+                        <input class="form-control" id="itemNameInput" placeHolder="item">
+                    </div>
+                </form>
+            </div>
+            <div class="col-3 inline">
+                <form>
+                    <div class="form-group">
+                        <label for="adjInput" class="text-light">Adjective:&nbsp;</label>
+                        <input class="form-control" id="adjInput" placeHolder="adjective">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="col-12 ml-3">
+            <h2 class="text-light">Refresh Database:&nbsp;
+                <button class="btn btn-light">
+                    <i class="fa fa-refresh" aria-hidden="true" onclick="sendRefresh()"></i>
+                </button>
+            </h2>
+        </div>
+    </div>
 </body>
 </html>

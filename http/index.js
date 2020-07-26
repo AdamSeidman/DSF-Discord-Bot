@@ -2,12 +2,10 @@
 
 const url = 'http://localhost:8081/'
 
-var sendRefresh = function () {
+var sendRefresh = async function () {
     axios({
         method: 'post',
         url: url + 'refresh',
         data: {}
     })
-    .then(data => console.log(data))
-    .then(err => console.error(err))
 }

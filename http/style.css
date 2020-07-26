@@ -1,0 +1,35 @@
+body.dark {
+    background-color: #1d1d1d;
+    overflow: hidden;
+}
+
+h1.dsf-header {
+    font-size: 10em;
+    color: #888888;
+    text-shadow:
+        -1px -1px 1px black,
+        1px 1px 1px #cccccc,
+        6px 6px 6px black,
+        8px 8px 4px red;
+    font-family: Impact, Charcoal, sans-serif;
+    letter-spacing: 0.05em;
+}
+
+div hr {
+    background-color: #444444;
+    height: 2px;
+    margin: 10px 7% 20px 1%;
+}
+
+div.inline {
+    display: inline-block;
+}
+
+div.col-3 {
+    margin-right: 8%;
+}
+
+button.btn-light:focus:not(:active) {
+    box-shadow: none;
+    transition: box-shadow 1.5s ease-in;
+}
