@@ -17,11 +17,50 @@
             <h1 class="dsf-header">Daily Stupid Facts</h1>
         </div>
         <div class="col-12">
+            <form class="form-inline">
+                <div class="form-group col-12">
+                    <label for="newFactInput" class="text-light">Fact:&nbsp;&nbsp;</label>
+                    <input class="form-control" id="newFactInput" placeholder="fact">
+                    <div class="input-group-append">
+                        <button type="button" class="btn">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <div class="col-12">
             <div class="col-3 inline">
                 <form>
                     <div class="form-group">
                         <label for="nameInput" class="text-light">Full Name:&nbsp;</label>
-                        <input class="form-control" id="nameInput" placeHolder="name">
+                        <input class="form-control" id="nameInput" placeholder="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="nicknameInput" class="text-light">Nickame:&nbsp;</label>
+                        <input class="form-control" id="nicknameInput" placeholder="nickname">
+                    </div>
+                    <div id="buttonsPanel">
+                        <div id="buttonsContainer">
+                            <div class="form-group gender inline mt-2 mr-2">
+                                <div class="input-group-prepend inline">
+                                    <button type="button" class="btn active" onclick="">Male</button>
+                                </div>
+                                <div class="input-group-append inline">
+                                    <button type="button" class="btn" onclick="">Female</button>
+                                </div>
+                            </div>
+                            <div class="form-group is-alive-status inline mt-2 mr-2">
+                                <div class="input-group-prepend inline">
+                                    <button type="button" class="btn active" onclick="">Alive</button>
+                                </div>
+                                <div class="input-group-append inline">
+                                    <button type="button" class="btn" onclick="">Dead</button>
+                                </div>
+                            </div>
+                            <div class="form-group inline">
+                                <button type="button" class="btn name-submit">Submit</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -29,7 +68,7 @@
                 <form>
                     <div class="form-group">
                         <label for="itemNameInput" class="text-light">Item Name:&nbsp;</label>
-                        <input class="form-control" id="itemNameInput" placeHolder="item">
+                        <input class="form-control" id="itemNameInput" placeholder="item">
                     </div>
                 </form>
             </div>
@@ -37,7 +76,7 @@
                 <form>
                     <div class="form-group">
                         <label for="adjInput" class="text-light">Adjective:&nbsp;</label>
-                        <input class="form-control" id="adjInput" placeHolder="adjective">
+                        <input class="form-control" id="adjInput" placeholder="adjective">
                     </div>
                 </form>
             </div>
@@ -45,7 +84,7 @@
         <hr>
         <div class="col-12 ml-3">
             <h2 class="text-light">Refresh Database:&nbsp;
-                <button class="btn btn-light">
+                <button class="btn">
                     <i class="fa fa-refresh" aria-hidden="true" onclick="sendRefresh()"></i>
                 </button>
             </h2>

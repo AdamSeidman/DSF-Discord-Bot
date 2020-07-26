@@ -27,9 +27,61 @@ div.inline {
 
 div.col-3 {
     margin-right: 8%;
+    vertical-align: top;
 }
 
 button.btn-light:focus:not(:active) {
     box-shadow: none;
     transition: box-shadow 1.5s ease-in;
+}
+
+input.form-control#newFactInput {
+    width: 88%;
+    border-radius: 0.25rem 0px 0px 0.25rem;
+}
+
+div.input-group-append:not(.inline)>button.btn {
+    border-radius: 0px 0.4rem 0.4rem 0px;
+    background-image: linear-gradient(to right, #3fcc3f, #609961);
+    opacity: 0.7;
+    border-color: #1d1d1d;
+    transition: opacity 0.5s;
+    font-weight: 500;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+div.input-group-append>button.btn:hover {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+div.input-group-prepend.inline>button.btn {
+    border-radius: 0.3rem 0px 0px 0.3rem;
+}
+
+div.input-group-append.inline>button.btn {
+    border-radius: 0px 0.3rem 0.3rem 0px;
+    margin-left: -1px;
+}
+
+div.is-alive-status div button.btn {
+    border-radius: 0px 0.3rem 0.3rem 0px;
+    margin-left: -2px;
+}
+
+div#buttonsPanel {
+    text-align: center;
+}
+
+div#buttonsContainer button:not(.name-submit) {
+    background-image: radial-gradient(#405fff, #4075d2);
+    opacity: 1.0;
+    transition: opacity 0.5s;
+    font-weight: 500;
+}
+
+div#buttonsContainer button.active:not(.name-submit) {
+    opacity: 0.7;
+    transition: opacity 0.5s;
 }
