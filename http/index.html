@@ -43,22 +43,22 @@
                         <div id="buttonsContainer">
                             <div class="form-group gender inline mt-2 mr-2">
                                 <div class="input-group-prepend inline">
-                                    <button type="button" class="btn active" onclick="">Male</button>
+                                    <button type="button" class="genderBtn btn active" disabled onclick="togglePersonProperty(true)">Male</button>
                                 </div>
                                 <div class="input-group-append inline">
-                                    <button type="button" class="btn" onclick="">Female</button>
+                                    <button type="button" class="genderBtn btn" onclick="togglePersonProperty(true)">Female</button>
                                 </div>
                             </div>
                             <div class="form-group is-alive-status inline mt-2 mr-2">
                                 <div class="input-group-prepend inline">
-                                    <button type="button" class="btn active" onclick="">Alive</button>
+                                    <button type="button" class="lifeBtn btn active" disabled onclick="togglePersonProperty(false)">Alive</button>
                                 </div>
                                 <div class="input-group-append inline">
-                                    <button type="button" class="btn" onclick="">Dead</button>
+                                    <button type="button" class="lifeBtn btn" onclick="togglePersonProperty(false)">Dead</button>
                                 </div>
                             </div>
                             <div class="form-group inline">
-                                <button type="button" class="btn name-submit">Submit</button>
+                                <button type="button" class="btn name-submit" onclick="submitPerson()">Submit</button>
                             </div>
                         </div>
                     </div>

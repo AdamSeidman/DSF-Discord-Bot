@@ -76,12 +76,14 @@ div#buttonsPanel {
 
 div#buttonsContainer button:not(.name-submit) {
     background-image: radial-gradient(#405fff, #4075d2);
+    color: black;
     opacity: 1.0;
     transition: opacity 0.5s;
     font-weight: 500;
 }
 
 div#buttonsContainer button.active:not(.name-submit) {
+    color: #333333;
     opacity: 0.7;
     transition: opacity 0.5s;
 }

@@ -23,7 +23,21 @@ var addPerson = function (name, nickname, isMale, isAlive) {
         nickname: nickname,
         isMale: isMale,
         isAlive: isAlive
-    }, () => console.log(`'${name}' added to database.`))
+    }, () => {
+        console.log(`'${name}' added to database.`)
+        refresh()
+    })
+    randomItems.close()
+}
+
+var addItem = function (name, plural, isAlive, usage) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('Items', {
+        name: name,
+        plural: plural,
+        isAlive: isAlive,
+        usage: usage
+    })
 }
 
 var setup = function () {
@@ -98,5 +112,6 @@ module.exports = {
     getAdjectives: () => getArray('adjectives'),
     setupItems: setup,
     refreshItems: refresh,
-    addPerson: addPerson
+    addPerson: addPerson,
+    addItem: addItem
 }
