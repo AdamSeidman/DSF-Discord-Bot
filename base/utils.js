@@ -29,9 +29,21 @@ var stripPunctuation = function (str) {
     return str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').replace(/\s{2,}/g,' ')
 }
 
+var fixPathCharacters = function (str) {
+    if (str === undefined || str.length === 0) return ''
+    str = str.split('%20')
+    if (str.length === 1) {
+        return str[0]
+    }
+    let output = str[0]
+    str.slice(1).forEach(x => output += ` ${x}`)
+    return output
+}
+
 module.exports = {
     randomNumber: randomNumber,
     randomArrayItem: randomArrayItem,
     getRandomString: getRandomString,
-    stripPunctuation: stripPunctuation
+    stripPunctuation: stripPunctuation,
+    fixPathCharacters: fixPathCharacters
 }

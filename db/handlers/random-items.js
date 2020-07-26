@@ -16,6 +16,16 @@ var getArray = function (arr) {
     return lists[arr] || []
 }
 
+var addPerson = function (name, nickname, isMale, isAlive) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('People', {
+        name: name,
+        nickname: nickname,
+        isMale: isMale,
+        isAlive: isAlive
+    }, () => console.log(`'${name}' added to database.`))
+}
+
 var setup = function () {
     if (lists.items.length === 0) {
         db.setUpDatabases()
@@ -87,5 +97,6 @@ module.exports = {
     getRecursiveFacts: () => getArray('recursiveFacts'),
     getAdjectives: () => getArray('adjectives'),
     setupItems: setup,
-    refreshItems: refresh
+    refreshItems: refresh,
+    addPerson: addPerson
 }

@@ -52,6 +52,28 @@ var getDB = function(dbName) {
             }
         })
     }
+    result.insert = function (table, map, callback) {
+        if (typeof(map) !== 'object' || Object.keys(map).length === 0) {
+            console.log('Supplied map is invalid.')
+        } else {
+            let keys = ''
+            let values = ''
+            Object.keys(map).forEach(item => {
+                keys += `${item}, `
+                values += `'${map[item]}', `
+            })
+            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) 
+                VALUES (${values.slice(0, values.length - 2)})`
+            result.database.run(sql, [], err => {
+                if (err) {
+                    console.log('SQL Inset Error Occurred.\n')
+                    console.log(err)
+                } else {
+                    callback()
+                }
+            })
+        }
+    }
     return result
 }
 

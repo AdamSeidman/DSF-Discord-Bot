@@ -21,13 +21,11 @@ var addDailyChannel = function (channel) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
 
-    serverInfo.database.run(`INSERT INTO Dailies (Name, ID) VALUES ('${channel.name}', '${channel.id}')`, [], function (err) {
-        if (err) {
-            console.log(err)
-            channel.send('An error occurred.')
-        } else {
-            channel.send('Channel set up for daily stupid facts!')
-        }
+    serverInfo.insert('Dailies', {
+        Name: channel.name,
+        ID: channel.id
+    }, () => {
+        channel.send('Channel set up for daily stupid facts!')
     })
     
     serverInfo.close()
