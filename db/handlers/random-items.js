@@ -60,6 +60,21 @@ var setup = function () {
     }
 }
 
+var refresh = function () {
+    lists = {
+        items: [],
+        animals: [],
+        nonLivingItems: [],
+        people: [],
+        alive: [],
+        dead: [],
+        facts: [],
+        recursiveFacts: [],
+        adjectives: []
+    }
+    setup()
+}
+
 module.exports = {
     getAllItems: () => getArray('items'),
     getAnimals: () => getArray('animals'),
@@ -70,5 +85,6 @@ module.exports = {
     getAllFacts: () => getArray('facts'),
     getRecursiveFacts: () => getArray('recursiveFacts'),
     getAdjectives: () => getArray('adjectives'),
-    setupItems: setup
+    setupItems: setup,
+    refreshItems: refresh
 }
