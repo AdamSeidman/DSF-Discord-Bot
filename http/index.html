@@ -19,11 +19,13 @@
         <div class="col-12">
             <form class="form-inline">
                 <div class="form-group col-12">
-                    <label for="newFactInput" class="text-light">Fact:&nbsp;&nbsp;</label>
-                    <input class="form-control" id="newFactInput" placeholder="fact">
+                    <label for="factInput" class="text-light">Fact:&nbsp;&nbsp;</label>
+                    <input class="form-control" id="factInput" placeholder="fact">
                     <div class="input-group-append">
-                        <button type="button" class="btn">SUBMIT</button>
+                        <button type="button" class="btn" onclick="submitFact()">SUBMIT</button>
                     </div>
+                    <input class="ml-4" id="recurse-checkbox" type="checkbox" checked>
+                    <p class="text-light ml-2 mt-3">&nbsp;Can Recurse?</p>
                 </div>
             </form>
         </div>

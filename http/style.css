@@ -35,8 +35,8 @@ button.btn-light:focus:not(:active) {
     transition: box-shadow 1.5s ease-in;
 }
 
-input.form-control#newFactInput {
-    width: 88%;
+input.form-control#factInput {
+    width: 80%;
     border-radius: 0.25rem 0px 0px 0.25rem;
 }
 

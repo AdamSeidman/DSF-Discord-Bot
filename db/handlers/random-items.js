@@ -50,6 +50,19 @@ var addAdjective = function(adjective) {
         term: adjective
     }, () => {
         console.log(`'${adjective}' added to database.`)
+        refresh()
+    })
+    randomItems.close()
+}
+
+var addFact = function(fact, canRecurse) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('Facts', {
+        canRecurse: canRecurse,
+        fact: fact
+    }, () => {
+        console.log('New fact was added to database.')
+        refresh()
     })
     randomItems.close()
 }
@@ -128,5 +141,6 @@ module.exports = {
     refreshItems: refresh,
     addPerson: addPerson,
     addItem: addItem,
-    addAdjective: addAdjective
+    addAdjective: addAdjective,
+    addFact: addFact
 }

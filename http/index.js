@@ -65,6 +65,15 @@ var submitItem = function () {
     usageInput.value = ''
 }
 
+var submitFact = function () {
+    var { factInput, fact, error } = getInput('fact')
+    if (error) return
+    let checkbox = document.getElementById('recurse-checkbox')
+    post(`fact/${fact}_${checkbox.checked ? 1 : 0}`)
+    factInput.value = ''
+    checkbox.checked = true
+}
+
 var updateUsage = function () {
     document.getElementById('usage-string').innerHTML = 
         `${document.getElementById('usageInput').value.trim()} ${document.getElementById('itemInput').value.trim()}`
