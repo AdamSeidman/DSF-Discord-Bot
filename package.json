@@ -1,6 +1,6 @@
 {
   "name": "dsf-discord-bot",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Daily Stupid Facts Robot for Discord Servers",
   "main": "client/client.js",
   "scripts": {
