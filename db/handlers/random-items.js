@@ -37,7 +37,21 @@ var addItem = function (name, plural, isAlive, usage) {
         plural: plural,
         isAlive: isAlive,
         usage: usage
+    }, () => {
+        console.log(`'${name}' added to database.`)
+        refresh()
     })
+    randomItems.close()
+}
+
+var addAdjective = function(adjective) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('Adjectives', {
+        term: adjective
+    }, () => {
+        console.log(`'${adjective}' added to database.`)
+    })
+    randomItems.close()
 }
 
 var setup = function () {
@@ -113,5 +127,6 @@ module.exports = {
     setupItems: setup,
     refreshItems: refresh,
     addPerson: addPerson,
-    addItem: addItem
+    addItem: addItem,
+    addAdjective: addAdjective
 }

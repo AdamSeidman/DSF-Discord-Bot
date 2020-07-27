@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 const url = 'http://localhost:8081/'
-const DEBUG = true
+const DEBUG = false
 
 var sendRefresh = function () {
     axios({
@@ -22,7 +22,7 @@ var personData = {
     }
 }
 
-var isItemAlive = 1
+var isItemSentient = 1
 
 var togglePersonProperty = function (isGender) {
     let prop = isGender ? 'gender' : 'isAlive';
@@ -33,10 +33,19 @@ var togglePersonProperty = function (isGender) {
     personData[prop].elements[(personData[prop].value + 1) % 2].disabled = true
 }
 
+var toggleItemSentience = function () {
+    let els = document.getElementsByClassName('itemBtn')
+    els[(isItemSentient + 1) % 2].classList.remove('active')
+    els[(isItemSentient + 1) % 2].disabled = false
+    els[isItemSentient].classList.add('active')
+    els[isItemSentient].disabled = true
+    isItemSentient = (isItemSentient + 1) % 2
+}
+
 var submitPerson = function () {
-    var { nameInput, name, error } = getInput('name', 'name')
+    var { nameInput, name, error } = getInput('name')
     if (error) return
-    var { nicknameInput, nickname, error } = getInput('nickname', 'nickname')
+    var { nicknameInput, nickname, error } = getInput('nickname')
     if (error) return
     post(`person/${name}_${nickname}_${personData.gender.value}_${personData.isAlive.value}`)
     nameInput.value = ''
@@ -50,13 +59,28 @@ var submitItem = function () {
     if (error) return
     var { usageInput, usage, error } = getInput('usage', 'usage text')
     if (error) return
-    post(`item/${item}_${plural}_${isItemAlive}_${usage}`)
+    post(`item/${item}_${plural}_${isItemSentient}_${usage}`)
     itemInput.value = ''
-    pluralInput = ''
-    usageInput = ''
+    pluralInput.value = ''
+    usageInput.value = ''
+}
+
+var updateUsage = function () {
+    document.getElementById('usage-string').innerHTML = 
+        `${document.getElementById('usageInput').value.trim()} ${document.getElementById('itemInput').value.trim()}`
+}
+
+var submitAdjective = function () {
+    var { adjectiveInput, adjective, error } = getInput('adjective')
+    if (error) return
+    post(`adjective/${adjective}`)
+    adjectiveInput.value = ''
 }
 
 var getInput = function (inputName, alertName) {
+    if (alertName === undefined) {
+        alertName = inputName
+    }
     let data = { error: false }
     let elID = inputName + 'Input'
     data[elID] = document.getElementById(elID)

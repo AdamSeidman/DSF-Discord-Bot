@@ -32,11 +32,11 @@
             <div class="col-3 inline">
                 <form>
                     <div class="form-group">
-                        <label for="nameInput" class="text-light">Full Name:&nbsp;</label>
+                        <label for="nameInput" class="text-light">Full Name:</label>
                         <input class="form-control" id="nameInput" placeholder="name">
                     </div>
                     <div class="form-group">
-                        <label for="nicknameInput" class="text-light">Nickame:&nbsp;</label>
+                        <label for="nicknameInput" class="text-light">Nickame:</label>
                         <input class="form-control" id="nicknameInput" placeholder="nickname">
                     </div>
                     <div id="buttonsPanel">
@@ -67,18 +67,48 @@
             <div class="col-3 inline">
                 <form>
                     <div class="form-group">
-                        <label for="itemNameInput" class="text-light">Item Name:&nbsp;</label>
-                        <input class="form-control" id="itemNameInput" placeholder="item">
+                        <label for="itemInput" class="text-light">Item Name:</label>
+                        <input class="form-control" id="itemInput" placeholder="item" oninput="updateUsage()">
                     </div>
                 </form>
+                <form>
+                    <div class="form-group">
+                        <label for="pluralInput" class="text-light">Plural Items Name:</label>
+                        <input class="form-control" id="pluralInput" placeholder="items">
+                    </div>
+                </form>
+                <form>
+                    <div class="form-group">
+                        <label for="usageInput" class="text-light">Usage:&nbsp;&nbsp;<span id="usage-string"></span></label>
+                        <input class="form-control" id="usageInput" placeholder="usage" oninput="updateUsage()">
+                    </div>
+                </form>
+                <div id="buttonsPanel">
+                    <div class="form-group inline mt-2 mr-2" id="buttonsContainer">
+                        <div class="input-group-prepend inline">
+                            <button type="button" class="itemBtn btn active" disabled onclick="toggleItemSentience()">Alive</button>
+                        </div>
+                        <div class="input-group-append inline">
+                            <button type="button" class="itemBtn btn" onclick="toggleItemSentience()">Not Alive</button>
+                        </div>
+                    </div>
+                    <div class="form-group inline">
+                        <button type="button" class="btn item-submit" onclick="submitItem()">Submit</button>
+                    </div>
+                </div>
             </div>
             <div class="col-3 inline">
                 <form>
                     <div class="form-group">
-                        <label for="adjInput" class="text-light">Adjective:&nbsp;</label>
-                        <input class="form-control" id="adjInput" placeholder="adjective">
+                        <label for="adjectiveInput" class="text-light">Adjective:</label>
+                        <input class="form-control" id="adjectiveInput" placeholder="adjective">
                     </div>
                 </form>
+                <div class="form-group" id="buttonsPanel">
+                    <div>
+                        <button type="button" class="btn adjective-submit" onclick="submitAdjective()">Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
         <hr>
