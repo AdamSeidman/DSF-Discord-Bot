@@ -1,17 +1,22 @@
 const itemHandler = require('../db/handlers/random-items')
 const utils = require('./utils')
+var { shouldGenerateFact, overrideMessage } = require('../gui/override')
 
 const PREP_PREFIX = 'prepare'
 
 module.exports = {
     getRandomFact: function (isLie) {
-        return utils.getRandomString(() => {
-            let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.'
-            if (resFact.length <= 2) {
-                return 'Fact machine actually broke.'
-            }
-            return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
-        })
+        if (shouldGenerateFact()) {
+            return utils.getRandomString(() => {
+                let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.'
+                if (resFact.length <= 2) {
+                    return 'Fact machine actually broke.'
+                }
+                return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
+            })
+        } else {
+            return overrideMessage()
+        }
     }
 }
 

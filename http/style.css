@@ -25,6 +25,11 @@ div.inline {
     display: inline-block;
 }
 
+div#online-text-container {
+    position: absolute;
+    top: -2em;
+}
+
 div.col-3 {
     margin-right: 8%;
     vertical-align: top;
@@ -92,4 +97,13 @@ div#buttonsContainer button.active:not(.name-submit) {
     opacity: 0.7;
     transition: opacity text-decoration 0.5s;
     text-decoration: underline;
+}
+
+form#override-message-container {
+    position: absolute;
+    top: 3em;
+}
+
+input#overrideInput {
+    width: 50em;
 }

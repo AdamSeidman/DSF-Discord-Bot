@@ -23,6 +23,36 @@ var personData = {
 }
 
 var isItemSentient = 1
+var overrideMessage = ''
+
+var messageUpdate = async function () {
+    let message = await document.getElementById('overrideInput').value.trim()
+    if (message.length === 0) return
+    overrideMessage = message
+    setTimeout(() => {
+        if (overrideMessage === message) {
+            submitOverrideMessage()
+        }
+    }, 500)
+}
+
+var submitOverrideMessage = function () {
+    post(`override-message/${overrideMessage}`)
+}
+
+var setToggle = function (isActive) {
+    if (isActive === undefined) {
+        isActive = document.getElementById('active-toggle').checked
+    } else {
+        document.getElementById('active-toggle').checked = isActive
+    }
+    document.getElementById('toggle-text').innerHTML = isActive ? 'online' : 'offline'
+    post(`bot-online${isActive ? '' : '/a'}`)
+}
+
+var getToggle = function () {
+    return document.getElementById('active-toggle').checked
+}
 
 var togglePersonProperty = function (isGender) {
     let prop = isGender ? 'gender' : 'isAlive';
