@@ -52,7 +52,7 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
         } else {
             item = itemHandler.getItems()
         }
-        lastPerson.hasBeenCalled = !isEmpty
+        lastItem.hasBeenCalled = !isEmpty
     }
 
     if (item instanceof Array) {
