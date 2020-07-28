@@ -108,7 +108,11 @@ input#overrideInput {
     width: 50em;
 }
 
+.refresh-buttons {
+    position: absolute;
+    top: 2.75em;
+}
 .external-buttons {
     position: absolute;
-    top: 3em;
+    top: 5.75em;
 }

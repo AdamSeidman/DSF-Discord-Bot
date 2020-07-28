@@ -150,3 +150,7 @@ var post = async function (path) {
 var sendDbCommand = function () {
     post('open-external-db')
 }
+
+var sendRestartCommand = function () {
+    post('restart-app')
+}

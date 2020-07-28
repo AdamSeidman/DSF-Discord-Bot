@@ -1,14 +1,18 @@
-const exec = require('child_process').execFile
+const cp = require('child_process')
 
 const MAX_RAND = 98
 
 var openSQLiteDatabase = function () {
     console.log('Opening SQLite Studio')
-    exec(`${__dirname}\\..\\scripts\\open_sqlite_studio.bat`, (err) => {
+    cp.execFile(`${__dirname}\\..\\scripts\\open_sqlite_studio.bat`, (err) => {
         if (err) {
             console.log(err)
         }
     })
+}
+
+var restartApp = function () {
+    process.exit()
 }
 
 var randomNumber = function (max) {
@@ -55,6 +59,7 @@ var fixPathCharacters = function (str) {
 }
 
 module.exports = {
+    restartApp: restartApp,
     randomNumber: randomNumber,
     randomArrayItem: randomArrayItem,
     getRandomString: getRandomString,

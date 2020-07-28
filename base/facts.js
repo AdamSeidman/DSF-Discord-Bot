@@ -107,8 +107,31 @@ var index = {
         numQueue.push(a)
         return ''
     },
-    getFromQueue: () => (numQueue.pop()).toString()
+    getFromQueue: () => (numQueue.pop()).toString(),
+    he: () => getPronoun('he'),
+    him: () => getPronoun('him'),
+    his: () => getPronoun('his')
 }
+
+var getPronoun = function (term) {
+    if (lastPerson === undefined) {
+        return ''
+    } else if (lastPerson.person.isMale) {
+        return term
+    } else {
+        switch (term) {
+        case 'he':
+            return 'she'
+        case 'him':
+            return 'her'
+        case 'his':
+            return 'hers'
+        default:
+            return ''
+        }
+    }
+}
+
 var constructFact = function (fact, isLie) {
     if (fact === undefined || fact.fact === undefined) {
         return undefined

@@ -10,8 +10,10 @@ IF NOT "%titlequery%" == "INFO: No tasks are running which match the specified c
 ECHO Intializing...
 TITLE DSF Robot
 NODE .
-PAUSE
-GOTO Cleanup
+ECHO Program will now restart...
+pause
+CLS
+GOTO CreateServer
 
 :HasInst
 ECHO There is already an instance of the bot running.
@@ -23,6 +25,3 @@ TASKKILL /F /FI "WINDOWTITLE EQ DSF Robot"
 PAUSE
 CLS
 GOTO CreateServer
-
-:Cleanup
-IF EXIST temp.txt DEL /F temp.txt
