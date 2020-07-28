@@ -1,5 +1,6 @@
 const { addItem, refreshItems, addPerson, addAdjective, addFact } = require('../db/handlers/random-items')
 const { setBotOnline, setOverrideMessage } = require('./override')
+const { openSQLiteDatabase } = require('../base/utils')
 
 module.exports = {
     list: [
@@ -9,6 +10,7 @@ module.exports = {
         {path: 'adjective', action: cmd => addAdjective(cmd)},
         {path: 'fact', action: cmd => addFact(...cmd.split('_'))},
         {path: 'override-message', action: cmd => setOverrideMessage(cmd)},
-        {path: 'bot-online', action: cmd => setBotOnline(cmd)}
+        {path: 'bot-online', action: cmd => setBotOnline(cmd)},
+        {path: 'open-external-db', action: openSQLiteDatabase}
     ]
 }

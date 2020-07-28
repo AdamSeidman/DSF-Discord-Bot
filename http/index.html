@@ -119,8 +119,13 @@
         <div class="lower-content-container">
             <div class="col-5 ml-3 inline">
                 <h2 class="text-light">Refresh Database:&nbsp;
-                    <button class="btn">
-                        <i class="fa fa-refresh" aria-hidden="true" onclick="sendRefresh()"></i>
+                    <button class="btn" onclick="sendRefresh()">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </button>
+                </h2>
+                <h2 class="text-light external-buttons">Open SQLite Studio:&nbsp;
+                    <button class="btn" onclick="sendDbCommand()">
+                        <i class="fa fa-database" aria-hidden="true"></i>
                     </button>
                 </h2>
             </div>

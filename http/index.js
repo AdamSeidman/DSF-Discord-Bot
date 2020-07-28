@@ -126,7 +126,8 @@ var getInput = function (inputName, alertName) {
     data[inputName] = data[elID].value.trim()
     if (data[inputName].length === 0 || 
         data[inputName].includes('_') || 
-        data[inputName].includes('/')) {
+        data[inputName].includes('\'') || 
+        data[inputName].includes('\\')) {
 
         alert(`Provided ${alertName} is invalid.`)
         data.error = true
@@ -144,4 +145,8 @@ var post = async function (path) {
         url: url + path,
         data: {}
     })
+}
+
+var sendDbCommand = function () {
+    post('open-external-db')
 }
