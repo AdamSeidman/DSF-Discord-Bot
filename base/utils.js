@@ -30,14 +30,17 @@ var stripPunctuation = function (str) {
 }
 
 var fixPathCharacters = function (str) {
-    if (str === undefined || str.length === 0) return ''
-    str = str.split('%20')
-    if (str.length === 1) {
-        return str[0]
+    let returnStr = ''
+    while (str.length > 0) {
+        if (str[0] === '%') {
+            returnStr += String.fromCharCode(parseInt(str.slice(1, 3), 16))
+            str = str.slice(3)
+        } else {
+            returnStr += str[0]
+            str = str.slice(1)
+        }
     }
-    let output = str[0]
-    str.slice(1).forEach(x => output += ` ${x}`)
-    return output
+    return returnStr
 }
 
 module.exports = {

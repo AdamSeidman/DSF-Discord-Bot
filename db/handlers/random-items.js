@@ -59,7 +59,8 @@ var addFact = function(fact, canRecurse) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Facts', {
         canRecurse: canRecurse,
-        fact: fact
+        fact: `[${fact.replace(/'/g, '\'\'')}]`
+            .replace('truth', '"truth"').replace('lie', '"lie"')
     }, () => {
         console.log('New fact was added to database.')
         refresh()

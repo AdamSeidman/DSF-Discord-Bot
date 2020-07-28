@@ -62,8 +62,7 @@ var getDB = function(dbName) {
                 keys += `${item}, `
                 values += `'${map[item]}', `
             })
-            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) 
-                VALUES (${values.slice(0, values.length - 2)})`
+            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) VALUES (${values.slice(0, values.length - 2)})`
             result.database.run(sql, [], err => {
                 if (err) {
                     console.log('SQL Inset Error Occurred.\n')
