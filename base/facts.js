@@ -20,17 +20,20 @@ module.exports = {
     }
 }
 
-var lastItem = undefined
-var lastPerson = undefined
-
-var personPrepared = false
-var itemPrepared = false
+var lastItem = {
+    item: undefined,
+    hasBeenCalled: true
+}
+var lastPerson = {
+    person: undefined,
+    hasBeenCalled: true
+}
 
 var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
     let item = undefined
     if (isPerson) {
-        if (personPrepared) {
-            item = lastPerson
+        if (!(isEmpty || lastPerson.hasBeenCalled)) {
+            item = lastPerson.person
         } else if (isAlive === undefined) {
             item = itemHandler.getAllPeople()
         } else if (isAlive) {
@@ -38,9 +41,10 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
         } else {
             item = itemHandler.getDeadPeople()
         }
+        lastPerson.hasBeenCalled = !isEmpty
     } else {
-        if (itemPrepared) {
-            item = lastItem
+        if (!isEmpty && !lastItem.hasBeenCalled) {
+            item = lastItem.item
         } else if (isAlive === undefined) {
             item = itemHandler.getAllItems()
         } else if (isAlive) {
@@ -48,15 +52,16 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
         } else {
             item = itemHandler.getItems()
         }
+        lastPerson.hasBeenCalled = !isEmpty
     }
 
     if (item instanceof Array) {
         item = utils.randomArrayItem(item)
     }
     if (isPerson) {
-        lastPerson = item
+        lastPerson.person = item
     } else {
-        lastItem = item
+        lastItem.item = item
     }
 
     if (isPlural) {
@@ -82,6 +87,14 @@ var index = {
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
     fact: (isLie) => constructFact(utils.randomArrayItem(itemHandler.getRecursiveFacts()), isLie),
     number: () => utils.randomNumber(),
+    usage: () => {
+        if (lastItem === undefined) return ''
+        else return lastItem.item.usage
+    },
+    nickname: () => {
+        if (lastPerson === undefined) return ''
+        else return lastPerson.person.nickname
+    },
     math: () => {
         let a = utils.randomNumber()
         let b = utils.randomNumber()
