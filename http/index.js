@@ -93,6 +93,7 @@ var submitItem = function () {
     itemInput.value = ''
     pluralInput.value = ''
     usageInput.value = ''
+    document.getElementById('usage-string').innerHTML = ''
 }
 
 var submitFact = function () {

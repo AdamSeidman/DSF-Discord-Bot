@@ -112,7 +112,12 @@ input#overrideInput {
     position: absolute;
     top: 2.75em;
 }
+
 .external-buttons {
     position: absolute;
     top: 5.75em;
+}
+
+.alive-item-btn {
+    margin-left: -1px !important;
 }
