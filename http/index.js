@@ -24,6 +24,7 @@ var personData = {
 
 var isItemSentient = 1
 var overrideMessage = ''
+var lastSubmittedMessage = ''
 
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
@@ -37,7 +38,11 @@ var messageUpdate = async function () {
 }
 
 var submitOverrideMessage = function () {
-    post(`override-message/${overrideMessage}`)
+    const isActive = document.getElementById('active-toggle').checked
+    if (!isActive) {
+        post(`override-message/${overrideMessage}`)
+        lastSubmittedMessage = overrideMessage
+    }
 }
 
 var setToggle = function (isActive) {
@@ -48,10 +53,10 @@ var setToggle = function (isActive) {
     }
     document.getElementById('toggle-text').innerHTML = isActive ? 'online' : 'offline'
     post(`bot-online${isActive ? '' : '/a'}`)
-}
-
-var getToggle = function () {
-    return document.getElementById('active-toggle').checked
+    if (!isActive && overrideMessage !== lastSubmittedMessage) {
+        console.log()
+        submitOverrideMessage()
+    }
 }
 
 var togglePersonProperty = function (isGender) {
