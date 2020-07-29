@@ -1,6 +1,6 @@
 const itemHandler = require('../db/handlers/random-items')
 const utils = require('./utils')
-var { shouldGenerateFact, overrideMessage } = require('../gui/override')
+var { shouldGenerateFact, overrideMessage } = require('../web/local/override')
 
 const PREP_PREFIX = 'prepare'
 

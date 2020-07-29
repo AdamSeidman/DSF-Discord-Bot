@@ -106,7 +106,7 @@ var setup = function () {
                 lists.adjectives.push(row.term.toLowerCase())
             })
 
-            console.log('Random Items Setup Complete!')
+            console.log('Random Items Setup Complete.')
             randomItems.close()
         }
     }

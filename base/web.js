@@ -1,12 +1,20 @@
-const connect = require('connect')
-const serveStatic = require('serve-static')
-const { setupCommandServer } = require('../gui/ui')
+const endpoints = require('../web/local/endpoints').list
+const { createServer } = require('../web/shared/server')
+
+const PORT = 8080
+
+var serverMaps = [
+    {
+        fileLoc: `${__dirname}\\..\\web\\local\\ui\\`,
+        endpoints: endpoints,
+        port: PORT
+    }
+]
 
 var setup = function () {
-    connect().use(serveStatic(`${__dirname}\\..\\http\\`)).listen(8080, () => {
-        console.log('UI Server Running on Port 8080.')
+    serverMaps.forEach(map => {
+        map.server = createServer(map.fileLoc, map.endpoints, map.port)
     })
-    setupCommandServer()
 }
 
 module.exports = {
