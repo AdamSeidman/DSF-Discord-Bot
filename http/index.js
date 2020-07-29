@@ -4,11 +4,7 @@ const url = 'http://localhost:8081/'
 const DEBUG = false
 
 var sendRefresh = function () {
-    axios({
-        method: 'post',
-        url: url + 'refresh',
-        data: {}
-    })
+    post('refresh')
 }
 
 var personData = {

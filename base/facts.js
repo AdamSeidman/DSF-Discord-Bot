@@ -7,13 +7,12 @@ const PREP_PREFIX = 'prepare'
 module.exports = {
     getRandomFact: function (isLie) {
         if (shouldGenerateFact()) {
-            return utils.getRandomString(() => {
-                let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.'
-                if (resFact.length <= 2) {
-                    return 'Fact machine actually broke.'
-                }
-                return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
-            })
+            let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.'
+            if (resFact.length <= 2) {
+                return 'Fact machine broken.'
+            }
+            return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
+
         } else {
             return overrideMessage()
         }

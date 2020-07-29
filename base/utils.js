@@ -11,7 +11,16 @@ var openSQLiteDatabase = function () {
     })
 }
 
-var restartApp = function () {
+const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+    'sec-fetch-mode': 'no-cors'
+}
+
+var restartApp = function (cmd, response) {
+    response.writeHead(200, headers)
+    response.end()
     process.exit()
 }
 
@@ -27,16 +36,6 @@ var randomArrayItem = function (arr) {
         return undefined
     }
     return arr[Math.floor(Math.random() * arr.length)]
-}
-
-var getRandomString = function (defaultCallback) {
-    if(randomNumber(1500) === 420) {
-        return 'Hitler did nothing wrong.'
-    } else if (randomNumber(900) === 69) {
-        return 'Fact machine broken.'
-    } else {
-        return defaultCallback()
-    }
 }
 
 var stripPunctuation = function (str) {
@@ -59,10 +58,10 @@ var fixPathCharacters = function (str) {
 }
 
 module.exports = {
+    HTTPheaders: headers,
     restartApp: restartApp,
     randomNumber: randomNumber,
     randomArrayItem: randomArrayItem,
-    getRandomString: getRandomString,
     stripPunctuation: stripPunctuation,
     fixPathCharacters: fixPathCharacters,
     openSQLiteDatabase: openSQLiteDatabase
