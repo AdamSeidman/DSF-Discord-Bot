@@ -1,8 +1,5 @@
 /* eslint-disable */
 
-const url = 'http://localhost:8081/'
-const DEBUG = false
-
 var sendRefresh = function () {
     post('refresh')
 }
@@ -10,11 +7,13 @@ var sendRefresh = function () {
 var personData = {
     gender: {
         value: 1,
-        elements: document.getElementsByClassName('genderBtn')
+        elements: document.getElementsByClassName('genderBtn'),
+        element: 'gender-toggle-text'
     },
     isAlive: {
         value: 1,
-        elements: document.getElementsByClassName('lifeBtn')
+        elements: document.getElementsByClassName('lifeBtn'),
+        element: 'alive-toggle-text'
     }
 }
 
@@ -56,21 +55,33 @@ var setToggle = function (isActive) {
 }
 
 var togglePersonProperty = function (isGender) {
-    let prop = isGender ? 'gender' : 'isAlive';
-    personData[prop].value = (personData[prop].value + 1) % 2
-    personData[prop].elements[personData[prop].value].classList.remove('active')
-    personData[prop].elements[(personData[prop].value + 1) % 2].classList.add('active')
-    personData[prop].elements[personData[prop].value].disabled = false
-    personData[prop].elements[(personData[prop].value + 1) % 2].disabled = true
+    let prop = isGender ? 'gender' : 'isAlive'
+    let value = (personData[prop].value + 1) % 2
+    personData[prop].value = value
+    if (isRemote) {
+        document.getElementById(personData[prop].element).innerHTML = 
+            (isGender ? (value === 1 ? 'male': 'female') : 
+                (value === 1 ? 'yes' : 'no'))
+    } else {
+        personData[prop].elements[personData[prop].value].classList.remove('active')
+        personData[prop].elements[(personData[prop].value + 1) % 2].classList.add('active')
+        personData[prop].elements[personData[prop].value].disabled = false
+        personData[prop].elements[(personData[prop].value + 1) % 2].disabled = true
+    }
 }
 
 var toggleItemSentience = function () {
-    let els = document.getElementsByClassName('itemBtn')
-    els[(isItemSentient + 1) % 2].classList.remove('active')
-    els[(isItemSentient + 1) % 2].disabled = false
-    els[isItemSentient].classList.add('active')
-    els[isItemSentient].disabled = true
     isItemSentient = (isItemSentient + 1) % 2
+    if (isRemote) {
+        document.getElementById('animal-toggle-text').innerHTML = 
+            (isItemSentient === 1 ? 'yes' : 'no')
+    } else {
+        let els = document.getElementsByClassName('itemBtn')
+        els[isItemSentient].classList.remove('active')
+        els[isItemSentient].disabled = false
+        els[(isItemSentient + 1) % 2].classList.add('active')
+        els[(isItemSentient + 1) % 2].disabled = true
+    }
 }
 
 var submitPerson = function () {
@@ -141,14 +152,10 @@ var getInput = function (inputName, alertName, isPerson) {
 }
 
 var axiosCommand = function (path, method) {
-    if (DEBUG) {
-        console.log(`${method.toUpperCase()}: ${path}`)
-    } else {
-        return axios({
-            method: method,
-            url: url + path
-        })
-    }
+    return axios({
+        method: method,
+        url: url + path
+    })
 }
 
 var post = path => axiosCommand(path, 'post')
