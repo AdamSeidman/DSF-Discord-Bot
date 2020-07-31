@@ -9,7 +9,7 @@ module.exports = {
         {path: 'override-message', action: cmd => setOverrideMessage(cmd)},
         {path: 'bot-online', action: cmd => setBotOnline(cmd)},
         {path: 'open-external-db', action: openSQLiteDatabase},
-        {path: 'restart-app', action: restartApp}
+        {path: 'restart-app', action: (cmd, response) => restartApp(cmd, response)}
     ],
     remoteEndpoints: [],
     sharedEndpoints: [
