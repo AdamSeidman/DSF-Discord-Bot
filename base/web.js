@@ -2,8 +2,8 @@ const localEndpoints = require('../web/local/endpoints').list
 const remoteEndpoints = require('../web/remote/endpoints').list
 const { createServer } = require('../web/shared/server')
 
-const LOCAL_PORT = 8080
-const REMOTE_PORT = 8081
+const LOCAL_PORT = 8081
+const REMOTE_PORT = 8080
 
 var serverMaps = [
     {

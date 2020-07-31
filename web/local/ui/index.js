@@ -1,10 +1,17 @@
 /* eslint-disable */
 
-const url = 'http://localhost:8080/'
+const url = 'http://localhost:8081/'
 const DEBUG = false
 
+/*
 var sendRefresh = function () {
     post('refresh')
+}*/
+var sendRefresh = function () {
+    get('refresh').then(response => {
+        console.log('got: ')
+        console.log(response.data)
+    })
 }
 
 var personData = {
@@ -137,17 +144,20 @@ var getInput = function (inputName, alertName) {
     return data
 }
 
-var post = async function (path) {
+var axiosCommand = function (path, method) {
     if (DEBUG) {
-        console.log(path)
-        return
+        console.log(`${method.toUpperCase()}: ${path}`)
+    } else {
+        return axios({
+            method: method,
+            url: url + path
+        })
     }
-    axios({
-        method: 'post',
-        url: url + path,
-        data: {}
-    })
 }
+
+var post = path => axiosCommand(path, 'post')
+
+var get = path => { return axiosCommand(path, 'get') }
 
 var sendDbCommand = function () {
     post('open-external-db')
