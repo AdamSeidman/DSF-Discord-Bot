@@ -1,6 +1,6 @@
 const connect = require('connect')
 const serveStatic = require('serve-static')
-const utils = require('../../base/utils')
+const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
 
 var createServer = function (fileLoc, endpoints, port) {

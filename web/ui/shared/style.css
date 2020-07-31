@@ -3,7 +3,7 @@ body.dark {
     overflow: hidden;
 }
 
-h1.dsf-header {
+body.remote h1.dsf-header {
     font-size: 10em;
     color: #888888;
     text-shadow:
@@ -33,13 +33,31 @@ h1.dsf-header {
     letter-spacing: 0.1em;
 }
 
-div hr {
+body.local h1.dsf-header {
+    font-size: 10em;
+    color: #888888;
+    text-shadow:
+        -1px -1px 1px black,
+        1px 1px 1px #cccccc,
+        6px 6px 6px black,
+        8px 8px 4px red;
+    font-family: Impact, Charcoal, sans-serif;
+    letter-spacing: 0.05em;
+}
+
+body.remote div hr {
     background-color: #444444;
     height: 2px;
     margin: 20px 10% 20px 10%;
 }
 
-div {
+body.local div hr {
+    background-color: #444444;
+    height: 2px;
+    margin: 10px 7% 17px 1%;
+}
+
+body.remote div {
     text-align: center;
 }
 
@@ -137,4 +155,14 @@ input#overrideInput {
 
 .alive-item-btn {
     margin-left: -1px !important;
+}
+
+.refresh-buttons {
+    position: absolute;
+    top: 2.75em;
+}
+
+.external-buttons {
+    position: absolute;
+    top: 5.75em;
 }

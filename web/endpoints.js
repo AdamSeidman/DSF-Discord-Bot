@@ -1,6 +1,6 @@
-const { addItem, refreshItems, addPerson, addAdjective, addFact } = require('../../db/handlers/random-items')
+const { addItem, refreshItems, addPerson, addAdjective, addFact } = require('../db/handlers/random-items')
 const { setBotOnline, setOverrideMessage } = require('./override')
-const { openSQLiteDatabase, restartApp } = require('../../base/utils')
+const { openSQLiteDatabase, restartApp } = require('../base/utils')
 
 module.exports = {
     localEndpoints: [
