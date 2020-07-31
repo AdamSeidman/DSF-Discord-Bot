@@ -1,19 +1,25 @@
-const endpoints = require('../web/local/endpoints').list
-const { createServer } = require('../web/shared/server')
+const { localEndpoints, remoteEndpoints, sharedEndpoints } = require('../web/endpoints')
+const { createServer } = require('../web/server')
 
-const PORT = 8080
+const LOCAL_PORT = 8081
+const REMOTE_PORT = 8080
 
 var serverMaps = [
     {
-        fileLoc: `${__dirname}\\..\\web\\local\\ui\\`,
-        endpoints: endpoints,
-        port: PORT
+        fileLoc: `${__dirname}\\..\\web\\ui\\`,
+        endpoints: localEndpoints,
+        port: LOCAL_PORT
+    },
+    {
+        fileLoc: `${__dirname}\\..\\web\\ui\\shared`,
+        endpoints: remoteEndpoints,
+        port: REMOTE_PORT
     }
 ]
 
 var setup = function () {
     serverMaps.forEach(map => {
-        map.server = createServer(map.fileLoc, map.endpoints, map.port)
+        map.server = createServer(map.fileLoc, map.endpoints.concat(sharedEndpoints), map.port)
     })
 }
 

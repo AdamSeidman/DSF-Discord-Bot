@@ -1,8 +1,7 @@
 const connect = require('connect')
 const serveStatic = require('serve-static')
-const utils = require('../../base/utils')
+const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
-const headers = utils.HTTPheaders
 
 var createServer = function (fileLoc, endpoints, port) {
     var server = connect()
@@ -18,14 +17,18 @@ var createServer = function (fileLoc, endpoints, port) {
 }
 
 var handleHttpRequest = function (item, request, response) {
+    let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
         console.log(`\nPOST: '${item.path}'`)
-        item.action(fixCh(request.url.slice(1)))
+        data = item.action(fixCh(request.url.slice(1)), response)
+        if (data !== undefined) {
+            response.write(JSON.stringify(data))
+        }
     } else {
         console.log(`Preflight Request: ${request.headers['access-control-request-method']} ${request.url}`)
     }
-    response.writeHead(200, headers)
     response.end()
+    return data
 }
 
 module.exports = {
