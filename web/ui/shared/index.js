@@ -3,15 +3,8 @@
 const url = 'http://localhost:8081/'
 const DEBUG = false
 
-/*
 var sendRefresh = function () {
     post('refresh')
-}*/
-var sendRefresh = function () {
-    get('refresh').then(response => {
-        console.log('got: ')
-        console.log(response.data)
-    })
 }
 
 var personData = {
@@ -28,6 +21,7 @@ var personData = {
 var isItemSentient = 1
 var overrideMessage = ''
 var lastSubmittedMessage = ''
+// var dbData = get('data')
 
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
