@@ -23,6 +23,8 @@ var handleHttpRequest = function (item, request, response) {
         data = item.action(fixCh(request.url.slice(1)), response)
         if (data !== undefined) {
             response.write(JSON.stringify(data))
+        } else {
+            response.writeHead(200, utils.headers)
         }
     } else {
         console.log(`Preflight Request: ${request.headers['access-control-request-method']} ${request.url}`)
