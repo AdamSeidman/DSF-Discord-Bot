@@ -128,6 +128,13 @@ var refresh = function () {
     setup()
 }
 
+var formattedData = function () {
+    let data = {}
+    data.people = lists.people.map(x => x.name.toLowerCase().trim())
+    data.items = lists.items.map(x => x.name.toLowerCase().trim())
+    return data
+}
+
 module.exports = {
     getAllItems: () => getArray('items'),
     getAnimals: () => getArray('animals'),
@@ -143,5 +150,6 @@ module.exports = {
     addPerson: addPerson,
     addItem: addItem,
     addAdjective: addAdjective,
-    addFact: addFact
+    addFact: addFact,
+    getWebFormattedData: formattedData
 }

@@ -19,7 +19,7 @@ var createServer = function (fileLoc, endpoints, port) {
 var handleHttpRequest = function (item, request, response) {
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
-        console.log(`\nPOST: '${item.path}'`)
+        console.log(`\nHTTP REQUEST: '${item.path}'`)
         data = item.action(fixCh(request.url.slice(1)), response)
         if (data !== undefined) {
             response.write(JSON.stringify(data))

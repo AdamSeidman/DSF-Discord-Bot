@@ -21,7 +21,6 @@ var personData = {
 var isItemSentient = 1
 var overrideMessage = ''
 var lastSubmittedMessage = ''
-// var dbData = get('data')
 
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
@@ -75,9 +74,9 @@ var toggleItemSentience = function () {
 }
 
 var submitPerson = function () {
-    var { nameInput, name, error } = getInput('name')
+    var { nameInput, name, error } = getInput('name', undefined, true)
     if (error) return
-    var { nicknameInput, nickname, error } = getInput('nickname')
+    var { nicknameInput, nickname, error } = getInput('nickname', undefined, true)
     if (error) return
     post(`person/${name}_${nickname}_${personData.gender.value}_${personData.isAlive.value}`)
     nameInput.value = ''
@@ -91,7 +90,7 @@ var submitItem = function () {
     if (error) return
     var { usageInput, usage, error } = getInput('usage', 'usage text')
     if (error) return
-    post(`item/${item}_${plural}_${isItemSentient}_${usage}`)
+    post(`item/${item.toLowerCase().trim()}_${plural.toLowerCase().trim()}_${isItemSentient}_${usage.toLowerCase().trim()}`)
     itemInput.value = ''
     pluralInput.value = ''
     usageInput.value = ''
@@ -115,11 +114,11 @@ var updateUsage = function () {
 var submitAdjective = function () {
     var { adjectiveInput, adjective, error } = getInput('adjective')
     if (error) return
-    post(`adjective/${adjective}`)
+    post(`adjective/${adjective.trim().toLowerCase()}`)
     adjectiveInput.value = ''
 }
 
-var getInput = function (inputName, alertName) {
+var getInput = function (inputName, alertName, isPerson) {
     if (alertName === undefined) {
         alertName = inputName
     }
@@ -133,6 +132,9 @@ var getInput = function (inputName, alertName) {
         data[inputName].includes('\\')) {
 
         alert(`Provided ${alertName} is invalid.`)
+        data.error = true
+    } else if (dbData[isPerson ? 'people' : 'items'].includes(data[inputName].toLowerCase())) {
+        alert(`Provided ${alertName} is too similar to a pre-exising ${alertName}.`)
         data.error = true
     }
     return data
@@ -152,6 +154,11 @@ var axiosCommand = function (path, method) {
 var post = path => axiosCommand(path, 'post')
 
 var get = path => { return axiosCommand(path, 'get') }
+
+var dbData = undefined
+get('data').then(response => {
+    dbData = response.data
+})
 
 var sendDbCommand = function () {
     post('open-external-db')
