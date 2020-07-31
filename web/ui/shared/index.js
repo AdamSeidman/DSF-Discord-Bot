@@ -1,8 +1,5 @@
 /* eslint-disable */
 
-const url = 'http://localhost:8081/'
-const DEBUG = false
-
 var sendRefresh = function () {
     post('refresh')
 }
@@ -10,18 +7,19 @@ var sendRefresh = function () {
 var personData = {
     gender: {
         value: 1,
-        elements: document.getElementsByClassName('genderBtn')
+        elements: document.getElementsByClassName('genderBtn'),
+        element: 'gender-toggle-text'
     },
     isAlive: {
         value: 1,
-        elements: document.getElementsByClassName('lifeBtn')
+        elements: document.getElementsByClassName('lifeBtn'),
+        element: 'alive-toggle-text'
     }
 }
 
 var isItemSentient = 1
 var overrideMessage = ''
 var lastSubmittedMessage = ''
-// var dbData = get('data')
 
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
@@ -57,27 +55,39 @@ var setToggle = function (isActive) {
 }
 
 var togglePersonProperty = function (isGender) {
-    let prop = isGender ? 'gender' : 'isAlive';
-    personData[prop].value = (personData[prop].value + 1) % 2
-    personData[prop].elements[personData[prop].value].classList.remove('active')
-    personData[prop].elements[(personData[prop].value + 1) % 2].classList.add('active')
-    personData[prop].elements[personData[prop].value].disabled = false
-    personData[prop].elements[(personData[prop].value + 1) % 2].disabled = true
+    let prop = isGender ? 'gender' : 'isAlive'
+    let value = (personData[prop].value + 1) % 2
+    personData[prop].value = value
+    if (isRemote) {
+        document.getElementById(personData[prop].element).innerHTML = 
+            (isGender ? (value === 1 ? 'male': 'female') : 
+                (value === 1 ? 'yes' : 'no'))
+    } else {
+        personData[prop].elements[personData[prop].value].classList.remove('active')
+        personData[prop].elements[(personData[prop].value + 1) % 2].classList.add('active')
+        personData[prop].elements[personData[prop].value].disabled = false
+        personData[prop].elements[(personData[prop].value + 1) % 2].disabled = true
+    }
 }
 
 var toggleItemSentience = function () {
-    let els = document.getElementsByClassName('itemBtn')
-    els[(isItemSentient + 1) % 2].classList.remove('active')
-    els[(isItemSentient + 1) % 2].disabled = false
-    els[isItemSentient].classList.add('active')
-    els[isItemSentient].disabled = true
     isItemSentient = (isItemSentient + 1) % 2
+    if (isRemote) {
+        document.getElementById('animal-toggle-text').innerHTML = 
+            (isItemSentient === 1 ? 'yes' : 'no')
+    } else {
+        let els = document.getElementsByClassName('itemBtn')
+        els[isItemSentient].classList.remove('active')
+        els[isItemSentient].disabled = false
+        els[(isItemSentient + 1) % 2].classList.add('active')
+        els[(isItemSentient + 1) % 2].disabled = true
+    }
 }
 
 var submitPerson = function () {
-    var { nameInput, name, error } = getInput('name')
+    var { nameInput, name, error } = getInput('name', undefined, true)
     if (error) return
-    var { nicknameInput, nickname, error } = getInput('nickname')
+    var { nicknameInput, nickname, error } = getInput('nickname', undefined, true)
     if (error) return
     post(`person/${name}_${nickname}_${personData.gender.value}_${personData.isAlive.value}`)
     nameInput.value = ''
@@ -91,7 +101,7 @@ var submitItem = function () {
     if (error) return
     var { usageInput, usage, error } = getInput('usage', 'usage text')
     if (error) return
-    post(`item/${item}_${plural}_${isItemSentient}_${usage}`)
+    post(`item/${item.toLowerCase().trim()}_${plural.toLowerCase().trim()}_${isItemSentient}_${usage.toLowerCase().trim()}`)
     itemInput.value = ''
     pluralInput.value = ''
     usageInput.value = ''
@@ -115,11 +125,11 @@ var updateUsage = function () {
 var submitAdjective = function () {
     var { adjectiveInput, adjective, error } = getInput('adjective')
     if (error) return
-    post(`adjective/${adjective}`)
+    post(`adjective/${adjective.trim().toLowerCase()}`)
     adjectiveInput.value = ''
 }
 
-var getInput = function (inputName, alertName) {
+var getInput = function (inputName, alertName, isPerson) {
     if (alertName === undefined) {
         alertName = inputName
     }
@@ -134,24 +144,28 @@ var getInput = function (inputName, alertName) {
 
         alert(`Provided ${alertName} is invalid.`)
         data.error = true
+    } else if (dbData[isPerson ? 'people' : 'items'].includes(data[inputName].toLowerCase())) {
+        alert(`Provided ${alertName} is too similar to a pre-exising ${alertName}.`)
+        data.error = true
     }
     return data
 }
 
 var axiosCommand = function (path, method) {
-    if (DEBUG) {
-        console.log(`${method.toUpperCase()}: ${path}`)
-    } else {
-        return axios({
-            method: method,
-            url: url + path
-        })
-    }
+    return axios({
+        method: method,
+        url: url + path
+    })
 }
 
 var post = path => axiosCommand(path, 'post')
 
 var get = path => { return axiosCommand(path, 'get') }
+
+var dbData = undefined
+get('data').then(response => {
+    dbData = response.data
+})
 
 var sendDbCommand = function () {
     post('open-external-db')
