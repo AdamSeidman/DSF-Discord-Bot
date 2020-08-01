@@ -167,6 +167,11 @@ get('data').then(response => {
     dbData = response.data
 })
 
+var setupPage = function () {
+    let bodyEl = document.getElementById('dsf-container')
+    bodyEl.classList.add((screen.width > screen.height) ? 'landscape' : 'portrait')
+}
+
 var sendDbCommand = function () {
     post('open-external-db')
 }

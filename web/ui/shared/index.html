@@ -17,7 +17,7 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
-<body class="dark remote">
+<body class="dark remote" id="dsf-container" onload="setupPage()">
     <div class="ml-4 mt-4 main-content">
         <div class="text-center mb-5">
             <h1 class="dsf-header">Daily Stupid Facts</h1>
@@ -102,7 +102,7 @@
                 </h2>
                 <br>
                 <h2 class="text-light">Back to Admin Page:&nbsp;
-                    <button class="btn">
+                    <button class="btn" type="button" onclick="window.location.href='http:\\\\localhost:8081\\'">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </button>
                 </h2>
