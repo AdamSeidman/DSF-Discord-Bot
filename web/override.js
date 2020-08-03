@@ -2,7 +2,7 @@ var shouldGenerateFact = true
 var overrideMessage = ''
 
 var setBotOnline = function (online) {
-    shouldGenerateFact = online === undefined
+    shouldGenerateFact = online === undefined || online.length === 0
     console.log(`Bot Online: ${shouldGenerateFact}`)
 }
 
