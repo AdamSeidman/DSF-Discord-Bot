@@ -2,6 +2,8 @@ const fs = require('fs')
 
 var servers = {}
 
+var endAll = () => Object.keys(servers).forEach(x => logServer({guild: {id: x.slice(1)}}, false))
+
 var logServer = function (msg, start, connection, dispatcher) {
     const ID = `#${msg.guild.id}`
     if (start) {
@@ -94,5 +96,6 @@ module.exports = {
     playRepeatMusic: playRepeatMusic,
     stopMusic: endMusic,
     pauseMusic: pauseMusic,
-    resumeMusic: resumeMusic
+    resumeMusic: resumeMusic,
+    endAll: endAll
 }

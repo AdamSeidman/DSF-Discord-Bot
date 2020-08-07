@@ -1,4 +1,5 @@
 const cp = require('child_process')
+const exitVoiceChannels = require('./voice').endAll
 
 const MAX_RAND = 98
 
@@ -19,6 +20,7 @@ const headers = {
 }
 
 var restartApp = function (cmd, response) {
+    exitVoiceChannels()
     response.writeHead(200, headers)
     response.end()
     process.exit()
