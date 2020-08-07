@@ -41,7 +41,7 @@ var playMusic = async function (msg, song) {
         
         dispatcher.on('error', console.error)
     } else {
-        msg.channel.send('You aren\'t in a voice channel.')
+        if (song !== 'pacer') msg.channel.send('You aren\'t in a voice channel.')
     }
 }
 
