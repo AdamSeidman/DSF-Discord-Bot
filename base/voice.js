@@ -25,14 +25,15 @@ var logServer = function (msg, start, connection, dispatcher) {
     }
 }
 
-var playMusic = async function (msg, song) {
+var playMusic = async function (msg, song, volume) {
     if (msg.member.voice.channel) {
         let connection = undefined
         await msg.member.voice.channel.join().then(response => {
             connection = response
         })
 
-        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`))
+        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`),
+            volume === undefined ? undefined : { volume: volume })
         logServer(msg, true, connection, dispatcher)
 
         dispatcher.on('finish', () => {
@@ -45,14 +46,15 @@ var playMusic = async function (msg, song) {
     }
 }
 
-var playRepeatMusic = async function (msg, song) {
+var playRepeatMusic = async function (msg, song, volume) {
     if (msg.member.voice.channel) {
         let connection = undefined
         await msg.member.voice.channel.join().then(response => {
             connection = response
         })
 
-        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`))
+        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`),
+            volume === undefined ? undefined : { volume: volume })
         logServer(msg, true, connection, dispatcher)
         
         dispatcher.on('finish', () => {
