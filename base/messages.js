@@ -2,6 +2,7 @@ const facts = require('./facts')
 const { commands, prefix } = require('./commands')
 const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
+const { playMusic } = require('./voice')
 
 var dictionaryTerms = undefined
 
@@ -15,8 +16,10 @@ module.exports = {
         if (message.length <= 3) {
             return
         }
-    
-        if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
+
+        if (message.split(' ').join('').indexOf('fitnessgrampacertest') >= 0) {
+            playMusic(msg, 'pacer')
+        } else if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
             if (isDM) {
                 msg.reply('Sorry, commands only work in standard text channels.')
             } else {
