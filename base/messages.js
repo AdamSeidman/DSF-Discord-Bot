@@ -80,6 +80,7 @@ var handleDictionaryFunction = function (msg, dictionary, searchTerm, isCommand)
             let tempDict = undefined
             if (isCommand) tempDict = dictionary.find(term => term.phrase === item)
             else tempDict = dictionary.find(term => item.indexOf(term.phrase) >= 0)
+            
             if (tempDict !== undefined) {
                 if (typeof(tempDict.response) === 'boolean') {
                     msg.channel.send(facts.getRandomFact(tempDict.response))
