@@ -3,6 +3,7 @@ const { commands, prefix } = require('./commands')
 const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
 const { playMusic } = require('./voice')
+const { postPriusPic } = require('./prius')
 
 var dictionaryTerms = undefined
 
@@ -17,9 +18,7 @@ module.exports = {
             return
         }
 
-        if (message.split(' ').join('').indexOf('fitnessgrampacertest') >= 0) {
-            playMusic(msg, 'pacer')
-        } else if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
+        if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
             if (isDM) {
                 msg.reply('Sorry, commands only work in standard text channels.')
             } else {
@@ -28,7 +27,7 @@ module.exports = {
             }
         } else {
             message = utils.stripPunctuation(message)
-            if (handleDictionaryFunction(msg, knownPhrases, message)) {
+            if (handleDictionaryFunction(msg, knownPhrases, message.split(' ').join(''))) {
                 return
             } else if ((message = hasDictionaryTerm(message.split(' '))) !== '') {
                 handleDictionaryTerm(msg, message)
@@ -46,10 +45,12 @@ var sendMsg = function (msg, loud, lie) {
 }
 
 const knownPhrases = [
-    {phrase: 'fact please', response: msg => sendMsg(msg)},
-    {phrase: 'loud fact please', response: msg => sendMsg(msg, true)},
-    {phrase: 'lie please', response: msg => sendMsg(msg, false, true)},
-    {phrase: 'loud lie please', response: msg => {sendMsg(msg, true, true)}}
+    {phrase: 'factplease', response: msg => sendMsg(msg)},
+    {phrase: 'loudfactplease', response: msg => sendMsg(msg, true)},
+    {phrase: 'lieplease', response: msg => sendMsg(msg, false, true)},
+    {phrase: 'loudlieplease', response: msg => sendMsg(msg, true, true)},
+    {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
+    {phrase: 'priusplease', response: postPriusPic}
 ]
 
 var hasDictionaryTerm = function (arr) {
