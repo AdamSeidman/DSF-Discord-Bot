@@ -9,7 +9,7 @@ fs.readdir(dir, (err, files) => {
 
 var postPriusPic = function (msg) {
     msg.channel.send('Ya like jazz?', {
-        files: [`./assets/prius/prius (${ randomNumber(count) }).jpg`]
+        files: [`${ dir }/prius (${ randomNumber(count) }).jpg`]
     })
 }
 

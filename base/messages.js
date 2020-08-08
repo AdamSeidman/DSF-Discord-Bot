@@ -23,7 +23,7 @@ module.exports = {
                 msg.reply('Sorry, commands only work in standard text channels.')
             } else {
                 message = message.slice(prefix.length).trim()
-                handleDictionaryFunction(msg, commands, message.split(' '), message.split(' '))
+                handleDictionaryFunction(msg, commands, message.split(' '), true)
             }
         } else {
             message = utils.stripPunctuation(message)
@@ -70,19 +70,21 @@ var handleDictionaryTerm = function (msg, message) {
     msg.channel.send(facts.getRandomFact())
 }
 
-var handleDictionaryFunction = function (msg, dictionary, searchTerm, args) {
+var handleDictionaryFunction = function (msg, dictionary, searchTerm, isCommand) {
     let foundTerm = false
     if (dictionary !== undefined && searchTerm !== undefined) {
         if (!(searchTerm instanceof Array)) {
             searchTerm = [searchTerm]
         }
         searchTerm.forEach(item => {
-            let tempDict = dictionary.find(term => term.phrase === item)
+            let tempDict = undefined
+            if (isCommand) tempDict = dictionary.find(term => term.phrase === item)
+            else tempDict = dictionary.find(term => item.indexOf(term.phrase) >= 0)
             if (tempDict !== undefined) {
                 if (typeof(tempDict.response) === 'boolean') {
                     msg.channel.send(facts.getRandomFact(tempDict.response))
                 } else {
-                    tempDict.response(msg, args)
+                    tempDict.response(msg, searchTerm)
                 }
                 foundTerm = true
                 return

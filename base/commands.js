@@ -1,6 +1,7 @@
 const scheduler = require('./scheduler')
 const Discord = require('discord.js')
 const voice = require('./voice')
+const { postPriusPic } = require('./prius')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -53,6 +54,7 @@ var commandArray = [
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.'},
     {phrase: 'music', response: msg => voice.playRepeatMusic(msg, 'music', 0.5), helpMsg: 'Plays endless music.'},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
+    {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
     {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removed bot from voice channel.'}
 ]
