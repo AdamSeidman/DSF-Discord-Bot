@@ -18,7 +18,9 @@ module.exports = {
             return
         }
 
-        if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
+        if (['thanks', 'thank you', 'thank'].includes(utils.stripPunctuation(message))) {
+            msg.reply('No Problem.')
+        } else if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
             if (isDM) {
                 msg.reply('Sorry, commands only work in standard text channels.')
             } else {
