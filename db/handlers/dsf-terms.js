@@ -1,9 +1,9 @@
 const db = require('../db')
 
 var terms = {
-    adverbs: ['daily', 'daily', 'daily'],
-    adjectives: ['stupid', 'stupid', 'stupid'],
-    nouns: ['facts', 'facts', 'facts']
+    adverbs: [],
+    adjectives: [],
+    nouns: []
 }
 
 var refresh = function () {
@@ -17,6 +17,7 @@ var refresh = function () {
 }
 
 var getArray = function (arr) {
+    setup()
     return terms[arr] || []
 }
 

@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose()
 
-var dbList = ['serverInfo', 'randomItems']
+var dbList = ['serverInfo', 'randomItems', 'dsfTerms']
 var db = {removeArr: []}
 
 var setup = function () {
