@@ -1,5 +1,5 @@
 const facts = require('./facts')
-const { commands, prefix } = require('./commands')
+const { commands, prefix, sendDsfAcronym } = require('./commands')
 const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
 const { playMusic } = require('./voice')
@@ -52,7 +52,9 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendMsg(msg, false, true)},
     {phrase: 'loudlieplease', response: msg => sendMsg(msg, true, true)},
     {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
-    {phrase: 'priusplease', response: postPriusPic}
+    {phrase: 'priusplease', response: postPriusPic},
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false)},
+    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true)}
 ]
 
 var hasDictionaryTerm = function (arr) {

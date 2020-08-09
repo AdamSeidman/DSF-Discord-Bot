@@ -71,5 +71,6 @@ var commandArray = [
 
 module.exports = {
     commands: commandArray,
-    prefix: prefix
+    prefix: prefix,
+    sendDsfAcronym: sendDsfAcronym
 }
