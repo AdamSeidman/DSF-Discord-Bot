@@ -1,7 +1,9 @@
 const scheduler = require('./scheduler')
 const Discord = require('discord.js')
 const voice = require('./voice')
+const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
+const { randomArrayItem } = require('./utils')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -44,10 +46,18 @@ var sendHelpMessage = function (msg) {
     msg.channel.send(helpEmbed)
 }
 
+var sendDsfAcronym = function (msg, loud) {
+    msg.channel.send(
+        `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`,
+        { tts: loud })
+}
+
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
+    {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.'},
+    {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.'},
     //{phrase: 'ee', response: msg => voice.playMusic(msg, 'ee')},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.'},

@@ -1,9 +1,9 @@
 const db = require('../db')
 
 var terms = {
-    adverbs: [],
-    adjectives: [],
-    nouns: []
+    adverbs: ['daily', 'daily', 'daily'],
+    adjectives: ['stupid', 'stupid', 'stupid'],
+    nouns: ['facts', 'facts', 'facts']
 }
 
 var refresh = function () {
@@ -44,11 +44,11 @@ var setup = function () {
             dsfTerms.close()
         }
     }
+}
 
-    module.exports = {
-        getAdverbs: () => getArray('adverbs'),
-        getAdjectives: () => getArray('adjectives'),
-        getNouns: () => getArray('nouns'),
-        refreshTerms: refresh
-    }
+module.exports = {
+    getAdverbs: () => getArray('adverbs'),
+    getAdjectives: () => getArray('adjectives'),
+    getNouns: () => getArray('nouns'),
+    refreshTerms: refresh
 }
