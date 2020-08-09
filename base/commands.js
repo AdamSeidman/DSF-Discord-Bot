@@ -46,10 +46,13 @@ var sendHelpMessage = function (msg) {
     msg.channel.send(helpEmbed)
 }
 
-var sendDsfAcronym = function (msg, loud) {
-    msg.channel.send(
-        `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`,
-        { tts: loud })
+var sendDsfAcronym = function (msg, loud, isPhrase) {
+    const acronym = `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`
+    if (isPhrase) {
+        msg.reply(acronym, {tts: loud})
+    } else {
+        msg.channel.send(acronym, {tts: loud})
+    }
 }
 
 var commandArray = [

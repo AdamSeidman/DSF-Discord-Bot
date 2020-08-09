@@ -53,8 +53,8 @@ const knownPhrases = [
     {phrase: 'loudlieplease', response: msg => sendMsg(msg, true, true)},
     {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
     {phrase: 'priusplease', response: postPriusPic},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false)},
-    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true)}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)},
+    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, true)}
 ]
 
 var hasDictionaryTerm = function (arr) {
