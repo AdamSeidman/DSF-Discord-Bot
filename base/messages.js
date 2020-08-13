@@ -53,7 +53,7 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendMsg(msg, false, true)},
     {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
     {phrase: 'priusplease', response: postPriusPic},
-    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, true)},
+    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
     {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
 ]
 
