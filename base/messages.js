@@ -46,6 +46,10 @@ var sendMsg = function (msg, loud, lie) {
     }
 }
 
+var rob = function (msg) {
+    if (msg.member !== null) msg.channel.send(`p!rob ${msg.member.user.username}`)
+}
+
 const knownPhrases = [
     {phrase: 'loudfactplease', response: msg => sendMsg(msg, true)},
     {phrase: 'factplease', response: msg => sendMsg(msg)},
@@ -54,7 +58,8 @@ const knownPhrases = [
     {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
     {phrase: 'priusplease', response: postPriusPic},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)},
+    {phrase: 'pdaily', response: rob}
 ]
 
 var hasDictionaryTerm = function (arr) {
