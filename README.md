@@ -23,6 +23,5 @@ module.exports = { token: YOUR_TOKEN_HERE }
 npm install
 
 # start Discord bot
-cd scripts  
-start start_dsf_bot.bat
+start scripts/start_dsf_bot.bat
 ```
