@@ -11,7 +11,7 @@ var schedDailyChannels = function (clientChannels) {
     schedule.scheduleJob({hour: 18, minute: 13}, async () => {
         let fact = utils.getRandomFact()
         dailyChannels.forEach(channel => {
-            channel.send(`Its 6:13 PM, that means it's time for the stupid fact of the day!\nAre you ready? Here it is:\n${fact}`)
+            channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
         })
     })
 }
