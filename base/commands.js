@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 const voice = require('./voice')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
-const { randomArrayItem, deleteFunction } = require('./utils')
+const { randomArrayItem } = require('./utils')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -14,6 +14,19 @@ var setupDailyChannel = function (msg) {
 
 var deleteDailyChannel = function (msg) {
     scheduler.removeDailyChannel(msg.channel)
+}
+
+var deleteFunction = function (msg, args) {
+    if (args.length < 2) {
+        msg.channel.send('Delete command requires an argument.')
+    } else {
+        const parsed = Number.parseInt(args[1])
+        if (Number.isNaN(parsed) || parsed < 1 || parsed > 10) {
+            msg.channel.send('Argument should be number from 1-10.')
+            return
+        }
+        msg.channel.bulkDelete(parsed + 1)
+    }
 }
 
 var sendHelpMessage = function (msg) {

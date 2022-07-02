@@ -61,6 +61,10 @@ const knownPhrases = [
     {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
 ]
 
+const soundEffects = [
+    'pacer', 'bonk', 'boom', 'omg', 'lego'
+]
+
 var hasDictionaryTerm = function (arr) {
     if (arr !== undefined && arr instanceof Array) {
         arr = arr.filter(item => dictionaryTerms.includes(item))
