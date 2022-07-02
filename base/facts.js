@@ -135,6 +135,7 @@ var constructFact = function (fact, isLie) {
     if (fact === undefined || fact.fact === undefined) {
         return undefined
     }
+    fact = utils.copyObject(fact)
     let result = ''
     fact.fact.forEach(item => {
         if (item.lie !== undefined) {
