@@ -55,6 +55,7 @@ const knownPhrases = [
     {phrase: 'boom', response: msg => playMusic(msg, 'boom')},
     {phrase: 'bonk', response: msg => playMusic(msg, 'bonk')},
     {phrase: 'omg', response: msg => playMusic(msg, 'omg')},
+    {phrase: 'lego', response: msg => playMusic(msg, 'lego')},
     {phrase: 'priusplease', response: postPriusPic},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
     {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
