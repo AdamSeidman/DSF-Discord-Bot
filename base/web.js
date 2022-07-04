@@ -1,3 +1,15 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Sets up web UI's on ports 8080 and 8081 for interfacing with DSF
+ * Mine is set up so 8081 is the 'admin' port
+ * Port 8080 is general usage (for the people that know about it) and is 
+ *     forwarded out so other people out of network can use it.
+ * 
+ * Exports:
+ *     setup()
+ */
+
 const { localEndpoints, remoteEndpoints, sharedEndpoints } = require('../web/endpoints')
 const { createServer } = require('../web/server')
 
@@ -17,6 +29,7 @@ var serverMaps = [
     }
 ]
 
+// Run everything using provided libraries in ./web
 var setup = function () {
     serverMaps.forEach(map => {
         map.server = createServer(map.fileLoc, map.endpoints.concat(sharedEndpoints), map.port)
