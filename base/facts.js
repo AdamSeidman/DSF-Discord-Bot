@@ -1,23 +1,38 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Random Fact Generator
+ * 
+ * Exports:
+ *     getRandomFact: Returns random fact (String)
+ *         -Param: (Boolean) isLie
+ */
+
 const itemHandler = require('../db/handlers/random-items')
 const utils = require('./utils')
 var { shouldGenerateFact, overrideMessage } = require('../web/override')
 
-const PREP_PREFIX = 'prepare'
+const PREP_PREFIX = 'prepare' // Term prefix in fact template for pronouns and articles
 
 module.exports = {
     getRandomFact: function (isLie) {
         if (shouldGenerateFact()) {
-            let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.'
+            // Override is not in effect
+            let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.' // Call constructFact with first pass (can be recursive)
             if (resFact.length <= 2) {
+                // Shouldn't happen- but is funny
                 return 'Fact machine broken.'
             }
-            return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1))
+            return (resFact.slice(0, 1).toUpperCase() + resFact.slice(1)) // Capitalize first letter and return
 
         } else {
+            // If web UI says to override message, send that message.
             return overrideMessage()
         }
     }
 }
+
+// These two objects are used to prepare random items and people in order to get their articles/pronouns
 
 var lastItem = {
     item: undefined,
@@ -112,6 +127,12 @@ var index = {
     his: () => getPronoun('his')
 }
 
+/*
+    Person is logged to lastPerson
+    Male pronouns are default (sorry)
+    Based on the logged person, the correct version of the provided pronoun is returned.
+    If undefined, Return empty string
+*/
 var getPronoun = function (term) {
     if (lastPerson === undefined) {
         return ''
