@@ -3,6 +3,7 @@ const db = require('../db')
 var getDailyChannels = function (clientChannels, arr) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
+
     if (!serverInfo) {
         console.log('Error: No server info.')
         console.log(serverInfo)
@@ -39,6 +40,7 @@ var removeDailyChannel = function (channel) {
         if (err) {
             console.log(err)
             console.log('Error occured in delete from dailies')
+            channel.send('An error occured.')
         } else {
             channel.send('Channel removed from daily stupid facts list.')
             channel.send('(You should consider turning it back on though...)')
@@ -48,8 +50,63 @@ var removeDailyChannel = function (channel) {
     serverInfo.close()
 }
 
+var getEffectsGuilds = function () {
+    db.setUpDatabases()
+    let serverInfo = db.getDatabase('serverInfo')
+
+    if (!serverInfo) {
+        console.log('Error: No server info.')
+        console.log(serverInfo)
+        return []
+    }
+
+    let arr = []
+    serverInfo.forEach('Effects', row => arr.push(row.id))
+    serverInfo.close()
+    return arr
+}
+
+var addEffectsServer = function (channel) {
+    db.setUpDatabases()
+    let serverInfo = db.getDatabase('serverInfo')
+
+    if (getEffectsGuilds().includes(channel.guild.id)) {
+        channel.send('Server is already set up for sound effects.')
+    }
+
+    serverInfo.insert('Effects', {
+        ID: channel.guild.id
+    }, () => {
+        channel.send('Server set up for sound effects!')
+    })
+
+    serverInfo.close()
+}
+
+var removeEffectsServer = function (channel) {
+    db.setUpDatabases()
+    let serverInfo = db.getDatabase('serverInfo')
+
+    serverInfo.database.run(`DELETE FROM Effects WHERE ID = ${channel.guild.id}`, [], function (err) {
+        if (err) {
+            console.log(err)
+            console.log('Error occured in delete from effects.')
+            channel.send('An error occured.')
+        } else {
+            channel.send('Sound effects remove from server.')
+        }
+    })
+}
+
+var addOrRemoveEffectsServer = function (channel, addEffects) {
+    if (addEffects) addEffectsServer(channel)
+    else removeEffectsServer(channel)
+}
+
 module.exports = {
     getDailyChannelsDB: getDailyChannels,
     addDailyChannelDB: addDailyChannel,
-    removeDailyChannelDB: removeDailyChannel
+    removeDailyChannelDB: removeDailyChannel,
+    modifyEffectsServerDB: addOrRemoveEffectsServer,
+    getEffectsServersDB: getEffectsGuilds
 }
