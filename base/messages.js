@@ -46,16 +46,23 @@ var sendMsg = function (msg, loud, lie) {
     }
 }
 
-
 const knownPhrases = [
     {phrase: 'loudfactplease', response: msg => sendMsg(msg, true)},
     {phrase: 'factplease', response: msg => sendMsg(msg)},
     {phrase: 'loudlieplease', response: msg => sendMsg(msg, true, true)},
     {phrase: 'lieplease', response: msg => sendMsg(msg, false, true)},
     {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
+    {phrase: 'boom', response: msg => playMusic(msg, 'boom')},
+    {phrase: 'bonk', response: msg => playMusic(msg, 'bonk')},
+    {phrase: 'omg', response: msg => playMusic(msg, 'omg')},
+    {phrase: 'lego', response: msg => playMusic(msg, 'lego')},
     {phrase: 'priusplease', response: postPriusPic},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
     {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
+]
+
+const soundEffects = [
+    'pacer', 'bonk', 'boom', 'omg', 'lego'
 ]
 
 var hasDictionaryTerm = function (arr) {

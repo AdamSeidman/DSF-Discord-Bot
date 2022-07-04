@@ -59,9 +59,14 @@ var fixPathCharacters = function (str) {
     return returnStr
 }
 
+var copyObject = function (obj) {
+    return JSON.parse(JSON.stringify(obj))
+}
+
 module.exports = {
     HTTPheaders: headers,
     restartApp: restartApp,
+    copyObject: copyObject,
     randomNumber: randomNumber,
     randomArrayItem: randomArrayItem,
     stripPunctuation: stripPunctuation,
