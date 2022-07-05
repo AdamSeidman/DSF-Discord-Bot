@@ -47,7 +47,7 @@ var handleServerLog= function (msg, start, connection, dispatcher) {
 }
 
 // Exported function to play music
-var playMusic = async function (msg, noWarning, song, volume) {
+var playMusic = async function (msg, song, isEffect) {
     if (msg.member.voice.channel) {
         let connection = undefined
         await msg.member.voice.channel.join().then(response => {
@@ -55,8 +55,7 @@ var playMusic = async function (msg, noWarning, song, volume) {
         })
 
         // Gather .mp3 to dispatcher
-        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`),
-            volume === undefined ? undefined : { volume: volume }) // TODO store in memory on startup?
+        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`)) // TODO store in memory on startup?
         // Set up connection
         handleServerLog(msg, true, connection, dispatcher)
 
@@ -66,8 +65,8 @@ var playMusic = async function (msg, noWarning, song, volume) {
         })
         
         dispatcher.on('error', console.error)
-    } else {
-        if (!noWarning) msg.channel.send('You aren\'t in a voice channel.')
+    } else if (!isEffect) {
+        msg.channel.send('You aren\'t in a voice channel.')
     }
 }
 
