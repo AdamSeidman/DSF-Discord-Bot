@@ -104,12 +104,22 @@ var sendDsfAcronym = function (msg, loud, isPhrase) {
     }
 }
 
+// Send list of available sound effects as reply
+var sendEffectsList = function (msg) {
+    if (voice.effects.length === 0) {
+        msg.reply('There are currently no sound effects in the system.')
+    }
+    let message = JSON.stringify(voice.effects).substring(2).split('"').join('')
+    msg.reply(message.substring(0, message.length - 1).split(',').join(', '))
+}
+
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.'},
     {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.'},
+    {phrase: 'effects', response: sendEffectsList, helpMsg: 'Sends list of available sound effects.'},
     {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.'},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.'},
