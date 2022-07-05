@@ -50,28 +50,36 @@ var removeDailyChannel = function (channel) {
     serverInfo.close()
 }
 
+let effectsGuilds = undefined
+
 var getEffectsGuilds = function () {
     db.setUpDatabases()
-    let serverInfo = db.getDatabase('serverInfo')
+    if (effectsGuilds === undefined) {
+        let serverInfo = db.getDatabase('serverInfo')
+        effectsGuilds = []
+        if (!serverInfo) {
+            console.log('Error: No server info.')
+            console.log(serverInfo)
+            return []
+        }
 
-    if (!serverInfo) {
-        console.log('Error: No server info.')
-        console.log(serverInfo)
-        return []
+        serverInfo.forEach('Effects', row => effectsGuilds.push(row.ID))
+        serverInfo.close()
     }
 
-    let arr = []
-    serverInfo.forEach('Effects', row => arr.push(row.id))
-    serverInfo.close()
-    return arr
+    return JSON.parse(JSON.stringify(effectsGuilds))
 }
+
+getEffectsGuilds() // Setup array
 
 var addEffectsServer = function (channel) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
 
-    if (getEffectsGuilds().includes(channel.guild.id)) {
+    if (effectsGuilds.includes(channel.guild.id)) {
         channel.send('Server is already set up for sound effects.')
+    } else {
+        effectsGuilds.push(channel.guild.id)
     }
 
     serverInfo.insert('Effects', {
@@ -86,6 +94,14 @@ var addEffectsServer = function (channel) {
 var removeEffectsServer = function (channel) {
     db.setUpDatabases()
     let serverInfo = db.getDatabase('serverInfo')
+    const id = channel.guild.id
+
+    if (effectsGuilds.includes(id)) {
+        effectsGuilds = effectsGuilds.filter(x => x !== id)
+    } else {
+        channel.send('Effects are not enabled on this server.')
+        return
+    }
 
     serverInfo.database.run(`DELETE FROM Effects WHERE ID = ${channel.guild.id}`, [], function (err) {
         if (err) {
