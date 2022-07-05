@@ -1,8 +1,21 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Generic framework to connect to any .db
+ * Uses sqlite3
+ * 
+ * Exports:
+ *     setUpDatabases: Connect to all given databases
+ *     getDatabase: Get database object from /db
+ *         Param: database name (String)
+ */
+
 const sqlite3 = require('sqlite3').verbose()
 
-var dbList = ['serverInfo', 'randomItems', 'dsfTerms']
+var dbList = ['serverInfo', 'randomItems', 'dsfTerms'] // List of used DBs
 var db = {removeArr: []}
 
+// Get all databases- Save to list
 var setup = function () {
     if (db.removeArr === undefined) return
     for(var i = 0; i < dbList.length; i++) {
@@ -23,17 +36,20 @@ var setup = function () {
     delete db.removeArr
 }
 
+// Create allowed database and provide functions for sqlite3 object
 var getDB = function(dbName) {
     if (!dbList.includes(dbName)) {
-        return undefined
+        return undefined // Don't create databases that haven't been defined
     }
     let result = {}
+    // Create database object
     result.database = new sqlite3.Database(`${__dirname}\\${dbName}.db`, (err) => {
         if (err) {
             console.log(err)
             return null
         }
     })
+    // Provide basic manipulation functions
     result.close = function () {
         result.database.close((err) => {
             if (err) {

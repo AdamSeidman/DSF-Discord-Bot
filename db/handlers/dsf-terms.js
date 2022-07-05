@@ -1,3 +1,15 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Provides different terms to create DSF acronyms
+ * 
+ * Exports:
+ *     refreshTerms: Check .db and run setup routine again
+ *     getAdverbs: Returns list of 'D' adverbs
+ *     getAdjectives: Returns list of 'S' adjectives
+ *     getNouns: Returns list of 'F' nouns
+ */
+
 const db = require('../db')
 
 var terms = {
@@ -6,6 +18,7 @@ var terms = {
     nouns: []
 }
 
+// Delete terms and re-initialize from database
 var refresh = function () {
     console.log('Terms Refresh Requested.')
     terms = {
@@ -16,19 +29,23 @@ var refresh = function () {
     setup()
 }
 
+// Get list of terms from given category
 var getArray = function (arr) {
     setup()
     return terms[arr] || []
 }
 
+// Read in database and store information
 var setup = function () {
     if (terms.adverbs.length === 0) {
         db.setUpDatabases()
         let dsfTerms = db.getDatabase('dsfTerms')
         if (!dsfTerms) {
+            // Database empty
             console.log('Error: No DSF terms.')
             console.log(dsfTerms)
         } else {
+            // Store data
             dsfTerms.forEach('Adverbs', row => {
                 terms.adverbs.push(row.word)
             })

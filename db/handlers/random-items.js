@@ -1,6 +1,26 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Reads in all random-items from db
+ * Provides a lot of specific getter functions
+ * 
+ * Exports:
+ *    Items-
+ *        getAllItems, getAnimals, getItems, addItem
+ *    People-
+ *        getDeadPeople, getAlivePeople, getAllPeople, addPerson
+ *    Facts-
+ *        getRecursiveFacts, getAllFacts, addFact
+ *        getAdjectives, addAdjective
+ *    Other-
+ *        getWebFormattedData
+ *        refreshItems
+ *        setupItems
+ */
+
 const db = require('../db')
 
-var lists = {
+var lists = { // All possible categories of random items (currently)
     items: [],
     animals: [],
     nonLivingItems: [],
@@ -12,14 +32,16 @@ var lists = {
     adjectives: []
 }
 
+// Get any array of items given category
 var getArray = function (arr) {
     return lists[arr] || []
 }
 
+// Add a person given to db with provided information
 var addPerson = function (name, nickname, isMale, isAlive) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('People', {
-        name: name,
+        name: name, // Four person categories
         nickname: nickname,
         isMale: isMale,
         isAlive: isAlive
@@ -30,10 +52,11 @@ var addPerson = function (name, nickname, isMale, isAlive) {
     randomItems.close()
 }
 
+// Add an item to db with provided information
 var addItem = function (name, plural, isAlive, usage) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Items', {
-        name: name,
+        name: name, // Four item categories
         plural: plural,
         isAlive: isAlive,
         usage: usage
@@ -44,6 +67,7 @@ var addItem = function (name, plural, isAlive, usage) {
     randomItems.close()
 }
 
+// Add an item to db (single string)
 var addAdjective = function(adjective) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Adjectives', {
@@ -55,12 +79,13 @@ var addAdjective = function(adjective) {
     randomItems.close()
 }
 
+// Add a fact template to db with string and boolean
 var addFact = function(fact, canRecurse) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Facts', {
         canRecurse: canRecurse,
         fact: `[${fact.replace(/'/g, '\'\'')}]`
-            .replace('truth', '"truth"').replace('lie', '"lie"')
+            .replace('truth', '"truth"').replace('lie', '"lie"') // Add quotes where needed
     }, () => {
         console.log('New fact was added to database.')
         refresh()
@@ -68,15 +93,18 @@ var addFact = function(fact, canRecurse) {
     randomItems.close()
 }
 
+// Setup function for all random items
 var setup = function () {
     if (lists.items.length === 0) {
-        db.setUpDatabases()
+        db.setUpDatabases() // Get db
         let randomItems = db.getDatabase('randomItems')
         if (!randomItems) {
+            // blank
             console.log('Error: No random items.')
             console.log(randomItems)
         } else {
-            randomItems.forEach('Items', row => {
+            // Store random items/people/etc. into all possible categories
+            randomItems.forEach('Items', row => { // Load Items
                 if (row.isAlive) {
                     lists.animals.push(row)
                 } else {
@@ -85,7 +113,7 @@ var setup = function () {
                 lists.items.push(row)
             })
 
-            randomItems.forEach('People', row => {
+            randomItems.forEach('People', row => { // Load People
                 if (row.isAlive) {
                     lists.alive.push(row)
                 } else {
@@ -94,7 +122,7 @@ var setup = function () {
                 lists.people.push(row)
             })
             
-            randomItems.forEach('Facts', row => {
+            randomItems.forEach('Facts', row => { // Load Facts
                 row.fact = JSON.parse(row.fact)
                 if (row.canRecurse) {
                     lists.recursiveFacts.push(row)
@@ -102,7 +130,7 @@ var setup = function () {
                 lists.facts.push(row)
             })
 
-            randomItems.forEach('Adjectives', row => {
+            randomItems.forEach('Adjectives', row => { // Load Adjectives
                 lists.adjectives.push(row.term.toLowerCase())
             })
 
@@ -112,8 +140,10 @@ var setup = function () {
     }
 }
 
+// Refresh with new database items
 var refresh = function () {
     console.log('Item Refresh Requested.')
+    // Clear everything and run setup() again
     lists = {
         items: [],
         animals: [],
@@ -128,6 +158,8 @@ var refresh = function () {
     setup()
 }
 
+// Provide items in object (map)
+// Used for nice formatting for http
 var formattedData = function () {
     let data = {}
     data.people = lists.people.map(x => x.name.toLowerCase().trim())

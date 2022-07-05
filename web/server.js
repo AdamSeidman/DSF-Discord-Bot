@@ -1,8 +1,23 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Provides functionality to set up http server with given endpoints
+ * Uses connect and server-static to host pages.
+ * 
+ * Exports:
+ *     createServer: Sets up server on given port
+ *         Params-
+ *             fileLocation: Directory where index.html is located
+ *             endpoints: List of endpoints with their appropriate function responses
+ *             port: Port on which to host the server (I use 8080 and 8081)
+ */
+
 const connect = require('connect')
 const serveStatic = require('serve-static')
 const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
 
+// Set up server using serve-static and listen on port
 var createServer = function (fileLocation, endpoints, port) {
     var server = connect()
     server.use(serveStatic(fileLocation))
@@ -16,6 +31,7 @@ var createServer = function (fileLocation, endpoints, port) {
     return server
 }
 
+// On HTTP request, connect request to function
 var handleHttpRequest = function (item, request, response) {
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {

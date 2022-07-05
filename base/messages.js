@@ -16,6 +16,7 @@ const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
+const { getEffectsServersDB } = require('../db/handlers/server-info')
 
 // When a user specifically thanks the bot (or anyone really)
 var handleThanks = function (msg) {
@@ -49,9 +50,11 @@ var handleCommand = function (msg, isDM) {
 // Checks messages for sound effects and plays them if applicable
 var handleSoundEffect = function (msg, isDM) {
     if (isDM) return // Not possible to reach VC from dm
-    let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
-    let effect = effects.find(x => message.includes(x))
-    if (effect !== undefined) playMusic(msg, effect, true)
+    if (getEffectsServersDB().includes(`${msg.channel.guild.id}`)) {
+        let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
+        let effect = effects.find(x => message.includes(x))
+        if (effect !== undefined) playMusic(msg, effect, true)
+    }
 }
 
 // Check through lists of knownPhrases for commands, and generic adjectives for fact blurb
