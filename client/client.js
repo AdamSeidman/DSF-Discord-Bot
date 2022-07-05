@@ -6,9 +6,9 @@
 
 const { token } = require('./token')
 const Discord = require('discord.js')
-const { randomNumber } = require('./utils')
 const scheduler = require('../base/scheduler')
 const msgHandler = require('../base/messages')
+const { randomNumber } = require('../base/utils')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const itemHandler = require('../db/handlers/random-items')
 const setupWebServers = require('../base/web').setupWebServers
