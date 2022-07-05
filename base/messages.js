@@ -32,10 +32,7 @@ var handleCommand = function (msg, isDM) {
 }
 
 var handleSoundEffect = function (msg, isDM) {
-    if (isDM) {
-        return // TODO, check real vc and play there, if possible
-        // This goes lower down as well...
-    }
+    if (isDM) return
     let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
     let effect = effects.find(x => message.includes(x))
     if (effect !== undefined) playMusic(msg, effect, true)
