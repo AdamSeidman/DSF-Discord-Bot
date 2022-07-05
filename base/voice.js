@@ -13,6 +13,19 @@
 
 const fs = require('fs') // Need to read .mp3's from /assets
 
+const dir = './assets/'
+const fxDir = 'sound-effects/'
+const ext = '.mp3'
+
+var effectNames = []
+fs.readdir(`${dir}${fxDir}`, (err, files) => {
+    files.forEach(file => {
+        if (file.toLowerCase().endsWith(ext)) {
+            effectNames.push(file.toLowerCase().substring(0, file.length - ext.length))
+        }
+    })
+})
+
 // Keep track of servers that have DSF in voice
 var servers = {} // IDs are stored as #[ID number]
 
@@ -47,7 +60,7 @@ var handleServerLog= function (msg, start, connection, dispatcher) {
 }
 
 // Exported function to play music
-var playMusic = async function (msg, noWarning, song, volume) {
+var playMusic = async function (msg, song, isEffect) {
     if (msg.member.voice.channel) {
         let connection = undefined
         await msg.member.voice.channel.join().then(response => {
@@ -55,8 +68,9 @@ var playMusic = async function (msg, noWarning, song, volume) {
         })
 
         // Gather .mp3 to dispatcher
-        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`),
-            volume === undefined ? undefined : { volume: volume }) // TODO store in memory on startup?
+        const dispatcher = await connection.play(
+            fs.createReadStream(`${dir}${isEffect ? fxDir : ''}${song}${ext}`)
+        )
         // Set up connection
         handleServerLog(msg, true, connection, dispatcher)
 
@@ -66,8 +80,8 @@ var playMusic = async function (msg, noWarning, song, volume) {
         })
         
         dispatcher.on('error', console.error)
-    } else {
-        if (!noWarning) msg.channel.send('You aren\'t in a voice channel.')
+    } else if (!isEffect) {
+        msg.channel.send('You aren\'t in a voice channel.')
     }
 }
 
@@ -112,5 +126,6 @@ module.exports = {
     stopMusic: endMusic,
     pauseMusic: pauseMusic,
     resumeMusic: resumeMusic,
-    endAll: endAll
+    endAll: endAll,
+    effects: effectNames
 }

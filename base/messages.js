@@ -2,43 +2,70 @@ const facts = require('./facts')
 const { commands, prefix, sendDsfAcronym } = require('./commands')
 const { getAdjectives } = require('../db/handlers/random-items')
 const utils = require('./utils')
-const { playMusic } = require('./voice')
+const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
 
-var dictionaryTerms = undefined
-
-module.exports = {
-    handle: function (msg, isDM) {
-        if (dictionaryTerms === undefined) {
-            dictionaryTerms = getAdjectives()
-        }
-
-        let message = msg.content.toLowerCase().trim()
-        if (message.length <= 3) {
-            return
-        }
-
-        if (['thanks', 'thank you', 'thank'].includes(utils.stripPunctuation(message))) {
-            msg.reply('No Problem.')
-        } else if (message.slice(0,prefix.length) === prefix.toLowerCase()) {
-            if (isDM) {
-                msg.reply('Sorry, commands only work in standard text channels.')
-            } else {
-                message = message.slice(prefix.length).trim()
-                handleDictionaryFunction(msg, commands, message.split(' '), true)
-            }
-        } else {
-            message = utils.stripPunctuation(message)
-            if (handleDictionaryFunction(msg, knownPhrases, message.split(' ').join(''))) {
-                return
-            } else if ((message = hasDictionaryTerm(message.split(' '))) !== '') {
-                handleDictionaryTerm(msg, message)
-            }
-        }
+var handleThanks = function (msg) {
+    if (['thanks', 'thank you', 'thank'].includes(
+        utils.stripPunctuation(msg.content.toLowerCase().trim()))
+    ) {
+        msg.reply('No Problem.')
     }
 }
 
-var sendMsg = function (msg, loud, lie) {
+var handleCommand = function (msg, isDM) {
+    let message = msg.content.toLowerCase().trim()
+    if (message.length <= 3) {
+        return
+    }
+
+    if (message.slice(0, prefix.length) !== prefix.toLowerCase()) return
+
+    if (isDM) {
+        msg.reply('Sorry, commands only work in standard text channels.')
+        return
+    }
+
+    message = message.slice(prefix.length).trim().split(' ')
+    let command = commands.find(x => x.phrase === message[0])
+    if (command !== undefined) command.response(msg, message)
+}
+
+var handleSoundEffect = function (msg, isDM) {
+    if (isDM) return
+    let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
+    let effect = effects.find(x => message.includes(x))
+    if (effect !== undefined) playMusic(msg, effect, true)
+}
+
+var handlePhrases = function (msg) {
+    let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
+    let phrase = knownPhrases.find(x => message.includes(x.phrase))
+    if (phrase !== undefined) {
+        phrase.response(msg)
+    } else {
+        // Look for an adjective if no known message is found
+        const phrases = utils.stripPunctuation(msg.content.toLowerCase().trim()).split(' ')
+        let term = getAdjectives().find(adj => phrases.includes(adj))
+        if (term === undefined) return
+
+        msg.channel.send(`Did someone say ${term}?`)
+        msg.channel.send('This calls for a fact!')
+        msg.channel.send('Ready? Here it is:')
+        msg.channel.send(facts.getRandomFact())
+    }
+}
+
+module.exports = {
+    messageHandlers: [
+        handleCommand,
+        handlePhrases,
+        handleThanks,
+        handleSoundEffect
+    ]
+}
+
+var sendFact = function (msg, loud, lie) {
     if (loud) {
         msg.channel.send(facts.getRandomFact(lie), {tts: true})
     } else {
@@ -47,62 +74,11 @@ var sendMsg = function (msg, loud, lie) {
 }
 
 const knownPhrases = [
-    {phrase: 'loudfactplease', response: msg => sendMsg(msg, true)},
-    {phrase: 'factplease', response: msg => sendMsg(msg)},
-    {phrase: 'loudlieplease', response: msg => sendMsg(msg, true, true)},
-    {phrase: 'lieplease', response: msg => sendMsg(msg, false, true)},
-    {phrase: 'fitnessgrampacertest', response: msg => playMusic(msg, 'pacer')},
-    {phrase: 'boom', response: msg => playMusic(msg, 'boom')},
-    {phrase: 'bonk', response: msg => playMusic(msg, 'bonk')},
-    {phrase: 'omg', response: msg => playMusic(msg, 'omg')},
-    {phrase: 'lego', response: msg => playMusic(msg, 'lego')},
+    {phrase: 'loudfactplease', response: msg => sendFact(msg, true)},
+    {phrase: 'factplease', response: msg => sendFact(msg)},
+    {phrase: 'loudlieplease', response: msg => sendFact(msg, true, true)},
+    {phrase: 'lieplease', response: msg => sendFact(msg, false, true)},
     {phrase: 'priusplease', response: postPriusPic},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
     {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
 ]
-
-const soundEffects = [
-    'pacer', 'bonk', 'boom', 'omg', 'lego'
-]
-
-var hasDictionaryTerm = function (arr) {
-    if (arr !== undefined && arr instanceof Array) {
-        arr = arr.filter(item => dictionaryTerms.includes(item))
-        if (arr.length > 0) {
-            return arr[0]
-        }
-    }
-    return ''
-}
-
-var handleDictionaryTerm = function (msg, message) {
-    msg.channel.send(`Did someone say ${message}?`)
-    msg.channel.send('This calls for a fact!')
-    msg.channel.send('Ready? Here it is:')
-    msg.channel.send(facts.getRandomFact())
-}
-
-var handleDictionaryFunction = function (msg, dictionary, searchTerm, isCommand) {
-    let foundTerm = false
-    if (dictionary !== undefined && searchTerm !== undefined) {
-        if (!(searchTerm instanceof Array)) {
-            searchTerm = [searchTerm]
-        }
-        searchTerm.forEach(item => {
-            let tempDict = undefined
-            if (isCommand) tempDict = dictionary.find(term => term.phrase === item)
-            else tempDict = dictionary.find(term => item.indexOf(term.phrase) >= 0)
-            
-            if (tempDict !== undefined) {
-                if (typeof(tempDict.response) === 'boolean') {
-                    msg.channel.send(facts.getRandomFact(tempDict.response))
-                } else {
-                    tempDict.response(msg, searchTerm)
-                }
-                foundTerm = true
-                return
-            }
-        })
-    }
-    return foundTerm
-}
