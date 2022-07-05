@@ -13,6 +13,19 @@
 
 const fs = require('fs') // Need to read .mp3's from /assets
 
+const dir = './assets/'
+const fxDir = 'sound-effects/'
+const ext = '.mp3'
+
+var effectNames = []
+fs.readdir(`${dir}${fxDir}`, (err, files) => {
+    files.forEach(file => {
+        if (file.toLowerCase().endsWith(ext)) {
+            effectNames.push(file.toLowerCase().substring(0, file.length - ext.length))
+        }
+    })
+})
+
 // Keep track of servers that have DSF in voice
 var servers = {} // IDs are stored as #[ID number]
 
@@ -55,7 +68,9 @@ var playMusic = async function (msg, song, isEffect) {
         })
 
         // Gather .mp3 to dispatcher
-        const dispatcher = await connection.play(fs.createReadStream(`./assets/${song}.mp3`)) // TODO store in memory on startup?
+        const dispatcher = await connection.play(
+            fs.createReadStream(`${dir}${isEffect ? fxDir : ''}${song}${ext}`)
+        )
         // Set up connection
         handleServerLog(msg, true, connection, dispatcher)
 
@@ -111,5 +126,6 @@ module.exports = {
     stopMusic: endMusic,
     pauseMusic: pauseMusic,
     resumeMusic: resumeMusic,
-    endAll: endAll
+    endAll: endAll,
+    effects: effectNames
 }
