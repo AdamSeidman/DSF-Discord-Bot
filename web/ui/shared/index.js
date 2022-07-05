@@ -1,3 +1,10 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Provides functionality to html elements
+ */
+
+// eslint does not like non-npm .js files
 /* eslint-disable */
 
 var sendRefresh = function () {
@@ -21,6 +28,7 @@ var isItemSentient = 1
 var overrideMessage = ''
 var lastSubmittedMessage = ''
 
+// Update override message
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
     if (message.length === 0) return
@@ -32,6 +40,7 @@ var messageUpdate = async function () {
     }, 500)
 }
 
+// Submit override message to server
 var submitOverrideMessage = function () {
     const isActive = document.getElementById('active-toggle').checked
     if (!isActive) {
@@ -40,6 +49,7 @@ var submitOverrideMessage = function () {
     }
 }
 
+// Update online toggle switch
 var setToggle = function (isActive) {
     if (isActive === undefined) {
         isActive = document.getElementById('active-toggle').checked
@@ -54,6 +64,7 @@ var setToggle = function (isActive) {
     }
 }
 
+// Log person properties
 var togglePersonProperty = function (isGender) {
     let prop = isGender ? 'gender' : 'isAlive'
     let value = (personData[prop].value + 1) % 2
@@ -70,6 +81,7 @@ var togglePersonProperty = function (isGender) {
     }
 }
 
+// Log item sentience
 var toggleItemSentience = function () {
     isItemSentient = (isItemSentient + 1) % 2
     if (isRemote) {
@@ -84,6 +96,7 @@ var toggleItemSentience = function () {
     }
 }
 
+// Submit http request to add person to .db
 var submitPerson = function () {
     var { nameInput, name, error } = getInput('name', undefined, true)
     if (error) return
@@ -94,6 +107,7 @@ var submitPerson = function () {
     nicknameInput.value = ''
 }
 
+// Submit http request to add item to .db
 var submitItem = function () {
     var { itemInput, item, error } = getInput('item', 'item name')
     if (error) return
@@ -108,6 +122,7 @@ var submitItem = function () {
     document.getElementById('usage-string').innerHTML = ''
 }
 
+// Submit http request to add fact template to .db
 var submitFact = function () {
     var { factInput, fact, error } = getInput('fact')
     if (error) return
@@ -117,11 +132,13 @@ var submitFact = function () {
     checkbox.checked = true
 }
 
+// Change item usage of logged item
 var updateUsage = function () {
     document.getElementById('usage-string').innerHTML = 
         `${document.getElementById('usageInput').value.trim()} ${document.getElementById('itemInput').value.trim()}`
 }
 
+// Submit http request for new fact-blurb adjective
 var submitAdjective = function () {
     var { adjectiveInput, adjective, error } = getInput('adjective')
     if (error) return
@@ -129,6 +146,7 @@ var submitAdjective = function () {
     adjectiveInput.value = ''
 }
 
+// Get input and alert
 var getInput = function (inputName, alertName, isPerson) {
     if (alertName === undefined) {
         alertName = inputName
@@ -151,6 +169,7 @@ var getInput = function (inputName, alertName, isPerson) {
     return data
 }
 
+// Send actual http request through axious
 var axiosCommand = function (path, method) {
     return axios({
         method: method,
@@ -167,11 +186,13 @@ get('data').then(response => {
     dbData = response.data
 })
 
+// Set look
 var setupPage = function () {
     let bodyEl = document.getElementById('dsf-container')
     bodyEl.classList.add((screen.width > screen.height) ? 'landscape' : 'portrait')
 }
 
+// POST commands to run .bat files from /scripts
 var sendDbCommand = function () {
     post('open-external-db')
 }
