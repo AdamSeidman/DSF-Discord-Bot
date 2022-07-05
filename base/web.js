@@ -16,14 +16,15 @@ const { createServer } = require('../web/server')
 const LOCAL_PORT = 8081
 const REMOTE_PORT = 8080
 
+// Can create more maps if there are more UIs
 var serverMaps = [
     {
-        fileLoc: `${__dirname}\\..\\web\\ui\\`,
+        fileLocation: `${__dirname}\\..\\web\\ui\\`,
         endpoints: localEndpoints,
         port: LOCAL_PORT
     },
     {
-        fileLoc: `${__dirname}\\..\\web\\ui\\shared`,
+        fileLocation: `${__dirname}\\..\\web\\ui\\shared`,
         endpoints: remoteEndpoints,
         port: REMOTE_PORT
     }
@@ -32,7 +33,7 @@ var serverMaps = [
 // Run everything using provided libraries in ./web
 var setup = function () {
     serverMaps.forEach(map => {
-        map.server = createServer(map.fileLoc, map.endpoints.concat(sharedEndpoints), map.port)
+        map.server = createServer(map.fileLocation, map.endpoints.concat(sharedEndpoints), map.port)
     })
 }
 

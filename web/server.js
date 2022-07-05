@@ -3,9 +3,9 @@ const serveStatic = require('serve-static')
 const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
 
-var createServer = function (fileLoc, endpoints, port) {
+var createServer = function (fileLocation, endpoints, port) {
     var server = connect()
-    server.use(serveStatic(fileLoc))
+    server.use(serveStatic(fileLocation))
     endpoints.forEach(item => {
         server.use(`/${item.path}`, (req, res) => {
             handleHttpRequest(item, req, res)
