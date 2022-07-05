@@ -7,9 +7,9 @@
 const { token } = require('./token')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
-const msgHandler = require('../base/messages')
 const { randomNumber } = require('../base/utils')
 const dsfTerms = require('../db/handlers/dsf-terms')
+const { messageHandlers  }= require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
 const setupWebServers = require('../base/web').setupWebServers
 
@@ -28,7 +28,8 @@ bot.on('ready', () => {
 bot.on('message', msg => {
     // When message is incoming, send to handler
     if (!msg.author.bot) {
-        msgHandler.handle(msg, msg.member === null)
+        // Run normal DSF functions with users
+        messageHandlers.forEach(x => x(msg, msg.member === null))
     } else if (msg.author.username !== 'DSF Bot') {
         // Small chance of easter egg with other discord bots
         if (randomNumber(150) === 5) msg.reply('Shut up- bots are not meant to speak in this channel.')
