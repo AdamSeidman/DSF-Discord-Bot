@@ -18,7 +18,14 @@ module.exports = {
     getRandomFact: function (isLie) {
         if (shouldGenerateFact()) {
             // Override is not in effect
-            let resFact = constructFact(utils.randomArrayItem(itemHandler.getAllFacts()), isLie) + '.' // Call constructFact with first pass (can be recursive)
+            let fact = undefined
+            do {
+                fact = utils.randomArrayItem(itemHandler.getAllFacts())
+                if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
+                    fact.probability = 1.0
+                }
+            } while (!utils.probabilityCheck(fact.probability))
+            let resFact = constructFact(fact, isLie) + '.' // Call constructFact with first pass (can be recursive)
             if (resFact.length <= 2) {
                 // Shouldn't happen- but is funny
                 return 'Fact machine broken.'
@@ -105,7 +112,16 @@ var index = {
     animals: (isLie, prep) => prepareTerm(prep, true, false, true),
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
-    fact: (isLie) => constructFact(utils.randomArrayItem(itemHandler.getRecursiveFacts()), isLie),
+    fact: (isLie) => {
+        let fact = undefined
+        do {
+            fact = utils.randomArrayItem(itemHandler.getRecursiveFacts())
+            if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
+                fact.probability = 1.0
+            }
+        } while (utils.probabilityCheck(fact.probability))
+        return constructFact(fact, isLie)
+    },
     number: () => utils.randomNumber(),
     usage: () => {
         if (lastItem === undefined) return ''
