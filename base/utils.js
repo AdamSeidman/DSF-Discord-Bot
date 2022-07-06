@@ -65,6 +65,10 @@ var randomArrayItem = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
+var probabilityCheck = function(probability) {
+    return Math.random() <= probability
+}
+
 var stripPunctuation = function (str) {
     /* eslint-disable-next-line */ // Thinks certain escape characters are unnecessary (they are not)
     return str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').replace(/\s{2,}/g,' ')
@@ -95,6 +99,7 @@ module.exports = {
     copyObject: copyObject,
     randomNumber: randomNumber,
     randomArrayItem: randomArrayItem,
+    probabilityCheck: probabilityCheck,
     stripPunctuation: stripPunctuation,
     fixPathCharacters: fixPathCharacters,
     openSQLiteDatabase: openSQLiteDatabase
