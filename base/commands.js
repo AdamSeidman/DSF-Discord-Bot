@@ -124,7 +124,7 @@ var commandArray = [
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.'},
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.'},
-    {phrase: 'music', response: msg => voice.playMusic(msg, 'music', 0.5), helpMsg: 'Plays endless music.'},
+    {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.'},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
