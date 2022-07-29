@@ -10,7 +10,7 @@
  * If you still don't know what this file does, I don't know what to tell you...
  */
 
-const fs = require('fs') // Need prius pictures from /assets/prius // TODO cache?
+const fs = require('fs') // Need prius pictures from /assets/prius
 const { randomNumber } = require('./utils')
 
 const dir = './assets/prius'
