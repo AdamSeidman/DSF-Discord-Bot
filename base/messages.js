@@ -44,7 +44,13 @@ var handleCommand = function (msg, isDM) {
     // Look for the command in dictionary. If found, run proper command response
     message = message.slice(prefix.length).trim().split(' ')
     let command = commands.find(x => x.phrase === message[0])
-    if (command !== undefined) command.response(msg, message)
+    if (command !== undefined) {
+        if (typeof command.response === 'boolean') {
+            msg.channel.send(facts.getRandomFact(command.response))
+        } else {
+            command.response(msg, message)
+        }
+    }
 }
 
 // Checks messages for sound effects and plays them if applicable
