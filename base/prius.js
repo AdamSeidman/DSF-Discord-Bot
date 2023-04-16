@@ -21,9 +21,7 @@ fs.readdir(dir, (err, files) => {
 
 var postPriusPic = function (msg) {
     // Send random prius picture back to channel
-    msg.channel.send('Ya like jazz?', {
-        files: [`${ dir }/prius (${ randomNumber(count) }).jpg`]
-    })
+    msg.channel.send({content: 'Ya like jazz?', files: [{attachment: `${ dir }/prius (${ randomNumber(count) }).jpg`}]})
 }
 
 module.exports = {
