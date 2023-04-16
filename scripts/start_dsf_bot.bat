@@ -9,10 +9,9 @@ IF NOT "%titlequery%" == "INFO: No tasks are running which match the specified c
 :CreateServer
 ECHO Intializing...
 TITLE DSF Robot
-NODE .
+NODE --no-warnings .
 ECHO Program will now restart...
-pause
-CLS
+ECHO.
 GOTO CreateServer
 
 :HasInst
