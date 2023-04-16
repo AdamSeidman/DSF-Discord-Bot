@@ -34,7 +34,7 @@ module.exports = {
 
         } else {
             // If web UI says to override message, send that message.
-            return overrideMessage()
+            return (isLie? 'This is a lie: ' : '') + overrideMessage()
         }
     }
 }
