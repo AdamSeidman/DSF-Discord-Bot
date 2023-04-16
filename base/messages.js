@@ -18,15 +18,6 @@ const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
 const { getEffectsServersDB } = require('../db/handlers/server-info')
 
-// When a user specifically thanks the bot (or anyone really)
-var handleThanks = function (msg) {
-    if (['thanks', 'thank you', 'thank'].includes(
-        utils.stripPunctuation(msg.content.toLowerCase().trim()))
-    ) {
-        msg.reply('No Problem.')
-    }
-}
-
 // Handles 'dsf!' commands
 var handleCommand = function (msg, isDM) {
     let message = msg.content.toLowerCase().trim()
@@ -86,7 +77,6 @@ module.exports = {
     messageHandlers: [
         handleCommand,
         handlePhrases,
-        handleThanks,
         handleSoundEffect
     ]
 }
@@ -94,7 +84,7 @@ module.exports = {
 // Generic fact sending function (loud is tts) (lie negates the fact template)
 var sendFact = function (msg, loud, lie) {
     if (loud) {
-        msg.channel.send(facts.getRandomFact(lie), {tts: true})
+        msg.channel.send({content: facts.getRandomFact(lie), tts: true})
     } else {
         msg.reply(facts.getRandomFact(lie))
     }
