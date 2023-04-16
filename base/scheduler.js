@@ -12,6 +12,7 @@
 const serverHandler = require('../db/handlers/server-info')
 const schedule = require('node-schedule')
 const utils = require('./facts')
+const { setBotOnline } = require('../web/override')
 
 var dailyChannels = undefined
 
@@ -26,6 +27,7 @@ var schedDailyChannels = function (clientChannels) {
         dailyChannels.forEach(channel => {
             channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
         })
+        setBotOnline(true)
     })
 }
 
