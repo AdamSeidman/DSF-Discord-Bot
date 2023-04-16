@@ -1,125 +1,112 @@
-/**
- * Author: Adam Seidman
- * 
- * Provides ability to interact with discord voice channels.
- * 
- * Exports:
- *     playMusic: Play a .mp3 in /assets
- *     stopMusic: Stop .mp3 and remove DSF from voice
- *     pauseMusic: pause .mp3
- *     resumeMusic: resume after pausing .mp3
- *     endAll: Remove DSF from every voice channel in every server
- */
-
+const { createAudioResource,createAudioPlayer, NoSubscriberBehavior,
+    joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
 const fs = require('fs') // Need to read .mp3's from /assets
 
 const dir = './assets/'
 const fxDir = 'sound-effects/'
 const ext = '.mp3'
 
+var servers = {}
 var effectNames = []
+
 fs.readdir(`${dir}${fxDir}`, (err, files) => {
     files.forEach(file => {
         if (file.toLowerCase().endsWith(ext)) {
-            effectNames.push(file.toLowerCase().substring(0, file.length - ext.length))
+            let name = file.toLowerCase().substring(0, file.length - ext.length)
+            effectNames.push(name)
         }
     })
 })
 
-// Keep track of servers that have DSF in voice
-var servers = {} // IDs are stored as #[ID number]
-
-// Remove DSF from voice on all servers (guilds)
-var endAll = () => Object.keys(servers).forEach(x => handleServerLog({guild: {id: x.slice(1)}}, false))
-
-// Handle adding or removing servers from log
-// Also closes connections of stopped music
-var handleServerLog= function (msg, start, connection, dispatcher) {
-    const ID = `#${msg.guild.id}`
-    if (start) {
-        // If adding 
-        if (servers[ID] !== undefined) {
-            // If DSF is already in voice, change connection and dispatcher
-            let item = servers[ID]
-            item.connection = connection
-            item.dispatcher = dispatcher
-        } else {
-            /// ...Otherwise, add it to server log
-            servers[ID] = {
-                connection: connection,
-                dispatcher: dispatcher
-            }
-        }
-    } else {
-        let item = servers[ID] // Server info
-        // Remove DSF from voice and delete log
-        item.dispatcher.destroy()
-        item.connection.disconnect()
-        delete servers[ID]
-    }
-}
-
 // Exported function to play music
 var playMusic = async function (msg, song, isEffect) {
     if (msg.member.voice.channel) {
-        let connection = undefined
-        await msg.member.voice.channel.join().then(response => {
-            connection = response
+        if (song === undefined || (isEffect && !effectNames.includes(song))) {
+            console.log('Non-existant effect requested.')
+            return
+        }
+
+        // Object to play an audio resource
+        const player = createAudioPlayer({
+            behaviors: {
+                noSubscriber: NoSubscriberBehavior.Pause
+            }
         })
 
-        // Gather .mp3 to dispatcher
-        const dispatcher = await connection.play(
-            fs.createReadStream(`${dir}${isEffect ? fxDir : ''}${song}${ext}`)
-        )
-        // Set up connection
-        handleServerLog(msg, true, connection, dispatcher)
-
-        dispatcher.on('finish', () => {
-            // Remove from voice on music ending
-            handleServerLog(msg, false)
+        // Connection to specific channel in guild
+        const connection = joinVoiceChannel({
+            channelId: msg.member.voice.channel.id,
+            guildId: msg.guildId,
+            adapterCreator: msg.channel.guild.voiceAdapterCreator
         })
-        
-        dispatcher.on('error', console.error)
+
+        servers[`#${msg.guildId}`] = {
+            connection: connection,
+            player: player,
+            paused: false
+        }
+
+        // Create new resource from file
+        player.play(createAudioResource(`${dir}${isEffect? fxDir : ''}${song}${ext}`))
+        connection.subscribe(player)
+
+        player.on(AudioPlayerStatus.Idle, () => {
+            if (!servers[`#${msg.guildId}`].paused) {
+                // Only stop if unpaused
+                connection.destroy()
+                delete servers[`#${msg.guildId}`]
+            }
+        })
+
+        player.on('error', console.error)
     } else if (!isEffect) {
         msg.channel.send('You aren\'t in a voice channel.')
     }
 }
 
-// Exported function to stop music
 var endMusic = function (msg) {
-    if (servers[`#${msg.guild.id}`] !== undefined) {
+    let server = servers[`#${msg.guildId}`]
+    if (server !== undefined) {
         // Exists- stop music
-        handleServerLog(msg, false)
+        server.player.stop()
+        server.connection.destroy()
+        delete servers[`#${msg.guildId}`]
     } else {
         // Bad Request
         msg.channel.send('No music is playing.')
     }
 }
 
-// Exported function to pause music
-var pauseMusic = function (msg) {
-    const ID = `#${msg.guild.id}`
-    if (servers[ID] !== undefined) {
-        // Contained in server log
-        servers[ID].dispatcher.pause()
+var pauseMusic = function(msg) {
+    if (msg.member.voice.channel) {
+        let server = servers[`#${msg.guildId}`]
+
+        if (server === undefined || server.paused) {
+            msg.channel.send('There is no music playing.')
+        } else{
+            server.paused = true
+            server.player.pause()
+        }
     } else {
-        // Bad Request
-        msg.channel.send('No music is playing.')
+        msg.channel.send('You aren\'t in a voice channel.')
     }
 }
 
-
-// Exported function to resume music
-var resumeMusic = function (msg) {
-    const ID = `#${msg.guild.id}`
-    if (servers[ID] !== undefined) {
-        // Contained in server log
-        servers[ID].dispatcher.resume()
+var resumeMusic = function(msg) {
+    if (msg.member.voice.channel) {
+        let server = servers[`#${msg.guildId}`]
+        if (server === undefined || !server.paused) {
+            msg.channel.send('There is no music that is paused.')
+        } else {
+            server.paused = false
+            server.player.unpause()
+        }
     } else {
-        // Bad request
-        msg.channel.send('There is no music that is paused.')
+        msg.channel.send('You aren\'t in a voice channel.')
     }
 }
+
+var endAll = () => Object.keys(servers).forEach(x => endMusic({guildId: x.slice(1)}))
 
 module.exports = {
     playMusic: playMusic,
