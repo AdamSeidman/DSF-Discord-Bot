@@ -84,13 +84,13 @@ var sendHelpMessage = function (msg) {
         }) // All command array helpMsg's
     if (helpEmbed === undefined) {
         // Only create help embed once. It is saved as an object
-        helpEmbed = new Discord.MessageEmbed()
+        helpEmbed = new Discord.EmbedBuilder()
             .setColor('#0099ff')
             .setTitle('DSF Commands List')
             .setDescription(`Enter '${prefix}' followed by desired command.`)
             .addFields(...helpMessages)
     }
-    msg.channel.send(helpEmbed)
+    msg.channel.send({embeds: [helpEmbed]})
 }
 
 // Send a DSF acronym message.
@@ -98,9 +98,9 @@ var sendHelpMessage = function (msg) {
 var sendDsfAcronym = function (msg, loud, isPhrase) {
     const acronym = `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`
     if (isPhrase) {
-        msg.reply(acronym, {tts: loud})
+        msg.reply({content: acronym, tts: loud})
     } else {
-        msg.channel.send(acronym, {tts: loud})
+        msg.channel.send({content: acronym, tts: loud})
     }
 }
 
