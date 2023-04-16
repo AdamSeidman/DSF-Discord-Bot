@@ -139,7 +139,7 @@ var removeEffectsServer = function (channel) {
             channel.send('An error occured.')
         } else {
             // Deleted
-            channel.send('Sound effects remove from server.')
+            channel.send('Sound effects removed from server.')
         }
     })
 }
