@@ -1,3 +1,16 @@
+/**
+ * Author: Adam Seidman
+ * 
+ * Provides ability to interact with discord voice channels.
+ * 
+ * Exports:
+ *     playMusic: Play a .mp3 in /assets
+ *     stopMusic: Stop .mp3 and remove DSF from voice
+ *     pauseMusic: pause .mp3
+ *     resumeMusic: resume after pausing .mp3
+ *     endAll: Remove DSF from every voice channel in every server
+ */
+
 const { createAudioResource,createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
 const fs = require('fs') // Need to read .mp3's from /assets
@@ -12,8 +25,7 @@ var effectNames = []
 fs.readdir(`${dir}${fxDir}`, (err, files) => {
     files.forEach(file => {
         if (file.toLowerCase().endsWith(ext)) {
-            let name = file.toLowerCase().substring(0, file.length - ext.length)
-            effectNames.push(name)
+            effectNames.push(file.toLowerCase().substring(0, file.length - ext.length))
         }
     })
 })
