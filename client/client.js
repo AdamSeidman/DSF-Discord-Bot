@@ -1,5 +1,5 @@
 /**
- * Author Adam Seidman
+ * Author: Adam Seidman
  * 
  * Main entry point for DSF bot
  */
