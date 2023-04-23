@@ -26,8 +26,7 @@ var effectNames = []
 fs.readdir(`${dir}${fxDir}`, (err, files) => {
     files.forEach(file => {
         if (file.toLowerCase().endsWith(ext)) {
-            let name = file.toLowerCase().substring(0, file.length - ext.length)
-            effectNames.push(name)
+            effectNames.push(file.toLowerCase().substring(0, file.length - ext.length))
         }
     })
 })
