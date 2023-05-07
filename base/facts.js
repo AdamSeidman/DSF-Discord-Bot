@@ -124,6 +124,7 @@ var index = {
     animals: (isLie, prep) => prepareTerm(prep, true, false, true),
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
+    noun: (isLie, prep) => index[utils.randomArrayItem(['blank', 'place', 'person'])](isLie, prep),
     place: () => utils.randomArrayItem(itemHandler.getPlaces()).name,
     fact: (isLie) => {
         let fact = undefined
