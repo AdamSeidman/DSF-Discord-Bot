@@ -5,7 +5,7 @@
  * 
  * Exports:
  *     postPriusPic: posts prius picture
- *         Param: msg- discord message requestion prius pic
+ *         Param: msg- discord message requesting prius pic
  * 
  * If you still don't know what this file does, I don't know what to tell you...
  */
