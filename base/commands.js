@@ -166,7 +166,8 @@ var commandArray = [
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
-    {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removed bot from voice channel.'}
+    {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.'},
+    {phrase: 'unsubscribe', response: msg => msg.reply('I politely decline.'), helpMsg: 'Unsubscribes you from this bot.'}
 ]
 
 module.exports = {
