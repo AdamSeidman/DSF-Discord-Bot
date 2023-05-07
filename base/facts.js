@@ -15,9 +15,12 @@ var { shouldGenerateFact, overrideMessage } = require('../web/override')
 const PREP_PREFIX = 'prepare' // Term prefix in fact template for pronouns and articles
 
 module.exports = {
-    getRandomFact: function (isLie) {
+    getRandomFact: function (isLie, isDaily) {
         if (shouldGenerateFact()) {
             // Override is not in effect
+            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.1)) {
+                return itemHandler.getStaticFact()
+            }
             let fact = undefined
             do {
                 fact = utils.randomArrayItem(itemHandler.getAllFacts())
@@ -112,6 +115,7 @@ var index = {
     animals: (isLie, prep) => prepareTerm(prep, true, false, true),
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
+    place: () => utils.randomArrayItem(itemHandler.getPlaces()).name,
     fact: (isLie) => {
         let fact = undefined
         do {

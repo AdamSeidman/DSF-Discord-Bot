@@ -23,7 +23,7 @@ var schedDailyChannels = function (clientChannels) {
     serverHandler.getDailyChannelsDB(clientChannels, dailyChannels) // Get channels
     schedule.scheduleJob({hour: 18, minute: 13}, async () => { // 6:13 PM
         // Send out fact at scheduled time
-        let fact = utils.getRandomFact()
+        let fact = utils.getRandomFact(false, true)
         dailyChannels.forEach(channel => {
             channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
         })
