@@ -39,6 +39,15 @@ module.exports = {
             // If web UI says to override message, send that message.
             return (isLie? 'This is a lie: ' : '') + overrideMessage()
         }
+    },
+    constructFact: (fact, isLie) => {
+        try {
+            fact = constructFact({'fact': fact}, isLie) + '.'
+            fact = fact.slice(0, 1).toUpperCase() + fact.slice(1)
+        } catch (err) {
+            fact = '[Issue with template]'
+        }
+        return '> ' + fact
     }
 }
 

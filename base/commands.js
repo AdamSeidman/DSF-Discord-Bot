@@ -23,6 +23,8 @@ const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
 const { randomArrayItem } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
+const { adminId } = require('../client/token')
+const { constructFact } = require('./facts')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -113,8 +115,44 @@ var sendEffectsList = function (msg) {
     msg.reply(message.substring(0, message.length - 1).split(',').join(', '))
 }
 
+// Fact check a template message
+var factCheck = function (msg, args) {
+    args.shift()
+    let template = args.join(' ')
+    if (template.length == 0 || template.charAt(0) !== '[') {
+        msg.channel.send('You need to send a fact template.')
+        return
+    }
+    try {
+        template = JSON.parse(template)
+    } catch (err) {
+        msg.channel.send('Input was not valid JSON.')
+        return
+    }
+    msg.channel.send('Ten sample facts:')
+    for (let i = 0; i < 10; i++) {
+        msg.channel.send(constructFact(template, false))
+    }
+    msg.channel.send('Ten sample lies:')
+    for (let i = 0; i < 10; i++) {
+        msg.channel.send(constructFact(template, true))
+    }
+}
+
+// Restart if enabled
+var crashSoftware = function (msg) {
+    if (msg.author.id == adminId) {
+        console.error('Running crashSoftware()')
+        throw new Error('Restart.')
+    } else {
+        msg.reply('You are not an admin.')
+    }
+}
+
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
+    {phrase: 'fact-check', response: factCheck},
+    {phrase: 'restart', response: crashSoftware},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.'},

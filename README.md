@@ -1,7 +1,7 @@
 # DSF-Discord-Bot
->Daily Stupid Facts Robot for [Discord](https://discord.com/) Servers  
+>Daily Stupid Facts Robot for Discord Servers  
   
-Click here: [Invite Link](https://discord.com/oauth2/authorize?client_id=733410082607333536&scope=bot&permissions=451025435968)
+Click here: [Invite Link](https://discord.com/oauth2/authorize?client_id=733410082607333536&permissions=775945664&scope=bot)
   
 ## Other Information
 Guest Web Client hosted on [localhost:8080](http://localhost:8080/)  
@@ -23,5 +23,13 @@ module.exports = { token: YOUR_TOKEN_HERE }
 npm install
 
 # start Discord bot
-start scripts/start_dsf_bot.bat
+cd scripts  
+start start_dsf_bot.bat
+```
+
+### Note
+If you would like to enable the 'dsf!restart' command, put a Discord userId in token.js as such:
+
+``` javascript
+module.exports = { token: TOKEN, adminId: USER_ID_HERE }
 ```
