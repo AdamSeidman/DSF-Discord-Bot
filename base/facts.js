@@ -141,10 +141,6 @@ var index = {
         if (lastItem === undefined) return ''
         else return lastItem.item.usage
     },
-    nickname: () => {
-        if (lastPerson === undefined) return ''
-        else return lastPerson.person.nickname
-    },
     math: () => {
         // Random numbers for math facts
         let a = utils.randomNumber()

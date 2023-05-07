@@ -100,11 +100,8 @@ var toggleItemSentience = function () {
 var submitPerson = function () {
     var { nameInput, name, error } = getInput('name', undefined, true)
     if (error) return
-    var { nicknameInput, nickname, error } = getInput('nickname', undefined, true)
-    if (error) return
-    post(`person/${name}_${nickname}_${personData.gender.value}_${personData.isAlive.value}`)
+    post(`person/${name}_${personData.gender.value}_${personData.isAlive.value}`)
     nameInput.value = ''
-    nicknameInput.value = ''
 }
 
 // Submit http request to add item to .db
