@@ -12,6 +12,10 @@
  *    Facts-
  *        getRecursiveFacts, getAllFacts, addFact
  *        getAdjectives, addAdjective
+ *    Places-
+ *        getPlaces, addPlace
+ *    Static Facts-
+ *        getStaticFact, addStaticFact
  *    Other-
  *        getWebFormattedData
  *        refreshItems
@@ -19,6 +23,7 @@
  */
 
 const db = require('../db')
+const { randomArrayItem } = require('../../base/utils')
 
 var lists = { // All possible categories of random items (currently)
     items: [],
@@ -29,12 +34,26 @@ var lists = { // All possible categories of random items (currently)
     dead: [],
     facts: [],
     recursiveFacts: [],
-    adjectives: []
+    adjectives: [],
+    places: [],
+    staticFacts: []
 }
 
 // Get any array of items given category
 var getArray = function (arr) {
     return lists[arr] || []
+}
+
+// Add a place to db with provided information
+var addPlace = function (place) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('Place', {
+        name: place
+    }, () => {
+        console.log(`'${place}' added to database.`)
+        refresh()
+    })
+    randomItems.close()
 }
 
 // Add a person given to db with provided information
@@ -93,6 +112,34 @@ var addFact = function(fact, canRecurse) {
     randomItems.close()
 }
 
+// Add a static fact to db with provided fact string
+var addStaticFact = function(fact) {
+    let randomItems = db.getDatabase('randomItems')
+    randomItems.insert('StaticFacts', {
+        sentence: fact
+    }, () => {
+        console.log('New static fact was added to database.')
+        refresh()
+    })
+    randomItems.close()
+}
+
+var getStaticFact = function () {
+    let randomItems = db.getDatabase('randomItems')
+    let fact = randomArrayItem(getArray('staticFacts')).sentence
+    randomItems.database.run(`DELETE FROM StaticFacts WHERE sentence = '${fact}'`, [], function (err) {
+        if (err) {
+            console.log(err)
+            console.log('Error occured in delete from static facts db.')
+        } else {
+            console.log(`Sending static fact: ${fact}`)
+        }
+    })
+    refresh()
+    randomItems.close()
+    return fact
+}
+
 // Setup function for all random items
 var setup = function () {
     if (lists.items.length === 0) {
@@ -111,6 +158,14 @@ var setup = function () {
                     lists.nonLivingItems.push(row)
                 }
                 lists.items.push(row)
+            })
+
+            randomItems.forEach('Places', row => { // Load Places
+                lists.places.push(row)
+            })
+
+            randomItems.forEach('StaticFacts', row => { // Load Static Facts
+                lists.staticFacts.push(row)
             })
 
             randomItems.forEach('People', row => { // Load People
@@ -153,7 +208,9 @@ var refresh = function () {
         dead: [],
         facts: [],
         recursiveFacts: [],
-        adjectives: []
+        adjectives: [],
+        places: [],
+        staticFacts: []
     }
     setup()
 }
@@ -175,13 +232,18 @@ module.exports = {
     getAlivePeople: () => getArray('alive'),
     getDeadPeople: () => getArray('dead'),
     getAllFacts: () => getArray('facts'),
+    getPlaces: () => getArray('places'),
     getRecursiveFacts: () => getArray('recursiveFacts'),
     getAdjectives: () => getArray('adjectives'),
+    getStaticFact: getStaticFact,
+    hasStaticFacts: () => getArray('places').length > 0,
     setupItems: setup,
     refreshItems: refresh,
     addPerson: addPerson,
     addItem: addItem,
     addAdjective: addAdjective,
     addFact: addFact,
+    addPlace: addPlace,
+    addStaticFact: addStaticFact,
     getWebFormattedData: formattedData
 }
