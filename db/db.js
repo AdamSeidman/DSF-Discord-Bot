@@ -73,15 +73,15 @@ var getDB = function(dbName) {
             console.log('Supplied map is invalid.')
         } else {
             let keys = ''
-            let values = ''
+            let values = []
             Object.keys(map).forEach(item => {
                 keys += `${item}, `
-                values += `'${map[item]}', `
+                values.push(map[item])
             })
-            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) VALUES (${values.slice(0, values.length - 2)})`
-            result.database.run(sql, [], err => {
+            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) VALUES (?)`
+            result.database.run(sql, [...values], err => {
                 if (err) {
-                    console.log('SQL Inset Error Occurred.\n')
+                    console.log('SQL Insert Error Occurred.\n')
                     console.log(err)
                 } else {
                     callback()
