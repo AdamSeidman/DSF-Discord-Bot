@@ -74,11 +74,13 @@ var getDB = function(dbName) {
         } else {
             let keys = ''
             let values = []
+            let valueString = ''
             Object.keys(map).forEach(item => {
-                keys += `${item}, `
+                keys += `, ${item}`
                 values.push(map[item])
+                valueString += ', ?'
             })
-            const sql = `INSERT INTO ${table} (${keys.slice(0, keys.length - 2)}) VALUES (?)`
+            const sql = `INSERT INTO ${table} (${keys.slice(2)}) VALUES (${valueString.slice(2)})`
             result.database.run(sql, [...values], err => {
                 if (err) {
                     console.log('SQL Insert Error Occurred.\n')
