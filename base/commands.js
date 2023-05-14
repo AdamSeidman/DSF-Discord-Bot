@@ -21,7 +21,7 @@ const Discord = require('discord.js')
 const voice = require('./voice')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
-const { randomArrayItem } = require('./utils')
+const { randomArrayItem, restartApp } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
 const { adminId } = require('../client/token')
 const { constructFact } = require('./facts')
@@ -139,11 +139,10 @@ var factCheck = function (msg, args) {
     }
 }
 
-// Restart if enabled
-var crashSoftware = function (msg) {
+// Restart the software
+var restart = function (msg) {
     if (msg.author.id == adminId) {
-        console.error('Running crashSoftware()')
-        throw new Error('Restart.')
+        restartApp()
     } else {
         msg.reply('You are not an admin.')
     }
@@ -152,7 +151,7 @@ var crashSoftware = function (msg) {
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
     {phrase: 'fact-check', response: factCheck},
-    {phrase: 'restart', response: crashSoftware},
+    {phrase: 'restart', response: restart},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.'},
