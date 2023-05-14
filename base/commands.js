@@ -23,7 +23,7 @@ const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
 const { randomArrayItem, restartApp } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
-const { adminId } = require('../client/token')
+const { adminId } = require('../client/config')
 const { constructFact } = require('./facts')
 
 var helpEmbed = undefined
