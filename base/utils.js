@@ -46,8 +46,10 @@ const headers = { // For requests
 // Close app and end HTTP request for it
 var restartApp = function (cmd, response) {
     exitVoiceChannels()
-    response.writeHead(200, headers)
-    response.end()
+    if (response !== undefined) {
+        response.writeHead(200, headers)
+        response.end()
+    }
     process.exit()
 }
 
