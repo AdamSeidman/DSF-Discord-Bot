@@ -4,7 +4,7 @@
  * Main entry point for DSF bot
  */
 
-const { token } = require('./token')
+const { token, botId } = require('./config')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
 const { randomNumber } = require('../base/utils')
@@ -34,7 +34,7 @@ bot.on('messageCreate', msg => {
     if (!msg.author.bot) {
         // Run normal DSF functions with users
         messageHandlers.forEach(x => x(msg, msg.member === null))
-    } else if (msg.author.username !== 'DSF Bot') {
+    } else if (botId !== undefined && msg.author.id !== botId) {
         // Small chance of easter egg with other discord bots
         if (randomNumber(1500) === 5) msg.reply('Shut up- bots are not meant to speak in this channel.')
     }
