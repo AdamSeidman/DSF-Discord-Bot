@@ -1,5 +1,6 @@
 node_modules/
 token.js
+config.js
 *.db
 temp.txt
 open_sqlite_studio.bat
