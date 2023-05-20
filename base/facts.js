@@ -21,13 +21,10 @@ module.exports = {
             if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.1)) {
                 return itemHandler.getStaticFact()
             }
-            let fact = undefined
-            do {
-                fact = utils.randomArrayItem(itemHandler.getAllFacts())
-                if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
-                    fact.probability = 1.0
-                }
-            } while (!utils.probabilityCheck(fact.probability))
+            let fact = utils.randomArrayItem(itemHandler.getAllFacts())
+            if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
+                fact.probability = 1.0
+            }
             let resFact = constructFact(fact, isLie) + '.' // Call constructFact with first pass (can be recursive)
             if (resFact.length <= 2) {
                 // Shouldn't happen- but is funny
