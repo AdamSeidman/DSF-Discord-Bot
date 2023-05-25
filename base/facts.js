@@ -44,7 +44,7 @@ module.exports = {
         } catch (err) {
             fact = '[Issue with template]'
         }
-        return '> ' + fact
+        return fact
     }
 }
 

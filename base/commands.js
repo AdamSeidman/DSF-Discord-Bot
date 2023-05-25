@@ -123,20 +123,21 @@ var factCheck = function (msg, args) {
         msg.channel.send('You need to send a fact template.')
         return
     }
+    let builder = `Provided template:\n> ${template}\n\nTen sample facts:\n`
     try {
         template = JSON.parse(template)
     } catch (err) {
         msg.channel.send('Input was not valid JSON.')
         return
     }
-    msg.channel.send('Ten sample facts:')
     for (let i = 0; i < 10; i++) {
-        msg.channel.send(constructFact(template, false))
+        builder += `> ${constructFact(template, false)}\n`
     }
-    msg.channel.send('Ten sample lies:')
+    builder += '\nTen sample lies:\n'
     for (let i = 0; i < 10; i++) {
-        msg.channel.send(constructFact(template, true))
+        builder += `> ${constructFact(template, true)}\n`
     }
+    msg.channel.send(builder)
 }
 
 // Restart the software
