@@ -29,7 +29,7 @@ const MAX_RAND = 98
 // Open Database Desktop Application
 var openSQLiteDatabase = function () {
     console.log('Opening SQLite Studio')
-    cp.execFile(`${__dirname}\\..\\scripts\\open_sqlite_studio.bat`, (err) => {
+    cp.execFile(`${__dirname}\\..\\scripts\\private\\open_sqlite_studio.bat`, (err) => {
         if (err) {
             console.log(err)
         }
