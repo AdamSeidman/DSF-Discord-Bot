@@ -123,7 +123,7 @@ var factCheck = function (msg, args) {
         msg.channel.send('You need to send a fact template.')
         return
     }
-    let builder = `Provided template:\n> ${template}\n\nTen sample facts:\n`
+    let builder = [`Provided template:\n> ${template}\n\nTen sample facts:\n`]
     try {
         template = JSON.parse(template)
     } catch (err) {
@@ -131,13 +131,21 @@ var factCheck = function (msg, args) {
         return
     }
     for (let i = 0; i < 10; i++) {
-        builder += `> ${constructFact(template, false)}\n`
+        builder.push(`> ${constructFact(template, false)}\n`)
     }
-    builder += '\nTen sample lies:\n'
+    builder.push('\nTen sample lies:\n')
     for (let i = 0; i < 10; i++) {
-        builder += `> ${constructFact(template, true)}\n`
+        builder.push(`> ${constructFact(template, true)}\n`)
     }
-    msg.channel.send(builder)
+    let out = []
+    while (builder.length > 0) {
+        if (out.join('').concat(builder[0]).length >= 2000) {
+            msg.channel.send(out.join(''))
+            out = []
+        }
+        out.push(builder.shift())
+    }
+    msg.channel.send(out.join(''))
 }
 
 // Restart the software
