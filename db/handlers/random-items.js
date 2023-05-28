@@ -127,7 +127,7 @@ var addStaticFact = function(fact) {
 var getStaticFact = function () {
     let randomItems = db.getDatabase('randomItems')
     let fact = randomArrayItem(getArray('staticFacts')).sentence
-    randomItems.database.run('DELETE FROM StaticFacts WHERE sentence = \'(?)\'', [fact], function (err) {
+    randomItems.database.run('DELETE FROM StaticFacts WHERE sentence LIKE \'(?)\'', [fact.split(/'|;/).join('%')], function (err) {
         if (err) {
             console.log(err)
             console.log('Error occured in delete from static facts db.')
