@@ -22,9 +22,6 @@ module.exports = {
                 return itemHandler.getStaticFact()
             }
             let fact = utils.randomArrayItem(itemHandler.getAllFacts())
-            if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
-                fact.probability = 1.0
-            }
             let resFact = constructFact(fact, isLie) + '.' // Call constructFact with first pass (can be recursive)
             if (resFact.length <= 2) {
                 // Shouldn't happen- but is funny
@@ -124,13 +121,7 @@ var index = {
     noun: (isLie, prep) => index[utils.randomArrayItem(['blank', 'place', 'person'])](isLie, prep),
     place: () => utils.randomArrayItem(itemHandler.getPlaces()).name,
     fact: (isLie) => {
-        let fact = undefined
-        do {
-            fact = utils.randomArrayItem(itemHandler.getRecursiveFacts())
-            if (fact.probability === undefined || fact.probability <= 0.0 || fact.probability > 1.0) {
-                fact.probability = 1.0
-            }
-        } while (utils.probabilityCheck(fact.probability))
+        let fact = utils.randomArrayItem(itemHandler.getRecursiveFacts())
         return constructFact(fact, isLie)
     },
     number: () => utils.randomNumber(),
