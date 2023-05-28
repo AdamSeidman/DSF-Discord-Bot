@@ -17,16 +17,13 @@ const refresh = function () {
 
 // Spaces are sent as underscores in HTTP requests
 module.exports = {
-    localEndpoints: [
+    endpoints: [
         {path: 'adjective', action: addAdjective},
         {path: 'fact', action: cmd => addFact(...cmd.split('_'))},
         {path: 'override-message', action: setOverrideMessage},
         {path: 'bot-online', action: setBotOnline},
         {path: 'open-external-db', action: openSQLiteDatabase},
-        {path: 'restart-app', action: restartApp}
-    ],
-    remoteEndpoints: [],
-    sharedEndpoints: [
+        {path: 'restart-app', action: restartApp},
         {path: 'refresh', action: refresh},
         {path: 'person', action: cmd => addPerson(...cmd.split('_'))},
         {path: 'item', action: cmd => addItem(...cmd.split('_'))},
