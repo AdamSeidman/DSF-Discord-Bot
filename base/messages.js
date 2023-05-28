@@ -66,10 +66,7 @@ var handlePhrases = function (msg) {
         let term = getAdjectives().find(adj => phrases.includes(adj))
         if (term === undefined) return
 
-        msg.channel.send(`Did someone say ${term}?`)
-        msg.channel.send('This calls for a fact!')
-        msg.channel.send('Ready? Here it is:')
-        msg.channel.send(facts.getRandomFact())
+        msg.channel.send(`Did someone say ${term}?\nThis calls for a fact!\nReady? Here it is:\n${facts.getRandomFact()}`)
     }
 }
 
