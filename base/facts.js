@@ -18,7 +18,7 @@ module.exports = {
     getRandomFact: function (isLie, isDaily) {
         if (shouldGenerateFact()) {
             // Override is not in effect
-            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.1)) {
+            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.2)) {
                 return itemHandler.getStaticFact()
             }
             let fact = utils.randomArrayItem(itemHandler.getAllFacts())
@@ -42,7 +42,7 @@ module.exports = {
             fact = constructFact({'fact': fact}, isLie) + '.'
             fact = fact.slice(0, 1).toUpperCase() + fact.slice(1)
         } catch (err) {
-            fact = '[Issue with template]'
+            fact = `[Issue with template] \t${err}`
         }
         return fact
     }
@@ -153,10 +153,7 @@ var index = {
         numQueue.push(a)
         return ''
     },
-    getFromQueue: () => (numQueue.pop()).toString(),
-    he: () => getPronoun('he'),
-    him: () => getPronoun('him'),
-    his: () => getPronoun('his')
+    getFromQueue: () => (numQueue.pop()).toString()
 }
 
 /*
@@ -168,20 +165,10 @@ var index = {
 var getPronoun = function (term) {
     if (lastPerson === undefined) {
         return ''
-    } else if (lastPerson.person.isMale) {
-        return term
-    } else {
-        switch (term) {
-        case 'he':
-            return 'she'
-        case 'him':
-            return 'her'
-        case 'his':
-            return 'hers'
-        default:
-            return ''
-        }
     }
+    
+    term = term[0].split('_')
+    return lastPerson.person.isMale? term[0] : term[1]
 }
 
 // Create actual fact given template and param
@@ -209,7 +196,12 @@ var constructFact = function (fact, isLie) {
                 // Cut off prep- prefix if there is one
                 item[0] = item[0].slice(PREP_PREFIX.length).toLowerCase()
             }
-            item = index[item[0]](isLie, isPrep) // Grab correct method from function index
+            if (item[0].includes('_')) {
+                // Better way to prep pronouns- let template enter them
+                item = getPronoun(item)
+            } else {
+                item = index[item[0]](isLie, isPrep) // Grab correct method from function index
+            }
         }
         if (item instanceof Function) {
             // Run index function on chosen item
