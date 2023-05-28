@@ -141,8 +141,12 @@ var factCheck = function (msg, args) {
 }
 
 // Restart the software
-var restart = function (msg) {
+var restart = function (msg, args) {
     if (msg.author.id == adminId) {
+        args.shift()
+        if (args != undefined && args.length > 0) {
+            console.log(`\n\r${args.join(' ')}`)
+        }
         restartApp()
     } else {
         msg.reply('You are not an admin.')
