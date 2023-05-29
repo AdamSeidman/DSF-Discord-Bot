@@ -70,12 +70,23 @@ var handlePhrases = function (msg) {
     }
 }
 
+var sendImmediateMessage = function (channelId, message) {
+    let channel = utils.getChannelById(channelId)
+    if (channel === undefined) {
+        console.error('Supplied channel ID was invalid.')
+        return
+    }
+    console.log(`\tMessage: ${message}`)
+    channel.send(message)
+}
+
 module.exports = {
     messageHandlers: [
         handleCommand,
         handlePhrases,
         handleSoundEffect
-    ]
+    ],
+    sendImmediateMessage
 }
 
 // Generic fact sending function (loud is tts) (lie negates the fact template)

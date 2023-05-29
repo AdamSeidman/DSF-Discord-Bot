@@ -9,6 +9,7 @@ const { addItem, refreshItems, addPerson, addAdjective, addFact,
 const { setBotOnline, setOverrideMessage } = require('./override')
 const { restartApp } = require('../base/utils')
 const { refreshTerms } = require('../db/handlers/dsf-terms')
+const { sendImmediateMessage } = require('../base/messages')
 
 const refresh = function () {
     // Combine into single refresh function
@@ -29,6 +30,7 @@ module.exports = {
         {path: 'item', action: cmd => addItem(...cmd.split('_'))},
         {path: 'data', action: getWebFormattedData},
         {path: 'place', action: addPlace},
-        {path: 'static-fact', action: addStaticFact}
+        {path: 'static-fact', action: addStaticFact},
+        {path: 'immediate-message', action: cmd => sendImmediateMessage(...cmd.split('_'))}
     ]
 }

@@ -55,6 +55,10 @@ input.form-control#staticFactInput {
     border-radius: 0.25rem 0px 0px 0.25rem;
 }
 
+input#channelInput {
+    width: 80%;
+}
+
 div.input-group-append:not(.inline)>button.btn {
     border-radius: 0px 0.4rem 0.4rem 0px;
     background-image: linear-gradient(to right, #3fcc3f, #609961);
@@ -87,6 +91,16 @@ div.is-alive-status div button.btn {
 
 div#buttonsPanel {
     text-align: center;
+}
+
+.immMessage-submit {
+    position: absolute;
+    top: 44%;
+    right: 0;
+}
+
+.channelPanel {
+    position: relative;
 }
 
 div#buttonsContainer button:not(.name-submit) {

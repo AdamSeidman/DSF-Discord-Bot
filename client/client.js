@@ -5,6 +5,7 @@
  */
 
 const { token, botId } = require('./config')
+const utils = require('../base/utils')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
 const { randomNumber } = require('../base/utils')
@@ -27,6 +28,7 @@ bot.on('ready', () => {
     scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
     console.log('DSF Robot Intitialized')
     setupWebServers()
+    utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
 })
 
 bot.on('messageCreate', msg => {
