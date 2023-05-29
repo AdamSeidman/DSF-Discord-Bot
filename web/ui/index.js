@@ -93,6 +93,14 @@ var submitPerson = function () {
     nameInput.value = ''
 }
 
+// Submit http request to add place to .db
+var submitPlace = function () {
+    var { placeInput, place, error } = getInput('place', 'place name')
+    if (error) return
+    post(`place/${place}`)
+    placeInput.value = ''
+}
+
 // Submit http request to add item to .db
 var submitItem = function () {
     var { itemInput, item, error } = getInput('item', 'item name')
@@ -116,6 +124,14 @@ var submitFact = function () {
     post(`fact/${fact}_${checkbox.checked ? 1 : 0}`)
     factInput.value = ''
     checkbox.checked = true
+}
+
+// Submit http request to add static fact to .db
+var submitStaticFact = function () {
+    var { staticFactInput, staticFact, error } = getInput('staticFact')
+    if (error) return
+    post(`static-fact/${staticFact}`)
+    staticFactInput.value = ''
 }
 
 // Change item usage of logged item

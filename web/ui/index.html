@@ -21,13 +21,23 @@
         <div class="col-12">
             <form class="form-inline">
                 <div class="form-group col-12">
-                    <label for="factInput" class="text-light">Fact:&nbsp;&nbsp;</label>
+                    <label for="factInput" class="text-light">Fact: &ensp;&ensp;</label>
                     <input class="form-control" id="factInput" placeholder="fact">
                     <div class="input-group-append">
                         <button type="button" class="btn" onclick="submitFact()">SUBMIT</button>
                     </div>
                     <input class="ml-4" id="recurse-checkbox" type="checkbox" checked>
                     <p class="text-light ml-2 mt-3">&nbsp;Can Recurse?</p>
+                </div>
+            </form>
+            <br>
+            <form class="form-inline">
+                <div class="form-group col-12">
+                    <label for="staticFactInput" class="text-light">Static: &ensp;</label>
+                    <input class="form-control" id="staticFactInput" placeholder="fact">
+                    <div class="input-group-append">
+                        <button type="button" class="btn" onclick="submitStaticFact()">SUBMIT</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -63,6 +73,18 @@
                         </div>
                     </div>
                 </form>
+                <br>
+                <form>
+                    <div class="form-group">
+                        <label for="adjectiveInput" class="text-light">Adjective:</label>
+                        <input class="form-control" id="adjectiveInput" placeholder="adjective">
+                    </div>
+                </form>
+                <div class="form-group" id="buttonsPanel">
+                    <div>
+                        <button type="button" class="btn adjective-submit" onclick="submitAdjective()">Submit</button>
+                    </div>
+                </div>
             </div>
             <div class="col-3 inline">
                 <form>
@@ -100,13 +122,13 @@
             <div class="col-3 inline">
                 <form>
                     <div class="form-group">
-                        <label for="adjectiveInput" class="text-light">Adjective:</label>
-                        <input class="form-control" id="adjectiveInput" placeholder="adjective">
+                        <label for="placeInput" class="text-light">Place:</label>
+                        <input class="form-control" id="placeInput" placeholder="place">
                     </div>
                 </form>
                 <div class="form-group" id="buttonsPanel">
                     <div>
-                        <button type="button" class="btn adjective-submit" onclick="submitAdjective()">Submit</button>
+                        <button type="button" class="btn place-submit" onclick="submitPlace()">Submit</button>
                     </div>
                 </div>
             </div>
@@ -122,11 +144,6 @@
                 <h2 class="text-light refresh-buttons">Refresh Database:&nbsp;
                     <button class="btn" onclick="sendRefresh()">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
-                    </button>
-                </h2>
-                <h2 class="text-light external-buttons">Open SQLite Studio:&nbsp;
-                    <button class="btn" onclick="sendDbCommand()">
-                        <i class="fa fa-database" aria-hidden="true"></i>
                     </button>
                 </h2>
             </div>

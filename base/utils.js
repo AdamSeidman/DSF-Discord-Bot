@@ -21,20 +21,9 @@
  *     openSQLiteDatabase-
  *         Runs the batch script that opens the sqlite desktop application
  */
-const cp = require('child_process')
 const exitVoiceChannels = require('./voice').endAll
 
 const MAX_RAND = 98
-
-// Open Database Desktop Application
-var openSQLiteDatabase = function () {
-    console.log('Opening SQLite Studio')
-    cp.execFile(`${__dirname}\\..\\scripts\\private\\open_sqlite_studio.bat`, (err) => {
-        if (err) {
-            console.log(err)
-        }
-    })
-}
 
 const headers = { // For requests
     'Access-Control-Allow-Origin': '*',
@@ -103,6 +92,5 @@ module.exports = {
     randomArrayItem: randomArrayItem,
     probabilityCheck: probabilityCheck,
     stripPunctuation: stripPunctuation,
-    fixPathCharacters: fixPathCharacters,
-    openSQLiteDatabase: openSQLiteDatabase
+    fixPathCharacters: fixPathCharacters
 }

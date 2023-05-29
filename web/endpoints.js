@@ -4,9 +4,10 @@
  * Connects functions from different files to endpoints used in UI
  */
 
-const { addItem, refreshItems, addPerson, addAdjective, addFact, getWebFormattedData } = require('../db/handlers/random-items')
+const { addItem, refreshItems, addPerson, addAdjective, addFact, 
+    getWebFormattedData, addPlace, addStaticFact } = require('../db/handlers/random-items')
 const { setBotOnline, setOverrideMessage } = require('./override')
-const { openSQLiteDatabase, restartApp } = require('../base/utils')
+const { restartApp } = require('../base/utils')
 const { refreshTerms } = require('../db/handlers/dsf-terms')
 
 const refresh = function () {
@@ -22,11 +23,12 @@ module.exports = {
         {path: 'fact', action: cmd => addFact(...cmd.split('_'))},
         {path: 'override-message', action: setOverrideMessage},
         {path: 'bot-online', action: setBotOnline},
-        {path: 'open-external-db', action: openSQLiteDatabase},
         {path: 'restart-app', action: restartApp},
         {path: 'refresh', action: refresh},
         {path: 'person', action: cmd => addPerson(...cmd.split('_'))},
         {path: 'item', action: cmd => addItem(...cmd.split('_'))},
-        {path: 'data', action: getWebFormattedData}
+        {path: 'data', action: getWebFormattedData},
+        {path: 'place', action: addPlace},
+        {path: 'static-fact', action: addStaticFact}
     ]
 }
