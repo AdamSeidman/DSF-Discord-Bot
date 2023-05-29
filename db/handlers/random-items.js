@@ -47,7 +47,7 @@ var getArray = function (arr) {
 // Add a place to db with provided information
 var addPlace = function (place) {
     let randomItems = db.getDatabase('randomItems')
-    randomItems.insert('Place', {
+    randomItems.insert('Places', {
         name: place
     }, () => {
         console.log(`'${place}' added to database.`)
