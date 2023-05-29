@@ -85,7 +85,7 @@ var sendImmediateMessage = async function (channelId, message) {
         console.error('Supplied channel ID was invalid.')
         return
     }
-    console.log(`\tMessage: ${message}`)
+    console.log(`\tMessage: (${channelId}) ${message}`)
     channel.send(message)
 }
 

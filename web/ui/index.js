@@ -101,11 +101,14 @@ var submitPlace = function () {
     placeInput.value = ''
 }
 
-var submitImmediateMsg = function () {
-    var { immMessageInput, immMessage, error } = getInput('immMessage', 'message')
-    if (error) return
-    var { channelInput, channel, error } = getInput('channel', 'channelId')
-    post(`immediate-message/${channel}_${immMessage}`)
+var submitImmediateMsg = async function () {
+    let immMessageInput = await document.getElementById('immMessageInput');
+    let message = immMessageInput.value.trim()
+    if (message.length === 0) return
+    let channelId = await document.getElementById('channelInput').value.trim()
+    if (channelId === 0) return
+    post(`immediate-message/${channelId}_${message}`)
+    immMessageInput.value = ''
 }
 
 // Submit http request to add item to .db

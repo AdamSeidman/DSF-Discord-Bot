@@ -229,6 +229,7 @@ var formattedData = function () {
     let data = {}
     data.people = lists.people.map(x => x.name.toLowerCase().trim())
     data.items = lists.items.map(x => x.name.toLowerCase().trim())
+    data.items = [...data.items, ...lists.places.map(x => x.name.toLowerCase().trim())]
     return data
 }
 
