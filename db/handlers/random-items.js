@@ -99,12 +99,20 @@ var addAdjective = function(adjective) {
 }
 
 // Add a fact template to db with string and boolean
-var addFact = function(fact, canRecurse) {
+var addFact = function(template, canRecurse) {
+    template = `[${template.replace(/'/g, '\'\'')}]`.replace('truth', '"truth"').replace('lie', '"lie"') // Add quotes where needed
+    try {
+        JSON.parse(template)
+    } catch (err) {
+        console.error('Provided fact template was invalid.')
+        console.error(err)
+        return
+    }
+
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Facts', {
         canRecurse: canRecurse,
-        fact: `[${fact.replace(/'/g, '\'\'')}]`
-            .replace('truth', '"truth"').replace('lie', '"lie"') // Add quotes where needed
+        fact: template
     }, () => {
         console.log('New fact was added to database.')
         refresh()
