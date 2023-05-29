@@ -14,11 +14,12 @@ const { messageHandlers  }= require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
 const setupWebServers = require('../base/web').setupWebServers
 
-// Bot Intentions
+// Bot Intentions/Partials
 const myIntents = ['Guilds', 'GuildVoiceStates', 'GuildMessages', 'DirectMessages',
     'MessageContent', 'GuildScheduledEvents']
+const myPartials = [Discord.Partials.Channel]
 
-const bot = new Discord.Client({ intents: myIntents })
+const bot = new Discord.Client({ intents: myIntents, partials: myPartials })
 bot.login(token) // Create bot and login
 
 bot.on('ready', () => {
@@ -31,7 +32,7 @@ bot.on('ready', () => {
     utils.getUserById = async id => await bot.users.fetch(id)
     console.log('DSF Robot Intitialized')
 })
-
+    
 bot.on('messageCreate', msg => {
     // When message is incoming, send to handler
     if (!msg.author.bot) {
