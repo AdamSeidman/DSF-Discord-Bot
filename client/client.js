@@ -26,9 +26,10 @@ bot.on('ready', () => {
     itemHandler.setupItems()
     dsfTerms.refreshTerms()
     scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
-    console.log('DSF Robot Intitialized')
     setupWebServers()
     utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
+    utils.getUserById = async id => await bot.users.fetch(id)
+    console.log('DSF Robot Intitialized')
 })
 
 bot.on('messageCreate', msg => {

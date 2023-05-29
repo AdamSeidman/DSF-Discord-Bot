@@ -70,8 +70,11 @@ var handlePhrases = function (msg) {
     }
 }
 
-var sendImmediateMessage = function (channelId, message) {
+var sendImmediateMessage = async function (channelId, message) {
     let channel = utils.getChannelById(channelId)
+    if (channel === undefined) {
+        channel = await utils.getUserById(channelId)
+    }
     if (channel === undefined) {
         console.error('Supplied channel ID was invalid.')
         return
