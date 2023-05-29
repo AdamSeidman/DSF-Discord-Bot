@@ -70,6 +70,12 @@ var handlePhrases = function (msg) {
     }
 }
 
+var printDMs = function (msg, isDM) {
+    if (isDM) {
+        console.log(`\n${msg.author.username}: ${msg.content}`)
+    }
+}
+
 var sendImmediateMessage = async function (channelId, message) {
     let channel = utils.getChannelById(channelId)
     if (channel === undefined) {
@@ -85,6 +91,7 @@ var sendImmediateMessage = async function (channelId, message) {
 
 module.exports = {
     messageHandlers: [
+        printDMs,
         handleCommand,
         handlePhrases,
         handleSoundEffect
