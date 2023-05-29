@@ -4,9 +4,8 @@
 Click here: [Invite Link](https://discord.com/oauth2/authorize?client_id=733410082607333536&scope=bot&permissions=451025435968)
   
 ## Other Information
-Guest Web Client hosted on [localhost:8080](http://localhost:8080/)  
-Admin Web Client hosted on [localhost:8081](http://localhost:8081/)
-  
+Web Client hosted on [localhost:8080](http://localhost:8080/)
+
 ## Build Setup
 1. Follow [these instructions](https://discordpy.readthedocs.io/en/latest/discord.html) on how to set up a bot with Discord.
 2. Retrieve your bot specific client id/token.
