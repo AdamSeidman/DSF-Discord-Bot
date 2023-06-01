@@ -57,11 +57,10 @@ var addPlace = function (place) {
 }
 
 // Add a person given to db with provided information
-var addPerson = function (name, nickname, isMale, isAlive) {
+var addPerson = function (name, isMale, isAlive) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('People', {
         name: name, // Four person categories
-        nickname: nickname,
         isMale: isMale,
         isAlive: isAlive
     }, () => {
