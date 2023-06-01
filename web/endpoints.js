@@ -21,7 +21,15 @@ const refresh = function () {
 module.exports = {
     endpoints: [
         {path: 'adjective', action: addAdjective},
-        {path: 'fact', action: cmd => addFact(...cmd.split('_'))},
+        {path: 'fact', action: cmd => {
+            let arr = cmd.split('_')
+            while (arr.length > 2) {
+                // Keep underscores in main fact
+                let el = arr.shift()
+                arr[0] = `${el}_${arr[0]}`
+            }
+            addFact(...cmd.split('_'))}
+        },
         {path: 'override-message', action: setOverrideMessage},
         {path: 'bot-online', action: setBotOnline},
         {path: 'restart-app', action: restartApp},
