@@ -167,7 +167,12 @@ var getInput = function (inputName, alertName, isPerson) {
     let elID = inputName + 'Input'
     data[elID] = document.getElementById(elID)
     data[inputName] = data[elID].value.trim()
-    if (data[inputName].length === 0 || 
+    if (inputName.toLowerCase().includes('fact')) {
+        if (data[inputName].length === 0) {
+            alert(`Provided ${alertName} is invalid.`)
+            data.error = true
+        }
+    } else if (data[inputName].length === 0 || 
         data[inputName].includes('_') || 
         data[inputName].includes('\'') || 
         data[inputName].includes('\\')) {
