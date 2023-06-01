@@ -99,12 +99,13 @@ var addAdjective = function(adjective) {
 
 // Add a fact template to db with string and boolean
 var addFact = function(template, canRecurse) {
-    template = `[${template.replace(/'/g, '\'\'')}]`.replace('truth', '"truth"').replace('lie', '"lie"') // Add quotes where needed
+    template = `[${template.replace(/'/g, '\'')}]` // Add quotes where needed
     try {
         JSON.parse(template)
     } catch (err) {
         console.error('Provided fact template was invalid.')
         console.error(err)
+        console.log(template)
         return
     }
 
