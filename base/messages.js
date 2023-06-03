@@ -37,7 +37,13 @@ var handleCommand = function (msg, isDM) {
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
         if (typeof command.response === 'boolean') {
-            msg.channel.send(facts.getRandomFact(command.response))
+            let times = 1
+            if (!isNaN(message[1])) {
+                times = Math.min(20, Number(message[1]))
+            }
+            for (let i = 0; i < times; i++) {
+                msg.channel.send(facts.getRandomFact(command.response))
+            }
         } else {
             command.response(msg, message)
         }
