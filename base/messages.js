@@ -122,5 +122,6 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendFact(msg, false, true)},
     {phrase: 'priusplease', response: postPriusPic},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)},
+    {phrase: 'updog', response: msg => msg.channel.send('good to know, thank you')}
 ]
