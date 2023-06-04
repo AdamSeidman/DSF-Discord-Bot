@@ -5,6 +5,7 @@
  * 
  * Exports:
  *     playMusic: Play a .mp3 in /assets
+ *                 - Returns true if sound is played
  *     stopMusic: Stop .mp3 and remove DSF from voice
  *     pauseMusic: Pause .mp3
  *     resumeMusic: Resume after pausing .mp3
@@ -72,6 +73,8 @@ var playMusic = async function (msg, song, isEffect) {
         })
 
         player.on('error', console.error)
+        
+        return true
     } else if (!isEffect) {
         msg.channel.send('You aren\'t in a voice channel.')
     }

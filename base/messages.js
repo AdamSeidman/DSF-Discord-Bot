@@ -54,13 +54,16 @@ var handleCommand = function (msg, isDM) {
 }
 
 // Checks messages for sound effects and plays them if applicable
-var handleSoundEffect = function (msg, isDM) {
+var handleSoundEffect = async function (msg, isDM) {
     if (isDM) return // Not possible to reach VC from dm
     if (getEffectsServersDB().includes(`${msg.channel.guild.id}`)) {
         let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
         let effect = effects.find(x => message.includes(x))
-        if (effect !== undefined) playMusic(msg, effect, true)
-        stats.bumpCount('Effect', msg.author.id)
+        if (effect !== undefined) {
+            if (await playMusic(msg, effect, true)) {
+                stats.bumpCount('Effect', msg.author.id)
+            }
+        }
     }
 }
 
