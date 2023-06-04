@@ -84,13 +84,18 @@ var copyObject = function (obj) {
     return JSON.parse(JSON.stringify(obj))
 }
 
+var matchesId = function (item) {
+    return item.match(/^<@\d{18}>$/)
+}
+
 module.exports = {
     HTTPheaders: headers,
-    restartApp: restartApp,
-    copyObject: copyObject,
-    randomNumber: randomNumber,
-    randomArrayItem: randomArrayItem,
-    probabilityCheck: probabilityCheck,
-    stripPunctuation: stripPunctuation,
-    fixPathCharacters: fixPathCharacters
+    matchesId,
+    restartApp,
+    copyObject,
+    randomNumber,
+    randomArrayItem,
+    probabilityCheck,
+    stripPunctuation,
+    fixPathCharacters
 }
