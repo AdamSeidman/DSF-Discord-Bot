@@ -85,7 +85,10 @@ var copyObject = function (obj) {
 }
 
 var matchesId = function (item) {
-    return item.match(/^<@\d{18}>$/)
+    if ((item || '').match(/^<@\d{18}>$/)) {
+        return item.match(/\d{18}/)[0]
+    }
+    return null
 }
 
 module.exports = {
