@@ -37,7 +37,7 @@ var handleCommand = function (msg, isDM) {
     message = message.slice(prefix.length).trim().split(' ')
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
-        if (command.track) stats.bumpCount(command.track, msg.member.id)
+        if (command.track) stats.bumpCount(command.track, msg.author.id)
 
         if (typeof command.response === 'boolean') {
             let times = 1
@@ -60,7 +60,7 @@ var handleSoundEffect = function (msg, isDM) {
         let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
         let effect = effects.find(x => message.includes(x))
         if (effect !== undefined) playMusic(msg, effect, true)
-        stats.bumpCount('Effect', msg.member.id)
+        stats.bumpCount('Effect', msg.author.id)
     }
 }
 
@@ -69,7 +69,7 @@ var handlePhrases = function (msg) {
     let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
     let phrase = knownPhrases.find(x => message.includes(x.phrase))
     if (phrase !== undefined) {
-        if (phrase.track) stats.bumpCount(phrase.track, msg.member.id)
+        if (phrase.track) stats.bumpCount(phrase.track, msg.author.id)
         phrase.response(msg) // From knownPhrases array
     } else {
         // Look for an adjective if no known message is found

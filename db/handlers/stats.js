@@ -52,7 +52,7 @@ var getStatistics = function(msg) {
     let result = {}
 
     tables.forEach(table => {
-        stats.database.each(`SELECT * FROM ${table} WHERE userId LIKE '${msg.member.id}' OR userId LIKE 0 ORDER BY count DESC`, (err, row) => {
+        stats.database.each(`SELECT * FROM ${table} WHERE userId LIKE '${msg.author.id}' OR userId LIKE 0 ORDER BY count DESC`, (err, row) => {
             if (result[table] === undefined) {
                 result[table] = err? 0 : row.count
                 if (Object.keys(result).length === tables.length) {
