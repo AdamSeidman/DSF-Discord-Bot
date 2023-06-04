@@ -40,7 +40,6 @@ var bumpCount = function (type, userId) {
             })
         }
     })
-
     stats.close()
 }
 
@@ -69,11 +68,11 @@ var getStatistics = async function(msg, args) {
                     let builder = `${user} requested the following:`
                     tables.forEach(item => builder += `\n> ${item}: ${result[item]}`)
                     msg.reply(builder)
-                    stats.close()
                 }
             }
         })
     })
+    stats.close()
 }
 
 module.exports = {
