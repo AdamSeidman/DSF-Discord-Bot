@@ -17,6 +17,7 @@ const utils = require('./utils')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
 const { getEffectsServersDB } = require('../db/handlers/server-info')
+const stats = require('../db/handlers/stats')
 
 // Handles 'dsf!' commands
 var handleCommand = function (msg, isDM) {
@@ -36,6 +37,8 @@ var handleCommand = function (msg, isDM) {
     message = message.slice(prefix.length).trim().split(' ')
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
+        if (command.track) stats.bumpCount(command.track, msg.member.id)
+
         if (typeof command.response === 'boolean') {
             let times = 1
             if (!isNaN(message[1])) {
@@ -57,6 +60,7 @@ var handleSoundEffect = function (msg, isDM) {
         let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
         let effect = effects.find(x => message.includes(x))
         if (effect !== undefined) playMusic(msg, effect, true)
+        stats.bumpCount('Effect', msg.member.id)
     }
 }
 
@@ -65,6 +69,7 @@ var handlePhrases = function (msg) {
     let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
     let phrase = knownPhrases.find(x => message.includes(x.phrase))
     if (phrase !== undefined) {
+        if (phrase.track) stats.bumpCount(phrase.track, msg.member.id)
         phrase.response(msg) // From knownPhrases array
     } else {
         // Look for an adjective if no known message is found
@@ -76,7 +81,7 @@ var handlePhrases = function (msg) {
     }
 }
 
-var printDMs = function (msg, isDM) {
+var handleDMs = function (msg, isDM) {
     if (isDM) {
         console.log(`\n${msg.author.username}: ${msg.content}`)
     }
@@ -97,7 +102,7 @@ var sendImmediateMessage = async function (channelId, message) {
 
 module.exports = {
     messageHandlers: [
-        printDMs,
+        handleDMs,
         handleCommand,
         handlePhrases,
         handleSoundEffect
@@ -116,12 +121,12 @@ var sendFact = function (msg, loud, lie) {
 
 // Generic requests with specific responses
 const knownPhrases = [
-    {phrase: 'loudfactplease', response: msg => sendFact(msg, true)},
-    {phrase: 'factplease', response: msg => sendFact(msg)},
-    {phrase: 'loudlieplease', response: msg => sendFact(msg, true, true)},
-    {phrase: 'lieplease', response: msg => sendFact(msg, false, true)},
-    {phrase: 'priusplease', response: postPriusPic},
-    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false)},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true)},
+    {phrase: 'loudfactplease', response: msg => sendFact(msg, true), track: 'Fact'},
+    {phrase: 'factplease', response: msg => sendFact(msg), track: 'Fact'},
+    {phrase: 'loudlieplease', response: msg => sendFact(msg, true, true), track: 'Lie'},
+    {phrase: 'lieplease', response: msg => sendFact(msg, false, true), track: 'Lie'},
+    {phrase: 'priusplease', response: postPriusPic, track: 'Prius'},
+    {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false), track: 'Acronym'},
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'},
     {phrase: 'updog', response: msg => msg.channel.send('good to know, thank you')}
 ]

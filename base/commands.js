@@ -25,6 +25,7 @@ const { randomArrayItem, restartApp } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
 const { adminId } = require('../client/config')
 const { constructFact } = require('./facts')
+const stats = require('../db/handlers/stats')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -167,17 +168,18 @@ var commandArray = [
     {phrase: 'restart', response: restart},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
-    {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.'},
-    {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.'},
+    {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.', track: 'Acronym'},
+    {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.', track: 'Acronym'},
     {phrase: 'effects', response: sendEffectsList, helpMsg: 'Sends list of available sound effects.'},
     {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.'},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
-    {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.'},
-    {phrase: 'lie', response: true, helpMsg: 'Sends a lie.'},
+    {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.', track: 'Fact'},
+    {phrase: 'lie', response: true, helpMsg: 'Sends a lie.', track: 'Lie'},
     {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.'},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
-    {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.'},
+    {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
+    {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.'},
     {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.'},
     {phrase: 'unsubscribe', response: msg => msg.reply('I politely decline.'), helpMsg: 'Unsubscribes you from this bot.'}
 ]

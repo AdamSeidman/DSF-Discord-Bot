@@ -12,7 +12,7 @@
 
 const sqlite3 = require('sqlite3').verbose()
 
-var dbList = ['serverInfo', 'randomItems', 'dsfTerms'] // List of used DBs
+var dbList = ['serverInfo', 'randomItems', 'dsfTerms', 'stats'] // List of used DBs
 var db = {removeArr: []}
 
 // Get all databases- Save to list
