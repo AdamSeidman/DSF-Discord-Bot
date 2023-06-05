@@ -14,6 +14,7 @@
 
 const db = require('../db')
 const utils = require('../../base/utils')
+const { getEffectsServersDB } = require('./server-info')
 
 var bumpCount = function (type, userId) {
     if (isNaN(userId)) return
@@ -60,13 +61,16 @@ var getStatistics = async function(msg, args) {
         user = 'You have'
     }
 
-    tables.forEach(table => {
+    let isEffectsGuild = getEffectsServersDB().includes(`${msg.guild.id}`)
+    let filteredTables = tables.filter(x => isEffectsGuild || x !== 'Effect')
+
+    filteredTables.forEach(table => {
         stats.database.each(`SELECT * FROM ${table} WHERE userId LIKE '${userId}' OR userId LIKE 0 ORDER BY count DESC`, (err, row) => {
             if (result[table] === undefined) {
                 result[table] = err? 0 : row.count
-                if (Object.keys(result).length === tables.length) {
+                if (Object.keys(result).length === filteredTables.length) {
                     let builder = `${user} requested the following:`
-                    tables.forEach(item => builder += `\n> ${item}: ${result[item]}`)
+                    filteredTables.forEach(item => builder += `\n> ${item}: ${result[item]}`)
                     msg.reply(builder)
                 }
             }
