@@ -124,7 +124,8 @@ var addFact = function(template, canRecurse) {
 var addStaticFact = function(fact) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('StaticFacts', {
-        sentence: fact
+        sentence: fact,
+        id: `X${Date.now()}`
     }, () => {
         console.log('New static fact was added to database.')
         refresh()
@@ -134,18 +135,18 @@ var addStaticFact = function(fact) {
 
 var getStaticFact = function () {
     let randomItems = db.getDatabase('randomItems')
-    let fact = randomArrayItem(getArray('staticFacts')).sentence
-    randomItems.database.run('DELETE FROM StaticFacts WHERE sentence LIKE \'(?)\'', [fact.split(/'|;/).join('%')], function (err) {
+    let fact = randomArrayItem(getArray('staticFacts'))
+    randomItems.database.run(`DELETE FROM StaticFacts WHERE id LIKE ${fact.id}`, [], function (err) {
         if (err) {
             console.log(err)
             console.log('Error occured in delete from static facts db.')
         } else {
-            console.log(`Sending static fact: ${fact}`)
+            console.log(`Sending static fact: ${fact.sentence}`)
         }
     })
     refresh()
     randomItems.close()
-    return fact
+    return fact.sentence
 }
 
 // Setup function for all random items
