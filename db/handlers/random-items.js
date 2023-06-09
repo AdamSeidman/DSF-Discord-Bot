@@ -136,7 +136,7 @@ var addStaticFact = function(fact) {
 var getStaticFact = function () {
     let randomItems = db.getDatabase('randomItems')
     let fact = randomArrayItem(getArray('staticFacts'))
-    randomItems.database.run(`DELETE FROM StaticFacts WHERE id LIKE ${fact.id}`, [], function (err) {
+    randomItems.database.run(`DELETE FROM StaticFacts WHERE id LIKE '${fact.id}'`, [], function (err) {
         if (err) {
             console.log(err)
             console.log('Error occured in delete from static facts db.')
