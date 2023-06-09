@@ -164,7 +164,7 @@ var restart = function (msg, args) {
 
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage},
-    {phrase: 'fact-check', response: factCheck},
+    {phrase: 'fact-check', response: factCheck, track: 'Fact'},
     {phrase: 'restart', response: restart},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},

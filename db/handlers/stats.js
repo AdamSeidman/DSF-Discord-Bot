@@ -16,10 +16,14 @@ const db = require('../db')
 const utils = require('../../base/utils')
 const { getEffectsServersDB } = require('./server-info')
 
-var bumpCount = function (type, userId) {
+var bumpCount = function (type, userId, times) {
     if (isNaN(userId)) return
     db.setUpDatabases()
     let stats = db.getDatabase('stats')
+
+    if (times === undefined) {
+        times = 1
+    }
 
     let count = 0
     stats.database.each(`SELECT * FROM ${type} WHERE userId LIKE '${userId}' OR userId LIKE 0 ORDER BY count DESC`, (err, row) => {
@@ -29,7 +33,7 @@ var bumpCount = function (type, userId) {
             return
         } else if (!isNaN(row.count)) {
             if (count === 0) {
-                count = Number(row.count) + 1
+                count = Number(row.count) + times
             }
             let statement = (count === 1)? `INSERT INTO ${type} (userId, count) VALUES ('${userId}', '${count}')`
                 : `UPDATE ${type} SET count='${count}' WHERE userId='${userId}'`

@@ -44,6 +44,9 @@ var handleCommand = function (msg, isDM) {
             if (!isNaN(message[1])) {
                 times = Math.min(20, Number(message[1]))
             }
+            if (times > 1 && command.track) {
+                stats.bumpCount(command.track, msg.author.id, Math.ceil(times - 1))
+            }
             for (let i = 0; i < times; i++) {
                 msg.channel.send(facts.getRandomFact(command.response))
             }
