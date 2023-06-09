@@ -59,7 +59,7 @@ var getStatistics = async function(msg, args) {
     let user = utils.matchesId(args[1])
     let userId = msg.author.id
     if (user) {
-        userId = Number(user)
+        userId = user
         user = `${(await utils.getUserById(user)).username} has`
     } else {
         user = 'You have'

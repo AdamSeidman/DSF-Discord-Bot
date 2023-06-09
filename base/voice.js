@@ -13,7 +13,7 @@
  *     effects: List of all effect names from folder
  */
 
-const { createAudioResource,createAudioPlayer, NoSubscriberBehavior,
+const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
 const fs = require('fs') // Need to read .mp3's from /assets
 
@@ -73,7 +73,7 @@ var playMusic = async function (msg, song, isEffect) {
         })
 
         player.on('error', console.error)
-        
+
         return true
     } else if (!isEffect) {
         msg.channel.send('You aren\'t in a voice channel.')
