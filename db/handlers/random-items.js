@@ -246,7 +246,7 @@ module.exports = {
     getRecursiveFacts: () => getArray('recursiveFacts'),
     getAdjectives: () => getArray('adjectives'),
     getStaticFact: getStaticFact,
-    hasStaticFacts: () => getArray('places').length > 0,
+    hasStaticFacts: () => getArray('staticFacts').length > 0,
     setupItems: setup,
     refreshItems: refresh,
     addPerson: addPerson,
