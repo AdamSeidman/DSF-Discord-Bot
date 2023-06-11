@@ -51,7 +51,8 @@ var playMusic = async function (msg, song, isEffect) {
         const connection = joinVoiceChannel({
             channelId: msg.member.voice.channel.id,
             guildId: msg.guildId,
-            adapterCreator: msg.channel.guild.voiceAdapterCreator
+            adapterCreator: msg.channel.guild.voiceAdapterCreator,
+            selfDeaf: false
         })
 
         servers[`#${msg.guildId}`] = {
