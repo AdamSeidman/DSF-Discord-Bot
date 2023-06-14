@@ -26,7 +26,7 @@ start scripts/start_dsf_bot.bat
 ```
 
 ### Note
-If you would like to enable the 'dsf!restart' command or the shut-up easter egg, put a Discord userId and/or bot userId in token.js as such:
+If you would like to enable the 'dsf!restart' command or the bot easter egg, put a Discord userId and/or bot userId in token.js as such:
 
 ``` javascript
 module.exports = { token: TOKEN, adminId: USER_ID_HERE, botId: BOT_USER_ID_HERE }
