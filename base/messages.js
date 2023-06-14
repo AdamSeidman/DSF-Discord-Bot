@@ -37,20 +37,19 @@ var handleCommand = function (msg, isDM) {
     message = message.slice(prefix.length).trim().split(' ')
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
-        if (command.track) stats.bumpCount(command.track, msg.author.id)
-
         if (typeof command.response === 'boolean') {
             let times = 1
             if (!isNaN(message[1])) {
                 times = Math.min(20, Number(message[1]))
             }
-            if (times > 1 && command.track) {
-                stats.bumpCount(command.track, msg.author.id, Math.ceil(times - 1))
+            if (command.track) {
+                stats.bumpCount(command.track, msg.author.id, Math.ceil(times))
             }
             for (let i = 0; i < times; i++) {
                 msg.channel.send(facts.getRandomFact(command.response))
             }
         } else {
+            if (command.track) stats.bumpCount(command.track, msg.author.id)
             command.response(msg, message)
         }
     }
@@ -113,7 +112,8 @@ module.exports = {
         handlePhrases,
         handleSoundEffect
     ],
-    sendImmediateMessage
+    sendImmediateMessage,
+    handleCommand
 }
 
 // Generic fact sending function (loud is tts) (lie negates the fact template)
