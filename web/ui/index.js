@@ -212,10 +212,6 @@ var setupPage = function () {
 }
 
 // POST commands to run .bat files from /scripts
-var sendDbCommand = function () {
-    post('open-external-db')
-}
-
 var sendRestartCommand = function () {
     post('restart-app')
 }
