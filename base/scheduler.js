@@ -13,11 +13,12 @@ const serverHandler = require('../db/handlers/server-info')
 const schedule = require('node-schedule')
 const utils = require('./facts')
 const { setBotOnline, shouldGenerateFact } = require('../web/override')
+const { randomNumber } = require('./utils')
 
 var dailyChannels = undefined
 
 // Schedule all daily channels
-var schedDailyChannels = function (clientChannels) {
+var scheduleDailyChannels = function (clientChannels) {
     if (dailyChannels !== undefined) return
     dailyChannels = []
     serverHandler.getDailyChannelsDB(clientChannels, dailyChannels) // Get channels
@@ -67,8 +68,20 @@ var removeDailyChannel = function (channel) {
     }
 }
 
+// Run generic task within random timeframe
+var genericReschedule = function (task, minSeconds, maxSeconds) {
+    let date = new Date()
+    let seconds = minSeconds + randomNumber(maxSeconds - minSeconds)
+    date.setSeconds(date.getSeconds() + seconds)
+    schedule.scheduleJob(date, async () => {
+        task()
+        genericReschedule(task, minSeconds, maxSeconds)
+    })
+}
+
 module.exports = {
-    scheduleDailyChannels: schedDailyChannels,
-    addDailyChannel: addDailyChannel,
-    removeDailyChannel: removeDailyChannel
+    scheduleDailyChannels,
+    addDailyChannel,
+    removeDailyChannel,
+    genericReschedule
 }   
