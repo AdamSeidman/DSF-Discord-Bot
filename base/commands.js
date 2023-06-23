@@ -14,6 +14,12 @@
  *             +msg: originating discord message
  *             +loud: boolean, determines if TTS is True
  *             +isPhrase: boolean, True is reply, False is channel msg
+ *     registerSlashCommands: Send command list to Discord for (/) commands
+ *         -params:
+ *             +client: Discord.js client object
+ *     handleSlashCommand: Handle incoming interactions that have commands
+ *         -params:
+ *             +interaction: The discord interaction object
  */
 
 const scheduler = require('./scheduler')
@@ -23,12 +29,16 @@ const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
 const { randomArrayItem, restartApp } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
-const { adminId } = require('../client/config')
+const { adminId, token, botId } = require('../client/config')
 const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
+const messages = require('./messages')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
+
+const MIN_SILENCE_SECONDS = 60 * 5
+const MAX_SILENCE_SECONDS = 60 * 30
 
 // Command tells the schedules to add or remove a discord channel from list of dsf's
 var setupDailyChannel = function (msg) {
@@ -162,16 +172,94 @@ var restart = function (msg, args) {
     }
 }
 
+// Update/Set all slash commands in cached guilds
+var registerSlashCommands = async function (client) {
+    if (client === undefined || commandArray.data) return
+
+    const commands = []
+    client.commands = new Discord.Collection()
+    commandArray.forEach(cmd => {
+        cmd.data = new Discord.SlashCommandBuilder()
+            .setName(cmd.phrase)
+            .setDescription(cmd.helpMsg || cmd.altMsg)
+        if (cmd.hasArgs) {
+            cmd.data.addIntegerOption(option =>
+                option.setName('args')
+                    .setDescription('Arguments for command.')
+                    .setRequired(true))
+        }
+        cmd.execute = interaction => {
+            let args = undefined
+            if (cmd.hasArgs) {
+                args = `${interaction.options.getInteger('args', true)}`
+            }
+            interaction.content = `${prefix}${cmd.phrase} ${args || ''}`
+            messages.handleCommand(interaction, false)
+        }
+        client.commands.set(cmd.phrase, cmd)
+        commands.push(cmd.data.toJSON())
+    })
+
+    const rest = new Discord.REST().setToken(token)
+
+    client.guilds.cache.forEach(async (guild) => {
+        try {
+            console.log(`Refreshing ${commands.length} application slash commands for Guild ${guild.id}.`)
+            await rest.put(Discord.Routes.applicationGuildCommands(botId, guild.id))
+        } catch (err) {
+            console.error(`Error in deploying slash commands for Guild ${guild.id}`)
+            console.error(err)
+        }
+    })
+    console.log('Finished reloading slash commands.')
+}
+
+let hasRegisteredSilence = false
+var startSilence = function (msg) {
+    if (!hasRegisteredSilence) {
+        console.log('Registering silence events...')
+        hasRegisteredSilence = true
+
+        let task = () => {
+            voice.getKeepAliveIds().forEach(guildId => {
+                voice.playMusic(guildId, undefined, true, true)
+            })
+        }
+        scheduler.genericReschedule(task, MIN_SILENCE_SECONDS, MAX_SILENCE_SECONDS)
+    }
+
+    // Play silence- easiest thing to start this implementation
+    voice.playMusic(msg, 'silence', false, true)
+}
+
+var handleSlashCommand = async function (interaction) {
+    const command = interaction.client.commands.get(interaction.commandName)
+
+    if (!command) {
+        console.error(`Requested command not found: ${command}`)
+        console.error(`handleSlashCommand() error happened with Guild ${interaction.guild.id}`)
+    }
+
+    try {
+        await command.execute(interaction)
+    } catch (err) {
+        console.error('Error in handleSlashCommand() executing interaction')
+        console.error(err)
+        await ((interaction.replied || interaction.deferred)?
+            interaction.followUp : interaction.reply)({content: 'There was an error while executing this command!', ephemeral: true })
+    }
+}
+
 var commandArray = [
-    {phrase: 'help', response: sendHelpMessage},
-    {phrase: 'fact-check', response: factCheck, track: 'Fact'},
-    {phrase: 'restart', response: restart},
+    {phrase: 'help', response: sendHelpMessage, altMsg: 'Send message with available commands.'},
+    {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.'},
+    {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)'},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
-    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.'},
+    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.', track: 'Acronym'},
     {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.', track: 'Acronym'},
     {phrase: 'effects', response: sendEffectsList, helpMsg: 'Sends list of available sound effects.'},
-    {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.'},
+    {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.', hasArgs: true},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.', track: 'Fact'},
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.', track: 'Lie'},
@@ -179,13 +267,16 @@ var commandArray = [
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
+    {phrase: 'silence', response: startSilence, helpMsg: 'Silence, occasionally broken up by effects.'},
     {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.'},
     {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.'},
     {phrase: 'unsubscribe', response: msg => msg.reply('I politely decline.'), helpMsg: 'Unsubscribes you from this bot.'}
 ]
 
 module.exports = {
+    prefix,
     commands: commandArray,
-    prefix: prefix,
-    sendDsfAcronym: sendDsfAcronym
+    sendDsfAcronym,
+    registerSlashCommands,
+    handleSlashCommand
 }

@@ -33,7 +33,19 @@ fs.readdir(`${dir}${fxDir}`, (err, files) => {
 })
 
 // Exported function to play music
-var playMusic = async function (msg, song, isEffect) {
+var playMusic = async function (msg, song, isEffect, keepAlive) {
+    if (song === undefined) {
+        song = effectNames[Math.floor(Math.random() * effectNames.length)]
+    }
+
+    if (typeof(msg) !== 'object') {
+        msg = servers[`#${msg}`].msg
+        if (msg === undefined) {
+            console.error('Invalid guildId provided for replaying music.')
+            return
+        }
+    }
+
     if (msg.member.voice.channel) {
         if (song === undefined || (isEffect && !effectNames.includes(song))) {
             console.log('Non-existant effect requested.')
@@ -58,7 +70,9 @@ var playMusic = async function (msg, song, isEffect) {
         servers[`#${msg.guildId}`] = {
             connection: connection,
             player: player,
-            paused: false
+            paused: false,
+            keepAlive: false || keepAlive,
+            msg: msg
         }
 
         // Create new resource from file
@@ -66,10 +80,18 @@ var playMusic = async function (msg, song, isEffect) {
         connection.subscribe(player)
 
         player.on(AudioPlayerStatus.Idle, () => {
-            if (!servers[`#${msg.guildId}`].paused) {
-                // Only stop if unpaused
-                connection.destroy()
-                delete servers[`#${msg.guildId}`]
+            let server = servers[`#${msg.guildId}`]
+
+            if (!server.paused) {
+                if (server.keepAlive) {
+                    // If supposed to stay alive, pause
+                    server.paused = true
+                    server.player.pause()
+                } else {
+                    // Only stop if unpaused
+                    connection.destroy()
+                    delete servers[`#${msg.guildId}`]
+                }
             }
         })
 
@@ -94,7 +116,7 @@ var endMusic = function (msg) {
     }
 }
 
-var pauseMusic = function(msg) {
+var pauseMusic = function (msg) {
     if (msg.member.voice.channel) {
         let server = servers[`#${msg.guildId}`]
 
@@ -109,7 +131,7 @@ var pauseMusic = function(msg) {
     }
 }
 
-var resumeMusic = function(msg) {
+var resumeMusic = function (msg) {
     if (msg.member.voice.channel) {
         let server = servers[`#${msg.guildId}`]
         if (server === undefined || !server.paused) {
@@ -123,13 +145,22 @@ var resumeMusic = function(msg) {
     }
 }
 
+var getKeepAliveIds = function () {
+    let results = []
+    Object.keys(servers).forEach(id => {
+        if (servers[id].keepAlive) results.push(servers[id].msg.guildId)
+    })
+    return results
+}
+
 var endAll = () => Object.keys(servers).forEach(x => endMusic({guildId: x.slice(1)}))
 
 module.exports = {
-    playMusic: playMusic,
+    playMusic,
+    pauseMusic,
+    resumeMusic,
+    endAll,
     stopMusic: endMusic,
-    pauseMusic: pauseMusic,
-    resumeMusic: resumeMusic,
-    endAll: endAll,
-    effects: effectNames
+    effects: effectNames,
+    getKeepAliveIds
 }
