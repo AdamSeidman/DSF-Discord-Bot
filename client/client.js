@@ -30,7 +30,7 @@ bot.on('ready', () => {
     setupWebServers()
     utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
     utils.getUserById = async id => await bot.users.fetch(id)
-    //commands.registerSlashCommands(bot) // TODO
+    require('../base/commands').registerSlashCommands(bot)
     console.log('DSF Robot Intitialized')
 })
     
@@ -47,7 +47,7 @@ bot.on('messageCreate', msg => {
 
 bot.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return
-    //commands.handleSlashCommand(interaction)
+    require('../base/commands').handleSlashCommand(interaction)
 })
 
 bot.on('error', console.error)

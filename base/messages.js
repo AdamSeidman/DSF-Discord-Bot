@@ -20,7 +20,7 @@ const { getEffectsServersDB } = require('../db/handlers/server-info')
 const stats = require('../db/handlers/stats')
 
 // Handles 'dsf!' commands
-var handleCommand = function (msg, isDM) {
+var handleCommand = function (msg, isDM, isSlashCommand) {
     let message = msg.content.toLowerCase().trim()
     if (message.length < prefix.length) {
         return // Messages won't be this small- avoids slicing problems
@@ -43,10 +43,15 @@ var handleCommand = function (msg, isDM) {
                 times = Math.min(20, Number(message[1]))
             }
             if (command.track) {
-                stats.bumpCount(command.track, msg.author.id, Math.ceil(times))
+                stats.bumpCount(command.track, msg.member.id, Math.ceil(times))
             }
             for (let i = 0; i < times; i++) {
-                msg.channel.send(facts.getRandomFact(command.response))
+                let fact = facts.getRandomFact(command.response)
+                if (isSlashCommand) {
+                    msg.reply(fact)
+                } else {
+                    msg.channel.send(fact)
+                }
             }
         } else {
             if (command.track) stats.bumpCount(command.track, msg.author.id)

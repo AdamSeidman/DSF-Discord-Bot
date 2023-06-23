@@ -32,7 +32,6 @@ const serverHandler = require('../db/handlers/server-info')
 const { adminId, token, botId } = require('../client/config')
 const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
-const messages = require('./messages')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -173,7 +172,7 @@ var restart = function (msg, args) {
 }
 
 // Update/Set all slash commands in cached guilds
-var registerSlashCommands = async function (client) {
+var registerSlashCommands = function (client) {
     if (client === undefined || commandArray.data) return
 
     const commands = []
@@ -194,7 +193,7 @@ var registerSlashCommands = async function (client) {
                 args = `${interaction.options.getInteger('args', true)}`
             }
             interaction.content = `${prefix}${cmd.phrase} ${args || ''}`
-            messages.handleCommand(interaction, false)
+            require('./messages').handleCommand(interaction, false, true)
         }
         client.commands.set(cmd.phrase, cmd)
         commands.push(cmd.data.toJSON())
@@ -202,15 +201,13 @@ var registerSlashCommands = async function (client) {
 
     const rest = new Discord.REST().setToken(token)
 
-    client.guilds.cache.forEach(async (guild) => {
-        try {
-            console.log(`Refreshing ${commands.length} application slash commands for Guild ${guild.id}.`)
-            await rest.put(Discord.Routes.applicationGuildCommands(botId, guild.id))
-        } catch (err) {
-            console.error(`Error in deploying slash commands for Guild ${guild.id}`)
-            console.error(err)
-        }
-    })
+    try {
+        console.log(`Refreshing ${commands.length} application slash commands.`)
+        rest.put(Discord.Routes.applicationGuildCommands(botId, '733777729865908306'), {body: commands}) // TODO!!
+    } catch (err) {
+        console.error('Error in deploying slash commands')
+        console.error(err)
+    }
     console.log('Finished reloading slash commands.')
 }
 
