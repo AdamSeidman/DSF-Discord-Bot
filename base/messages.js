@@ -54,7 +54,7 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
                 }
             }
         } else {
-            if (command.track) stats.bumpCount(command.track, msg.author.id)
+            if (command.track) stats.bumpCount(command.track, msg.member.id)
             command.response(msg, message)
         }
     }

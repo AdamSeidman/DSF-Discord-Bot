@@ -39,6 +39,14 @@ const prefix = 'dsf!'
 const MIN_SILENCE_SECONDS = 60 * 5
 const MAX_SILENCE_SECONDS = 60 * 30
 
+var sendOrReply = function (msg, content) {
+    if (msg.author) {
+        msg.channel.send(content)
+    } else {
+        msg.reply(content)
+    }
+}
+
 // Command tells the schedules to add or remove a discord channel from list of dsf's
 var setupDailyChannel = function (msg) {
     scheduler.addDailyChannel(msg.channel)
@@ -57,7 +65,7 @@ var deleteFunction = function (msg, args) {
     } else {
         const parsed = Number.parseInt(args[1])
         if (Number.isNaN(parsed) || parsed < 1 || parsed > 10) {
-            msg.channel.send('Argument should be number from 1-10.')
+            sendOrReply(msg, 'Argument should be number from 1-10.')
             return
         }
         msg.channel.bulkDelete(parsed + 1) // Bulk delete
@@ -102,7 +110,7 @@ var sendHelpMessage = function (msg) {
             .setDescription(`Enter '${prefix}' followed by desired command.`)
             .addFields(...helpMessages)
     }
-    msg.channel.send({embeds: [helpEmbed]})
+    sendOrReply(msg, {embeds: [helpEmbed]})
 }
 
 // Send a DSF acronym message.
@@ -112,7 +120,7 @@ var sendDsfAcronym = function (msg, loud, isPhrase) {
     if (isPhrase) {
         msg.reply({content: acronym, tts: loud})
     } else {
-        msg.channel.send({content: acronym, tts: loud})
+        sendOrReply(msg, {content: acronym, tts: loud})
     }
 }
 
@@ -130,14 +138,14 @@ var factCheck = function (msg, args) {
     args.shift()
     let template = args.join(' ')
     if (template.length == 0 || template.charAt(0) !== '[') {
-        msg.channel.send('You need to send a fact template.')
+        sendOrReply(msg, 'You need to send a fact template.')
         return
     }
     let builder = [`Provided template:\n> ${template}\n\nTen sample facts:\n`]
     try {
         template = JSON.parse(template)
     } catch (err) {
-        msg.channel.send('Input was not valid JSON.')
+        sendOrReply(msg, 'Input was not valid JSON.')
         return
     }
     for (let i = 0; i < 10; i++) {
@@ -150,17 +158,17 @@ var factCheck = function (msg, args) {
     let out = []
     while (builder.length > 0) {
         if (out.join('').concat(builder[0]).length >= 2000) {
-            msg.channel.send(out.join(''))
+            sendOrReply(msg, out.join(''))
             out = []
         }
         out.push(builder.shift())
     }
-    msg.channel.send(out.join(''))
+    sendOrReply(msg, out.join(''))
 }
 
 // Restart the software
 var restart = function (msg, args) {
-    if (msg.author.id == adminId) {
+    if (msg.member.id == adminId) {
         args.shift()
         if (args != undefined && args.length > 0) {
             console.log(`\n\r${args.join(' ')}`)
@@ -182,7 +190,7 @@ var registerSlashCommands = function (client) {
             .setName(cmd.phrase)
             .setDescription(cmd.helpMsg || cmd.altMsg)
         if (cmd.hasArgs) {
-            cmd.data.addIntegerOption(option =>
+            cmd.data.addStringOption(option =>
                 option.setName('args')
                     .setDescription('Arguments for command.')
                     .setRequired(true))
@@ -190,7 +198,7 @@ var registerSlashCommands = function (client) {
         cmd.execute = interaction => {
             let args = undefined
             if (cmd.hasArgs) {
-                args = `${interaction.options.getInteger('args', true)}`
+                args = `${interaction.options.getString('args', true)}`
             }
             interaction.content = `${prefix}${cmd.phrase} ${args || ''}`
             require('./messages').handleCommand(interaction, false, true)
@@ -203,7 +211,7 @@ var registerSlashCommands = function (client) {
 
     try {
         console.log(`Refreshing ${commands.length} application slash commands.`)
-        rest.put(Discord.Routes.applicationGuildCommands(botId, '733777729865908306'), {body: commands}) // TODO!!
+        rest.put(Discord.Routes.applicationCommands(botId), {body: commands})
     } catch (err) {
         console.error('Error in deploying slash commands')
         console.error(err)
@@ -238,6 +246,9 @@ var handleSlashCommand = async function (interaction) {
     }
 
     try {
+        if (commandArray.find(x => x.phrase === interaction.commandName).needsReply) {
+            await interaction.reply({content: 'Working...', ephemeral: true})
+        }
         await command.execute(interaction)
     } catch (err) {
         console.error('Error in handleSlashCommand() executing interaction')
@@ -249,24 +260,24 @@ var handleSlashCommand = async function (interaction) {
 
 var commandArray = [
     {phrase: 'help', response: sendHelpMessage, altMsg: 'Send message with available commands.'},
-    {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.'},
-    {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)'},
-    {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.'},
-    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true},
+    {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.', hasArgs: true},
+    {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)', needsReply: true},
+    {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.', needsReply: true},
+    {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true, needsReply: true},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.', track: 'Acronym'},
     {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.', track: 'Acronym'},
     {phrase: 'effects', response: sendEffectsList, helpMsg: 'Sends list of available sound effects.'},
-    {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.', hasArgs: true},
-    {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.'},
+    {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.', hasArgs: true, needsReply: true},
+    {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.', needsReply: true},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.', track: 'Fact'},
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.', track: 'Lie'},
-    {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.'},
-    {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.'},
+    {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.', needsReply: true},
+    {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.', needsReply: true},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},
-    {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.'},
-    {phrase: 'silence', response: startSilence, helpMsg: 'Silence, occasionally broken up by effects.'},
+    {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.', needsReply: true},
+    {phrase: 'silence', response: startSilence, helpMsg: 'Silence, occasionally broken up by effects.', needsReply: true},
     {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.'},
-    {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.'},
+    {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.', needsReply: true},
     {phrase: 'unsubscribe', response: msg => msg.reply('I politely decline.'), helpMsg: 'Unsubscribes you from this bot.'}
 ]
 
