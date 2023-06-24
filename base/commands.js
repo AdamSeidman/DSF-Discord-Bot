@@ -107,7 +107,7 @@ var sendHelpMessage = function (msg) {
         helpEmbed = new Discord.EmbedBuilder()
             .setColor('#0099ff')
             .setTitle('DSF Commands List')
-            .setDescription(`Enter '${prefix}' followed by desired command.`)
+            .setDescription(`Enter '${prefix}' or '/' followed by desired command.`)
             .addFields(...helpMessages)
     }
     sendOrReply(msg, {embeds: [helpEmbed]})
