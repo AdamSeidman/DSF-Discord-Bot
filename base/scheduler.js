@@ -22,7 +22,7 @@ var scheduleDailyChannels = function (clientChannels) {
     if (dailyChannels !== undefined) return
     dailyChannels = []
     serverHandler.getDailyChannelsDB(clientChannels, dailyChannels) // Get channels
-    schedule.scheduleJob({hour: 18, minute: 13}, async () => { // 6:13 PM
+    schedule.scheduleJob({hour: 18, minute: 13, second: 30}, async () => { // 6:13 PM
         // Send out fact at scheduled time
         let fact = utils.getRandomFact(false, true)
         dailyChannels.forEach(channel => {
