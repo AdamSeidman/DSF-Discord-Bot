@@ -32,6 +32,7 @@ const serverHandler = require('../db/handlers/server-info')
 const { adminId, token, botId } = require('../client/config')
 const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
+const randomItems = require('../db/handlers/random-items')
 
 var helpEmbed = undefined
 const prefix = 'dsf!'
@@ -179,6 +180,35 @@ var restart = function (msg, args) {
     }
 }
 
+var dbDump = function (msg) {
+    let data = {}
+    data.Items = randomItems.getAllItems()
+    data.People = randomItems.getAllPeople()
+    data.FactTemplates = randomItems.getAllFacts()
+    data.Places = randomItems.getPlaces()
+    data.DSF_Adverbs = dsfTerms.getAdverbs()
+    data.DSF_Adjectives = dsfTerms.getAdjectives()
+    data.DSF_Nouns = dsfTerms.getNouns()
+
+    let builder = []
+    Object.keys(data).forEach(key => {
+        builder.push(`\n${key}:\n`)
+        data[key].forEach(item => {
+            builder.push(`> ${JSON.stringify(item)}\n`)
+        })
+    })
+    let out = []
+    while (builder.length > 0) {
+        if (out.join('').concat(builder[0]).length >= 2000) {
+            msg.channel.send(out.join(''))
+            out = []
+        }
+        out.push(builder.shift())
+    }
+    msg.channel.send(out.join(''))
+    msg.channel.send('Done!')
+}
+
 // Update/Set all slash commands in cached guilds
 var registerSlashCommands = function (client) {
     if (client === undefined || commandArray.data) return
@@ -263,6 +293,7 @@ var commandArray = [
     {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.', hasArgs: true},
     {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)', needsReply: true},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.', needsReply: true},
+    {phrase: 'db-dump', response: dbDump, altMsg: 'Shows all database items.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true, needsReply: true},
     {phrase: 'dsf', response: msg => sendDsfAcronym(msg, false), helpMsg: 'Gives a DSF acronym.', track: 'Acronym'},
     {phrase: 'dsf-loud', response: msg => sendDsfAcronym(msg, true), helpMsg: 'A DSF acronym, but loud.', track: 'Acronym'},
