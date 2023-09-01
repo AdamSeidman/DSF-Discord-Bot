@@ -60,7 +60,13 @@ var getStatistics = async function(msg, args) {
     let userId = msg.member.id
     if (user) {
         userId = user
-        user = `${(await utils.getUserById(user)).username} has`
+        try {
+            user = `${(await utils.getUserById(user)).username} has`
+        } catch (err) {
+            console.log('Unrecognized user had stats requested.')
+            msg.reply('The requested user is unknown.')
+            return
+        }
     } else {
         user = 'You have'
     }
