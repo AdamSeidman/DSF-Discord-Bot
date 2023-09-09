@@ -27,7 +27,7 @@ const Discord = require('discord.js')
 const voice = require('./voice')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
-const { randomArrayItem, restartApp } = require('./utils')
+const { randomArrayItem, restartApp, randomNumber } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
 const { adminId, token, botId } = require('../client/config')
 const { constructFact } = require('./facts')
@@ -209,6 +209,19 @@ var dbDump = function (msg) {
     msg.channel.send('Done!')
 }
 
+var postGibberish = function (msg) {
+    let factArr = []
+    for (let i = 0; i < 5; i++) {
+        factArr.push(constructFact([['fact']], true))
+    }
+    factArr = factArr.join(' ').split(' ')
+    let sentence = []
+    for (let i = 0; i < randomNumber(10) + 3; i++) {
+        sentence.push(randomArrayItem(factArr))
+    }
+    sendOrReply(msg, sentence.join(' '))
+}
+
 // Update/Set all slash commands in cached guilds
 var registerSlashCommands = function (client) {
     if (client === undefined || commandArray.data) return
@@ -301,6 +314,7 @@ var commandArray = [
     {phrase: 'effects-enabled', response: setSoundEffectsEnabled, helpMsg: 'Enables or disables sound effects on the server.', hasArgs: true, needsReply: true},
     {phrase: 'end-daily', response: deleteDailyChannel, helpMsg: 'Stops sending daily stupid facts to this channel.', needsReply: true},
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.', track: 'Fact'},
+    {phrase: 'gibberish', response: postGibberish, helpMsg: 'Just try it...'},
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.', track: 'Lie'},
     {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.', needsReply: true},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.', needsReply: true},
