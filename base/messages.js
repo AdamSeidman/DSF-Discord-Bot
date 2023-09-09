@@ -85,7 +85,12 @@ var handlePhrases = function (msg) {
         // Look for an adjective if no known message is found
         const phrases = utils.stripPunctuation(msg.content.toLowerCase().trim()).split(' ')
         let term = getAdjectives().find(adj => phrases.includes(adj))
-        if (term === undefined) return
+        if (term === undefined) {
+            let phrase = phrases.join(' ')
+            term = getAdjectives().filter(adj => adj.includes(' ')).find(adj => phrase.includes(adj))
+            if (term === undefined) return
+            else term = `'${term}'`
+        }
 
         msg.channel.send(`Did someone say ${term}?\nThis calls for a fact!\nReady? Here it is:\n${facts.getRandomFact()}`)
     }
