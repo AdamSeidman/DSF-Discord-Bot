@@ -149,6 +149,11 @@ var getStaticFact = function () {
     return fact.sentence
 }
 
+var additionalPhrases = []
+var getAdditionalPhrases = function () {
+    return additionalPhrases
+}
+
 // Setup function for all random items
 var setup = function () {
     if (lists.items.length === 0) {
@@ -175,6 +180,10 @@ var setup = function () {
 
             randomItems.forEach('StaticFacts', row => { // Load Static Facts
                 lists.staticFacts.push(row)
+            })
+
+            randomItems.forEach('Phrases', row => { // Load additional known phrases
+                additionalPhrases.push(row)
             })
 
             randomItems.forEach('People', row => { // Load People
@@ -255,5 +264,6 @@ module.exports = {
     addFact: addFact,
     addPlace: addPlace,
     addStaticFact: addStaticFact,
-    getWebFormattedData: formattedData
+    getWebFormattedData: formattedData,
+    getAdditions: getAdditionalPhrases
 }

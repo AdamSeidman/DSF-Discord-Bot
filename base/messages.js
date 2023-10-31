@@ -12,7 +12,7 @@
 
 const facts = require('./facts')
 const { commands, prefix, sendDsfAcronym } = require('./commands')
-const { getAdjectives } = require('../db/handlers/random-items')
+const { getAdjectives, getAdditions } = require('../db/handlers/random-items')
 const utils = require('./utils')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
@@ -74,13 +74,25 @@ var handleSoundEffect = async function (msg, isDM) {
     }
 }
 
+var hasLoadedAdditions = false
+
 // Check through lists of knownPhrases for commands, and generic adjectives for fact blurb
 var handlePhrases = function (msg) {
+    if (!hasLoadedAdditions) {
+        hasLoadedAdditions = true
+        getAdditions().forEach(x => knownPhrases.push(x))
+    }
     let message = utils.stripPunctuation(msg.content.toLowerCase()).trim().split(' ').join('')
     let phrase = knownPhrases.find(x => message.includes(x.phrase))
     if (phrase !== undefined) {
         if (phrase.track) stats.bumpCount(phrase.track, msg.author.id)
-        phrase.response(msg) // From knownPhrases array
+        if (typeof phrase.response === 'function') {!
+            phrase.response(msg) // From knownPhrases array
+        } else if (phrase.isReply == 1) {
+            msg.reply(phrase.response)
+        } else {
+            msg.channel.send(phrase.response)
+        }
     } else {
         // Look for an adjective if no known message is found
         const phrases = utils.stripPunctuation(msg.content.toLowerCase().trim()).split(' ')
@@ -143,6 +155,6 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendFact(msg, false, true), track: 'Lie'},
     {phrase: 'priusplease', response: postPriusPic, track: 'Prius'},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false), track: 'Acronym'},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'},
-    {phrase: 'updog', response: msg => msg.channel.send('good to know, thank you')}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'}//////////,
+    ////{phrase: 'updog', response: msg => msg.channel.send('good to know, thank you')}
 ]
