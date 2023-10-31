@@ -86,7 +86,7 @@ var handlePhrases = function (msg) {
     let phrase = knownPhrases.find(x => message.includes(x.phrase))
     if (phrase !== undefined) {
         if (phrase.track) stats.bumpCount(phrase.track, msg.author.id)
-        if (typeof phrase.response === 'function') {!
+        if (typeof phrase.response === 'function') {
             phrase.response(msg) // From knownPhrases array
         } else if (phrase.isReply == 1) {
             msg.reply(phrase.response)
@@ -155,6 +155,5 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendFact(msg, false, true), track: 'Lie'},
     {phrase: 'priusplease', response: postPriusPic, track: 'Prius'},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false), track: 'Acronym'},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'}//////////,
-    ////{phrase: 'updog', response: msg => msg.channel.send('good to know, thank you')}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'}
 ]
