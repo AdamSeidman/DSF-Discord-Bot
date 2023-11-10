@@ -10,7 +10,7 @@
 
 const itemHandler = require('../db/handlers/random-items')
 const utils = require('./utils')
-var { shouldGenerateFact, overrideMessage } = require('../web/override')
+var { shouldGenerateFact, overrideMessage, setBotOnline } = require('../web/override')
 
 const PREP_PREFIX = 'prepare' // Term prefix in fact template for pronouns and articles
 
@@ -19,7 +19,10 @@ module.exports = {
         if (shouldGenerateFact()) {
             // Override is not in effect
             if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.2)) {
-                return itemHandler.getStaticFact()
+                let fact = itemHandler.getStaticFact()
+                if (fact !== undefined) {
+                    return fact
+                }
             }
             let fact = utils.randomArrayItem(itemHandler.getAllFacts())
             let resFact = constructFact(fact, isLie) + '.' // Call constructFact with first pass (can be recursive)
@@ -31,7 +34,11 @@ module.exports = {
 
         } else {
             // If web UI says to override message, send that message.
-            return (isLie? 'This is a lie: ' : '') + overrideMessage()
+            let fact = (isLie? 'This is a lie: ' : '') + overrideMessage()
+            if (isDaily) {
+                setBotOnline(false)
+            }
+            return fact
         }
     },
     constructFact: (fact, isLie) => {

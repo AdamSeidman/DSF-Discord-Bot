@@ -136,6 +136,7 @@ var addStaticFact = function(fact) {
 var getStaticFact = function () {
     let randomItems = db.getDatabase('randomItems')
     let fact = randomArrayItem(getArray('staticFacts'))
+    if (fact === undefined || fact.id === undefined) return undefined
     randomItems.database.run(`DELETE FROM StaticFacts WHERE id LIKE '${fact.id}'`, [], function (err) {
         if (err) {
             console.log(err)

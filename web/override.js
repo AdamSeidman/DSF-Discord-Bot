@@ -10,7 +10,7 @@ var overrideMessage = ''
 
 // These two functions are the ones called in endpoints.js
 var setBotOnline = function (online) {
-    shouldGenerateFact = online === undefined || online.length === 0
+    shouldGenerateFact = online === undefined || online.length === 0 || online === false
     console.log(`Bot Online: ${shouldGenerateFact}`)
 }
 
