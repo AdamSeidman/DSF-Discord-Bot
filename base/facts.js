@@ -18,7 +18,7 @@ module.exports = {
     getRandomFact: function (isLie, isDaily) {
         if (shouldGenerateFact()) {
             // Override is not in effect
-            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.2)) {
+            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.05)) {
                 let fact = itemHandler.getStaticFact()
                 if (fact !== undefined) {
                     return fact
