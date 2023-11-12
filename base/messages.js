@@ -125,7 +125,7 @@ var sendImmediateMessage = async function (channelId, message) {
         log.Warn('Supplied channel ID was invalid.', 'Messages', 'sendImmediateMessage')
         return
     }
-    log.Info(`Sending immediate message.`, 'Messages', 'sendImmediateMessage', `(${channelId}) ${message}`)
+    log.Info('Sending immediate message.', 'Messages', 'sendImmediateMessage', `(${channelId}) ${message}`)
     channel.send(message)
 }
 
