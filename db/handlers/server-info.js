@@ -93,8 +93,6 @@ var getEffectsGuilds = function () {
     return copyObject(effectsGuilds) // Only copy local
 }
 
-getEffectsGuilds() // Setup array
-
 // Add sound effects to server
 var addEffectsServer = function (channel) {
     db.setUpDatabases()
@@ -152,5 +150,6 @@ module.exports = {
     addDailyChannelDB: addDailyChannel,
     removeDailyChannelDB: removeDailyChannel,
     modifyEffectsServerDB: addOrRemoveEffectsServer,
-    getEffectsServersDB: getEffectsGuilds
+    getEffectsServersDB: getEffectsGuilds,
+    setupEffectsServers: () => { getEffectsGuilds() }
 }

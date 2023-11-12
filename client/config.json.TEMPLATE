@@ -47,7 +47,7 @@
         "GuildScheduledEvents"
     ],
     "partials": [
-        "Channel"
+        1
     ],
     "loggerOptions": {
         "folderPath": "./logs/",

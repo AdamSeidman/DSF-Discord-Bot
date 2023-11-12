@@ -12,6 +12,7 @@ const { randomNumber } = require('../base/utils')
 const { setupWebServers } = require('../base/web')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { log, initLogging } = require('../base/logger')
+const serverInfo = require('../db/handlers/server-info')
 const { messageHandlers  } = require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
 
@@ -20,20 +21,22 @@ bot.login(config.token) // Create bot and login
 
 bot.on('ready', () => {
     // Run all setup items
-    initLogging(() => {
-        itemHandler.setupItems()
-        dsfTerms.refreshTerms()
-        scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
-        if (config.options.hasWebInterface) {
-            setupWebServers()
-        }
-        utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
-        utils.getUserById = async id => await bot.users.fetch(id)
-        if (config.options.hasSlashCommands) {
-            require('../base/commands').registerSlashCommands(bot)
-        }
-        log.Info('DSF Bot Intitialized')
-    })
+    initLogging()
+    itemHandler.setupItems()
+    dsfTerms.refreshTerms()
+    if (config.options.hasSoundEffects) {
+        serverInfo.setupEffectsServers()
+    }
+    scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
+    if (config.options.hasWebInterface) {
+        setupWebServers()
+    }
+    utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
+    utils.getUserById = async id => await bot.users.fetch(id)
+    if (config.options.hasSlashCommands) {
+        require('../base/commands').registerSlashCommands(bot)
+    }
+    log.Info('DSF Bot Intitialized')
 })
     
 bot.on('messageCreate', msg => {
