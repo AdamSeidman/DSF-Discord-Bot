@@ -9,16 +9,18 @@ const utils = require('../base/utils')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
 const { randomNumber } = require('../base/utils')
+const { setupWebServers } = require('../base/web')
 const dsfTerms = require('../db/handlers/dsf-terms')
+const { log, initLogging } = require('../base/logger')
 const { messageHandlers  } = require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
-const setupWebServers = require('../base/web').setupWebServers
 
 const bot = new Discord.Client({ intents: config.intents, partials: config.partials })
 bot.login(config.token) // Create bot and login
 
 bot.on('ready', () => {
     // Run all setup items
+    initLogging()
     itemHandler.setupItems()
     dsfTerms.refreshTerms()
     scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
@@ -30,7 +32,7 @@ bot.on('ready', () => {
     if (config.options.hasSlashCommands) {
         require('../base/commands').registerSlashCommands(bot)
     }
-    console.log('DSF Robot Intitialized')
+    log.Info('DSF Robot Intitialized')
 })
     
 bot.on('messageCreate', msg => {
@@ -49,4 +51,6 @@ bot.on('interactionCreate', async interaction => {
     require('../base/commands').handleSlashCommand(interaction)
 })
 
-bot.on('error', console.error)
+bot.on('error', err => {
+    log.Error('Client Error', 'client.js', 'onError', err)
+})

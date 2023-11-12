@@ -59,7 +59,6 @@ var setToggle = function (isActive) {
     document.getElementById('toggle-text').innerHTML = isActive ? 'online' : 'offline'
     post(`bot-online${isActive ? '' : '/a'}`)
     if (!isActive && overrideMessage !== lastSubmittedMessage) {
-        console.log()
         submitOverrideMessage()
     }
 }

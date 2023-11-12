@@ -17,6 +17,7 @@ const serveStatic = require('serve-static')
 const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
 const config = require('../client/config')
+const { log } = require('../base/logger')
 
 // Set up server using serve-static and listen on port
 var createServer = function (fileLocation, endpoints, port) {
@@ -28,8 +29,7 @@ var createServer = function (fileLocation, endpoints, port) {
             handleHttpRequest(item, req, res)
         })
     })
-    server.listen(port)
-    console.log(`Server Initialized on Port ${port}.`)
+    log.Info(`Server Initialized on Port ${port}.`, 'web/Server')
     return server
 }
 
@@ -38,7 +38,7 @@ var handleHttpRequest = function (item, request, response) {
     if (!config.options.hasWebInterface) return
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
-        console.log(`\nHTTP REQUEST: '${item.path}'`)
+        log.Info('HTTP REQUEST', 'web/Server', 'handleHttpRequest', item.path)
         data = item.action(fixCh(request.url.slice(1)), response)
         if (data !== undefined) {
             response.write(JSON.stringify(data))
@@ -46,7 +46,7 @@ var handleHttpRequest = function (item, request, response) {
             response.writeHead(200, utils.headers)
         }
     } else {
-        console.log(`Preflight Request: ${request.headers['access-control-request-method']} ${request.url}`)
+        log.Warn(`Preflight Request: ${request.headers['access-control-request-method']}`, 'web/Server', 'handleHttpRequest', request.url)
     }
     response.end()
     return data

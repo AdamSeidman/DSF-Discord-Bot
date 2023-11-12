@@ -15,7 +15,8 @@
         "hasWebInterface": true,
         "hasDbDump": true,
         "allowsOverrideFacts": true,
-        "hasAdditionalPhrases": true
+        "hasAdditionalPhrases": true,
+        "usesFileLogging": true
     },
     "probabilities": {
         "staticFacts": 0.05,
@@ -47,5 +48,16 @@
     ],
     "partials": [
         "Channel"
-    ]
+    ],
+    "loggerOptions": {
+        "folderPath": "./logs/",
+        "dateBasedFileNaming": true,
+        "fileNamePrefix": "DSFLog_",
+        "fileNameExtension": ".log",
+        "dateFormat": "YYYY_MM_D",
+        "timeFormat": "h:mm:ss A",
+        "fileNameSuffix": "",
+        "onlyFileLogging": false,
+        "logLevel": "debug"
+    }
 }

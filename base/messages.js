@@ -19,6 +19,7 @@ const { postPriusPic } = require('./prius')
 const { getEffectsServersDB } = require('../db/handlers/server-info')
 const stats = require('../db/handlers/stats')
 const config = require('../client/config')
+const { log } = require('./logger')
 
 // Handles 'dsf!' commands
 var handleCommand = function (msg, isDM, isSlashCommand) {
@@ -111,7 +112,7 @@ var handlePhrases = function (msg) {
 
 var handleDMs = function (msg, isDM) {
     if (isDM) {
-        console.log(`\n${msg.author.username}: ${msg.content}`)
+        log.Info(`Received DM from ${msg.author.username}: ${msg.content}`, 'Messages')
     }
 }
 
@@ -121,10 +122,10 @@ var sendImmediateMessage = async function (channelId, message) {
         channel = await utils.getUserById(channelId)
     }
     if (channel === undefined) {
-        console.error('Supplied channel ID was invalid.')
+        log.Warn('Supplied channel ID was invalid.', 'Messages', 'sendImmediateMessage')
         return
     }
-    console.log(`\tMessage: (${channelId}) ${message}`)
+    log.Info(`Immediate Message: (${channelId}) ${message}`, 'Messages', 'sendImmediateMessage')
     channel.send(message)
 }
 
