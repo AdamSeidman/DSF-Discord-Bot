@@ -112,7 +112,7 @@ var handlePhrases = function (msg) {
 
 var handleDMs = function (msg, isDM) {
     if (isDM) {
-        log.Info(`Received DM from ${msg.author.username}: ${msg.content}`, 'Messages')
+        log.Info('Received direct message.', 'Messages', 'handleDMs', `${msg.author.username}: ${msg.content}`)
     }
 }
 
@@ -125,7 +125,7 @@ var sendImmediateMessage = async function (channelId, message) {
         log.Warn('Supplied channel ID was invalid.', 'Messages', 'sendImmediateMessage')
         return
     }
-    log.Info(`Immediate Message: (${channelId}) ${message}`, 'Messages', 'sendImmediateMessage')
+    log.Info(`Sending immediate message.`, 'Messages', 'sendImmediateMessage', `(${channelId}) ${message}`)
     channel.send(message)
 }
 
