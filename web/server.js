@@ -9,7 +9,7 @@
  *         Params-
  *             fileLocation: Directory where index.html is located
  *             endpoints: List of endpoints with their appropriate function responses
- *             port: Port on which to host the server (I use 8080 and 8081)
+ *             port: Port on which to host the server (I use 8080 or 8081)
  */
 
 const connect = require('connect')
@@ -29,6 +29,7 @@ var createServer = function (fileLocation, endpoints, port) {
             handleHttpRequest(item, req, res)
         })
     })
+    server.listen(port)
     log.Info(`Server Initialized on Port ${port}.`, 'web/Server')
     return server
 }
@@ -38,7 +39,7 @@ var handleHttpRequest = function (item, request, response) {
     if (!config.options.hasWebInterface) return
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
-        log.Info('HTTP REQUEST', 'web/Server', 'handleHttpRequest', item.path)
+        log.Info(`HTTP Request: ${item.path}`, 'web/Server', 'handleHttpRequest')
         data = item.action(fixCh(request.url.slice(1)), response)
         if (data !== undefined) {
             response.write(JSON.stringify(data))
