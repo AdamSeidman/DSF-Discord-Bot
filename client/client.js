@@ -32,7 +32,7 @@ bot.on('ready', () => {
         if (config.options.hasSlashCommands) {
             require('../base/commands').registerSlashCommands(bot)
         }
-        log.Info('DSF Robot Intitialized')
+        log.Info('DSF Bot Intitialized')
     })
 })
     
@@ -53,5 +53,5 @@ bot.on('interactionCreate', async interaction => {
 })
 
 bot.on('error', err => {
-    log.Error('Client Error', 'client.js', 'onError', err)
+    log.Error('Client Error', 'Client', 'onError', err)
 })
