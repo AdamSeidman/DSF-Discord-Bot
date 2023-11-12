@@ -172,10 +172,10 @@ var factCheck = function (msg, args) {
 var restart = function (msg, args) {
     if (!config.options.allowsRestart) return
     if (msg.member.id == config.adminId) {
-        if (args === undefined || args.length === 0) {
+        args.shift()
+        if (args.length === 0) {
             args = ['Generic Restart']
         } else {
-            args.shift()
             args.forEach((item, index) => {
                 if (item.length > 1) {
                     args[index] = item.slice(0, 1).toUpperCase().concat(item.slice(1))

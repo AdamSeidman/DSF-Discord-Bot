@@ -8,6 +8,7 @@ IF NOT "%titlequery%" == "INFO: No tasks are running which match the specified c
 
 :CreateServer
 ECHO Intializing...
+ECHO.
 TITLE DSF Robot
 NODE --no-warnings .
 ECHO Program will now restart...

@@ -20,19 +20,20 @@ bot.login(config.token) // Create bot and login
 
 bot.on('ready', () => {
     // Run all setup items
-    initLogging()
-    itemHandler.setupItems()
-    dsfTerms.refreshTerms()
-    scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
-    if (config.options.hasWebInterface) {
-        setupWebServers()
-    }
-    utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
-    utils.getUserById = async id => await bot.users.fetch(id)
-    if (config.options.hasSlashCommands) {
-        require('../base/commands').registerSlashCommands(bot)
-    }
-    log.Info('DSF Robot Intitialized')
+    initLogging(() => {
+        itemHandler.setupItems()
+        dsfTerms.refreshTerms()
+        scheduler.scheduleDailyChannels(bot.channels.cache.filter(x => x instanceof Discord.TextChannel))
+        if (config.options.hasWebInterface) {
+            setupWebServers()
+        }
+        utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
+        utils.getUserById = async id => await bot.users.fetch(id)
+        if (config.options.hasSlashCommands) {
+            require('../base/commands').registerSlashCommands(bot)
+        }
+        log.Info('DSF Robot Intitialized')
+    })
 })
     
 bot.on('messageCreate', msg => {
