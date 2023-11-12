@@ -1,7 +1,7 @@
 /**
  * Author: Adam Seidman
  * 
- * Sets up web UI's on ports 8080 for interfacing with DSF
+ * Sets up web UI's on defined port for interfacing with DSF
  * Mine is not forwarded and used as an admin portal
  * 
  * Exports:
@@ -10,8 +10,9 @@
 
 const { endpoints } = require('../web/endpoints')
 const { createServer } = require('../web/server')
+const config = require('../client/config')
 
-const WEB_PORT = 8080
+const WEB_PORT = config.constants.webPort
 
 // Can create more maps if there are more UIs
 var serverMaps = [

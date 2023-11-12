@@ -11,6 +11,7 @@
  */
 
 const sqlite3 = require('sqlite3').verbose()
+const config = require('../client/config')
 
 var dbList = ['serverInfo', 'randomItems', 'dsfTerms', 'stats'] // List of used DBs
 var db = {removeArr: []}
@@ -19,6 +20,7 @@ var db = {removeArr: []}
 var setup = function () {
     if (db.removeArr === undefined) return
     for(var i = 0; i < dbList.length; i++) {
+        if ((dbList[i] === 'stats' && !config.options.keepsStatistics) || (dbList[i] === 'dsfTerms' && !config.options.hasAcronyms)) continue
         let server = dbList[i]
         db[server] = new sqlite3.Database(`${server}.db`, (err) => {
             if (err) {

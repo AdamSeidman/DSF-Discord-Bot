@@ -11,6 +11,7 @@
  */
 
 const db = require('../db')
+const config = require('../../client/config')
 
 var terms = {
     adverbs: [],
@@ -31,12 +32,14 @@ var refresh = function () {
 
 // Get list of terms from given category
 var getArray = function (arr) {
+    if (!config.options.hasAcronyms) return []
     setup()
     return terms[arr] || []
 }
 
 // Read in database and store information
 var setup = function () {
+    if (!config.options.hasAcronyms) return
     if (terms.adverbs.length === 0) {
         db.setUpDatabases()
         let dsfTerms = db.getDatabase('dsfTerms')

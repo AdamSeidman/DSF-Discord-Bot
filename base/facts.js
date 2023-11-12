@@ -11,14 +11,15 @@
 const itemHandler = require('../db/handlers/random-items')
 const utils = require('./utils')
 var { shouldGenerateFact, overrideMessage, setBotOnline } = require('../web/override')
+const config = require('../client/config')
 
-const PREP_PREFIX = 'prepare' // Term prefix in fact template for pronouns and articles
+const PREP_PREFIX = config.constants.factPrepPrefix // Term prefix in fact template for pronouns and articles
 
 module.exports = {
     getRandomFact: function (isLie, isDaily) {
         if (shouldGenerateFact()) {
             // Override is not in effect
-            if (isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(0.05)) {
+            if (config.options.usesStaticFacts && isDaily && itemHandler.hasStaticFacts() && utils.probabilityCheck(config.probabilities.staticFacts)) {
                 let fact = itemHandler.getStaticFact()
                 if (fact !== undefined) {
                     return fact

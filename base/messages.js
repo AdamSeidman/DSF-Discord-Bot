@@ -11,22 +11,23 @@
  */
 
 const facts = require('./facts')
-const { commands, prefix, sendDsfAcronym } = require('./commands')
+const { commands, sendDsfAcronym } = require('./commands')
 const { getAdjectives, getAdditions } = require('../db/handlers/random-items')
 const utils = require('./utils')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
 const { getEffectsServersDB } = require('../db/handlers/server-info')
 const stats = require('../db/handlers/stats')
+const config = require('../client/config')
 
 // Handles 'dsf!' commands
 var handleCommand = function (msg, isDM, isSlashCommand) {
     let message = msg.content.toLowerCase().trim()
-    if (message.length < prefix.length) {
+    if (message.length < config.constants.commandPrefix.length) {
         return // Messages won't be this small- avoids slicing problems
     }
 
-    if (message.slice(0, prefix.length) !== prefix.toLowerCase()) return // No prefix found
+    if (message.slice(0, config.constants.commandPrefix.length) !== config.constants.commandPrefix.toLowerCase()) return // No prefix found
 
     if (isDM) {
         msg.reply('Sorry, commands only work in standard text channels.')
@@ -34,7 +35,7 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
     }
 
     // Look for the command in dictionary. If found, run proper command response
-    message = message.slice(prefix.length).trim().split(' ')
+    message = message.slice(config.constants.commandPrefix.length).trim().split(' ')
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
         if (typeof command.response === 'boolean') {

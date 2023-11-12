@@ -5,16 +5,12 @@ Click here: [Invite Link](https://discord.com/oauth2/authorize?client_id=7334100
   
 ## Other Information
 Web Client hosted on [localhost:8080](http://localhost:8080/)
+The port can be changed in config.json.
 
 ## Build Setup
 1. Follow [these instructions](https://discordpy.readthedocs.io/en/latest/discord.html) on how to set up a bot with Discord.
 2. Retrieve your bot specific client id/token.
-3. In the directory DSF-Discord-Bot/client, create a file called config.js modeled off of the template.  
-Example:  
-
-``` javascript
-module.exports = { token: YOUR_TOKEN_HERE }
-```
+3. In the directory DSF-Discord-Bot/client, create a file called config.json modeled off of the template in that folder.  
 4. Run the following commands:  
 
 ``` bash
@@ -23,11 +19,4 @@ npm install
 
 # start Discord bot
 start scripts/start_dsf_bot.bat
-```
-
-### Note
-If you would like to enable the 'restart' command or the bot easter egg, put a Discord userId and/or bot userId in token.js as such:
-
-``` javascript
-module.exports = { token: TOKEN, adminId: USER_ID_HERE, botId: BOT_USER_ID_HERE }
 ```

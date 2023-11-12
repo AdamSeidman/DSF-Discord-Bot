@@ -15,8 +15,11 @@
 const db = require('../db')
 const utils = require('../../base/utils')
 const { getEffectsServersDB } = require('./server-info')
+const config = require('../../client/config')
 
 var bumpCount = function (type, userId, times) {
+    if (!config.options.keepsStatistics) return
+
     if (isNaN(userId)) return
     db.setUpDatabases()
     let stats = db.getDatabase('stats')
@@ -51,6 +54,11 @@ var bumpCount = function (type, userId, times) {
 var tables = ['Fact', 'Lie', 'Prius', 'Acronym', 'Effect']
 
 var getStatistics = async function(msg, args) {
+    if (!config.options.keepsStatistics) {
+        msg.reply('Statistics not available.')
+        return
+    }
+
     if (msg === undefined) return
     db.setUpDatabases()
     let stats = db.getDatabase('stats')

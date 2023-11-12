@@ -7,8 +7,6 @@
  *     commands: Array of commands
  *         -Each command will have guaranteed 'phrase' and 'response' with msg param
  *         -(optional) Message for help embed: 'helpMsg'
- *     prefix: item to put before commands to register them
- *         - dsf!
  *     sendDsfAcronym: Function to send DSF phrase.
  *         -params:
  *             +msg: originating discord message
@@ -29,16 +27,16 @@ const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
 const { randomArrayItem, restartApp, randomNumber } = require('./utils')
 const serverHandler = require('../db/handlers/server-info')
-const { adminId, token, botId } = require('../client/config')
+const config = require('../client/config')
 const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
 const randomItems = require('../db/handlers/random-items')
 
 var helpEmbed = undefined
-const prefix = 'dsf!'
+const prefix = config.constants.commandPrefix
 
-const MIN_SILENCE_SECONDS = 60 * 5
-const MAX_SILENCE_SECONDS = 60 * 30
+const MIN_SILENCE_SECONDS = 60 * config.constants.minSilenceMinutes
+const MAX_SILENCE_SECONDS = 60 * config.constants.maxSilenceMinutes
 
 var sendOrReply = function (msg, content) {
     if (msg.author) {
@@ -60,6 +58,7 @@ var deleteDailyChannel = function (msg) {
 // Deletes 1 - 10 previous discord messages
 // (Adds 1 to remove 'dsf!delete' command/message)
 var deleteFunction = function (msg, args) {
+    if (!config.options.hasDeleteFunction) return
     if (args.length < 2) {
         // args[0] is message; the rest are arguments (space delimited)
         msg.channel.send('Delete command requires an argument.')
@@ -117,6 +116,7 @@ var sendHelpMessage = function (msg) {
 // Send a DSF acronym message.
 // Can potentially move this function somewhere else (?)
 var sendDsfAcronym = function (msg, loud, isPhrase) {
+    if (!config.options.hasAcronyms) return
     const acronym = `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`
     if (isPhrase) {
         msg.reply({content: acronym, tts: loud})
@@ -169,7 +169,8 @@ var factCheck = function (msg, args) {
 
 // Restart the software
 var restart = function (msg, args) {
-    if (msg.member.id == adminId) {
+    if (!config.options.allowsRestart) return
+    if (msg.member.id == config.adminId) {
         args.shift()
         if (args != undefined && args.length > 0) {
             console.log(`\n\r${args.join(' ')}`)
@@ -181,6 +182,8 @@ var restart = function (msg, args) {
 }
 
 var dbDump = function (msg) {
+    if (!config.options.hasDbDump) return
+
     let data = {}
     data.Items = randomItems.getAllItems()
     data.People = randomItems.getAllPeople()
@@ -210,6 +213,7 @@ var dbDump = function (msg) {
 }
 
 var postGibberish = function (msg) {
+    if (!config.options.hasGibberish) return
     let factArr = []
     for (let i = 0; i < 5; i++) {
         factArr.push(constructFact([['fact']], true))
@@ -224,7 +228,7 @@ var postGibberish = function (msg) {
 
 // Update/Set all slash commands in cached guilds
 var registerSlashCommands = function (client) {
-    if (client === undefined || commandArray.data) return
+    if (client === undefined || commandArray.data || !config.options.hasSlashCommands) return
 
     const commands = []
     client.commands = new Discord.Collection()
@@ -250,11 +254,11 @@ var registerSlashCommands = function (client) {
         commands.push(cmd.data.toJSON())
     })
 
-    const rest = new Discord.REST().setToken(token)
+    const rest = new Discord.REST().setToken(config.token)
 
     try {
         console.log(`Refreshing ${commands.length} application slash commands.`)
-        rest.put(Discord.Routes.applicationCommands(botId), {body: commands})
+        rest.put(Discord.Routes.applicationCommands(config.botId), {body: commands})
     } catch (err) {
         console.error('Error in deploying slash commands')
         console.error(err)
@@ -264,6 +268,8 @@ var registerSlashCommands = function (client) {
 
 let hasRegisteredSilence = false
 var startSilence = function (msg) {
+    if (!config.options.hasSilenceFn) return
+
     if (!hasRegisteredSilence) {
         console.log('Registering silence events...')
         hasRegisteredSilence = true
@@ -281,6 +287,7 @@ var startSilence = function (msg) {
 }
 
 var handleSlashCommand = async function (interaction) {
+    if (!config.options.hasSlashCommands) return
     const command = interaction.client.commands.get(interaction.commandName)
 
     if (!command) {
@@ -327,7 +334,6 @@ var commandArray = [
 ]
 
 module.exports = {
-    prefix,
     commands: commandArray,
     sendDsfAcronym,
     registerSlashCommands,

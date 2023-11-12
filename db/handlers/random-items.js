@@ -24,6 +24,7 @@
 
 const db = require('../db')
 const { randomArrayItem } = require('../../base/utils')
+const config = require('../../client/config')
 
 var lists = { // All possible categories of random items (currently)
     items: [],
@@ -122,6 +123,7 @@ var addFact = function(template, canRecurse) {
 
 // Add a static fact to db with provided fact string
 var addStaticFact = function(fact) {
+    if (!config.options.hasStaticFacts) return
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('StaticFacts', {
         sentence: fact,
@@ -134,6 +136,7 @@ var addStaticFact = function(fact) {
 }
 
 var getStaticFact = function () {
+    if (!config.options.hasStaticFacts) return ''
     let randomItems = db.getDatabase('randomItems')
     let fact = randomArrayItem(getArray('staticFacts'))
     if (fact === undefined || fact.id === undefined) return undefined
@@ -179,9 +182,11 @@ var setup = function () {
                 lists.places.push(row)
             })
 
-            randomItems.forEach('StaticFacts', row => { // Load Static Facts
-                lists.staticFacts.push(row)
-            })
+            if (config.options.hasStaticFacts) {
+                randomItems.forEach('StaticFacts', row => { // Load Static Facts
+                    lists.staticFacts.push(row)
+                })
+            }
 
             randomItems.forEach('Phrases', row => { // Load additional known phrases
                 additionalPhrases.push(row)

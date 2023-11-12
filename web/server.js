@@ -16,9 +16,11 @@ const connect = require('connect')
 const serveStatic = require('serve-static')
 const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
+const config = require('../client/config')
 
 // Set up server using serve-static and listen on port
 var createServer = function (fileLocation, endpoints, port) {
+    if (!config.options.hasWebInterface) return
     var server = connect()
     server.use(serveStatic(fileLocation))
     endpoints.forEach(item => {
@@ -33,6 +35,7 @@ var createServer = function (fileLocation, endpoints, port) {
 
 // On HTTP request, connect request to function
 var handleHttpRequest = function (item, request, response) {
+    if (!config.options.hasWebInterface) return
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
         console.log(`\nHTTP REQUEST: '${item.path}'`)

@@ -14,6 +14,7 @@ const schedule = require('node-schedule')
 const utils = require('./facts')
 const { setBotOnline, shouldGenerateFact } = require('../web/override')
 const { randomNumber } = require('./utils')
+const config = require('../client/config')
 
 var dailyChannels = undefined
 
@@ -22,11 +23,11 @@ var scheduleDailyChannels = function (clientChannels) {
     if (dailyChannels !== undefined) return
     dailyChannels = []
     serverHandler.getDailyChannelsDB(clientChannels, dailyChannels) // Get channels
-    schedule.scheduleJob({hour: 18, minute: 13, second: 30}, async () => { // 6:13 PM
+    schedule.scheduleJob({hour: config.constants.dailyFactHour, minute: config.constants.dailyFactMinute, second: config.constants.dailyFactSecond}, async () => {
         // Send out fact at scheduled time
         let fact = utils.getRandomFact(false, true)
         dailyChannels.forEach(channel => {
-            channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
+            channel.send(`${config.constants.dailyFactMessage}${fact}`)
         })
         if (!shouldGenerateFact()) {
             setBotOnline(true)

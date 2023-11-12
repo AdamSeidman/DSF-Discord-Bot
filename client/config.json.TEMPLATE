@@ -1,0 +1,51 @@
+{
+    "token": "ABCDEFG",
+    "adminId": "12345",
+    "botId": "67890",
+    "options": {
+        "usesStaticFacts": true,
+        "keepsStatistics": true,
+        "hasSoundEffects": true,
+        "hasSilenceFn": true,
+        "hasAcronyms": true,
+        "hasDeleteFunction": true,
+        "hasSlashCommands": true,
+        "hasGibberish": true,
+        "allowsRestart": true,
+        "hasWebInterface": true,
+        "hasDbDump": true,
+        "allowsOverrideFacts": true,
+        "hasAdditionalPhrases": true
+    },
+    "probabilities": {
+        "staticFacts": 0.05,
+        "botEasterEgg": 1500
+    },
+    "constants": {
+        "commandPrefix": "dsf!",
+        "factPrepPrefix": "prepare",
+        "minSilenceMinutes": 5,
+        "maxSilenceMinutes": 30,
+        "dailyFactHour": 18,
+        "dailyFactMinute": 13,
+        "dailyFactSecond": 30,
+        "dailyFactMessage": "It's time for the fact of the day!\nAre you ready? Here it is:\n",
+        "botEasterEggText": "Shut up- bots are not meant to speak in this channel.",
+        "priusMessage": "Ya like jazz?",
+        "priusPictureType": ".jpg",
+        "soundEffectType": ".mp3",
+        "maxRand": 98,
+        "webPort": 8080
+    },
+    "intents": [
+        "Guilds",
+        "GuildVoiceStates",
+        "GuildMessages",
+        "DirectMessages",
+        "MessageContent",
+        "GuildScheduledEvents"
+    ],
+    "partials": [
+        "Channel"
+    ]
+}

@@ -16,10 +16,11 @@
 const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
 const fs = require('fs') // Need to read .mp3's from /assets
+const config = require('../client/config')
 
 const dir = './assets/'
 const fxDir = 'sound-effects/'
-const ext = '.mp3'
+const ext = config.constants.soundEffectType
 
 var servers = {}
 var effectNames = []
@@ -34,6 +35,8 @@ fs.readdir(`${dir}${fxDir}`, (err, files) => {
 
 // Exported function to play music
 var playMusic = async function (msg, song, isEffect, keepAlive) {
+    if (isEffect && !config.options.hasSoundEffects) return
+
     if (song === undefined) {
         song = effectNames[Math.floor(Math.random() * effectNames.length)]
     }

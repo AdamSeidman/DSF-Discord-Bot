@@ -12,6 +12,7 @@
 
 const fs = require('fs') // Need prius pictures from /assets/prius
 const { randomNumber } = require('./utils')
+const config = require('../client/config')
 
 const dir = './assets/prius'
 let count = -1
@@ -21,7 +22,7 @@ fs.readdir(dir, (err, files) => {
 
 var postPriusPic = function (msg) {
     // Send random prius picture back to channel
-    let content = {content: 'Ya like jazz?', files: [{attachment: `${ dir }/prius (${ randomNumber(count) }).jpg`}]}
+    let content = {content: config.constants.priusMessage, files: [{attachment: `${ dir }/prius (${ randomNumber(count) })${config.constants.priusPictureType}`}]}
     if (msg.author) {
         msg.channel.send(content)
     } else {
