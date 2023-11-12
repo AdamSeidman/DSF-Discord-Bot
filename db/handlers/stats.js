@@ -16,6 +16,7 @@ const db = require('../db')
 const utils = require('../../base/utils')
 const { getEffectsServersDB } = require('./server-info')
 const config = require('../../client/config')
+const { log } = require('../../base/logger')
 
 var bumpCount = function (type, userId, times) {
     if (!config.options.keepsStatistics) return
@@ -31,8 +32,7 @@ var bumpCount = function (type, userId, times) {
     let count = 0
     stats.database.each(`SELECT * FROM ${type} WHERE userId LIKE '${userId}' OR userId LIKE 0 ORDER BY count DESC`, (err, row) => {
         if (err) {
-            console.error(`Error in SQL bump${type} SELECT`)
-            console.error(err)
+            log.Error(`Error in SQL bump${type} SELECT`, 'DB/stats', 'bumpCount', err)
             return
         } else if (!isNaN(row.count)) {
             if (count === 0) {
@@ -42,8 +42,7 @@ var bumpCount = function (type, userId, times) {
                 : `UPDATE ${type} SET count='${count}' WHERE userId='${userId}'`
             stats.database.run(statement, [], err => {
                 if (err) {
-                    console.error(`Error in SQL bump${type}\n\r\tScript: ${statement}`)
-                    console.error(err)
+                    log.Error(`Error in SQL bump${type} (run)`, 'DB/stats', 'bumpCount', {script: statement, error: err})
                 }
             })
         }
@@ -71,7 +70,7 @@ var getStatistics = async function(msg, args) {
         try {
             user = `${(await utils.getUserById(user)).username} has`
         } catch (err) {
-            console.log('Unrecognized user had stats requested.')
+            log.Warn('Unrecognized user had stats requested.', 'DB/stats', 'getStatistics')
             msg.reply('The requested user is unknown.')
             return
         }

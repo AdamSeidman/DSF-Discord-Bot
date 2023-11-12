@@ -25,6 +25,7 @@
 const db = require('../db')
 const { randomArrayItem } = require('../../base/utils')
 const config = require('../../client/config')
+const { log } = require('../../base/logger')
 
 var lists = { // All possible categories of random items (currently)
     items: [],
@@ -51,7 +52,7 @@ var addPlace = function (place) {
     randomItems.insert('Places', {
         name: place
     }, () => {
-        console.log(`'${place}' added to database.`)
+        log.Info(`'${place}' added to database.`, 'DB/random-items', 'addPlace')
         refresh()
     })
     randomItems.close()
@@ -65,7 +66,7 @@ var addPerson = function (name, isMale, isAlive) {
         isMale: isMale,
         isAlive: isAlive
     }, () => {
-        console.log(`'${name}' added to database.`)
+        log.Info(`'${name}' added to database.`, 'DB/random-items', 'addPerson')
         refresh()
     })
     randomItems.close()
@@ -80,7 +81,7 @@ var addItem = function (name, plural, isAlive, usage) {
         isAlive: isAlive,
         usage: usage
     }, () => {
-        console.log(`'${name}' added to database.`)
+        log.Info(`'${name}' added to database.`, 'DB/random-items', 'addItem')
         refresh()
     })
     randomItems.close()
@@ -92,7 +93,7 @@ var addAdjective = function(adjective) {
     randomItems.insert('Adjectives', {
         term: adjective
     }, () => {
-        console.log(`'${adjective}' added to database.`)
+        log.Info(`'${adjective}' added to database.`, 'DB/random-items', 'addAdjective')
         refresh()
     })
     randomItems.close()
@@ -104,9 +105,7 @@ var addFact = function(template, canRecurse) {
     try {
         JSON.parse(template)
     } catch (err) {
-        console.error('Provided fact template was invalid.')
-        console.error(err)
-        console.log(template)
+        log.Error('Provided fact template was invalid.', 'DB/random-items', 'addFact', {template: template, error: err})
         return
     }
 
@@ -115,7 +114,7 @@ var addFact = function(template, canRecurse) {
         canRecurse: canRecurse,
         fact: template
     }, () => {
-        console.log('New fact was added to database.')
+        log.Info('New fact was added to database.', 'DB/random-items', 'addFact')
         refresh()
     })
     randomItems.close()
@@ -129,7 +128,7 @@ var addStaticFact = function(fact) {
         sentence: fact,
         id: `X${Date.now()}`
     }, () => {
-        console.log('New static fact was added to database.')
+        log.Info('New static fact was added to database.', 'DB/random-items', 'addStaticFact')
         refresh()
     })
     randomItems.close()
@@ -142,10 +141,9 @@ var getStaticFact = function () {
     if (fact === undefined || fact.id === undefined) return undefined
     randomItems.database.run(`DELETE FROM StaticFacts WHERE id LIKE '${fact.id}'`, [], function (err) {
         if (err) {
-            console.log(err)
-            console.log('Error occured in delete from static facts db.')
+            log.Error('Error occureed deleting static fact from db.', 'DB/random-items', 'getStaticFact', err)
         } else {
-            console.log(`Sending static fact: ${fact.sentence}`)
+            log.Info('Sending static fact!', 'DB/random-items', 'getStaticFact', fact.sentence)
         }
     })
     refresh()
@@ -165,8 +163,7 @@ var setup = function () {
         let randomItems = db.getDatabase('randomItems')
         if (!randomItems) {
             // blank
-            console.log('Error: No random items.')
-            console.log(randomItems)
+            log.Fatal('No random items.', 'DB/random-items', 'setup', randomItems)
         } else {
             // Store random items/people/etc. into all possible categories
             randomItems.forEach('Items', row => { // Load Items
@@ -213,7 +210,7 @@ var setup = function () {
                 lists.adjectives.push(row.term.toLowerCase())
             })
 
-            console.log('Random Items Setup Complete.')
+            log.Info('Random Items Setup Complete.', 'DB/random-items', 'setup')
             randomItems.close()
         }
     }
@@ -221,7 +218,7 @@ var setup = function () {
 
 // Refresh with new database items
 var refresh = function () {
-    console.log('Item Refresh Requested.')
+    log.Info('Item Refresh Requested.', 'DB/random-items', 'refresh')
     // Clear everything and run setup() again
     lists = {
         items: [],

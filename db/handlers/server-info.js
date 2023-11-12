@@ -19,6 +19,7 @@
 
 const { copyObject } = require('../../base/utils')
 const db = require('../db')
+const { log } = require('../../base/logger')
 
 // Return all channel IDs in 'dailies' table
 var getDailyChannels = function (clientChannels, arr) {
@@ -26,8 +27,7 @@ var getDailyChannels = function (clientChannels, arr) {
     let serverInfo = db.getDatabase('serverInfo')
 
     if (!serverInfo) {
-        console.log('Error: No server info.')
-        console.log(serverInfo)
+        log.Error('No server info!', 'DB/server-info', 'getDailyChannels', serverInfo)
         return []
     }
     serverInfo.forEach('Dailies', row => {
@@ -62,8 +62,7 @@ var removeDailyChannel = function (channel) {
 
     serverInfo.database.run(`DELETE FROM Dailies WHERE ID = ${channel.id}`, [], function (err) {
         if (err) {
-            console.log(err)
-            console.log('Error occured in delete from dailies')
+            log.Error('Error occurred in delete from dailies.', 'DB/server-info', 'removeDailyChannels', err)
             channel.send('An error occured.')
         } else {
             channel.send('Channel removed from daily stupid facts list.') // sadness
@@ -83,8 +82,7 @@ var getEffectsGuilds = function () {
         let serverInfo = db.getDatabase('serverInfo')
         effectsGuilds = []
         if (!serverInfo) {
-            console.log('Error: No server info.')
-            console.log(serverInfo)
+            log.Error('No server info!', 'DB/server-info', 'getEffectsGuilds', serverInfo)
             return []
         }
 
@@ -134,8 +132,7 @@ var removeEffectsServer = function (channel) {
 
     serverInfo.database.run(`DELETE FROM Effects WHERE ID = ${channel.guild.id}`, [], function (err) {
         if (err) {
-            console.log(err)
-            console.log('Error occured in delete from effects.')
+            log.Error('Error occured in delete from effects', 'DB/server-info', 'removeEffectsServer', err)
             channel.send('An error occured.')
         } else {
             // Deleted
