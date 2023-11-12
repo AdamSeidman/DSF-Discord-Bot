@@ -172,11 +172,17 @@ var factCheck = function (msg, args) {
 var restart = function (msg, args) {
     if (!config.options.allowsRestart) return
     if (msg.member.id == config.adminId) {
-        args.shift()
-        if (args != undefined && args.length > 0) {
-            log.Warn(`\n\rBot restarting...\n\rCause:${args.join(' ')}`, 'Restart Command')
+        if (args === undefined || args.length === 0) {
+            args = ['Generic Restart']
+        } else {
+            args.shift()
+            args.forEach((item, index) => {
+                if (item.length > 1) {
+                    args[index] = item.slice(0, 1).toUpperCase().concat(item.slice(1))
+                }
+            })
         }
-        restartApp()
+        log.Warn('Bot restarting...', 'Commands', 'restart', `Restart Cause: ${args.join(' ')}`, restartApp)
     } else {
         msg.reply('You are not an admin.')
         log.Info('Non-admin tried to restart bot.')
