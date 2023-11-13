@@ -31,7 +31,7 @@ const config = require('../client/config')
 const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
 const randomItems = require('../db/handlers/random-items')
-const { log } = require('./logger')
+const log = require('better-node-file-logger')
 
 var helpEmbed = undefined
 const prefix = config.constants.commandPrefix
@@ -182,10 +182,10 @@ var restart = function (msg, args) {
                 }
             })
         }
-        log.Warn('Bot restarting...', 'Commands', 'restart', `Restart Cause: ${args.join(' ')}`, restartApp)
+        log.warn('Bot restarting...', `Restart Cause: ${args.join(' ')}`, restartApp)
     } else {
         msg.reply('You are not an admin.')
-        log.Info('Non-admin tried to restart bot.')
+        log.info('Non-admin tried to restart bot.')
     }
 }
 
@@ -265,12 +265,12 @@ var registerSlashCommands = function (client) {
     const rest = new Discord.REST().setToken(config.token)
 
     try {
-        log.Info(`Refreshing ${commands.length} application slash commands.`, 'Commands', 'registerSlashCommands')
+        log.info(`Refreshing ${commands.length} application slash commands.`)
         rest.put(Discord.Routes.applicationCommands(config.botId), {body: commands})
     } catch (err) {
-        log.Fatal('Could not deploy slash commands', 'Commands', 'registerSlashCommands', err)
+        log.fatal('Could not deploy slash commands', err)
     }
-    log.Info('Finished reloading slash commands.', 'Commands', 'registerSlashCommands')
+    log.info('Finished reloading slash commands.')
 }
 
 let hasRegisteredSilence = false
@@ -278,7 +278,7 @@ var startSilence = function (msg) {
     if (!config.options.hasSilenceFn) return
 
     if (!hasRegisteredSilence) {
-        log.Info('Registering silence events...', 'Commands', 'startSilence')
+        log.info('Registering silence events...')
         hasRegisteredSilence = true
 
         let task = () => {
@@ -298,7 +298,7 @@ var handleSlashCommand = async function (interaction) {
     const command = interaction.client.commands.get(interaction.commandName)
 
     if (!command) {
-        log.Error(`Requested slash command not found: ${command}`, 'Commands', 'handleSlashCommand', interaction.guild.id)
+        log.error(`Requested slash command not found: ${command}`, interaction.guild.id)
     }
 
     try {
@@ -307,7 +307,7 @@ var handleSlashCommand = async function (interaction) {
         }
         await command.execute(interaction)
     } catch (err) {
-        log.Error('Error executing interaction for slashCommand', 'Commands', 'handleSlashCommand', err)
+        log.error('Error executing interaction for slashCommand', err)
         await ((interaction.replied || interaction.deferred)?
             interaction.followUp : interaction.reply)({content: 'There was an error while executing this command!', ephemeral: true })
     }

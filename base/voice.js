@@ -17,7 +17,7 @@ const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
 const fs = require('fs') // Need to read .mp3's from /assets
 const config = require('../client/config')
-const { log } = require('./logger')
+const log = require('better-node-file-logger')
 
 const dir = './assets/'
 const fxDir = 'sound-effects/'
@@ -45,14 +45,14 @@ var playMusic = async function (msg, song, isEffect, keepAlive) {
     if (typeof(msg) !== 'object') {
         msg = servers[`#${msg}`].msg
         if (msg === undefined) {
-            log.Warn('Invalid guildId provided for replaying music.', 'Voice', 'playMusic', msg)
+            log.warn('Invalid guildId provided for replaying music.', msg)
             return
         }
     }
 
     if (msg.member.voice.channel) {
         if (song === undefined || (isEffect && !effectNames.includes(song))) {
-            log.Warn('Non-existant effect requested.', 'Voice', 'playMusic', song)
+            log.warn('Non-existant effect requested.', song)
             return
         }
 
@@ -100,7 +100,7 @@ var playMusic = async function (msg, song, isEffect, keepAlive) {
         })
 
         player.on('error', err => {
-            log.Error('Error with voice player.', 'Voice', 'playMusic', err)
+            log.error('Error with voice player.', err)
         })
 
         return true

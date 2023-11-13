@@ -5,7 +5,7 @@
  * Override is used to send a custom message through DSF.
  */
 const config = require('../client/config')
-const { log } = require('../base/logger')
+const log = require('better-node-file-logger')
 
 var shouldGenerateFact = true
 var overrideMessage = ''
@@ -14,13 +14,13 @@ var overrideMessage = ''
 var setBotOnline = function (online) {
     if (!config.options.allowsOverrideFacts) return
     shouldGenerateFact = online === undefined || online.length === 0 || online === false
-    log.Info(`Bot Online: ${shouldGenerateFact}`, 'web/Override', 'setBotOnline')
+    log.info(`Bot Online: ${shouldGenerateFact}`)
 }
 
 var setOverrideMessage = function (message) {
     if (!config.options.allowsOverrideFacts) return
     overrideMessage = message
-    log.Info('New Override Message:', 'web/Override', 'setBotOnline', message)
+    log.info('New Override Message:', message)
 }
 
 module.exports = {

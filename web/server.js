@@ -17,7 +17,7 @@ const serveStatic = require('serve-static')
 const utils = require('../base/utils')
 const fixCh = utils.fixPathCharacters
 const config = require('../client/config')
-const { log } = require('../base/logger')
+const log = require('better-node-file-logger')
 
 // Set up server using serve-static and listen on port
 var createServer = function (fileLocation, endpoints, port) {
@@ -30,7 +30,7 @@ var createServer = function (fileLocation, endpoints, port) {
         })
     })
     server.listen(port)
-    log.Info(`Server Initialized on Port ${port}.`, 'web/Server')
+    log.info(`Server Initialized on Port ${port}.`)
     return server
 }
 
@@ -39,7 +39,7 @@ var handleHttpRequest = function (item, request, response) {
     if (!config.options.hasWebInterface) return
     let data = undefined
     if (request.headers['access-control-request-method'] === undefined) {
-        log.Info(`HTTP Request: ${item.path}`, 'web/Server', 'handleHttpRequest')
+        log.info(`HTTP Request: ${item.path}`)
         data = item.action(fixCh(request.url.slice(1)), response)
         if (data !== undefined) {
             response.write(JSON.stringify(data))
@@ -47,12 +47,12 @@ var handleHttpRequest = function (item, request, response) {
             response.writeHead(200, utils.headers)
         }
     } else {
-        log.Warn(`Preflight Request: ${request.headers['access-control-request-method']}`, 'web/Server', 'handleHttpRequest', request.url)
+        log.warn(`Preflight Request: ${request.headers['access-control-request-method']}`, request.url)
     }
     response.end()
     return data
 }
 
 module.exports = {
-    createServer: createServer
+    createServer
 }

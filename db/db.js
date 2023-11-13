@@ -12,7 +12,7 @@
 
 const sqlite3 = require('sqlite3').verbose()
 const config = require('../client/config')
-const { log } = require('../base/logger')
+const log = require('better-node-file-logger')
 
 var dbList = ['serverInfo', 'randomItems', 'dsfTerms', 'stats'] // List of used DBs
 var db = {removeArr: []}
@@ -25,10 +25,10 @@ var setup = function () {
         let server = dbList[i]
         db[server] = new sqlite3.Database(`${server}.db`, (err) => {
             if (err) {
-                log.Error(`Could not connect to database ${server}`, 'DB', 'setup', err)
+                log.error(`Could not connect to database ${server}`, err)
                 db.removeArr.unshift(i)
             } else {
-                log.Info(`Connected to ${server} database.`, 'DB', 'setup')
+                log.info(`Connected to ${server} database.`)
             }
         })
     }
@@ -47,7 +47,7 @@ var getDB = function(dbName) {
     // Create database object
     result.database = new sqlite3.Database(`${__dirname}\\${dbName}.db`, (err) => {
         if (err) {
-            log.Error('Could not get database', 'DB', 'getDB', err)
+            log.error('Could not get database', err)
             return null
         }
     })
@@ -55,14 +55,14 @@ var getDB = function(dbName) {
     result.close = function () {
         result.database.close((err) => {
             if (err) {
-                log.Error('Could not close database', 'DB', 'getDB/result.close', err)
+                log.error('Could not close database', err)
             }
         })
     }
     result.forEach = function (table, callback) {
         result.database.each(`SELECT * FROM ${table}`, (err, row) => {
             if (err) {
-                log.Error(`Error in reading sql (Table: ${table}) with forEach`, 'DB', 'getDB/result.forEach', {row: row, error: err})
+                log.error(`Error in reading sql (Table: ${table}) with forEach`, {row: row, error: err})
             } else {
                 callback(row)
             }
@@ -70,7 +70,7 @@ var getDB = function(dbName) {
     }
     result.insert = function (table, map, callback) {
         if (typeof(map) !== 'object' || Object.keys(map).length === 0) {
-            log.Warn('Supplied map was invalid.', 'DB', 'getDB/result.insert')
+            log.warn('Supplied map was invalid.')
         } else {
             let keys = ''
             let values = []
@@ -83,7 +83,7 @@ var getDB = function(dbName) {
             const sql = `INSERT INTO ${table} (${keys.slice(2)}) VALUES (${valueString.slice(2)})`
             result.database.run(sql, [...values], err => {
                 if (err) {
-                    log.Error('SQL Insert Error Occurred', 'DB', 'getDB/result.insert', err)
+                    log.error('SQL Insert Error Occurred', err)
                 } else {
                     callback()
                 }

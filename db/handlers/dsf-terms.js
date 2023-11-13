@@ -12,7 +12,7 @@
 
 const db = require('../db')
 const config = require('../../client/config')
-const { log } = require('../../base/logger')
+const log = require('better-node-file-logger')
 
 var terms = {
     adverbs: [],
@@ -22,7 +22,7 @@ var terms = {
 
 // Delete terms and re-initialize from database
 var refresh = function () {
-    log.Info('Terms Refresh Requested', 'DB/dsf-terms', 'refresh')
+    log.info('Terms Refresh Requested')
     terms = {
         adverbs: [],
         adjectives: [],
@@ -46,7 +46,7 @@ var setup = function () {
         let dsfTerms = db.getDatabase('dsfTerms')
         if (!dsfTerms) {
             // Database empty
-            log.Error('No DSF terms!', 'DB/dsf-terms', 'setup', dsfTerms)
+            log.error('No DSF terms!', dsfTerms)
         } else {
             // Store data
             dsfTerms.forEach('Adverbs', row => {
@@ -61,7 +61,7 @@ var setup = function () {
                 terms.nouns.push(row.word)
             })
 
-            log.Info('DSF Terms Setup Complete.', 'DB/dsf-terms')
+            log.info('DSF Terms Setup Complete.')
             dsfTerms.close()
         }
     }

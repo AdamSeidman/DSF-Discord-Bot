@@ -36,7 +36,8 @@
         "priusPictureType": ".jpg",
         "soundEffectType": ".mp3",
         "maxRand": 98,
-        "webPort": 8080
+        "webPort": 8080,
+        "loggingPrefix": "DSFLog_"
     },
     "intents": [
         "Guilds",
@@ -48,16 +49,5 @@
     ],
     "partials": [
         1
-    ],
-    "loggerOptions": {
-        "folderPath": "./logs/",
-        "dateBasedFileNaming": true,
-        "fileNamePrefix": "DSFLog_",
-        "fileNameExtension": ".log",
-        "dateFormat": "YYYY_MM_D",
-        "timeFormat": "h:mm:ss A",
-        "fileNameSuffix": "",
-        "onlyFileLogging": false,
-        "logLevel": "debug"
-    }
+    ]
 }

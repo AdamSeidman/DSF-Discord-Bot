@@ -11,7 +11,7 @@ const scheduler = require('../base/scheduler')
 const { randomNumber } = require('../base/utils')
 const { setupWebServers } = require('../base/web')
 const dsfTerms = require('../db/handlers/dsf-terms')
-const { log, initLogging } = require('../base/logger')
+const log = require('better-node-file-logger')
 const serverInfo = require('../db/handlers/server-info')
 const { messageHandlers  } = require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
@@ -21,7 +21,7 @@ bot.login(config.token) // Create bot and login
 
 bot.on('ready', () => {
     // Run all setup items
-    initLogging()
+    log.quickInit(config.constants.loggingPrefix)
     itemHandler.setupItems()
     dsfTerms.refreshTerms()
     if (config.options.hasSoundEffects) {
@@ -36,7 +36,7 @@ bot.on('ready', () => {
     if (config.options.hasSlashCommands) {
         require('../base/commands').registerSlashCommands(bot)
     }
-    log.Info('DSF Bot Intitialized')
+    log.info('DSF Bot Intitialized')
 })
     
 bot.on('messageCreate', msg => {
@@ -56,5 +56,5 @@ bot.on('interactionCreate', async interaction => {
 })
 
 bot.on('error', err => {
-    log.Error('Client Error', 'Client', 'onError', err)
+    log.error('Client Error', err)
 })

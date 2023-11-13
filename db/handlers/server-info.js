@@ -19,7 +19,7 @@
 
 const { copyObject } = require('../../base/utils')
 const db = require('../db')
-const { log } = require('../../base/logger')
+const log = require('better-node-file-logger')
 
 // Return all channel IDs in 'dailies' table
 var getDailyChannels = function (clientChannels, arr) {
@@ -27,7 +27,7 @@ var getDailyChannels = function (clientChannels, arr) {
     let serverInfo = db.getDatabase('serverInfo')
 
     if (!serverInfo) {
-        log.Error('No server info!', 'DB/server-info', 'getDailyChannels', serverInfo)
+        log.error('No server info!', serverInfo)
         return []
     }
     serverInfo.forEach('Dailies', row => {
@@ -62,7 +62,7 @@ var removeDailyChannel = function (channel) {
 
     serverInfo.database.run(`DELETE FROM Dailies WHERE ID = ${channel.id}`, [], function (err) {
         if (err) {
-            log.Error('Error occurred in delete from dailies.', 'DB/server-info', 'removeDailyChannels', err)
+            log.error('Error occurred in delete from dailies.', err)
             channel.send('An error occured.')
         } else {
             channel.send('Channel removed from daily stupid facts list.') // sadness
@@ -82,7 +82,7 @@ var getEffectsGuilds = function () {
         let serverInfo = db.getDatabase('serverInfo')
         effectsGuilds = []
         if (!serverInfo) {
-            log.Error('No server info!', 'DB/server-info', 'getEffectsGuilds', serverInfo)
+            log.error('No server info!', serverInfo)
             return []
         }
 
@@ -130,7 +130,7 @@ var removeEffectsServer = function (channel) {
 
     serverInfo.database.run(`DELETE FROM Effects WHERE ID = ${channel.guild.id}`, [], function (err) {
         if (err) {
-            log.Error('Error occured in delete from effects', 'DB/server-info', 'removeEffectsServer', err)
+            log.error('Error occured in delete from effects', err)
             channel.send('An error occured.')
         } else {
             // Deleted
