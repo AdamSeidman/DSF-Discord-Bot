@@ -101,7 +101,6 @@ var addAdjective = function(adjective) {
 
 // Add a fact template to db with string and boolean
 var addFact = function(template, canRecurse) {
-    template = template.replace(/'/g, '\'') 
     try {
         JSON.parse(template)
     } catch (err) {
