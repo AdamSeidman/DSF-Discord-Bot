@@ -40,6 +40,7 @@ var playMusic = async function (msg, song, isEffect, keepAlive) {
 
     if (song === undefined) {
         song = effectNames[Math.floor(Math.random() * effectNames.length)]
+        log.info(`Playing 'silence' sound effect [${song}]. Keep alive: ${keepAlive}`)
     }
 
     if (typeof(msg) !== 'object') {

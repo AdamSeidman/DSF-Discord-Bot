@@ -15,6 +15,7 @@ const utils = require('./facts')
 const { setBotOnline, shouldGenerateFact } = require('../web/override')
 const { randomNumber } = require('./utils')
 const config = require('../client/config')
+const log = require('better-node-file-logger')
 
 var dailyChannels = undefined
 
@@ -27,6 +28,7 @@ var scheduleDailyChannels = function (clientChannels) {
         // Send out fact at scheduled time
         let fact = utils.getRandomFact(false, true)
         dailyChannels.forEach(channel => {
+            log.info('Sending daily fact...', fact)
             channel.send(`${config.constants.dailyFactMessage}${fact}`)
         })
         if (!shouldGenerateFact()) {
@@ -44,6 +46,7 @@ var addDailyChannel = function (channel) {
         channel.send('Channel already set up.')
     } else {
         // Add to array
+        log.info('Adding channel to daily fact list.', channel.id)
         serverHandler.addDailyChannelDB(channel)
         dailyChannels.push(channel)
     }
@@ -61,6 +64,7 @@ var removeDailyChannel = function (channel) {
     }) !== undefined
     if (foundChannel) {
         // Remove from database
+        log.info('Removing channel to daily fact list.', channel.id)
         serverHandler.removeDailyChannelDB(channel)
         dailyChannels = dailyChannels.slice(0, index).concat(dailyChannels.slice(index + 1))
     } else {

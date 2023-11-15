@@ -91,6 +91,7 @@ var setSoundEffectsEnabled = function (msg, args) {
             return
         }
         // Tell server handler to make database call
+        log.info(`Sound effect options modified in server ${msg.guild.id}.`)
         serverHandler.modifyEffectsServerDB(msg.channel, acceptedResponses.true.includes(argument))
     }
 }
@@ -144,6 +145,7 @@ var factCheck = function (msg, args) {
         return
     }
     let builder = [`Provided template:\n> ${template}\n\nTen sample facts:\n`]
+    log.info('Received new fact template.', template)
     try {
         template = JSON.parse(template)
     } catch (err) {
