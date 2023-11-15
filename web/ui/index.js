@@ -28,6 +28,16 @@ var isItemSentient = 1
 var overrideMessage = ''
 var lastSubmittedMessage = ''
 
+// Escape HTML string
+var escapeText = function escape (htmlStr) {
+    return htmlStr.replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");        
+
+ }
+
 // Update override message
 var messageUpdate = async function () {
     let message = await document.getElementById('overrideInput').value.trim()
@@ -145,8 +155,8 @@ var submitStaticFact = function () {
 
 // Change item usage of logged item
 var updateUsage = function () {
-    document.getElementById('usage-string').innerHTML = 
-        `${document.getElementById('usageInput').value.trim()} ${document.getElementById('itemInput').value.trim()}`
+    let text = `${document.getElementById('usageInput').value.trim()} ${document.getElementById('itemInput').value.trim()}`
+    document.getElementById('usage-string').innerHTML = escapeText(text)
 }
 
 // Submit http request for new fact-blurb adjective
