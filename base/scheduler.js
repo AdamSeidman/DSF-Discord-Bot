@@ -27,8 +27,8 @@ var scheduleDailyChannels = function (clientChannels) {
     schedule.scheduleJob({hour: config.constants.dailyFactHour, minute: config.constants.dailyFactMinute, second: config.constants.dailyFactSecond}, async () => {
         // Send out fact at scheduled time
         let fact = utils.getRandomFact(false, true)
+        log.info('Sending daily fact...', fact)
         dailyChannels.forEach(channel => {
-            log.info('Sending daily fact...', fact)
             channel.send(`${config.constants.dailyFactMessage}${fact}`)
         })
         if (!shouldGenerateFact()) {
