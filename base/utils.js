@@ -18,8 +18,6 @@
  *         Removes any punctuation characters from provided input string
  *     fixPathCharacters-
  *         Parses URLs for HTTP requests
- *     openSQLiteDatabase-
- *         Runs the batch script that opens the sqlite desktop application
  */
 const exitVoiceChannels = require('./voice').endAll
 
