@@ -1,0 +1,3 @@
+[submodule "assets/DSF-Effects"]
+	path = assets/DSF-Effects
+	url = https://github.com/AdamSeidman/DSF-Effects.git
