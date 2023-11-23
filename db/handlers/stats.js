@@ -13,7 +13,7 @@
  */
 
 const db = require('../db')
-const utils = require('../../base/utils')
+const utils = require('poop-sock')
 const { getEffectsServersDB } = require('./server-info')
 const config = require('../../client/config')
 const log = require('better-node-file-logger')
@@ -63,7 +63,7 @@ var getStatistics = async function(msg, args) {
     let stats = db.getDatabase('stats')
     let result = {}
 
-    let user = utils.matchesId(args[1])
+    let user = utils.matchesDiscordId(args[1])
     let userId = msg.member.id
     if (user) {
         userId = user

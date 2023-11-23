@@ -13,7 +13,7 @@
 const facts = require('./facts')
 const { commands, sendDsfAcronym } = require('./commands')
 const { getAdjectives, getAdditions } = require('../db/handlers/random-items')
-const utils = require('./utils')
+const utils = require('poop-sock')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
 const { getEffectsServersDB } = require('../db/handlers/server-info')

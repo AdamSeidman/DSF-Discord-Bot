@@ -17,7 +17,7 @@
  *         List of all guild IDs that have sound effects enabled
  */
 
-const { copyObject } = require('../../base/utils')
+const { copyObject } = require('poop-sock')
 const db = require('../db')
 const log = require('better-node-file-logger')
 

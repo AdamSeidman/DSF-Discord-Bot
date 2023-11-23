@@ -14,7 +14,7 @@
 
 const connect = require('connect')
 const serveStatic = require('serve-static')
-const utils = require('../base/utils')
+const utils = require('poop-sock')
 const fixCh = utils.fixPathCharacters
 const config = require('../client/config')
 const log = require('better-node-file-logger')
@@ -44,7 +44,7 @@ var handleHttpRequest = function (item, request, response) {
         if (data !== undefined) {
             response.write(JSON.stringify(data))
         } else {
-            response.writeHead(200, utils.headers)
+            response.writeHead(200, utils.webHeaders)
         }
     } else {
         log.warn(`Preflight Request: ${request.headers['access-control-request-method']}`, request.url)

@@ -13,7 +13,7 @@ const serverHandler = require('../db/handlers/server-info')
 const schedule = require('node-schedule')
 const utils = require('./facts')
 const { setBotOnline, shouldGenerateFact } = require('../web/override')
-const { randomNumber } = require('./utils')
+const { randomNumber } = require('poop-sock')
 const config = require('../client/config')
 const log = require('better-node-file-logger')
 

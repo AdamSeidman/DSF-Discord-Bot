@@ -7,6 +7,14 @@ SET /P titlequery=<temp.txt
 IF NOT "%titlequery%" == "INFO: No tasks are running which match the specified criteria." (GOTO HasInst)
 
 :CreateServer
+ECHO Pulling new changes...
+ECHO BOT:
+GIT pull
+ECHO ASSETS:
+CD assets/sound-effects
+GIT pull
+CD ../..
+
 ECHO Intializing...
 ECHO.
 TITLE DSF Robot

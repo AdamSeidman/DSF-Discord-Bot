@@ -7,7 +7,7 @@
 const { addItem, refreshItems, addPerson, addAdjective, addFact, 
     getWebFormattedData, addPlace, addStaticFact } = require('../db/handlers/random-items')
 const { setBotOnline, setOverrideMessage } = require('./override')
-const { restartApp } = require('../base/utils')
+const { restartApp } = require('poop-sock')
 const { refreshTerms } = require('../db/handlers/dsf-terms')
 const { sendImmediateMessage } = require('../base/messages')
 

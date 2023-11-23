@@ -5,10 +5,9 @@
  */
 
 const config = require('./config')
-const utils = require('../base/utils')
+const utils = require('poop-sock')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
-const { randomNumber } = require('../base/utils')
 const { setupWebServers } = require('../base/web')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const log = require('better-node-file-logger')
@@ -31,8 +30,7 @@ bot.on('ready', () => {
     if (config.options.hasWebInterface) {
         setupWebServers()
     }
-    utils.getChannelById = id => bot.channels.cache.filter(x => x instanceof Discord.TextChannel).find(x => x.id === id)
-    utils.getUserById = async id => await bot.users.fetch(id)
+    utils.registerDiscordContext(bot)
     if (config.options.hasSlashCommands) {
         require('../base/commands').registerSlashCommands(bot)
     }
@@ -46,7 +44,7 @@ bot.on('messageCreate', msg => {
         messageHandlers.forEach(x => x(msg, msg.member === null))
     } else if (config.botId !== undefined && msg.author.id !== config.botId) {
         // Small chance of easter egg with other discord bots
-        if (randomNumber(config.probabilities.botEasterEgg) === 5) msg.reply(config.botEasterEggText)
+        if (utils.randomNumber(config.probabilities.botEasterEgg) === 5) msg.reply(config.botEasterEggText)
     }
 })
 

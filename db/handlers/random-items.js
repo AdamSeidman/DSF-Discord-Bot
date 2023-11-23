@@ -23,7 +23,7 @@
  */
 
 const db = require('../db')
-const { randomArrayItem } = require('../../base/utils')
+const { randomArrayItem } = require('poop-sock')
 const config = require('../../client/config')
 const log = require('better-node-file-logger')
 

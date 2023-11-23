@@ -9,7 +9,7 @@
  */
 
 const itemHandler = require('../db/handlers/random-items')
-const utils = require('./utils')
+const utils = require('poop-sock')
 var { shouldGenerateFact, overrideMessage, setBotOnline } = require('../web/override')
 const config = require('../client/config')
 

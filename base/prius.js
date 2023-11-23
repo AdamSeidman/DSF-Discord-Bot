@@ -11,7 +11,7 @@
  */
 
 const fs = require('fs') // Need prius pictures from /assets/prius
-const { randomNumber } = require('./utils')
+const { randomNumber } = require('poop-sock')
 const config = require('../client/config')
 
 const dir = './assets/prius'

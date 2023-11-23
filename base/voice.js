@@ -160,7 +160,11 @@ var getKeepAliveIds = function () {
     return results
 }
 
-var endAll = () => Object.keys(servers).forEach(x => endMusic({guildId: x.slice(1)}))
+var endAll = () => {
+    console.log(111) // TODO remove
+    Object.keys(servers).forEach(x => endMusic({guildId: x.slice(1)}))
+    console.log(222) // TODO remove
+}
 
 module.exports = {
     playMusic,
