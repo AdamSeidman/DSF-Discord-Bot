@@ -10,9 +10,11 @@ IF NOT "%titlequery%" == "INFO: No tasks are running which match the specified c
 ECHO Pulling new changes...
 ECHO BOT:
 GIT pull
+ECHO.
 ECHO ASSETS:
 CD assets/sound-effects
-GIT pull
+GIT pull https://github.com/AdamSeidman/DSF-Effects main
+ECHO.
 CD ../..
 
 ECHO Intializing...
