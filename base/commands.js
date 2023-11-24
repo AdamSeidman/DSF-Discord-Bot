@@ -346,7 +346,7 @@ var commandArray = [
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.', needsReply: true},
     {phrase: 'silence', response: startSilence, helpMsg: 'Silence, occasionally broken up by effects.', needsReply: true},
-    {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.'},
+    {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.', track: 'Stats'},
     {phrase: 'stop', response: voice.stopMusic, helpMsg: 'Stops music and removes bot from voice channel.', needsReply: true},
     {phrase: 'unsubscribe', response: msg => msg.reply('I politely decline.'), helpMsg: 'Unsubscribes you from this bot.'}
 ]

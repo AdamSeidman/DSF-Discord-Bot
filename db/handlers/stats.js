@@ -50,7 +50,7 @@ var bumpCount = function (type, userId, times) {
     stats.close()
 }
 
-var tables = ['Fact', 'Lie', 'Prius', 'Acronym', 'Effect']
+var tables = ['Fact', 'Lie', 'Prius', 'Acronym', 'Effect', 'Stats']
 
 var getStatistics = async function(msg, args) {
     if (!config.options.keepsStatistics) {
