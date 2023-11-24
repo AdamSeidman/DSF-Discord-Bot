@@ -25,7 +25,7 @@ const Discord = require('discord.js')
 const voice = require('./voice')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
-const { randomArrayItem, restartApp, randomNumber } = require('poop-sock')
+const { randomArrayItem, restartApp, randomNumber, randomEmoji } = require('poop-sock')
 const serverHandler = require('../db/handlers/server-info')
 const config = require('../client/config')
 const { constructFact } = require('./facts')
@@ -71,6 +71,13 @@ var deleteFunction = function (msg, args) {
         }
         msg.channel.bulkDelete(parsed + 1) // Bulk delete
     }
+}
+
+// React to the previous message in that channel
+// Args can specify number of random emojis to react with
+var bullyReact = function (msg, args) {
+    console.log(args) // TODO
+    msg.react(randomEmoji())
 }
 
 const acceptedResponses = { // For sound effects arguments
@@ -310,8 +317,11 @@ var handleSlashCommand = async function (interaction) {
         await command.execute(interaction)
     } catch (err) {
         log.error('Error executing interaction for slashCommand', err)
-        await ((interaction.replied || interaction.deferred)?
-            interaction.followUp : interaction.reply)({content: 'There was an error while executing this command!', ephemeral: true })
+        if (interaction.replied || interaction.deferred) {
+            log.warn('Potentially did not warn user of this error')
+        } else {
+            await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true })
+        }
     }
 }
 
@@ -319,6 +329,7 @@ var commandArray = [
     {phrase: 'help', response: sendHelpMessage, altMsg: 'Send message with available commands.'},
     {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.', hasArgs: true},
     {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)', needsReply: true},
+    {phrase: 'bully', response: bullyReact, helpMsg: 'Bully your friends with emojis.', hasArgs: true, needsReply: true},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.', needsReply: true},
     {phrase: 'db-dump', response: dbDump, altMsg: 'Shows all database items.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true, needsReply: true},
