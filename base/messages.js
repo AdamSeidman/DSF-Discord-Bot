@@ -152,11 +152,11 @@ var sendFact = function (msg, loud, lie) {
 var tellFoundFact = function (msg, isLie) {
     let message = utils.stripPunctuation(msg.content.trim().toLowerCase())
     message = message.slice(message.indexOf('about') + 5).trim()
-    let item = find(message)
+    let item = find(message, isLie)
 
     if (item === undefined) {
         item = {...utils.randomArrayItem(getItems()), classifier: 'item'}
-        let template = find(item.plural).template.fact
+        let template = find(item.plural, isLie).template.fact
         facts.stuffItem(item)
         if (message.length > 100) message = message.slice(0, 99)
         msg.channel.send(

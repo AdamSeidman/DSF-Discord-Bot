@@ -246,7 +246,7 @@ var formattedData = function () {
 }
 
 // Look for random item by string
-var findEntry = function (entryName) {
+var findEntry = function (entryName, isLie) {
     if (typeof entryName !== 'string') return undefined
     let subFind = function (list) {
         let item = getArray(list.list).find(x => {
@@ -258,7 +258,17 @@ var findEntry = function (entryName) {
         })
         if (item !== undefined) {
             let factTemplate = randomArrayItem(getArray('recursiveFacts').filter(x => {
-                let template = JSON.stringify(x.fact)
+                let template = []
+                x.fact.forEach(x => {
+                    if (x.truth === undefined) {
+                        template.push(x)
+                    } else if (isLie) {
+                        template.push(x.lie)
+                    } else {
+                        template.push(x.truth)
+                    }
+                })
+                template = JSON.stringify(template)
                 let res = false
                 list.identifiers.forEach(id => {
                     if (template.includes(`["${id}"]`)) {
