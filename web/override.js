@@ -26,6 +26,6 @@ var setOverrideMessage = function (message) {
 module.exports = {
     shouldGenerateFact: () => shouldGenerateFact,
     overrideMessage: () => overrideMessage,
-    setBotOnline: setBotOnline,
-    setOverrideMessage: setOverrideMessage
+    setBotOnline,
+    setOverrideMessage
 }
