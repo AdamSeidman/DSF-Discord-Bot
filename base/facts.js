@@ -50,10 +50,23 @@ module.exports = {
             fact = `[Issue with template] \t${err}`
         }
         return fact
+    },
+    stuffItem: (item) => {
+        if (item.classifier === 'item') {
+            lastItem.item = item
+            lastItem.hasBeenCalled = false
+        } else if (item.classifier === 'person') {
+            lastPerson.person = item
+            lastPerson.hasBeenCalled = false
+        } else if (item.classifier === 'place') {
+            lastPlace = item.name
+        }
     }
 }
 
 // These two objects are used to prepare random items and people in order to get their articles/pronouns
+var lastPlace = undefined
+
 var lastItem = {
     item: undefined,
     hasBeenCalled: true
@@ -68,7 +81,7 @@ var lastPerson = {
 var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
     let item = undefined
     if (isPerson) { // People
-        if (!(isEmpty || lastPerson.hasBeenCalled)) {
+        if (!lastPerson.hasBeenCalled) {
             item = lastPerson.person
         } else if (isAlive === undefined) {
             item = itemHandler.getAllPeople()
@@ -79,7 +92,7 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
         }
         lastPerson.hasBeenCalled = !isEmpty
     } else { // Items/Animals
-        if (!isEmpty && !lastItem.hasBeenCalled) {
+        if (!lastItem.hasBeenCalled) {
             item = lastItem.item
         } else if (isAlive === undefined) {
             item = itemHandler.getAllItems()
@@ -115,6 +128,15 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
     return item
 }
 
+var getPlace = function () {
+    if (lastPlace === undefined) {
+        return utils.randomArrayItem(itemHandler.getPlaces()).name
+    }
+    let ret = `${lastPlace}`
+    lastPlace = undefined
+    return ret
+}
+
 // Index is used to process keywords in fact templates
 var index = {
     blank: (isLie, prep) => prepareTerm(prep, false, false),
@@ -127,7 +149,7 @@ var index = {
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
     noun: (isLie, prep) => index[utils.randomArrayItem(['blank', 'place', 'person'])](isLie, prep),
-    place: () => utils.randomArrayItem(itemHandler.getPlaces()).name,
+    place: getPlace,
     fact: (isLie) => {
         let fact = utils.randomArrayItem(itemHandler.getRecursiveFacts())
         return constructFact(fact, isLie)

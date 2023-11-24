@@ -12,7 +12,7 @@
 
 const facts = require('./facts')
 const { commands, sendDsfAcronym } = require('./commands')
-const { getAdjectives, getAdditions } = require('../db/handlers/random-items')
+const { getAdjectives, getAdditions, getItems, find } = require('../db/handlers/random-items')
 const utils = require('poop-sock')
 const { playMusic, effects } = require('./voice')
 const { postPriusPic } = require('./prius')
@@ -149,6 +149,25 @@ var sendFact = function (msg, loud, lie) {
     }
 }
 
+var tellFoundFact = function (msg, isLie) {
+    let message = utils.stripPunctuation(msg.content.trim().toLowerCase())
+    message = message.slice(message.indexOf('about') + 5).trim()
+    let item = find(message)
+
+    if (item === undefined) {
+        item = {...utils.randomArrayItem(getItems()), classifier: 'item'}
+        let template = find(item.plural).template.fact
+        facts.stuffItem(item)
+        if (message.length > 100) message = message.slice(0, 99)
+        msg.channel.send(
+            `I could not find a fact for "${message}" in my database.\nHere's a ${isLie? 'lie' : 'fact'} about ${item.plural} instead:\n${
+                facts.constructFact(template, isLie) }`)
+    } else {
+        facts.stuffItem(item)
+        msg.reply(facts.constructFact(item.template.fact, isLie))
+    }
+}
+
 // Generic requests with specific responses
 const knownPhrases = [
     {phrase: 'loudfactplease', response: msg => sendFact(msg, true), track: 'Fact'},
@@ -157,5 +176,9 @@ const knownPhrases = [
     {phrase: 'lieplease', response: msg => sendFact(msg, false, true), track: 'Lie'},
     {phrase: 'priusplease', response: postPriusPic, track: 'Prius'},
     {phrase: 'loudacronymplease', response: msg => sendDsfAcronym(msg, true, false), track: 'Acronym'},
-    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'}
+    {phrase: 'acronymplease', response: msg => sendDsfAcronym(msg, false, true), track: 'Acronym'},
+    {phrase: 'tellmeafactabout', response: msg => tellFoundFact(msg, false), track: 'Fact'},
+    {phrase: 'tellmealieabout', response: msg => tellFoundFact(msg, true), track: 'Lie'},
+    {phrase: 'givemeafactabout', response: msg => tellFoundFact(msg, false), track: 'Fact'},
+    {phrase: 'givemealieabout', response: msg => tellFoundFact(msg, true), track: 'Lie'}
 ]

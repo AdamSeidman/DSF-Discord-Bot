@@ -23,7 +23,7 @@
  */
 
 const db = require('../db')
-const { randomArrayItem } = require('poop-sock')
+const { randomArrayItem, stripPunctuation } = require('poop-sock')
 const config = require('../../client/config')
 const log = require('better-node-file-logger')
 
@@ -245,6 +245,53 @@ var formattedData = function () {
     return data
 }
 
+// Look for random item by string
+var findEntry = function (entryName) {
+    if (typeof entryName !== 'string') return undefined
+    let subFind = function (list) {
+        let item = getArray(list.list).find(x => {
+            let descriptor = (x.usage === undefined)? 'name' : 'plural'
+            if (descriptor === 'plural' && `${x.usage} ${x.name}` == entryName) {
+                return true
+            }
+            return stripPunctuation(x[descriptor]).toLowerCase().trim() == entryName
+        })
+        if (item !== undefined) {
+            let factTemplate = randomArrayItem(getArray('recursiveFacts').filter(x => {
+                let template = JSON.stringify(x.fact)
+                let res = false
+                list.identifiers.forEach(id => {
+                    if (template.includes(`["${id}"]`)) {
+                        res = true
+                    }
+                })
+                return res
+            }))
+            if (factTemplate !== undefined) {
+                return {
+                    ...item,
+                    template: factTemplate,
+                    classifier: list.classifier
+                }
+            }
+        }
+    }
+    let item = undefined
+    let categories = [
+        { list: 'animals', identifiers: ['blank', 'animal', 'blanks', 'animals'], classifier: 'item' },
+        { list: 'nonLivingItems', identifiers: ['blank', 'item', 'blanks', 'items'], classifier: 'item' },
+        { list: 'alive', identifiers: ['person', 'alive'], classifier: 'person' },
+        { list: 'dead', identifiers: ['person', 'dead'], classifier: 'person' },
+        { list: 'places', identifiers: ['place'], classifier: 'place' }
+    ]
+    categories.forEach(x => {
+        if (item == undefined) {
+            item = subFind(x)
+        }
+    })
+    return item
+}
+
 module.exports = {
     getAllItems: () => getArray('items'),
     getAnimals: () => getArray('animals'),
@@ -267,5 +314,6 @@ module.exports = {
     addPlace: addPlace,
     addStaticFact: addStaticFact,
     getWebFormattedData: formattedData,
-    getAdditions: getAdditionalPhrases
+    getAdditions: getAdditionalPhrases,
+    find: findEntry
 }
