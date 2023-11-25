@@ -159,8 +159,9 @@ var tellFoundFact = function (msg, isLie) {
         let template = find(item.plural, isLie).template.fact
         facts.stuffItem(item)
         if (message.length > 100) message = message.slice(0, 99)
+        let type = isLie? 'lie' : 'fact'
         msg.channel.send(
-            `I could not find a fact for "${message}" in my database.\nHere's a ${isLie? 'lie' : 'fact'} about ${item.plural} instead:\n${
+            `I could not find a ${type} for "${message}" in my database.\nHere's a ${type} about ${item.plural} instead:\n${
                 facts.constructFact(template, isLie) }`)
     } else {
         facts.stuffItem(item)
