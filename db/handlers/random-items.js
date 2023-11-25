@@ -23,7 +23,7 @@
  */
 
 const db = require('../db')
-const { randomArrayItem, stripPunctuation } = require('poop-sock')
+const { randomArrayItem, stripPunctuation, copyObject } = require('poop-sock')
 const config = require('../../client/config')
 const log = require('better-node-file-logger')
 
@@ -257,6 +257,7 @@ var findEntry = function (entryName, isLie) {
             return stripPunctuation(x[descriptor]).toLowerCase().trim() == entryName
         })
         if (item !== undefined) {
+            item = copyObject(item)
             let factTemplate = randomArrayItem(getArray('recursiveFacts').filter(x => {
                 let template = []
                 x.fact.forEach(x => {
@@ -280,7 +281,7 @@ var findEntry = function (entryName, isLie) {
             if (factTemplate !== undefined) {
                 return {
                     ...item,
-                    template: factTemplate,
+                    template: copyObject(factTemplate),
                     classifier: list.classifier
                 }
             }
