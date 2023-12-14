@@ -31,5 +31,5 @@ var postPriusPic = function (msg) {
 }
 
 module.exports = {
-    postPriusPic: postPriusPic
+    postPriusPic
 }

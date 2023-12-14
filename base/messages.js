@@ -37,6 +37,9 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
 
     // Look for the command in dictionary. If found, run proper command response
     message = message.slice(config.constants.commandPrefix.length).trim().split(' ')
+    // Message content fixes capitalization issues in nuances where content is important
+    let messageContent = msg.content.trim().slice(config.constants.commandPrefix.length).trim().split(' ')
+    messageContent[0] = messageContent[0].toLowerCase()
     let command = commands.find(x => x.phrase === message[0])
     if (command !== undefined) {
         if (typeof command.response === 'boolean') {
@@ -57,7 +60,7 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
             }
         } else {
             if (command.track) stats.bumpCount(command.track, msg.member.id)
-            command.response(msg, message)
+            command.response(msg, message, messageContent)
         }
     }
 }
