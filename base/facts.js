@@ -14,6 +14,7 @@ var { shouldGenerateFact, overrideMessage, setBotOnline } = require('../web/over
 const config = require('../client/config')
 
 const PREP_PREFIX = config.constants.factPrepPrefix // Term prefix in fact template for pronouns and articles
+const USE_PREFIX = config.constants.factUsePrefix || 'use' // For usage macros
 
 module.exports = {
     getRandomFact: function (isLie, isDaily) {
@@ -211,17 +212,24 @@ var constructFact = function (fact, isLie) {
             }
         }
         if (item instanceof Array && item.length === 1) {
-            // Arrays of one word are either items to be parsed or prep notices
-            const isPrep = item[0].slice(0, PREP_PREFIX.length) === PREP_PREFIX // ex.: prepItem
-            if (isPrep) {
-                // Cut off prep- prefix if there is one
-                item[0] = item[0].slice(PREP_PREFIX.length).toLowerCase()
-            }
-            if (item[0].includes('_')) {
-                // Better way to prep pronouns- let template enter them
-                item = getPronoun(item)
+            if (item[0].slice(0, USE_PREFIX.length) === USE_PREFIX) {
+                // Nice macro for: ["useBlank"] => [ ["prepareBlank"], ["usage"], " ", ["blank"] ]
+                index[item[0].slice(USE_PREFIX.length)](isLie, true)
+                result += `${index['usage'](isLie, false)} `
+                item = index[item[0].slice(USE_PREFIX.length).toLowerCase()](isLie, false)
             } else {
-                item = index[item[0]](isLie, isPrep) // Grab correct method from function index
+                // Arrays of one word are either items to be parsed or prep notices
+                const isPrep = item[0].slice(0, PREP_PREFIX.length) === PREP_PREFIX // ex.: prepItem
+                if (isPrep) {
+                    // Cut off prep- prefix if there is one
+                    item[0] = item[0].slice(PREP_PREFIX.length).toLowerCase()
+                }
+                if (item[0].includes('_')) {
+                    // Better way to prep pronouns- let template enter them
+                    item = getPronoun(item)
+                } else {
+                    item = index[item[0]](isLie, isPrep) // Grab correct method from function index
+                }
             }
         }
         if (item instanceof Function) {

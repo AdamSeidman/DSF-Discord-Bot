@@ -25,6 +25,7 @@
     "constants": {
         "commandPrefix": "dsf!",
         "factPrepPrefix": "prepare",
+        "factUsePrefix": "use",
         "minSilenceMinutes": 5,
         "maxSilenceMinutes": 30,
         "dailyFactHour": 18,
