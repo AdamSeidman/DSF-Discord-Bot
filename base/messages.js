@@ -58,7 +58,6 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
             }
         } else {
             if (command.track) stats.bumpCount(command.track, msg.member.id)
-            msg.reply("confirmed")
             command.response(msg, message,
                 message.length > 1? [message[0], ...msg.content.trim().slice(config.constants.commandPrefix.length).trim().split(' ').slice(1)] : undefined)
         }
