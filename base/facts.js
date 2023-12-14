@@ -214,7 +214,7 @@ var constructFact = function (fact, isLie) {
         if (item instanceof Array && item.length === 1) {
             if (item[0].slice(0, USE_PREFIX.length) === USE_PREFIX) {
                 // Nice macro for: ["useBlank"] => [ ["prepareBlank"], ["usage"], " ", ["blank"] ]
-                index[item[0].slice(USE_PREFIX.length)](isLie, true)
+                index[item[0].slice(USE_PREFIX.length).toLowerCase()](isLie, true)
                 result += `${index['usage'](isLie, false)} `
                 item = index[item[0].slice(USE_PREFIX.length).toLowerCase()](isLie, false)
             } else {
