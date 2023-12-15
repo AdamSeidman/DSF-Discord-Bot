@@ -27,7 +27,8 @@ module.exports = {
                 }
             }
             let fact = utils.randomArrayItem(itemHandler.getAllFacts())
-            let resFact = constructFact(fact, isLie) + '.' // Call constructFact with first pass (can be recursive)
+            let resFact = constructFact(fact, isLie) // Call constructFact with first pass (can be recursive)
+            if (!utils.isStringTerminated(resFact)) resFact += '.'
             if (resFact.length <= 2) {
                 // Shouldn't happen- but is funny
                 return 'Fact machine broken.'
@@ -45,7 +46,8 @@ module.exports = {
     },
     constructFact: (fact, isLie) => {
         try {
-            fact = constructFact({'fact': fact}, isLie) + '.'
+            fact = constructFact({'fact': fact}, isLie)
+            if (!utils.isStringTerminated(fact)) fact += '.'
             fact = fact.slice(0, 1).toUpperCase() + fact.slice(1)
         } catch (err) {
             fact = `[Issue with template] \t${err}`
