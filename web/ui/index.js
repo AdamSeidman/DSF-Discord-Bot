@@ -25,6 +25,7 @@ var personData = {
 }
 
 var isItemSentient = 1
+var isItemFood = 0
 var overrideMessage = ''
 var lastSubmittedMessage = ''
 
@@ -94,6 +95,16 @@ var toggleItemSentience = function () {
     els[(isItemSentient + 1) % 2].disabled = true
 }
 
+// Log item edible-ness
+var toggleItemEdible = function () {
+    isItemFood = (isItemFood + 1) % 2
+    let els = document.getElementsByClassName('itemBtnFood')
+    els[isItemFood].classList.add('active')
+    els[isItemFood].disabled = true
+    els[(isItemFood + 1) % 2].classList.remove('active')
+    els[(isItemFood + 1) % 2].disabled = false
+}
+
 // Submit http request to add person to .db
 var submitPerson = function () {
     var { nameInput, name, error } = getInput('name', undefined, true)
@@ -128,7 +139,7 @@ var submitItem = function () {
     if (error) return
     var { usageInput, usage, error } = getInput('usage', 'usage text')
     if (error) return
-    post(`item/${item.toLowerCase().trim()}_${plural.toLowerCase().trim()}_${isItemSentient}_${usage.toLowerCase().trim()}`)
+    post(`item/${item.toLowerCase().trim()}_${plural.toLowerCase().trim()}_${isItemSentient}_${usage.toLowerCase().trim()}_${isItemFood}`)
     itemInput.value = ''
     pluralInput.value = ''
     usageInput.value = ''

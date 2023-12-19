@@ -75,13 +75,14 @@ var addPerson = function (name, isMale, isAlive) {
 }
 
 // Add an item to db with provided information
-var addItem = function (name, plural, isAlive, usage) {
+var addItem = function (name, plural, isAlive, usage, isFood) {
     let randomItems = db.getDatabase('randomItems')
     randomItems.insert('Items', {
         name: name, // Four item categories
         plural: plural,
         isAlive: isAlive,
-        usage: usage
+        usage: usage,
+        isFood: isFood
     }, () => {
         log.info(`'${name}' added to database.`)
         refresh()
@@ -237,7 +238,9 @@ var refresh = function () {
         recursiveFacts: [],
         adjectives: [],
         places: [],
-        staticFacts: []
+        staticFacts: [],
+        food: [],
+        inedibles: []
     }
     setup()
 }
@@ -327,12 +330,12 @@ module.exports = {
     hasStaticFacts: () => getArray('staticFacts').length > 0,
     setupItems: setup,
     refreshItems: refresh,
-    addPerson: addPerson,
-    addItem: addItem,
-    addAdjective: addAdjective,
-    addFact: addFact,
-    addPlace: addPlace,
-    addStaticFact: addStaticFact,
+    addPerson,
+    addItem,
+    addAdjective,
+    addFact,
+    addPlace,
+    addStaticFact,
     getWebFormattedData: formattedData,
     getAdditions: getAdditionalPhrases,
     find: findEntry

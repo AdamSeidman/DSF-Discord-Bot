@@ -114,6 +114,14 @@
                             <button type="button" class="itemBtn btn" onclick="toggleItemSentience()">Not Alive</button>
                         </div>
                     </div>
+                    <div class="form-group inline mt-2 mr-2" id="buttonsContainer">
+                        <div class="input-group-prepend inline">
+                            <button type="button" class="itemBtnFood btn active alive-item-btn" disabled onclick="toggleItemEdible()">Not Food</button>
+                        </div>
+                        <div class="input-group-append inline">
+                            <button type="button" class="itemBtnFood btn" onclick="toggleItemEdible()">Food</button>
+                        </div>
+                    </div>
                     <div class="form-group inline">
                         <button type="button" class="btn item-submit" onclick="submitItem()">Submit</button>
                     </div>
@@ -139,7 +147,7 @@
                 <form>
                     <div class="form-group">
                         <label for="immMessageInput" class="text-light">Message:</label>
-                        <input class="form-control" id="immMessageInput" placeholder="mesage">
+                        <input class="form-control" id="immMessageInput" placeholder="message">
                     </div>
                 </form>
             </div>
