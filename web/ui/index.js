@@ -146,6 +146,14 @@ var submitItem = function () {
     document.getElementById('usage-string').innerHTML = ''
 }
 
+var keyWrapper = function (event) {
+    if (event.keyCode == 13) {
+        submitImmediateMsg()
+        return false
+    }
+    return true
+}
+
 // Submit http request to add fact template to .db
 var submitFact = function () {
     var { factInput, fact, error } = getInput('fact')

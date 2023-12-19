@@ -142,12 +142,12 @@
                 <form class="form-group channelPanel">
                     <label for="channelInput" class="text-light">Channel ID:</label>
                     <input class="form-control" id="channelInput" placeholder="channel id">
-                    <button type="button" class="btn immMessage-submit" onclick="submitImmediateMsg()">Submit</button>
+                    <button type="button" class="btn immMessage-submit" onclick="submitImmediateMsg()" onkeypress="return keyWrapper(event)">Submit</button>
                 </form>
                 <form>
                     <div class="form-group">
                         <label for="immMessageInput" class="text-light">Message:</label>
-                        <input class="form-control" id="immMessageInput" placeholder="message">
+                        <input class="form-control" id="immMessageInput" placeholder="message" onkeypress="return keyWrapper(event)">
                     </div>
                 </form>
             </div>
