@@ -38,7 +38,9 @@ var lists = { // All possible categories of random items (currently)
     recursiveFacts: [],
     adjectives: [],
     places: [],
-    staticFacts: []
+    staticFacts: [],
+    inedibles: [],
+    food: []
 }
 
 // Get any array of items given category
@@ -170,6 +172,11 @@ var setup = function () {
                     lists.animals.push(row)
                 } else {
                     lists.nonLivingItems.push(row)
+                }
+                if (row.isFood) {
+                    lists.food.push(row)
+                } else {
+                    lists.inedibles.push(row)
                 }
                 lists.items.push(row)
             })
@@ -307,6 +314,8 @@ module.exports = {
     getAllItems: () => getArray('items'),
     getAnimals: () => getArray('animals'),
     getItems: () => getArray('nonLivingItems'),
+    getFood: () => getArray('food'),
+    getNonFood: () => getArray('inedibles'),
     getAllPeople: () => getArray('people'),
     getAlivePeople: () => getArray('alive'),
     getDeadPeople: () => getArray('dead'),

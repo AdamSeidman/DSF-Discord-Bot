@@ -81,7 +81,7 @@ var lastPerson = {
 
 // Get a random item
 // If appropriate, store the object 
-var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
+var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive, isFood) {
     let item = undefined
     if (isPerson) { // People
         if (!lastPerson.hasBeenCalled) {
@@ -97,6 +97,10 @@ var prepareTerm = function(isEmpty, isPlural, isPerson, isAlive) {
     } else { // Items/Animals
         if (!lastItem.hasBeenCalled) {
             item = lastItem.item
+        } else if (isFood) {
+            item = itemHandler.getFood()
+        } else if (isFood === false) {
+            item = itemHandler.getNonFood()
         } else if (isAlive === undefined) {
             item = itemHandler.getAllItems()
         } else if (isAlive) {
@@ -151,6 +155,10 @@ var index = {
     animals: (isLie, prep) => prepareTerm(prep, true, false, true),
     items: (isLie, prep) => prepareTerm(prep, true, false, false),
     blanks: (isLie, prep) => prepareTerm(prep, true, false),
+    food: (isLie, prep) => prepareTerm(prep, false, false, false, true),
+    foods: (isLie, prep) => prepareTerm(prep, true, false, false, true),
+    inedible: (isLie, prep) => prepareTerm(prep, false, false, false, false),
+    inedibles: (isLie, prep) => prepareTerm(prep, true, false, false, false),
     noun: (isLie, prep) => index[utils.randomArrayItem(['blank', 'place', 'person'])](isLie, prep),
     place: getPlace,
     fact: (isLie) => {
