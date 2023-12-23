@@ -261,7 +261,7 @@ var findEntry = function (entryName, isLie) {
     let subFind = function (list) {
         let item = getArray(list.list).find(x => {
             let descriptor = (x.usage === undefined)? 'name' : 'plural'
-            if (descriptor === 'plural' && `${x.usage} ${x.name}` == entryName) {
+            if (descriptor === 'plural' && (`${x.usage} ${x.name}` == entryName || x.name == entryName)) {
                 return true
             }
             return stripPunctuation(x[descriptor]).toLowerCase().trim() == entryName
