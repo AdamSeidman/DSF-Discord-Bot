@@ -20,6 +20,7 @@
 const { copyObject } = require('poop-sock')
 const db = require('../db')
 const log = require('better-node-file-logger')
+const { registerHosts } = require('../../base/host')
 
 // Return all channel IDs in 'dailies' table
 var getDailyChannels = function (clientChannels, arr) {
@@ -145,11 +146,59 @@ var addOrRemoveEffectsServer = function (channel, addEffects) {
     else removeEffectsServer(channel)
 }
 
+// Store hosts locally
+let hostInfo = []
+
+var initServerHosts = function (serverCache) {
+    if (hostInfo.length > 0) {
+        return
+    }
+
+    db.setUpDatabases()
+    let serverInfo = db.getDatabase('serverInfo')
+
+    // Callback for adding or updating host db data
+    let updateCallback = function (serverId, hostId) {
+        db.setUpDatabases()
+        let serverInfo = db.getDatabase('serverInfo')
+    
+        let server = hostInfo.find(x => x.guildId === `${serverId}`)
+        if (server === undefined) {
+            // New Server
+            serverInfo.insert('Hosts', {
+                Guild: serverId,
+                HostId: hostId
+            }, () => {
+                log.info('Added new server to host list!', serverId)
+            })
+            hostInfo.push({guildId: `${serverId}`, hostId: `${hostId}`})
+        } else {
+            // Pre-existing Server
+            log.info(`Updating host in ${serverId} to user:`, hostId)
+            serverInfo.database.run(`UPDATE Hosts SET HostId='${hostId}' WHERE Guild='${serverId}'`, [], err => {
+                if (err) {
+                    log.error('Error in sql updateHostServer (run)', [serverId, hostId, err])
+                }
+            })
+            server.hostId = `${hostId}`
+        }
+        serverInfo.close()
+    }
+
+    hostInfo = []
+    serverInfo.forEach('Hosts', row => {
+        // Read through table
+        hostInfo.push({guildId: row.Guild, hostId: row.HostId})
+    }, () => registerHosts(serverCache, guildId => hostInfo.find(x => x.guildId === `${guildId}`), updateCallback))
+    serverInfo.close()
+}
+
 module.exports = {
     getDailyChannelsDB: getDailyChannels,
     addDailyChannelDB: addDailyChannel,
     removeDailyChannelDB: removeDailyChannel,
     modifyEffectsServerDB: addOrRemoveEffectsServer,
     getEffectsServersDB: getEffectsGuilds,
-    setupEffectsServers: () => { getEffectsGuilds() }
+    setupEffectsServers: () => { getEffectsGuilds() },
+    setupHostServers: initServerHosts
 }

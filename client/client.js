@@ -8,9 +8,9 @@ const config = require('./config')
 const utils = require('poop-sock')
 const Discord = require('discord.js')
 const scheduler = require('../base/scheduler')
+const log = require('better-node-file-logger')
 const { setupWebServers } = require('../base/web')
 const dsfTerms = require('../db/handlers/dsf-terms')
-const log = require('better-node-file-logger')
 const serverInfo = require('../db/handlers/server-info')
 const { messageHandlers  } = require('../base/messages')
 const itemHandler = require('../db/handlers/random-items')
@@ -21,6 +21,7 @@ bot.login(config.token) // Create bot and login
 bot.on('ready', () => {
     // Run all setup items
     log.quickInit(config.constants.loggingPrefix)
+    serverInfo.setupHostServers(bot.guilds.cache)
     itemHandler.setupItems()
     dsfTerms.refreshTerms()
     if (config.options.hasSoundEffects) {

@@ -59,12 +59,16 @@ var getDB = function(dbName) {
             }
         })
     }
-    result.forEach = function (table, callback) {
+    result.forEach = function (table, callback, finalCallback) {
         result.database.each(`SELECT * FROM ${table}`, (err, row) => {
             if (err) {
                 log.error(`Error in reading sql (Table: ${table}) with forEach`, {row: row, error: err})
             } else {
                 callback(row)
+            }
+        }, () => {
+            if (finalCallback !== undefined) {
+                finalCallback()
             }
         })
     }

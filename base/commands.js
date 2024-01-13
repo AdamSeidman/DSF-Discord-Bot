@@ -32,6 +32,7 @@ const { constructFact } = require('./facts')
 const stats = require('../db/handlers/stats')
 const randomItems = require('../db/handlers/random-items')
 const log = require('better-node-file-logger')
+const { repickEvent } = require('./host')
 
 var helpEmbed = undefined
 const prefix = config.constants.commandPrefix
@@ -344,6 +345,7 @@ var commandArray = [
     {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.', needsReply: true},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.', needsReply: true},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},
+    {phrase: 'repick', response: msg => repickEvent(msg.guild, x => sendOrReply(msg, x), msg.member.id), helpMsg: 'Repicks host.'},
     {phrase: 'resume', response: voice.resumeMusic, helpMsg: 'Resumes music, if playing.', needsReply: true},
     {phrase: 'silence', response: startSilence, helpMsg: 'Silence, occasionally broken up by effects.', needsReply: true},
     {phrase: 'stats', response: stats.getStatistics, helpMsg: 'Lists your daily stupid fact statistics.', track: 'Stats'},
