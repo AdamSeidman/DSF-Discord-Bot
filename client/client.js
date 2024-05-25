@@ -49,6 +49,10 @@ bot.on('messageCreate', msg => {
     }
 })
 
+bot.on('guildCreate', guild => {
+    serverInfo.setupHostServers([guild], true)
+})
+
 bot.on('interactionCreate', async interaction => {
     if (!config.options.hasSlashCommands || !interaction.isChatInputCommand()) return
     require('../base/commands').handleSlashCommand(interaction)

@@ -149,8 +149,8 @@ var addOrRemoveEffectsServer = function (channel, addEffects) {
 // Store hosts locally
 let hostInfo = []
 
-var initServerHosts = function (serverCache) {
-    if (hostInfo.length > 0) {
+var initServerHosts = function (serverCache, bypass) {
+    if (hostInfo.length > 0 && bypass) {
         return
     }
 
@@ -185,7 +185,9 @@ var initServerHosts = function (serverCache) {
         serverInfo.close()
     }
 
-    hostInfo = []
+    if (!bypass) {
+        hostInfo = []
+    }
     serverInfo.forEach('Hosts', row => {
         // Read through table
         hostInfo.push({guildId: row.Guild, hostId: row.HostId})
