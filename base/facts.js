@@ -16,6 +16,20 @@ const config = require('../client/config')
 const PREP_PREFIX = config.constants.factPrepPrefix // Term prefix in fact template for pronouns and articles
 const USE_PREFIX = config.constants.factUsePrefix || 'use' // For usage macros
 
+var getGibberish = function () {
+    if (!config.options.hasGibberish) return ''
+    let factArr = []
+    for (let i = 0; i < 5; i++) {
+        factArr.push(constructFact({'fact': [['fact']]}, true))
+    }
+    factArr = factArr.join(' ').split(' ')
+    let sentence = []
+    for (let i = 0; i < utils.randomNumber(10) + 3; i++) {
+        sentence.push(utils.randomArrayItem(factArr))
+    }
+    return sentence.join(' ')
+}
+
 module.exports = {
     getRandomFact: function (isLie, isDaily) {
         if (shouldGenerateFact()) {
@@ -64,7 +78,8 @@ module.exports = {
         } else if (item.classifier === 'place') {
             lastPlace = item.name
         }
-    }
+    },
+    getGibberish
 }
 
 // These two objects are used to prepare random items and people in order to get their articles/pronouns
@@ -165,6 +180,7 @@ var index = {
         let fact = utils.randomArrayItem(itemHandler.getRecursiveFacts())
         return constructFact(fact, isLie)
     },
+    gibberish: getGibberish,
     number: () => utils.randomNumber(),
     usage: () => {
         if (lastItem === undefined) return ''

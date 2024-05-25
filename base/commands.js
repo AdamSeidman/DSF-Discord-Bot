@@ -25,10 +25,10 @@ const Discord = require('discord.js')
 const voice = require('./voice')
 const dsfTerms = require('../db/handlers/dsf-terms')
 const { postPriusPic } = require('./prius')
-const { randomArrayItem, restartApp, randomNumber, randomEmoji } = require('poop-sock')
+const { randomArrayItem, restartApp, randomEmoji, matchesDiscordId, getUserById } = require('poop-sock')
 const serverHandler = require('../db/handlers/server-info')
 const config = require('../client/config')
-const { constructFact } = require('./facts')
+const { constructFact, getGibberish } = require('./facts')
 const stats = require('../db/handlers/stats')
 const randomItems = require('../db/handlers/random-items')
 const log = require('better-node-file-logger')
@@ -40,11 +40,11 @@ const prefix = config.constants.commandPrefix
 const MIN_SILENCE_SECONDS = 60 * config.constants.minSilenceMinutes
 const MAX_SILENCE_SECONDS = 60 * config.constants.maxSilenceMinutes
 
-var sendOrReply = function (msg, content) {
-    if (msg.author) {
+var sendOrReply = function (msg, content, ephemeral) {
+    if (msg.author && !ephemeral) {
         msg.channel.send(content)
     } else {
-        msg.reply(content)
+        msg.reply({content: content, ephemeral: ephemeral})
     }
 }
 
@@ -74,11 +74,35 @@ var deleteFunction = function (msg, args) {
     }
 }
 
-// React to the previous message in that channel
-// Args can specify number of random emojis to react with
-var bullyReact = function (msg, args) {
-    console.log(args) // TODO
-    msg.react(randomEmoji())
+// Send mean message. Also react to the message with random emoji.
+var bullyReact = async function (msg, args) {
+    let id = matchesDiscordId(args[1])
+    if (id === null) {
+        sendOrReply(msg, 'Argument was not a Discord user.', true)
+        if (msg.react) msg.react(randomEmoji())
+        log.warn('Bully react requested, but argument was invalid.')
+        return
+    }
+    let channel = await getUserById(id)
+    if (channel === undefined) {
+        sendOrReply(msg, 'Discord user was not valid.', true)
+        log.warn('Bully react requested, but user was invalid.')
+    } else {
+        let message = `<@${msg.member.id}> told me that you ${randomArrayItem(['suck', 'smell', 'eat paste', 'drink lake water'])}.`
+        let subMessage = [...args].splice(2).join(' ')
+        if (args.length > 2 && subMessage.length > 1) {
+            message += ` Also they said "*${subMessage}*"${subMessage.charAt(subMessage.length - 1) == '.'? '' : '.'}`
+        }
+        try {
+            channel.send(message)
+            log.info(`Bully message sent to <@${channel.id}>`, message)
+            if (!msg.author) sendOrReply(msg, 'Message sent.', true)
+        } catch (err) {
+            log.info(`Bully message was not sent from <@${msg.member.id}> to <@${channel.id}>.`, err)
+            sendOrReply(msg, 'Could not send a message to that user.', true)
+        }
+    }
+    if (msg.react) msg.react(randomEmoji())
 }
 
 const acceptedResponses = { // For sound effects arguments
@@ -232,16 +256,7 @@ var dbDump = function (msg) {
 
 var postGibberish = function (msg) {
     if (!config.options.hasGibberish) return
-    let factArr = []
-    for (let i = 0; i < 5; i++) {
-        factArr.push(constructFact([['fact']], true))
-    }
-    factArr = factArr.join(' ').split(' ')
-    let sentence = []
-    for (let i = 0; i < randomNumber(10) + 3; i++) {
-        sentence.push(randomArrayItem(factArr))
-    }
-    sendOrReply(msg, sentence.join(' '))
+    sendOrReply(msg, getGibberish())
 }
 
 // Update/Set all slash commands in cached guilds
@@ -330,7 +345,7 @@ var commandArray = [
     {phrase: 'help', response: sendHelpMessage, altMsg: 'Send message with available commands.'},
     {phrase: 'fact-check', response: factCheck, track: 'Fact', altMsg: 'Check a potential fact template.', hasArgs: true},
     {phrase: 'restart', response: restart, altMsg: 'Restart the DSF bot. (Only availble to admins)', needsReply: true},
-    {phrase: 'bully', response: bullyReact, helpMsg: 'Bully your friends with emojis.', hasArgs: true, needsReply: true},
+    {phrase: 'bully', response: bullyReact, helpMsg: 'Bully your friends with emojis.', hasArgs: true},
     {phrase: 'daily', response: setupDailyChannel, helpMsg: 'Sets up daily stupid facts in the channel.', needsReply: true},
     {phrase: 'db-dump', response: dbDump, altMsg: 'Shows all database items.'},
     {phrase: 'delete', response: deleteFunction, helpMsg: 'Deletes the last (up to 10) messages in the channel.', hasArgs: true, needsReply: true},
