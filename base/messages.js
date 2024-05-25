@@ -45,7 +45,7 @@ var handleCommand = function (msg, isDM, isSlashCommand) {
             if (!isNaN(message[1])) {
                 times = Math.min(20, Number(message[1]))
             }
-            if (command.track) {
+            if (command.track && times > 0) {
                 stats.bumpCount(command.track, msg.member.id, Math.ceil(times))
             }
             for (let i = 0; i < times; i++) {
