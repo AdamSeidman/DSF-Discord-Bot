@@ -83,12 +83,23 @@ var bullyReact = async function (msg, args) {
         log.warn('Bully react requested, but argument was invalid.')
         return
     }
+    if (`${id}` === config.botId) {
+        if (msg.react) {
+            for (let i = 0; i < 20; i++) {
+                msg.react(randomEmoji())
+            }
+        }
+        sendOrReply(msg, 'You want me to bully myself? Pathetic...')
+        return
+    }
     let channel = await getUserById(id)
     if (channel === undefined) {
         sendOrReply(msg, 'Discord user was not valid.', true)
         log.warn('Bully react requested, but user was invalid.')
     } else {
-        let message = `<@${msg.member.id}> told me that you ${randomArrayItem(['suck', 'smell', 'eat paste', 'drink lake water'])}.`
+        let message = `<@${msg.member.id}> told me that you ${randomArrayItem([
+            'suck', 'smell', 'eat paste', 'drink lake water', 'don\'t love your mom', 'remind them of crickets', 'don\'t actually exist'
+        ])}.`
         let subMessage = [...args].splice(2).join(' ')
         if (args.length > 2 && subMessage.length > 1) {
             message += ` Also they said "*${subMessage}*"${subMessage.charAt(subMessage.length - 1) == '.'? '' : '.'}`
