@@ -147,6 +147,7 @@ var sendHelpMessage = function (msg) {
         .map(cmd => {
             return {name: cmd.phrase.slice(0, 1).toUpperCase() + cmd.phrase.slice(1) + ':', value: cmd.helpMsg}
         }) // All command array helpMsg's
+
     if (helpEmbed === undefined) {
         // Only create help embed once. It is saved as an object
         helpEmbed = new Discord.EmbedBuilder()
@@ -154,8 +155,12 @@ var sendHelpMessage = function (msg) {
             .setTitle('DSF Commands List')
             .setDescription(`Enter '${prefix}' or '/' followed by desired command.`)
             .addFields(...helpMessages)
+            
+        sendOrReply(msg, {embeds: [helpEmbed]})
+    } else {
+        // Wait for embed builder to be complete
+        sendOrReply(msg, {embeds: [helpEmbed]})
     }
-    sendOrReply(msg, {embeds: [helpEmbed]})
 }
 
 // Send a DSF acronym message.
