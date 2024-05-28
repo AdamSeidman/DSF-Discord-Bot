@@ -368,6 +368,7 @@ var commandArray = [
     {phrase: 'fact', response: false, helpMsg: 'Sends a stupid fact.', track: 'Fact'},
     {phrase: 'gibberish', response: postGibberish, helpMsg: 'Just try it...'},
     {phrase: 'lie', response: true, helpMsg: 'Sends a lie.', track: 'Lie'},
+    {phrase: 'loud', response: msg => voice.playMusic(msg, undefined, true, false, true), helpMsg: 'Kind of like silence, but the exact opposite.', needsReply: true},
     {phrase: 'music', response: msg => voice.playMusic(msg, 'music'), helpMsg: 'Plays endless music.', needsReply: true},
     {phrase: 'pause', response: voice.pauseMusic, helpMsg: 'Pauses music, if playing.', needsReply: true},
     {phrase: 'prius', response: postPriusPic, helpMsg: 'No explanation needed.', track: 'Prius'},

@@ -35,12 +35,14 @@ fs.readdir(`${dir}${fxDir}`, (err, files) => {
 })
 
 // Exported function to play music
-var playMusic = async function (msg, song, isEffect, keepAlive) {
+var playMusic = async function (msg, song, isEffect, keepAlive, isLoud) {
     if (isEffect && !config.options.hasSoundEffects) return
 
     if (song === undefined) {
         song = effectNames[Math.floor(Math.random() * effectNames.length)]
-        log.info(`Playing 'silence' sound effect [${song}]. Keep alive: ${keepAlive}`)
+        if (!isLoud) {
+            log.info(`Playing 'silence' sound effect [${song}]. Keep alive: ${keepAlive}`)
+        }
     }
 
     if (typeof(msg) !== 'object') {
@@ -77,7 +79,8 @@ var playMusic = async function (msg, song, isEffect, keepAlive) {
             player: player,
             paused: false,
             keepAlive: false || keepAlive,
-            msg: msg
+            msg: msg,
+            isLoud: isLoud
         }
 
         // Create new resource from file
@@ -88,7 +91,9 @@ var playMusic = async function (msg, song, isEffect, keepAlive) {
             let server = servers[`#${msg.guildId}`]
 
             if (!server.paused) {
-                if (server.keepAlive) {
+                if (server.isLoud) {
+                    setTimeout(() => playMusic(msg, undefined, true, false, true), 1500)
+                } else if (server.keepAlive) {
                     // If supposed to stay alive, pause
                     server.paused = true
                     server.player.pause()
