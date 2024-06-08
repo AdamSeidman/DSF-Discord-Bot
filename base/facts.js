@@ -219,6 +219,8 @@ var getPronoun = function (term) {
     return lastPerson.person.isMale? term[0] : term[1]
 }
 
+let previousItems = ['', '', '']
+
 // Create actual fact given template and param
 // Param: isLie (boolean)- True, if not a fact
 var constructFact = function (fact, isLie) {
@@ -238,7 +240,10 @@ var constructFact = function (fact, isLie) {
             }
         }
         if (item instanceof Array && item.length === 1) {
-            if (item[0].slice(0, USE_PREFIX.length) === USE_PREFIX) {
+            if (!isNaN(item[0]) && item > 0 && item <= previousItems.length) {
+                // Item wanted is previous item
+                item = previousItems[item[0] - 1]
+            } else if (item[0].slice(0, USE_PREFIX.length) === USE_PREFIX) {
                 // Nice macro for: ["useBlank"] => [ ["prepareBlank"], ["usage"], " ", ["blank"] ]
                 index[item[0].slice(USE_PREFIX.length).toLowerCase()](isLie, true)
                 result += `${index['usage'](isLie, false)} `
@@ -256,6 +261,10 @@ var constructFact = function (fact, isLie) {
                 } else {
                     item = index[item[0]](isLie, isPrep) // Grab correct method from function index
                 }
+            }
+            if (item.includes != undefined && !item.includes(' ')) {
+                previousItems.unshift(item)
+                previousItems.pop()
             }
         }
         if (item instanceof Function) {

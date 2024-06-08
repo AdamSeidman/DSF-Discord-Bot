@@ -186,6 +186,9 @@ var sendEffectsList = function (msg) {
 
 // Fact check a template message
 var factCheck = function (msg, lcArgs, args) {
+    if (args === undefined) {
+        args = [0]
+    }
     args.shift()
     let template = args.join(' ')
     if (template.length == 0 || template.charAt(0) !== '[') {
