@@ -40,7 +40,8 @@
         "webPort": 8080,
         "loggingPrefix": "DSFLog_",
         "selfRepickMessage": "My friend, YOU are the host.\nYou are a god among men!\nWhy would you want to repick yourself?",
-        "doubleRepickMessage": "\nDo you want them repicked that badly?"
+        "doubleRepickMessage": "\nDo you want them repicked that badly?",
+        "maxFactCount": 500
     },
     "intents": [
         "Guilds",
