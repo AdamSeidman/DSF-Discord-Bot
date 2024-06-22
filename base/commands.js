@@ -164,7 +164,6 @@ var sendHelpMessage = function (msg) {
 }
 
 // Send a DSF acronym message.
-// Can potentially move this function somewhere else (?)
 var sendDsfAcronym = function (msg, loud, isPhrase) {
     if (!config.options.hasAcronyms) return
     const acronym = `${randomArrayItem(dsfTerms.getAdverbs())} ${randomArrayItem(dsfTerms.getAdjectives())} ${randomArrayItem(dsfTerms.getNouns())}.`
