@@ -43,6 +43,9 @@ const MAX_SILENCE_SECONDS = 60 * config.constants.maxSilenceMinutes
 var sendOrReply = function (msg, content, ephemeral) {
     if (msg.author && !ephemeral) {
         msg.channel.send(content)
+    } else if (typeof content !== 'string') {
+        content.ephemeral = ephemeral
+        msg.reply(content)
     } else {
         msg.reply({content: content, ephemeral: ephemeral})
     }
