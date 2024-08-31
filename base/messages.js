@@ -151,6 +151,15 @@ var sendFact = function (msg, loud, lie) {
     }
 }
 
+// Generic gibberish function (loud is tts)
+var sendGibberish = function (msg, loud) {
+    if (loud) {
+        msg.channel.send({content: facts.getGibberish(), tts: true})
+    } else {
+        msg.reply(facts.getGibberish())
+    }
+}
+
 var tellFoundFact = function (msg, isLie) {
     let message = utils.stripPunctuation(msg.content.trim().toLowerCase())
     message = message.slice(message.indexOf('about') + 5).trim()
@@ -183,5 +192,7 @@ const knownPhrases = [
     {phrase: 'tellmeafactabout', response: msg => tellFoundFact(msg, false), track: 'Fact'},
     {phrase: 'tellmealieabout', response: msg => tellFoundFact(msg, true), track: 'Lie'},
     {phrase: 'givemeafactabout', response: msg => tellFoundFact(msg, false), track: 'Fact'},
-    {phrase: 'givemealieabout', response: msg => tellFoundFact(msg, true), track: 'Lie'}
+    {phrase: 'givemealieabout', response: msg => tellFoundFact(msg, true), track: 'Lie'},
+    {phrase: 'loudgibberishplease', response: msg => sendGibberish(msg, true)},
+    {phrase: 'gibberishplease', response: msg => sendGibberish(msg, false)}
 ]
