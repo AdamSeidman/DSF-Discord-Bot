@@ -240,6 +240,7 @@ var constructFact = function (fact, isLie) {
             }
         }
         if (item instanceof Array && item.length === 1) {
+            let isFact = false
             if (!isNaN(item[0]) && item > 0 && item <= previousItems.length) {
                 // Item wanted is previous item
                 item = [previousItems[item[0] - 1]]
@@ -259,12 +260,13 @@ var constructFact = function (fact, isLie) {
                     // Better way to prep pronouns- let template enter them
                     item = getPronoun(item)
                 } else {
+                    isFact = item[0] == 'fact'
                     item = index[item[0]](isLie, isPrep) // Grab correct method from function index
                 }
             }
             if (item instanceof Array) {
                 item = item[0]
-            } else if (item.split !== undefined && item.split(' ').length < 4) {
+            } else if (item.split !== undefined && !isFact) {
                 previousItems.unshift(item)
                 previousItems.pop()
             }
