@@ -174,6 +174,8 @@ var index = {
     foods: (isLie, prep) => prepareTerm(prep, true, false, false, true),
     inedible: (isLie, prep) => prepareTerm(prep, false, false, false, false),
     inedibles: (isLie, prep) => prepareTerm(prep, true, false, false, false),
+    is: isLie => `is${isLie? ' not' : ''}`,
+    isnot: isLie => `is${isLie? '' : ' not'}`,
     noun: (isLie, prep) => index[utils.randomArrayItem(['blank', 'place', 'person'])](isLie, prep),
     place: getPlace,
     fact: (isLie) => {
@@ -238,6 +240,10 @@ var constructFact = function (fact, isLie) {
             } else {
                 item = item.truth
             }
+        }
+        else if (item.low !== undefined) {
+            // Item is for choosing random numbers, generate it
+            item = `${utils.randomNumber((item.high - item.low)) + (item.low - 1)}`
         }
         if (item instanceof Array && item.length === 1) {
             let isFact = false
