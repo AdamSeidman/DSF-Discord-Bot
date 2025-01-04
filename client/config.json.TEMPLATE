@@ -3,7 +3,7 @@
     "adminId": "12345",
     "botId": "67890",
     "options": {
-        "usesStaticFacts": true,
+        "hasStaticFacts": true,
         "keepsStatistics": true,
         "hasSoundEffects": true,
         "hasSilenceFn": true,
