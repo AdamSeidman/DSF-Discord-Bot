@@ -248,10 +248,10 @@ var dbDump = function (msg) {
     if (!config.options.hasDbDump) return
 
     let data = {}
-    data.Items = randomItems.getAllItems()
-    data.People = randomItems.getAllPeople()
+    data.Items = randomItems.getAllItems().sort((a, b) => a.name.localeCompare(b.name))
+    data.People = randomItems.getAllPeople().sort((a, b) => a.name.localeCompare(b.name))
     data.FactTemplates = randomItems.getAllFacts()
-    data.Places = randomItems.getPlaces()
+    data.Places = randomItems.getPlaces().sort((a, b) => a.name.localeCompare(b.name))
     data.DSF_Adverbs = dsfTerms.getAdverbs()
     data.DSF_Adjectives = dsfTerms.getAdjectives()
     data.DSF_Nouns = dsfTerms.getNouns()
