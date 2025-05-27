@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const voice = require('./voice')
 const commands = require('./commands')
 const effects = require('../../db/media/effects')
 const phrases = require('../../db/tables/phrases')
@@ -74,10 +75,9 @@ function handlePhrase(msg) {
 function handleSoundEffect(msg) {
     if (msg.member === null || !effectsGuilds.hasGuild(msg.guild.id)) return
     const message = stripPunctuation(msg.content.toLowerCase()).replace(/\s+/g, '')
-    const effect = effects.getEffect(effects.getList().find(x => message.includes(x)) || '')
+    const effect = effects.getList().find(x => message.includes(x))
     if (effect) {
-        console.log(1234)
-        // TODO play effect
+        voice.playEffect(msg, effect)
     }
 }
 

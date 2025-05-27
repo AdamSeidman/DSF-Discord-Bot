@@ -12,7 +12,7 @@ function getEffect(name) {
     try {
         const { data } = bucket.client.storage.from(bucket.name).getPublicUrl(name)
         if (data?.publicUrl) {
-            return createAudioResource(data.publicUrl)
+            return createAudioResource(`${data.publicUrl}.mp3`)
         }
     } catch (error) {
         logger.warn(`Error loading effect (${name})`, error)
