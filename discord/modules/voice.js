@@ -91,7 +91,7 @@ function playResource(msg, args={}) {
     } else {
         guild.persistant = false
         guild.isMusic = true
-        guild.player.play(createAudioPlayer(MUSIC_ASSET))
+        guild.player.play(createAudioResource(MUSIC_ASSET))
     }
     guild.connection.subscribe(guild.player)
     return true
