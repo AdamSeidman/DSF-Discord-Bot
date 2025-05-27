@@ -1,0 +1,35 @@
+{
+  "name": "dsf_bot",
+  "version": "2.0.0",
+  "description": "Daily Stupid Facts REVAMPED",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Seidman",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/voice": "^0.18.0",
+    "@pm2/io": "^6.1.0",
+    "@supabase/supabase-js": "^2.49.4",
+    "better-node-file-logger": "^1.0.6",
+    "body-parser": "^2.2.0",
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "figlet": "^1.8.1",
+    "helmet": "^8.1.0",
+    "lodash": "^4.17.21",
+    "node-schedule": "^2.1.1",
+    "openai": "^4.100.0"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-standard": "^4.1.0"
+  }
+}
