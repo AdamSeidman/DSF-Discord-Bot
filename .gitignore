@@ -1,6 +1,3 @@
 node_modules/
-*.db
-temp.txt
-scripts/private/
-config.json
+.env
 *.log
