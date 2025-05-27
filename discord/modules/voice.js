@@ -59,7 +59,9 @@ function playResource(msg, args={}) {
             cancelSchedule(guild)
             if (guild.paused) return
 
-            if (guild.persistant) {
+            if (guild.isMusic) {
+                guild.player.play(createAudioResource(MUSIC_ASSET))
+            } else if (guild.persistant) {
                 if (guild.periodic) {
                     scheduleRandomEffect(guild)
                 } else {
