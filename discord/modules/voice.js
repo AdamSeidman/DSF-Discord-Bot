@@ -1,5 +1,4 @@
 const path = require('path')
-
 const logger = require('../../utils/logger')
 const effects = require('../../db/media/effects')
 const { randomNumber } = require('../../utils/utils')
@@ -114,10 +113,12 @@ function scheduleRandomEffect(guild) {
 }
 
 function startSilence(msg) {
+    logger.info('Starting silence.', msg.guild.name)
     return playResource(msg, { periodic: true, continuous: true })
 }
 
 function startLoud(msg) {
+    logger.info('Starting loud.', msg.guild.name)
     return playResource(msg, { periodic: false, continuous: true })
 }
 
@@ -126,6 +127,7 @@ function playEffect(msg, effect) {
 }
 
 function playMusic(msg) {
+    logger.info('Starting music.', msg.guild.name)
     return playResource(msg)
 }
 
