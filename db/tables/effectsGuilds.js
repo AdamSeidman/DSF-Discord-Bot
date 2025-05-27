@@ -3,7 +3,7 @@ const { Table } = require('../database')
 const table = new Table('effectsGuilds')
 
 function hasGuild(id) {
-    return table.data.map(x => x.guild_id).includes(`${id}`)
+    return table.data.filter(x => x.is_enabled).map(x => x.guild_id).includes(`${id}`)
 }
 
 module.exports = {

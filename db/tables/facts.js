@@ -1,7 +1,7 @@
-const acronym = require('./acronyms')
 const items = require('./items')
 const people = require('./people')
 const places = require('./places')
+const acronym = require('./acronyms')
 const { Table } = require('../database')
 const { copyObject, randomArrayItem, randomNumber, shuffleArray } = require('../../utils/utils')
 
@@ -65,7 +65,7 @@ function getTemplate(params) {
         try {
             template = JSON.parse(template)
         } catch {
-            return ['Could not part template.']
+            return ['Could not parse template.']
         }
     }
     const parse = (arr) => {
@@ -126,17 +126,6 @@ function getParseableTemplates(templateStr, num=10) {
 function refresh() {
     tagTable.refresh()
     factTable.refresh()
-}
-
-function getWordList() {
-    return factTable.data.map((row) => JSON.parse(row.template).map(
-        (part) => {
-            if (typeof part === 'string' || Array.isArray(part)) {
-                return part
-            }
-            return 'a'
-        }
-    )).flat(Infinity)
 }
 
 module.exports = {
