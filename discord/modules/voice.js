@@ -162,7 +162,7 @@ function stop(msg) {
 
     guild.player?.stop()
     guild.connection?.destroy()
-    delete guilds[guild.guidId]
+    delete guilds[guild.guildId]
     return true
 }
 
