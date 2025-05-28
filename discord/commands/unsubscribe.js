@@ -1,5 +1,5 @@
 module.exports = {
-    response: (msg) => {
+    response: (msg, params) => {
         msg.reply('I politely decline.')
     },
     helpMsg: 'Unsubscribes you from this bot.',

@@ -2,10 +2,11 @@ const fs = require('fs')
 const path = require('path')
 const voice = require('./voice')
 const commands = require('./commands')
+const { ChannelType } = require('discord.js')
 const effects = require('../../db/media/effects')
 const phrases = require('../../db/tables/phrases')
-const { stripPunctuation } = require('../../utils/utils')
 const effectsGuilds = require('../../db/tables/effectsGuilds')
+const { copyObject, stripPunctuation } = require('../../utils/utils')
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -25,39 +26,39 @@ function handleCommand(msg) {
     message = message.slice(COMMAND_PREFIX.length).replace(/\s+/g, ' ').trim().split(' ')
     msg.commandName = message.shift().toLowerCase()
     if (!availableCommands.includes(msg.commandName)) return
-    if (!msg.options) {
-        msg.options = {}
+    msg.userParams = {
+        injected: true,
+        isPlease: false,
+        isDM: msg.channel.type === ChannelType.DM,
+        isTestingGuild: msg.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
+        params: copyObject(message)
     }
-    msg.options.getString = () => message.join(' ')
     commands.handleSlashCommand(msg)
 }
 
-const pleaseFunctions = {
-    fact: (msg) => {
-        msg.reply('1')
-    },
-    lie: (msg) => {
-        msg.reply('2')
-    },
-    prius: (msg) => {
-        msg.reply('3')
-        // msg.reply({content: 'Ya like jazz?', files: [{attachment: prius.getRandomImage()}]})
-    },
-    acronym: (msg) => {
-        msg.reply('4')
-    },
-    gibberish: (msg) => {
-        msg.reply('5')
-    }
+const pleaseMap = {
+    fact: 'fact',
+    lie: 'lie',
+    prius: 'prius',
+    acronym: 'dsf',
+    gibberish: 'gibberish'
 }
 
 function handlePlease(msg) {
     let parts = stripPunctuation(msg.content).replace(/\s+/g, '').toLowerCase().split('please')
     parts.pop()
     if (parts.length < 1) return
-    const [_, fn] = Object.entries(pleaseFunctions).find(([key]) => parts.find(x => x.endsWith(key))) || []
-    if (typeof fn === 'function') {
-        fn(msg)
+    const [_, pleaseFn] = Object.entries(pleaseMap).find(([key]) => parts.find(x => x.endsWith(key))) || []
+    if (typeof pleaseFn === 'string') {
+        msg.commandName = pleaseFn
+        msg.userParams = {
+            injected: true,
+            isPlease: true,
+            isDM: msg.channel.type === ChannelType.DM,
+            isTestingGuild: message.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
+            params: []
+        }
+        commands.handleSlashCommand(msg)
     }
 }
 

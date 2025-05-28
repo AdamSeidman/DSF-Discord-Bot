@@ -1,5 +1,5 @@
 module.exports = { // TODO
-    response: (msg) => {},
+    response: (msg, params) => {},
         altMsg: 'Shows all database items.',
         isSlashCommand: true
 }

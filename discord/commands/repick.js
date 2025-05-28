@@ -1,5 +1,5 @@
 module.exports = { // TODO
-    response: (msg) => {},
+    response: (msg, params) => {},
     helpMsg: 'Repicks host',
     isSlashCommand: true
 }

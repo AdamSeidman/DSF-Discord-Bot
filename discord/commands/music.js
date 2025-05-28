@@ -1,7 +1,7 @@
 const { playMusic } = require('../modules/voice')
 
 module.exports = {
-    response: (msg) => {
+    response: (msg, params) => {
         msg.reply({
             content: (playMusic(msg)? 'Playing...' : 'Failed to start playing music.'),
             ephemeral: true

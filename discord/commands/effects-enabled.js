@@ -1,5 +1,5 @@
 module.exports = { // TODO
-    response: (msg) => {},
+    response: (msg, params) => {},
     argModifier: (builder) => {
         builder.addBooleanOption((option) =>
             option

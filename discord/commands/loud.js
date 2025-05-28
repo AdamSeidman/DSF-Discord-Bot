@@ -1,7 +1,7 @@
 const { startLoud } = require('../modules/voice')
 
 module.exports = {
-    response: (msg) => {
+    response: (msg, params) => {
         msg.reply({
             content: (startLoud(msg)? 'Starting to be loud...' : 'Could not start screaming.'),
             ephemeral: true

@@ -1,7 +1,7 @@
 const { startSilence } = require('../modules/voice')
 
 module.exports = {
-    response: (msg) => {
+    response: (msg, params) => {
         msg.reply({
             content: (startSilence(msg)? 'Starting silence...' : 'Could not start silence.'),
             ephemeral: true

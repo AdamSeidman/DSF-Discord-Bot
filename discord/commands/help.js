@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 let helpEmbed = null
 
 module.exports = { // TODO
-    response: (msg) => {
+    response: (msg, params) => {
         if (helpEmbed === null) {
             msg.reply('Internal error while retrieving help message!')
         } else {

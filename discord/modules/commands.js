@@ -71,8 +71,15 @@ async function handleSlashCommand(interaction) {
         return
     }
 
+    const params = interaction.userParams || {
+        injected: false,
+        isPlease: false,
+        isDM: interaction.channel?.type === Discord.ChannelType.DM,
+        isTestingGuild: interaction.guild?.id == process.env.DISCORD_TESTING_GUILD_ID
+    }
+
     try {
-        command.execute(interaction)
+        command.execute(interaction, params)
     } catch (error) {
         logger.error('Error in slash command: ' + interaction.commandName, error)
     }
