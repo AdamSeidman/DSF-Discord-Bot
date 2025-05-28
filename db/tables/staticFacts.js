@@ -14,6 +14,7 @@ function getNumUnused() {
 
 function getAndMark() {
     const fact = randomArrayItem(getUsableFacts())
+    if (!fact?.id) return
     usedIdCache.push(fact.id)
     const { error } = table.client
         .from(table.name)
