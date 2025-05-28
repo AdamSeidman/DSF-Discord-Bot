@@ -4,7 +4,6 @@ module.exports = {
     response: (msg) => {
         msg.reply(resume(msg)? 'Resuming music...' : 'Could not find music to resume.')
     },
-    data: {
-        helpMsg: 'Resumes music, if playing.'
-    }
+    helpMsg: 'Resumes music, if playing.',
+    isSlashCommand: true
 }

@@ -1,7 +1,12 @@
 module.exports = { // TODO
     response: (msg) => {},
-    data: {
-        altMsg: 'Check a potential fact template.',
-        hasArgs: true
-    }
+    argModifier: (builder) => {
+        builder.addStringOption((option) => 
+            option
+                .setName('template')
+                .setDescription('Fact template to check.')
+                .setRequired(true)
+        )
+    },
+    isTesterCommand: true
 }

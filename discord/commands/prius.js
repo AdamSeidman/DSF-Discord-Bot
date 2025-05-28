@@ -1,9 +1,7 @@
 const prius = require('../../db/media/prius')
 
-module.exports = { // TODO
+module.exports = { // TODO (& tracking)
     response: (msg) => {},
-    data: {
-        helpMsg: 'No explanation needed.',
-        track: 'prius'
-    }
+    helpMsg: 'No explanation needed.',
+    isSlashCommand: true
 }

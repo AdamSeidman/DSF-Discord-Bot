@@ -1,6 +1,5 @@
 module.exports = { // TODO
     response: (msg) => {},
-    data: {
-        helpMsg: 'Sets up daily stupid facts in the channel.'
-    }
+        helpMsg: 'Sets up/stop daily stupid facts in the channel.',
+        isSlashCommand: true// TODO bool arg
 }

@@ -87,5 +87,6 @@ module.exports = {
         handlePlease,
         handlePhrase,
         handleSoundEffect
-    ]
+    ],
+    cmdPrefix: COMMAND_PREFIX
 }

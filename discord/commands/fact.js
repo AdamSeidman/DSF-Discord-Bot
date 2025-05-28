@@ -9,8 +9,6 @@ module.exports = { // TODO
             msg.reply(fact)
         }
     },
-    data: {
-        helpMsg: 'Sends a stupid fact.',
-        track: 'fact'
-    }
+    helpMsg: 'Sends a stupid fact.',
+    isSlashCommand: true
 }

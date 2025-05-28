@@ -7,7 +7,6 @@ module.exports = {
             ephemeral: true
         })
     },
-    data: {
-        helpMsg: 'Kind of like silence, but the exact opposite.'
-    }
+    helpMsg: 'Kind of like silence, but the exact opposite.',
+    isSlashCommand: true
 }

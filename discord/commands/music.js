@@ -7,7 +7,6 @@ module.exports = {
             ephemeral: true
         })
     },
-    data: {
-        helpMsg: 'Plays endless music.'
-    }
+    helpMsg: 'Plays endless music.',
+    isSlashCommand: true
 }

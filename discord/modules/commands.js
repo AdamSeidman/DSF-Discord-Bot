@@ -3,6 +3,7 @@ const path = require('path')
 const Discord = require('discord.js')
 const logger = require('../../utils/logger')
 
+
 function registerSlashCommands(client) {
     if (!client) {
         logger.error('No client while registering slash commands.', client)
@@ -10,36 +11,42 @@ function registerSlashCommands(client) {
     }
 
     const commands = []
+    const helpMessages = {}
+    const testerCommands = []
     client.commands = new Discord.Collection()
 
     fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
         if (path.extname(file) === '.js') {
             const phrase = file.slice(0, file.indexOf('.'))
             const cmd = require(`../commands/${phrase}`)
-            if (typeof cmd.response === 'function' && !cmd.noSlashCmd) {
-                cmd.data = new Discord.SlashCommandBuilder()
-                    .setName(phrase)
-                    .setDescription(cmd.helpMsg || cmd.altMsg || 'Command Description')
-                if (cmd.hasArgs) {
-                    // TODO Allow for dynamic args
-                    cmd.data.addStringOption((option) => {
-                        option.setName('args')
-                            .setDescription('Arguments for command.')
-                            .setRequired(true)
-                    })
-                }
-                const command = {
-                    phrase,
-                    data: new Discord.SlashCommandBuilder()
-                        .setName(phrase)
-                        .setDescription(cmd.helpMsg || cmd.altMsg || 'Command Description'),
-                    execute: cmd.response
-                }
-                client.commands.set(phrase, command)
+            if (!cmd || typeof cmd.response !== 'function') return
+
+            if (!cmd.isSlashCommand) return // TODO
+
+            cmd.data = new Discord.SlashCommandBuilder()
+                .setName(phrase)
+                .setDescription(cmd.helpMsg || cmd.altMsg || '[Command Description]')
+            if (typeof cmd.argModifier === 'function') {
+                cmd.argModifier(cmd.data)
+            }
+            const command = {
+                phrase,
+                data: cmd.data,
+                execute: cmd.response
+            }
+            client.commands.set(phrase, command)
+            if (cmd.isSlashCommand) {
                 commands.push(command.data.toJSON())
-            } 
+            } else if (cmd.isTesterCommand) {
+                testerCommands.push(command.data.toJSON()) // TODO
+            }
+            if (typeof cmd.helpMsg === 'string') {
+                helpMessages[phrase] = cmd.helpMsg
+            }
         }
     })
+
+    require('../commands/help').buildEmbed(helpMessages)
 
     const rest = new Discord.REST().setToken(process.env.DISCORD_TOKEN)
 

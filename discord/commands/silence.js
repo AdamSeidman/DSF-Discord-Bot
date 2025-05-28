@@ -7,7 +7,6 @@ module.exports = {
             ephemeral: true
         })
     },
-    data: {
-        helpMsg: 'Silence, occasionally broken up by effects.'
-    }
+    helpMsg: 'Silence, occasionally broken up by effects.',
+    isSlashCommand: true
 }

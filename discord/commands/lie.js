@@ -1,7 +1,7 @@
 const { generateLie } = require('../../fact/construction')
 
 module.exports = {
-    response: (msg, isPlease=false) => {
+    response: (msg, isPlease=false) => { // TODO tracking on everything
         const lie = generateLie()
         if (!isPlease || msg.author) {
             msg.channel.send(lie)
@@ -9,8 +9,6 @@ module.exports = {
             msg.reply(lie)
         }
     },
-    data: {
-        helpMsg: 'Sends a lie.',
-        track: 'lie'
-    }
+    helpMsg: 'Sends a lie.',
+    isSlashCommand: true
 }
