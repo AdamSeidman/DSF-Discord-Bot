@@ -5,7 +5,7 @@ module.exports = {
     response: async (msg, params) => {
         if (params.injected) {
             getAiFact()
-                .then((fact) => msg.channel.send(fact))
+                .then((fact) => msg.channel.send(`Here's your AI fact:\n${fact}`))
                 .catch((error) => {
                     msg.reply('Error generating AI fact.')
                     logger.error('Error generating AI fact.', error)

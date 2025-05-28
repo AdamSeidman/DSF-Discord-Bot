@@ -55,7 +55,7 @@ function handlePlease(msg) {
             injected: true,
             isPlease: true,
             isDM: msg.channel.type === ChannelType.DM,
-            isTestingGuild: message.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
+            isTestingGuild: msg.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
             params: []
         }
         commands.handleSlashCommand(msg)

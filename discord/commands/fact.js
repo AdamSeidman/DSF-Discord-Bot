@@ -4,10 +4,10 @@ module.exports = { // TODO
     response: (msg, params) => {
         const fact = generateFact()
         // TODO params, etc
-        if (params.injected) {
-            msg.channel.send(fact)
-        } else {
+        if (params.isPlease || !params.injected) {
             msg.reply(fact)
+        } else {
+            msg.channel.send(fact)
         }
     },
     helpMsg: 'Sends a stupid fact.',
