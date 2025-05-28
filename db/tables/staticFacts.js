@@ -1,4 +1,5 @@
 const { Table } = require('../database')
+const logger = require('../../utils/logger')
 
 const table = new Table('staticFacts')
 const usedIdCache = []
@@ -14,9 +15,15 @@ function getNumUnused() {
 function getAndMark() {
     const fact = randomArrayItem(getUsableFacts())
     usedIdCache.push(fact.id)
-    table.update(fact.id, {
-        used: true
-    })
+    const { error } = table.client
+        .from(table.name)
+        .update({
+            used: true
+        })
+        .eq('id', fact.id)
+    if (error) {
+        logger.error('Could not mark fact ' + fact.id, error)
+    }
     return fact.fact
 }
 

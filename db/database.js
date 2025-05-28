@@ -40,21 +40,6 @@ class Table {
         }
     }
 
-    async update(id, row) {
-        const { error } = await this.client
-            .from(this.name)
-            .update(row)
-            .eq('id', id)
-        return error
-    }
-
-    async insert(row) {
-        const { error } = await this.client
-            .from(this.name)
-            .insert(row)
-        return error
-    }
-
     get data() {
         return copyObject(this.#data)
     }
