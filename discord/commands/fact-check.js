@@ -1,5 +1,11 @@
 module.exports = { // TODO
-    response: (msg, params) => {},
+    response: (msg, params) => {
+        if (params.isTestingGuild) {
+            // TODO
+        } else if (!params.injected) {
+            msg.reply({content: 'Unknown Error.', ephemeral: true})
+        }
+    },
     argModifier: (builder) => {
         builder.addStringOption((option) => 
             option

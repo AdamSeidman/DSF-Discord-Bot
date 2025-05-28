@@ -1,7 +1,10 @@
-const { argModifier } = require("./fact-check");
+const checkCmd = require("./fact-check");
 
-module.exports = { // TODO
-    response: (msg, params) => {},
-    argModifier,
+module.exports = {
+    response: (msg, params) => {
+        // TODO Modify params, etc
+        return checkCmd(msg, params)
+    },
+    argModifier: checkCmd.argModifier,
     isTesterCommand: true
 }

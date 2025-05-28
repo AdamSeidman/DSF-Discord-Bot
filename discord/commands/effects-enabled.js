@@ -1,5 +1,16 @@
-module.exports = { // TODO
-    response: (msg, params) => {},
+module.exports = { // TODO (params and such)
+    response: (msg, params) => {
+        if (params.isDM) {
+            msg.reply('Command not available in DMs.')
+        } else {
+            // TODO setup
+            if (params.injected) {
+                msg.channel.send('msg') // TODO
+            } else {
+                msg.reply('msg')
+            }
+        }
+    },
     argModifier: (builder) => {
         builder.addBooleanOption((option) =>
             option

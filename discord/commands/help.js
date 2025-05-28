@@ -2,13 +2,19 @@ const Discord = require('discord.js')
 
 let helpEmbed = null
 
-module.exports = { // TODO
+module.exports = {
     response: (msg, params) => {
         if (helpEmbed === null) {
-            msg.reply('Internal error while retrieving help message!')
+            msg.reply({
+                content: 'Could not generate message! Please try again soon.',
+                ephemeral: true
+            })
         } else {
-            // TODO replying and whatnot
-            msg.reply({ embeds: [helpEmbed] })
+            if (params.injected) {
+                msg.channel.send({ embeds: [helpEmbed] })
+            } else {
+                msg.reply({ embeds: [helpEmbed] })
+            }
         }
     },
     buildEmbed: (messages) => {

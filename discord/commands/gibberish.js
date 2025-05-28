@@ -1,8 +1,13 @@
 const { tagDictionary } = require('../../db/tables/facts')
 
-module.exports = { // TODO
+module.exports = {
     response: (msg, params) => {
-        msg.reply(tagDictionary.gibberish()) // TODO reply and whatnot
+        const garbage = tagDictionary.gibberish()
+        if (params.isPlease || !params.injected) {
+            msg.reply(garbage)
+        } else {
+            msg.channel.send(garbage)
+        }
     },
     helpMsg: 'Just try it...',
     isSlashCommand: true
