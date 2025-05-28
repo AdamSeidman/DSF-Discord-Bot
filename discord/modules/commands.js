@@ -73,11 +73,8 @@ async function handleSlashCommand(interaction) {
 
     try {
         command.execute(interaction)
-    } catch (err) {
-        console.log(123) // TODO remove
-        console.log(err)
-
-        logger.error('Error in slash command: ' + interaction.commandName, err)
+    } catch (error) {
+        logger.error('Error in slash command: ' + interaction.commandName, error)
     }
 }
 

@@ -40,6 +40,9 @@ function log(logfn, text, bg='black', fg='white', obj, font) {
     }
     if (fg.includes('red') || bg.includes('Red')) {
         console.error(text)
+        if (obj) {
+            console.error(obj)
+        }
     } else {
         console.log(text)
     }
