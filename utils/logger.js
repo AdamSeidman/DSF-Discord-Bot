@@ -15,7 +15,7 @@ function getDate(removeAt) {
 
 function log(logfn, text, bg='black', fg='white', obj, font) {
     if (typeof logfn != 'function') {
-        console.error(getDate(), 'log.js: No valid logging function!')
+        console.error(getDate(), 'logger: No valid logging function!')
         return
     }
     logfn(text, obj)
@@ -25,7 +25,7 @@ function log(logfn, text, bg='black', fg='white', obj, font) {
         font = null
     }
     if (!chalk[fg] || !chalk[bg]) {
-        console.error(getDate(), 'log.js: Invalid color requested!')
+        console.error(getDate(), 'logger: Invalid color requested!')
         return
     }
     bg = `bg${bg.charAt(0).toUpperCase()}${bg.slice(1)}`
@@ -49,10 +49,10 @@ function log(logfn, text, bg='black', fg='white', obj, font) {
 }
 
 module.exports = {
-    init: (message='STARTUP', prefix='log_') => {
+    init: (message='APPLICATION', prefix='log_', startupColor='magenta', startupFont='ANSI Shadow') => {
         logger.quickInit(prefix, true)
         console.log('\r\n\r\n')
-        log(logger.info, message, undefined, 'magenta', undefined, 'ANSI Shadow')       
+        log(logger.info, message, undefined, startupColor, undefined, startupFont)       
         console.log('\r\n')
     },
     debug: (text, obj) => {
