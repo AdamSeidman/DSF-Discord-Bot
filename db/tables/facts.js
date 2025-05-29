@@ -72,6 +72,8 @@ function getTemplate(params) {
         return arr.flatMap((part) => {
             if (part?.truth || part?.lie) {
                 part = isLie? part.lie : part.truth
+            } else if (part?.low || part?.high) {
+                part = `${randomNumber(part.high - part.low) + part.low}`
             }
             if (!Array.isArray(part) || typeof part[0] !== 'string') {
                 return [part]
