@@ -5,7 +5,7 @@ const app = () => {
     require('./web/server')
     const discord = require('./discord/client')
     process.on('SIGINT', async () => {
-        console.log('Shutting down...\n')
+        console.log('\nSIGINT: Shutting down...\n')
         await discord.close()
         process.exit(0)
     })
