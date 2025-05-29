@@ -22,7 +22,7 @@ function getGuild(msg, createIfUnavailable=false) {
             player: null,
             connection: null,
             paused: false,
-            persistant: false,
+            persistent: false,
             periodic: false,
             isMusic: false,
             originalMsg: msg,
@@ -61,7 +61,7 @@ function playResource(msg, args={}) {
 
             if (guild.isMusic) {
                 guild.player.play(createAudioResource(MUSIC_ASSET))
-            } else if (guild.persistant) {
+            } else if (guild.persistent) {
                 if (guild.periodic) {
                     scheduleRandomEffect(guild)
                 } else {
@@ -80,17 +80,16 @@ function playResource(msg, args={}) {
 
     if (typeof args.effect === 'string') {
         guild.music = false
-        guild.persistant = false
         const effect = effects.getEffect(args.effect)
         if (!effect) return false
         guild.player.play(effect)
     } else if (args.continuous) {
-        guild.persistant = true
+        guild.persistent = true
         guild.isMusic = false
         guild.periodic = !!args.periodic
         guild.player.play(createAudioResource(SILENCE_ASSET))
     } else {
-        guild.persistant = false
+        guild.persistent = false
         guild.isMusic = true
         guild.player.play(createAudioResource(MUSIC_ASSET))
     }
@@ -154,7 +153,7 @@ function resume(msg) {
     guild.paused = false
     guild.player.unpause()
 
-    if (guild.persistant) {
+    if (guild.persistent) {
         scheduleRandomEffect(guild)
     }
     return true
