@@ -15,7 +15,7 @@ module.exports = { // TODO (params and such)
         builder.addBooleanOption((option) =>
             option
                 .setName('enabled')
-                .setDescription('Set whether effects can be triggered by chat messages.')
+                .setDescription('Set whether or not effects can be triggered by chat messages.')
                 .setRequired(true)
         )
     },
