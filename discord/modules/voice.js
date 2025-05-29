@@ -110,7 +110,7 @@ function scheduleRandomEffect(guild) {
 
     guild.timeoutId = setTimeout(() => {
         guild.player.play(effects.getRandomEffect())
-    }, (randomNumber(MAX_SILENCE_SECONDS - MIN_SILENCE_SECONDS) + MIN_SILENCE_SECONDS) * 1000)
+    }, randomNumber(MIN_SILENCE_SECONDS * 1000, MAX_SILENCE_SECONDS * 1000))
 }
 
 function startSilence(msg) {

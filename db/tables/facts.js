@@ -35,7 +35,7 @@ const tagDictionary = {
     fact: () => facts.getRandom(true),
     female: () => people.getNextPerson({ male: false }),
     food: () => items.getNextItem({ food: true }),
-    gibberish: () => shuffleArray(getFactWords()).slice(0, randomNumber(8) + 3).join(' '),
+    gibberish: () => shuffleArray(getFactWords()).slice(0, randomNumber(3, 10)).join(' '),
     inedible: () => items.getNextItem({ food: false }),
     item: () => items.getNextItem({ alive: false }),
     male: () => people.getNextPerson({ male: true }),
@@ -73,7 +73,7 @@ function getTemplate(params) {
             if (part?.truth || part?.lie) {
                 part = isLie? part.lie : part.truth
             } else if (part?.low || part?.high) {
-                part = `${randomNumber(part.high - part.low) + part.low}`
+                part = `${randomNumber(part.low, part.high)}`
             }
             if (!Array.isArray(part) || typeof part[0] !== 'string') {
                 return [part]
