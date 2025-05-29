@@ -2,12 +2,16 @@ const prius = require('../../db/media/prius')
 
 module.exports = { // TODO (& tracking)
     response: (msg, params) => {
+        const attachment = prius.getRandomImage()
+        const name = attachment?.split('/').pop().toLowerCase()
         let message = {
             content: 'Ya like jazz?',
-            files: [{ attachment: prius.getRandomImage() }]
+            files: [{ attachment }]
         }
-        if (!message.files[0].attachment.endsWith('.jpg')) {
-            message = 'Could not find Toyota!'
+        if (!name.endsWith('.jpg')) {
+            message = 'Could not find a Toyota dealership!'
+        } else if (!name.includes('prius')) {
+            message.content = 'Oops! RAV4?'
         }
         if (params.injected || params.isPlease) {
             msg.channel.send(message)
