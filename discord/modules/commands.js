@@ -3,7 +3,6 @@ const path = require('path')
 const Discord = require('discord.js')
 const logger = require('../../utils/logger')
 
-
 function registerSlashCommands(client) {
     if (!client) {
         logger.error('No client while registering slash commands.', client)
@@ -12,7 +11,6 @@ function registerSlashCommands(client) {
 
     const commands = []
     const helpMessages = {}
-    const testerCommands = []
     client.commands = new Discord.Collection()
 
     fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
@@ -37,8 +35,6 @@ function registerSlashCommands(client) {
             client.commands.set(phrase, command)
             if (cmd.isSlashCommand) {
                 commands.push(command.data.toJSON())
-            } else if (cmd.isTesterCommand) {
-                testerCommands.push(command.data.toJSON()) // TODO
             }
             if (typeof cmd.helpMsg === 'string') {
                 helpMessages[phrase] = cmd.helpMsg
