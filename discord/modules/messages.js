@@ -6,7 +6,7 @@ const { ChannelType } = require('discord.js')
 const effects = require('../../db/media/effects')
 const phrases = require('../../db/tables/phrases')
 const effectsGuilds = require('../../db/tables/effectsGuilds')
-const { copyObject, stripPunctuation } = require('../../utils/utils')
+const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces } = require('../../utils/utils')
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -23,7 +23,7 @@ fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
 function handleCommand(msg) {
     let message = msg.content.trim()
     if (!message.toLowerCase().startsWith(COMMAND_PREFIX)) return
-    message = message.slice(COMMAND_PREFIX.length).replace(/\s+/g, ' ').trim().split(' ')
+    message = cleanUpSpaces(message.slice(COMMAND_PREFIX.length)).split(' ')
     msg.commandName = message.shift().toLowerCase()
     if (!availableCommands.includes(msg.commandName)) return
     msg.userParams = {
@@ -45,7 +45,7 @@ const pleaseMap = {
 }
 
 function handlePlease(msg) {
-    let parts = stripPunctuation(msg.content).replace(/\s+/g, '').toLowerCase().split('please')
+    let parts = removeSpaces(stripPunctuation(msg.content)).toLowerCase().split('please')
     parts.pop()
     if (parts.length < 1) return
     const [_, pleaseFn] = Object.entries(pleaseMap).find(([key]) => parts.find(x => x.endsWith(key))) || []
@@ -63,7 +63,7 @@ function handlePlease(msg) {
 }
 
 function handlePhrase(msg) {
-    let phrase = phrases.getPhrase(stripPunctuation(msg.content.toLowerCase()).replace(/\s+/g, ''))
+    let phrase = removeSpaces(phrases.getPhrase(stripPunctuation(msg.content.toLowerCase())))
     if (phrase) {
         if (phrase.is_reply) {
             msg.reply(phrase.response)
@@ -75,7 +75,7 @@ function handlePhrase(msg) {
 
 function handleSoundEffect(msg) {
     if (msg.member === null || !effectsGuilds.hasGuild(msg.guild.id)) return
-    const message = stripPunctuation(msg.content.toLowerCase()).replace(/\s+/g, '')
+    const message = removeSpaces(stripPunctuation(msg.content.toLowerCase()))
     const effect = effects.getList().find(x => message.includes(x))
     if (effect) {
         voice.playEffect(msg, effect)

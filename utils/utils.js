@@ -6,7 +6,9 @@ module.exports = {
     randomNumber: (max) => Math.ceil(Math.random() * (max || 98)) + 1,
     randomArrayItem: (arr) => (Array.isArray(arr) && arr[Math.floor(Math.random() * arr.length)]) || arr,
     probabilityCheck: (probability) => Math.random() <= (probability || 0.5),
-    stripPunctuation: (str) => (typeof str === 'string' && str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').replace(/\s{2,}/g,' ')) || str,
+    stripPunctuation: (str) => (typeof str === 'string' && str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '').replace(/\s{2,}/g, ' ')) || str,
+    removeSpaces: (str) => (typeof str === 'string' && str.replace(/\s+/g, '')) || str,
+    cleanUpSpaces: (str) => (typeof str === 'string' && str.replace(/\s+/g, ' ').trim()) || str,
     shuffleArray: function (array) {
         for (var i = array.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
