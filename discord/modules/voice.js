@@ -170,13 +170,16 @@ function stop(msg) {
     return true
 }
 
-function stopAll() {
-    Object.values(guilds).forEach((guild) => {
-        guild.player?.stop()
-        guild.connection?.destroy()
-        delete guild[guild.guildId]
-    })
-    return true
+async function stopAll() {
+    await Promise.all(Object.values(guilds).map(async (guild) => {
+        if (guild.player) {
+            await guild.player.stop()
+        }
+        if (guild.connection) {
+            await guild.connection.destroy()
+        }
+        delete guilds[guild.guildId]
+    }))
 }
 
 module.exports = {

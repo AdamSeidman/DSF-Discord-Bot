@@ -3,7 +3,13 @@ const app = () => {
     require('./utils/logger').init('DSF Bot', 'dsf_')
     const db = require('./db/database')
     require('./web/server')
-    require('./discord/client').init()
+    const discord = require('./discord/client')
+    process.on('SIGINT', async () => {
+        console.log('Shutting down...\n')
+        await discord.close()
+        process.exit(0)
+    })
+    discord.init()
     db.init()
 }
 

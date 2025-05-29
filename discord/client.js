@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const voice = require('./modules/voice')
 const logger = require('../utils/logger')
 const commands = require('./modules/commands')
 const { messageHandlers } = require('./modules/messages')
@@ -55,7 +56,12 @@ function init() {
     client.login(process.env.DISCORD_TOKEN)
 }
 
+async function close() {
+    await voice.stopAll()
+}
+
 module.exports = {
     init,
+    close,
     client
 }
