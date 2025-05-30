@@ -49,6 +49,5 @@ module.exports = {
         )
     },
     helpMsg: 'Sends a stupid fact.',
-    isSlashCommand: true,
     handleMultiCommand
 }

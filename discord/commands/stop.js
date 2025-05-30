@@ -10,6 +10,5 @@ module.exports = {
             msg.channel.send(message)
         }
     },
-    helpMsg: 'Stops music and removes bot from voice channel.',
-    isSlashCommand: true
+    helpMsg: 'Stops music and removes bot from voice channel.'
 }

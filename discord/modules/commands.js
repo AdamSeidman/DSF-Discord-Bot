@@ -3,23 +3,31 @@ const path = require('path')
 const Discord = require('discord.js')
 const logger = require('../../utils/logger')
 
-function registerSlashCommands(client) {
+let testingGuild = {}
+
+async function registerSlashCommands(client) {
     if (!client) {
         logger.error('No client while registering slash commands.', client)
         return
     }
 
     const commands = []
+    const testerCommands = []
     const helpMessages = {}
     client.commands = new Discord.Collection()
+    testingGuild = [...client.guilds.cache.values()].find(x => x.id === process.env.DISCORD_TESTING_GUILD_ID)
+    if (testingGuild?.commands) {
+        testingGuild.commands = new Discord.Collection()
+    } else {
+        testingGuild = {}
+        logger.error('Could not find testing guild.', testingGuild)
+    }
 
     fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
         if (path.extname(file) === '.js') {
             const phrase = file.slice(0, file.indexOf('.'))
             const cmd = require(`../commands/${phrase}`)
             if (!cmd || typeof cmd.response !== 'function') return
-
-            if (!cmd.isSlashCommand) return // TODO
 
             cmd.data = new Discord.SlashCommandBuilder()
                 .setName(phrase)
@@ -32,12 +40,17 @@ function registerSlashCommands(client) {
                 data: cmd.data,
                 execute: cmd.response
             }
-            client.commands.set(phrase, command)
-            if (cmd.isSlashCommand) {
+
+            if (cmd.isTesterCommand) {
+                console.log(phrase, command)
+                testingGuild.commands.set(phrase, command)
+                testerCommands.push(command.data.toJSON())
+            } else {
+                client.commands.set(phrase, command)
                 commands.push(command.data.toJSON())
-            }
-            if (typeof cmd.helpMsg === 'string') {
-                helpMessages[phrase] = cmd.helpMsg
+                if (typeof cmd.helpMsg === 'string') {
+                    helpMessages[phrase] = cmd.helpMsg
+                }
             }
         }
     })
@@ -49,7 +62,15 @@ function registerSlashCommands(client) {
     try {
         // TODO make certain commands bot testing only
         logger.info(`Refreshing ${commands.length} application slash commands.`)
-        rest.put(Discord.Routes.applicationCommands(process.env.DISCORD_BOT_ID), {body: commands})
+        await rest.put(
+            Discord.Routes.applicationCommands(process.env.DISCORD_BOT_ID),
+            { body: commands }
+        )
+        logger.info(`Refreshing ${testerCommands.length} tester guild slash commands.`)
+        await rest.put(
+            Discord.Routes.applicationGuildCommands(process.env.DISCORD_BOT_ID, process.env.DISCORD_TESTING_GUILD_ID),
+            { body: testerCommands }
+        )
     } catch (err) {
         logger.fatal('Could not deploy slash commands.', err)
     }
@@ -57,7 +78,12 @@ function registerSlashCommands(client) {
 }
 
 async function handleSlashCommand(interaction) {
-    const command = interaction.client.commands.get(interaction.commandName)
+    let command = interaction.client.commands.get(interaction.commandName)
+    const isTestingGuild = interaction.guild?.id == process.env.DISCORD_TESTING_GUILD_ID
+
+    if (!command && isTestingGuild) {
+        command = testingGuild?.commands.get(interaction.commandName)
+    }
     if (!command) {
         logger.error('Requested slash command not found', command)
         interaction.reply({
@@ -71,7 +97,7 @@ async function handleSlashCommand(interaction) {
         injected: false,
         isPlease: false,
         isDM: interaction.channel?.type === Discord.ChannelType.DM,
-        isTestingGuild: interaction.guild?.id == process.env.DISCORD_TESTING_GUILD_ID
+        isTestingGuild
     }
 
     try {

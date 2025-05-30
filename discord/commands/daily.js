@@ -17,6 +17,5 @@ module.exports = { // TODO setup
                 .setRequired(true)
         )
     },
-    helpMsg: 'Sets up/stop daily stupid facts in the channel.',
-    isSlashCommand: true// TODO bool arg
+    helpMsg: 'Sets up/stop daily stupid facts in the channel.' // TODO bool arg
 }

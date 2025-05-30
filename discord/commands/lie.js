@@ -7,6 +7,5 @@ module.exports = {
         // TODO track
     },
     argModifier: (builder) => argModifier(builder, 'lies'),
-    helpMsg: 'Sends a lie.',
-    isSlashCommand: true
+    helpMsg: 'Sends a lie.'
 }

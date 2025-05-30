@@ -117,7 +117,7 @@ function init() {
             }
         }
     })
-    logger.info('Database client loaded!')
+    logger.info('Database client loaded.')
 }
 
 setInterval(() => {

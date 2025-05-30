@@ -8,6 +8,5 @@ module.exports = { // TODO
                 .setRequired(false)
         )
     },
-    helpMsg: 'Lists your daily stupid fact statistics.',
-    isSlashCommand: true
+    helpMsg: 'Lists your daily stupid fact statistics.'
 }

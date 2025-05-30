@@ -20,6 +20,5 @@ module.exports = {
                 .setRequired(false)
         )
     },
-    helpMsg: 'Plays endless music.',
-    isSlashCommand: true
+    helpMsg: 'Plays endless music.'
 }

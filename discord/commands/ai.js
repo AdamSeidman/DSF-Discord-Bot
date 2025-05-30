@@ -21,6 +21,5 @@ module.exports = {
         }
     },
     helpMsg: 'Get a stupid fact from OpenAI',
-    isSlashCommand: true,
     track: 'fact'
 }

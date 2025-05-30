@@ -16,10 +16,10 @@ const client = new Discord.Client({
     partials: [ Discord.Partials.Channel ]
 })
 
-client.on('ready', () => {
+client.on('ready', async () => {
     // TODO setup hosts?
     // TODO schedule daily channels
-    commands.registerSlashCommands(client)
+    await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
     // TODO ai?
 })

@@ -10,6 +10,5 @@ module.exports = {
             msg.channel.send(message)
         }
     },
-    helpMsg: 'Silence, occasionally broken up by effects.',
-    isSlashCommand: true
+    helpMsg: 'Silence, occasionally broken up by effects.'
 }

@@ -19,6 +19,5 @@ module.exports = { // TODO (& tracking)
             msg.reply(message)
         }
     },
-    helpMsg: 'No explanation needed.',
-    isSlashCommand: true
+    helpMsg: 'No explanation needed.'
 }

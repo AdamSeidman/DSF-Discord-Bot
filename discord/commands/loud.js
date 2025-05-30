@@ -10,6 +10,5 @@ module.exports = {
             msg.channel.send(message)
         }
     },
-    helpMsg: 'Kind of like silence, but the exact opposite.',
-    isSlashCommand: true
+    helpMsg: 'Kind of like silence, but the exact opposite.'
 }

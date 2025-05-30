@@ -7,6 +7,5 @@ module.exports = {
         // TODO track
     },
     argModifier: (builder) => argModifier(builder, 'acronyms'),
-    helpMsg: 'Gives a DSF acronym.',
-    isSlashCommand: true,
+    helpMsg: 'Gives a DSF acronym.'
 }

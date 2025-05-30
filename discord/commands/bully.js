@@ -82,6 +82,5 @@ module.exports = {
                 .setRequired(false)
         )
     },
-    helpMsg: 'Bully your friends!',
-    isSlashCommand: true
+    helpMsg: 'Bully your friends!'
 }

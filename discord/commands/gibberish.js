@@ -6,6 +6,5 @@ module.exports = {
         handleMultiCommand(msg, params, tagDictionary.gibberish)
     },
     argModifier: (builder) => argModifier(builder, 'gibberishes'),
-    helpMsg: 'Just try it...',
-    isSlashCommand: true
+    helpMsg: 'Just try it...'
 }

@@ -10,6 +10,5 @@ module.exports = {
             msg.channel.send(message)
         }
     },
-    helpMsg: 'Resumes music, if playing.',
-    isSlashCommand: true
+    helpMsg: 'Resumes music, if playing.'
 }

@@ -31,6 +31,5 @@ module.exports = {
                 }
             }))
     },
-    altMsg: 'Display help menu with available commands.',
-    isSlashCommand: true
+    altMsg: 'Display help menu with available commands.'
 }

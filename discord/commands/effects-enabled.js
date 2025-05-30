@@ -19,6 +19,5 @@ module.exports = { // TODO (params and such)
                 .setRequired(true)
         )
     },
-    helpMsg: 'Enables or disables sound effects on the server.',
-    isSlashCommand: true
+    helpMsg: 'Enables or disables sound effects on the server.'
 }
