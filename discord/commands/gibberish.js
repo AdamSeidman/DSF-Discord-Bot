@@ -1,14 +1,11 @@
 const { tagDictionary } = require('../../db/tables/facts')
+const { argModifier, handleMultiCommand } = require('./fact')
 
 module.exports = {
     response: (msg, params) => {
-        const garbage = tagDictionary.gibberish()
-        if (params.isPlease || !params.injected) {
-            msg.reply(garbage)
-        } else {
-            msg.channel.send(garbage)
-        }
+        handleMultiCommand(msg, params, tagDictionary.gibberish)
     },
+    argModifier: (builder) => argModifier(builder, 'gibberishes'),
     helpMsg: 'Just try it...',
     isSlashCommand: true
 }

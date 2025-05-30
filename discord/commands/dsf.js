@@ -1,14 +1,12 @@
-const acronyms = require('../../db/tables/acronyms')
+const { getAcronym } = require('../../db/tables/acronyms')
+const { argModifier, handleMultiCommand } = require('./fact')
 
-module.exports = { // TODO (qty?)
+module.exports = {
     response: (msg, params) => {
-        const acronym = acronyms.getAcronym()
-        if (params.isPlease || !params.injected) {
-            msg.reply(acronym)
-        } else {
-            msg.channel.send(acronym)
-        }
+        handleMultiCommand(msg, params, getAcronym)
+        // TODO track
     },
+    argModifier: (builder) => argModifier(builder, 'acronyms'),
     helpMsg: 'Gives a DSF acronym.',
     isSlashCommand: true,
 }

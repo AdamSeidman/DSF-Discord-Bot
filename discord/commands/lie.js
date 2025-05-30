@@ -1,15 +1,12 @@
 const { generateLie } = require('../../fact/construction')
+const { argModifier, handleMultiCommand } = require('./fact')
 
 module.exports = {
-    response: (msg, params) => { // TODO tracking on everything!
-        const lie = generateLie()
-        // TODO params, etc
-        if (params.isPlease || !params.injected) {
-            msg.reply(lie)
-        } else {
-            msg.channel.send(lie)
-        }
+    response: (msg, params) => {
+        const numLies = handleMultiCommand(msg, params, generateLie)
+        // TODO track
     },
+    argModifier: (builder) => argModifier(builder, 'lies'),
     helpMsg: 'Sends a lie.',
     isSlashCommand: true
 }
