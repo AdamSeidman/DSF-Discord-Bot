@@ -1,8 +1,9 @@
 const facts = require('../db/tables/facts')
 const items = require('../db/tables/items')
 const people = require('../db/tables/people')
-const { isStringTerminated, randomArrayItem } = require('../utils/utils')
+const dynamicTags = require('../db/tables/extraTags')
 const { isOverridden, getOverrideMessage } = require('./override')
+const { isStringTerminated, randomArrayItem } = require('../utils/utils')
 
 let itemPrepared = false
 let personPrepared = false
@@ -48,6 +49,10 @@ function parseStringTag(tag) {
         return person
     } else if (Object.keys(facts.tagDictionary).includes(tag)) {
         let term = facts.tagDictionary[tag]()
+        queue.unshift(term)
+        return term
+    } else if (dynamicTags.getTagList().includes(tag)) {
+        let term = dynamicTags.getRandomTagItem(tag)
         queue.unshift(term)
         return term
     } else {
