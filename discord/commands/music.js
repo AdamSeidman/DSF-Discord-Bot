@@ -1,3 +1,4 @@
+const { ChannelType } = require('discord.js')
 const { playMusic } = require('../modules/voice')
 
 module.exports = {
@@ -10,6 +11,14 @@ module.exports = {
             msg.channel.send(message)
         }
     },
+    argModifier: (builder) =>
+        builder.addChannelOption((option) =>
+            option
+                .setName('channel')
+                .setDescription('Channel to play music in.')
+                .addChannelTypes(ChannelType.GuildVoice)
+                .setRequired(false)
+        ),
     helpMsg: 'Plays endless music.',
     isSlashCommand: true
 }
