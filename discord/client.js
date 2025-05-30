@@ -58,6 +58,7 @@ function init() {
 
 async function close() {
     await voice.stopAll()
+    await client.destroy()
 }
 
 module.exports = {
