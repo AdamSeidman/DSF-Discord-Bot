@@ -12,6 +12,7 @@ module.exports = {
     cleanUpSpaces: (str) => (typeof str === 'string' && str.replace(/\s+/g, ' ').trim()) || str,
     matchesDiscordId: (str) => (str || '').match(/^<@\d{18}>$/)? str.match(/\d{18}/)[0] : null,
     randomEmojis: (n=1) => Array.from({length: n}, () => emojiDictionary.unicode[Math.floor(Math.random() * emojiDictionary.unicode.length)]),
+    createTextList: (arr) => (Array.isArray(arr) && arr.length > 1 && `${arr.slice(0, -1).join(', ')}${arr.length > 2? ',' : ''} & ${arr.at(-1)}`) || `${[arr].flat()}`,
     shuffleArray: function (array) {
         for (var i = array.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));

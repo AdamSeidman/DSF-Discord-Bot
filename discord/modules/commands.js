@@ -42,7 +42,6 @@ async function registerSlashCommands(client) {
             }
 
             if (cmd.isTesterCommand) {
-                console.log(phrase, command)
                 testingGuild.commands.set(phrase, command)
                 testerCommands.push(command.data.toJSON())
             } else {

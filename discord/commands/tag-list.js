@@ -1,7 +1,18 @@
-module.exports = { // TODO
-    response: (msg, params) => {
-        msg.reply('something')
-        console.log(params)
+const { createTextList } = require("../../utils/utils")
+const { getTagList } = require("../../db/tables/extraTags")
+const { tagDictionary, itemTypes } = require("../../db/tables/facts")
+
+const objectExampleText = createTextList([
+    '{"truth":"is true","lie":"is false"}',
+    '{"high":1999,"low":1950}'
+])
+
+module.exports = {
+    response: (msg) => {
+        msg.reply(`Tag List:\n${
+            [...Object.keys(tagDictionary), ...getTagList(), ...itemTypes.map(x => `${x}s`)].sort().join(', ')
+        }\n\nObject Examples:\n${objectExampleText}`)
     },
-    isTesterCommand: true
+    isTesterCommand: true,
+    altMsg: 'Helpful lists for doing fact construction.'
 }

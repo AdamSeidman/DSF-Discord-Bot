@@ -2,7 +2,7 @@ const { generateFact } = require('../../fact/construction')
 
 const MAX_FACTS = 20
 
-function handleMultiCommand(msg, params, factFn) {
+function handleMultiCommand(msg, params, factFn) { // TODO Separate response messages?
     let numFacts = 1
     if (params.injected && params.params.length > 0) {
         try {
