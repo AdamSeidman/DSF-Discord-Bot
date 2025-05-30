@@ -9,7 +9,8 @@ function loadTableLibrary() {
         tableLibrary[row.table_name] = {
             table: new Table(`tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`),
             tag: row.table_name,
-            id: row.id
+            id: row.id,
+            lastId: -1
         }
     })
 }
@@ -17,7 +18,8 @@ function loadTableLibrary() {
 function getRandomTagItem(tag) {
     tag = tag.trim().toLowerCase()
     if (Object.keys(tableLibrary).includes(tag)) {
-        return randomArrayItem(tableLibrary[tag].table.data.map(x => x.word))
+        const table = tableLibrary[tag]
+        return randomArrayItem(table.table.data.filter(x => x.id !== table.lastId).map(x => x.word))
     }
 }
 
