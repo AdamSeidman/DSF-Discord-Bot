@@ -38,7 +38,7 @@ module.exports = {
         const numFacts = handleMultiCommand(msg, params, generateFact)
         // TODO stats
     },
-    argModifier: (builder, desc='facts') => 
+    argModifier: (builder, desc='facts') =>  {
         builder.addIntegerOption((option) =>
             option
                 .setName('num')
@@ -46,7 +46,8 @@ module.exports = {
                 .setMinValue(1)
                 .setMaxValue(MAX_FACTS)
                 .setRequired(false)
-    ),
+        )
+    },
     helpMsg: 'Sends a stupid fact.',
     isSlashCommand: true,
     handleMultiCommand
