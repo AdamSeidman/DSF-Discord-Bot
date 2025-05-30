@@ -16,19 +16,22 @@ if (!client) {
 class Table {
     #data = []
 
-    constructor(tableName) {
+    constructor(tableName, callback) {
         this.name = tableName
         this.client = client
-        this.#init()
+        this.#init(callback)
     }
     
-    async #init() {
+    async #init(callback) {
         const { error, data } = await this.client.from(this.name).select()
         if (error) {
             logger.error(`Error initializing ${this.name}`, error)
             throw new Error(error)
         }
         this.#data = data
+        if (typeof callback === 'function') {
+            callback()
+        }
     }
 
     async refresh() {

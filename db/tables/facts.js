@@ -5,8 +5,7 @@ const acronym = require('./acronyms')
 const { Table } = require('../database')
 const { copyObject, randomArrayItem, randomNumber, shuffleArray } = require('../../utils/utils')
 
-const tagTable = new Table('dynamicTags')
-const factTable = new Table('factTemplates')
+const table = new Table('factTemplates')
 
 const usePrefix = 'use'
 const preparePrefix = 'prepare'
@@ -51,7 +50,7 @@ tagDictionary.noun = () => {
 tagDictionary.number = () => `${randomNumber()}`
 
 function getRandomDbTemplate(cantRecurse=false) {
-    let data = factTable.data
+    let data = table.data
     if (cantRecurse) {
         data = data.filter(x => x.can_recurse)
     }
@@ -125,13 +124,8 @@ function getParseableTemplates(templateStr, num=10) {
     return results
 }
 
-function refresh() {
-    tagTable.refresh()
-    factTable.refresh()
-}
-
 module.exports = {
-    refresh,
+    refresh: () => table.refresh(),
     itemTypes,
     personTypes,
     getFactTemplate,
