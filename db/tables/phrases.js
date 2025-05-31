@@ -3,7 +3,7 @@ const { Table } = require('../database')
 const table = new Table('respPhrases')
 
 function getPhrase(toFind) {
-    return table.data.find(({ phrase }) => phrase.includes(toFind))
+    return table.data.find(({ phrase }) => toFind.includes(phrase))
 }
 
 module.exports = {
