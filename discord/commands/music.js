@@ -2,7 +2,16 @@ const { ChannelType } = require('discord.js')
 const { playMusic } = require('../modules/voice')
 
 module.exports = {
-    response: (msg, params) => { // TODO channel option with voice only?
+    response: (msg, params) => {
+        if (!params.injected) {
+            let channel = msg.options.getChannel('channel')
+            if (channel) {
+                msg.member = {
+                    voice: { channel }
+                }
+                msg.channel = channel
+            }
+        }
         const success = playMusic(msg)
         const message = success? 'Playing...' : 'Failed to start playing music.'
         if (!params.injected) {
