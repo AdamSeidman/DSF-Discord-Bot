@@ -6,7 +6,7 @@ let lastPlace = { id: -1 }
 
 function getLastPlace() {
     let place = lastPlace
-    if (place.name.id < 0) {
+    if (place.id < 0) {
         place = getNextPlace()
     }
     return copyObject(place).name

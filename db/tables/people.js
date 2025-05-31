@@ -6,7 +6,7 @@ let lastPerson = { id: -1 }
 
 function getLastPerson() {
     let person = lastPerson
-    if (person.name.id < 0) {
+    if (person.id < 0) {
         person = getNextPerson()
     }
     return copyObject(person)
@@ -23,10 +23,6 @@ function getNextPerson(filters) {
     const person = randomArrayItem(data)
     lastPerson = copyObject(person)
     return person
-}
-
-function getWordList() {
-    return table.data.map(x => x.name)
 }
 
 module.exports = {

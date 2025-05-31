@@ -6,7 +6,7 @@ let lastItem = { id: -1 }
 
 function getLastItem() {
     let item = lastItem
-    if (item.name.id < 0) {
+    if (item.id < 0) {
         item = getNextItem()
     }
     return copyObject(item)

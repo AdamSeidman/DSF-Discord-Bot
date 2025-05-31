@@ -30,7 +30,7 @@ class Table {
         }
         this.#data = data
         if (typeof callback === 'function') {
-            callback()
+            callback(this)
         }
     }
 
