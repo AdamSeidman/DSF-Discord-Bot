@@ -1,8 +1,76 @@
-const stats = require("../../db/tables/stats")
+const Discord = require("discord.js")
+const { matchesDiscordId } = require("logic-kit")
+const { getStats } = require("../../db/tables/stats")
+
+let discordClient = {}
+setTimeout(() => {
+    discordClient = require("../client").client
+}, 0)
+
+async function getUserById(id) {
+    if (!id || typeof discordClient.users?.fetch !== 'function') return
+    const user = await discordClient.users.fetch(id)
+    return user
+}
 
 module.exports = {
-    response: (msg, params) => {
-        console.log(stats.getStats(msg.member.id)) // TODO
+    response: async (msg, params) => {
+        let user = {
+            id: msg.member.id,
+            username: msg.member.username || msg.member.user.username,
+            avatar: msg.member.displayAvatarURL()
+        }
+        let args = null
+        if (!params.injected) {
+            args = msg.options.getUser('person')
+        } else if (params.params?.length > 0) {
+            const id = matchesDiscordId(params.params[0])
+            if (id) {
+                user = await getUserById(id)
+                if (user.bot) {
+                    args = user
+                } else if (user) {
+                    user.avatar = user.displayAvatarURL()
+                }
+            }
+            if (!id || !user) {
+                msg.reply(`Could not find user: ${params.params[0]}`)
+            }
+        }
+        if (args !== null) {
+            if (args.bot) {
+                msg.reply({
+                    content: 'Cannot get statistics for a bot!',
+                    ephemeral: !msg.injected
+                })
+                return
+            }
+            user.id = args.id
+            user.username = args.username
+            user.avatar = args.displayAvatarURL()
+        }
+        const stats = getStats(user.id) || {}
+        const fields = Object.entries({
+            fact: 'Facts',
+            lie: 'Lies',
+            prius: 'Priuses',
+            effect: 'Effects',
+            acronym: 'Acronyms'
+        }).map(([key, title]) => {
+            return {
+                name: Discord.bold(title),
+                value: `${stats[key] || 0}`,
+                inline: true
+            }
+        })
+        msg.reply({
+            embeds: [new Discord.EmbedBuilder()
+                .setColor("#34EB3A")
+                .setTitle('User Stats')
+                .setAuthor({ name: user.username, iconURL: user.avatar })
+                .addFields(...fields)
+            ]
+        })
     },
     argModifier: (builder) => {
         builder.addUserOption((option) => 

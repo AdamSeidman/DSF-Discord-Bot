@@ -33,6 +33,9 @@ function handleCommand(msg) {
         isTestingGuild: msg.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
         params: copyObject(message)
     }
+    if (!msg.member) {
+        msg.member = msg.author
+    }
     commands.handleSlashCommand(msg)
 }
 
@@ -57,6 +60,9 @@ function handlePlease(msg) {
             isDM: msg.channel.type === ChannelType.DM,
             isTestingGuild: msg.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
             params: []
+        }
+        if (!msg.member) {
+            msg.member = msg.author
         }
         commands.handleSlashCommand(msg)
     }

@@ -11,7 +11,7 @@ function updateStat(msg, stat, num=1) {
     const user = table.data.find(x => x.user_id == msg.member.id)
     const record = {
         user_id: msg.member.id,
-        username: msg.member.user.username || msg.author.username
+        username: msg.member.user.username
     }
     record[stat] = (user?.[stat] || 0) + num
     table.client
