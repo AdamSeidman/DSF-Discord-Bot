@@ -3,6 +3,7 @@ const path = require("path")
 const voice = require("./voice")
 const commands = require("./commands")
 const { ChannelType } = require("discord.js")
+const stats = require("../../db/tables/stats")
 const effects = require("../../db/media/effects")
 const phrases = require("../../db/tables/phrases")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
@@ -85,6 +86,7 @@ function handleSoundEffect(msg) {
     const effect = effects.getList().find(x => message.includes(x))
     if (effect) {
         voice.playEffect(msg, effect)
+        stats.updateStat(msg, 'effect')
     }
 }
 

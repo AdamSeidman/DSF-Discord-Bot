@@ -1,8 +1,10 @@
+const Discord = require("discord.js")
+const stats = require("../../db/tables/stats")
 const { generateFact } = require("../../fact/construction")
 
 const MAX_FACTS = 20
 
-function handleMultiCommand(msg, params, factFn) { // TODO Separate response messages?
+function handleMultiCommand(msg, params, factFn) {
     let numFacts = 1
     if (params.injected && params.params.length > 0) {
         try {
@@ -21,22 +23,29 @@ function handleMultiCommand(msg, params, factFn) { // TODO Separate response mes
         msg.reply('...')
         return 0
     }
-    let facts = Array.from({length: numFacts}, () => factFn()).join('\n')
-    if (facts.length >= 2000) {
-        facts = facts.slice(0, 1995) + '...'
-    }
-    if (params.isPlease || !params.injected) {
-        msg.reply(facts)
+    const facts = Array.from({length: numFacts}, () => factFn())
+    if (!params.injected) {
+        if (facts.join('\n').length < 2000) {
+            msg.reply(facts.join('\n'))
+        } else {
+            facts.forEach((item, idx) => {
+                if (idx === 0) {
+                    msg.reply(`${item}  ${Discord.italic(`(+${numFacts - 1})`)}`)
+                } else {
+                    msg.channel.send(item)
+                }
+            })
+        }
     } else {
-        msg.channel.send(facts)
+        facts.forEach(x => msg.channel.send(x))
     }
     return numFacts
 }
 
 module.exports = {
     response: (msg, params) => {
-        const numFacts = handleMultiCommand(msg, params, generateFact)
-        // TODO stats
+        const num = handleMultiCommand(msg, params, generateFact)
+        stats.updateStat(msg, 'fact', num)
     },
     argModifier: (builder, desc='facts') =>  {
         builder.addIntegerOption((option) =>

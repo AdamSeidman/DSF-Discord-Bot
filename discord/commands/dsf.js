@@ -1,10 +1,11 @@
+const stats = require("../../db/tables/stats")
 const { getAcronym } = require("../../db/tables/acronyms")
 const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {
     response: (msg, params) => {
-        handleMultiCommand(msg, params, getAcronym)
-        // TODO track
+        const num = handleMultiCommand(msg, params, getAcronym)
+        stats.updateStat(msg, 'acronym', num)
     },
     argModifier: (builder) => argModifier(builder, 'acronyms'),
     helpMsg: 'Gives a DSF acronym.'

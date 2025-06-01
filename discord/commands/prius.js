@@ -1,4 +1,5 @@
 const prius = require("../../db/media/prius")
+const stats = require("../../db/tables/stats")
 
 module.exports = { // TODO (& tracking)
     response: (msg, params) => {
@@ -18,6 +19,7 @@ module.exports = { // TODO (& tracking)
         } else {
             msg.reply(message)
         }
+        stats.updateStat(msg, 'prius')
     },
     helpMsg: 'No explanation needed.'
 }
