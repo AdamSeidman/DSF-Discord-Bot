@@ -12,10 +12,10 @@ function getAll() {
     })
 }
 
-function setChannel(msg, enabled) {
+async function setChannel(msg, enabled) {
     if (!msg?.channel?.id) return false
     try {
-        const { error } = table.client
+        const { error } = await table.client
             .from(table.name)
             .upsert({
                 channel_id: msg.channel.id,
@@ -24,11 +24,16 @@ function setChannel(msg, enabled) {
                 channel_name: msg.channel.name,
                 guild_name: msg.guild.name,
                 is_enabled: enabled
-            })
-            .onConflict('channel_id')
+            }, { onConflict: ['channel_id'] })
+        if (error) {
+            throw error
+        }
     } catch (error) {
         logger.error(`Could not set daily channel (${msg.channel.id || '??'}) to [${enabled}]`, error)
+        return false
     }
+    table.refresh()
+    return true
 }
 
 module.exports = {
