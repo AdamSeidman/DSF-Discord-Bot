@@ -1,4 +1,4 @@
-const Discord = require('discord.js')
+const Discord = require("discord.js")
 
 let helpEmbed = null
 
@@ -18,7 +18,7 @@ module.exports = {
         }
     },
     buildEmbed: (messages) => {
-        const { cmdPrefix } = require('../modules/messages')
+        const { cmdPrefix } = require("../modules/messages")
         helpEmbed = new Discord.EmbedBuilder()
             .setColor('#0099ff')
             .setTitle('DSF Commands List')

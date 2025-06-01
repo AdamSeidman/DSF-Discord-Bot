@@ -1,4 +1,4 @@
-const { Table } = require('../database')
+const { Table } = require("../database")
 
 const table = new Table('respAdjectives')
 

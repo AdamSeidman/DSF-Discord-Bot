@@ -1,5 +1,5 @@
 const { Table } = require("../database")
-const logger = require("../../utils/logger")
+const logger = require("@adamseidman/logger")
 
 const table = new Table('userStats')
 

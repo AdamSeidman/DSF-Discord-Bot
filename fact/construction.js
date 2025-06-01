@@ -1,11 +1,11 @@
-const items = require('../db/tables/items')
-const facts = require('../db/tables/facts')
-const people = require('../db/tables/people')
-const places = require('../db/tables/places')
-const acronym = require('../db/tables/acronyms')
+const items = require("../db/tables/items")
+const facts = require("../db/tables/facts")
+const people = require("../db/tables/people")
+const places = require("../db/tables/places")
+const acronym = require("../db/tables/acronyms")
 const { randomArrayItem, copyObject, randomNumber,
-    shuffleArray, isStringTerminated } = require('../utils/utils')
-const dynamicTags = require('../db/tables/extraTags')
+    shuffleArray, isStringTerminated } = require("logic-kit")
+const dynamicTags = require("../db/tables/extraTags")
 
 const FACT_CACHE_SIZE = 5
 

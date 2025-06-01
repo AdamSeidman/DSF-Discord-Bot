@@ -1,4 +1,4 @@
-const { createTextList } = require("../../utils/utils")
+const { createTextList } = require("logic-kit")
 const { getTagList } = require("../../db/tables/extraTags")
 const { tagDictionary, itemTypes } = require("../../db/tables/facts")
 

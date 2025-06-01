@@ -1,4 +1,4 @@
-const { resume } = require('../modules/voice')
+const { resume } = require("../modules/voice")
 
 module.exports = {
     response: (msg, params) => {

@@ -1,7 +1,7 @@
-const fs = require('fs')
-const path = require('path')
-const Discord = require('discord.js')
-const logger = require('../../utils/logger')
+const fs = require("fs")
+const path = require("path")
+const Discord = require("discord.js")
+const logger = require("@adamseidman/logger")
 
 let testingGuild = {}
 
@@ -54,7 +54,7 @@ async function registerSlashCommands(client) {
         }
     })
 
-    require('../commands/help').buildEmbed(helpMessages)
+    require("../commands/help").buildEmbed(helpMessages)
 
     const rest = new Discord.REST().setToken(process.env.DISCORD_TOKEN)
 

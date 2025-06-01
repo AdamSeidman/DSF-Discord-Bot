@@ -1,9 +1,9 @@
 const app = () => {
-    require('dotenv').config()
-    require('./utils/logger').init('DSF Bot', 'dsf_')
-    const db = require('./db/database')
-    require('./web/server')
-    const discord = require('./discord/client')
+    require("dotenv").config()
+    require("@adamseidman/logger").init('DSF Bot', 'dsf_')
+    const db = require("./db/database")
+    require("./web/server")
+    const discord = require("./discord/client")
     process.on('SIGINT', async () => {
         console.log('\nSIGINT: Shutting down...\n')
         await discord.close()

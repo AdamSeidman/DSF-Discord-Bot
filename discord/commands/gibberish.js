@@ -1,5 +1,5 @@
-const { tagDictionary } = require('../../db/tables/facts')
-const { argModifier, handleMultiCommand } = require('./fact')
+const { tagDictionary } = require("../../db/tables/facts")
+const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {
     response: (msg, params) => {

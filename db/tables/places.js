@@ -1,5 +1,5 @@
-const { Table } = require('../database')
-const { copyObject, randomArrayItem } = require('../../utils/utils')
+const { Table } = require("../database")
+const { copyObject, randomArrayItem } = require("logic-kit")
 
 const table = new Table('allPlaces')
 let lastPlace = { id: -1 }

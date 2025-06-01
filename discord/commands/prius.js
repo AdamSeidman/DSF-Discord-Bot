@@ -1,4 +1,4 @@
-const prius = require('../../db/media/prius')
+const prius = require("../../db/media/prius")
 
 module.exports = { // TODO (& tracking)
     response: (msg, params) => {

@@ -1,8 +1,8 @@
-const fs = require('fs')
-const path = require('path')
-const logger = require('../utils/logger')
-const { copyObject } = require('../utils/utils')
-const { createClient } = require('@supabase/supabase-js')
+const fs = require("fs")
+const path = require("path")
+const { copyObject } = require("logic-kit")
+const logger = require("@adamseidman/logger")
+const { createClient } = require("@supabase/supabase-js")
 
 const REFRESH_MINUTES = 2
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_PUBLIC_KEY

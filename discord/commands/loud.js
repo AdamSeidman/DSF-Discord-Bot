@@ -1,4 +1,4 @@
-const { startLoud } = require('../modules/voice')
+const { startLoud } = require("../modules/voice")
 
 module.exports = {
     response: (msg, params) => { // TODO (not in channel messages) for all!

@@ -1,11 +1,11 @@
-const Discord = require('discord.js')
-const logger = require('../../utils/logger')
-const { getRandomInsult } = require('../../db/tables/insults')
-const { matchesDiscordId, randomEmojis, isStringTerminated, randomNumber } = require('../../utils/utils')
+const Discord = require("discord.js")
+const logger = require("@adamseidman/logger")
+const { getRandomInsult } = require("../../db/tables/insults")
+const { matchesDiscordId, randomEmojis, isStringTerminated,randomNumber } = require("logic-kit")
 
 let discordClient = {}
 setTimeout(() => {
-    discordClient = require('../client').client
+    discordClient = require("../client").client
 }, 0)
 
 async function getUserById(id) {
@@ -20,7 +20,7 @@ module.exports = {
         let message = ''
         let extraMessage = ''
         if (!params.injected) {
-            params.params = [`<@${msg.options?.getUser('bully-target')?.id}>`]
+            params.params = [Discord.userMention(msg.options?.getUser('bully-target')?.id)]
             const extra = (msg.options?.getString('message') || '').trim()
             if (extra.length > 0) {
                 params.params = [params.params[0], ...extra.split(' ')]
@@ -47,7 +47,7 @@ module.exports = {
                 success = false
                 message = 'You cannot bully a bot!'
             } else {
-                const insult = `<@${msg.member.id}> told me that you ${getRandomInsult() || 'INSULT_ERROR'}.${
+                const insult = `${Discord.userMention(msg.member.id)}> told me that you ${getRandomInsult() || 'INSULT_ERROR'}.${
                     (extraMessage.length > 0)? ` Also they said "${
                         Discord.bold(extraMessage)}"${isStringTerminated(extraMessage)? '' : '.'
                     }` : ''

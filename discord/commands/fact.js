@@ -1,4 +1,4 @@
-const { generateFact } = require('../../fact/construction')
+const { generateFact } = require("../../fact/construction")
 
 const MAX_FACTS = 20
 

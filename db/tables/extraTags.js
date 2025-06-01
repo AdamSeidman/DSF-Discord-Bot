@@ -1,5 +1,5 @@
-const { randomArrayItem } = require("../../utils/utils")
 const { Table } = require("../database")
+const { randomArrayItem } = require("logic-kit")
 
 const tableLibrary = {}
 const tagTable = new Table('dynamicTags', loadTableLibrary)

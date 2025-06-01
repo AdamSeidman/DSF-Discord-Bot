@@ -1,5 +1,5 @@
-const { Table } = require('../database')
-const { randomArrayItem } = require('../../utils/utils')
+const { Table } = require("../database")
+const { randomArrayItem } = require("logic-kit")
 
 const dTable = new Table('dAdverbs')
 const sTable = new Table('sAdjectives')

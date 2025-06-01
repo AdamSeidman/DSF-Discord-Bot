@@ -1,6 +1,6 @@
-const { Bucket } = require('../database')
-const logger = require('../../utils/logger')
-const { randomArrayItem } = require('../../utils/utils')
+const { Bucket } = require("../database")
+const logger = require("@adamseidman/logger")
+const { randomArrayItem } = require("logic-kit")
 
 const bucket = new Bucket('prius')
 

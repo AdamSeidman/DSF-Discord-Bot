@@ -1,5 +1,5 @@
-const { ChannelType } = require('discord.js')
-const { playMusic } = require('../modules/voice')
+const { ChannelType } = require("discord.js")
+const { playMusic } = require("../modules/voice")
 
 module.exports = {
     response: (msg, params) => {

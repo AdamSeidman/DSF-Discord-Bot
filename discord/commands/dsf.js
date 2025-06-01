@@ -1,5 +1,5 @@
-const { getAcronym } = require('../../db/tables/acronyms')
-const { argModifier, handleMultiCommand } = require('./fact')
+const { getAcronym } = require("../../db/tables/acronyms")
+const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {
     response: (msg, params) => {

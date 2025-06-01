@@ -1,4 +1,4 @@
-const OpenAI = require('openai') // TODO Fix multi-instances
+const OpenAI = require("openai") // TODO Fix multi-instances
 
 const POLL_INTERVAL_MSEC = 2500
 

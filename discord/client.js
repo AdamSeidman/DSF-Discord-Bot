@@ -1,8 +1,8 @@
-const Discord = require('discord.js')
-const voice = require('./modules/voice')
-const logger = require('../utils/logger')
-const commands = require('./modules/commands')
-const { messageHandlers } = require('./modules/messages')
+const Discord = require("discord.js")
+const voice = require("./modules/voice")
+const logger = require("@adamseidman/logger")
+const commands = require("./modules/commands")
+const { messageHandlers } = require("./modules/messages")
 
 const client = new Discord.Client({
     intents: [

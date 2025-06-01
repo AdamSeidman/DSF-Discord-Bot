@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
-const voice = require('./voice')
-const commands = require('./commands')
-const { ChannelType } = require('discord.js')
-const effects = require('../../db/media/effects')
-const phrases = require('../../db/tables/phrases')
-const effectsGuilds = require('../../db/tables/effectsGuilds')
-const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces } = require('../../utils/utils')
+const fs = require("fs")
+const path = require("path")
+const voice = require("./voice")
+const commands = require("./commands")
+const { ChannelType } = require("discord.js")
+const effects = require("../../db/media/effects")
+const phrases = require("../../db/tables/phrases")
+const effectsGuilds = require("../../db/tables/effectsGuilds")
+const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces } = require("logic-kit")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []

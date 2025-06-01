@@ -1,5 +1,5 @@
-const { generateLie } = require('../../fact/construction')
-const { argModifier, handleMultiCommand } = require('./fact')
+const { generateLie } = require("../../fact/construction")
+const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {
     response: (msg, params) => {

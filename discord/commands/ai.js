@@ -1,5 +1,5 @@
-const { getAiFact } = require('../../fact/ai')
-const logger = require('../../utils/logger')
+const logger = require("@adamseidman/logger")
+const { getAiFact } = require("../../fact/ai")
 
 module.exports = {
     response: async (msg, params) => {

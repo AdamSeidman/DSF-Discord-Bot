@@ -1,4 +1,4 @@
-const effects = require('../../db/media/effects')
+const effects = require("../../db/media/effects")
 
 module.exports = {
     response: (msg) => {

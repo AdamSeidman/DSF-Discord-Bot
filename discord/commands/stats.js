@@ -1,5 +1,9 @@
-module.exports = { // TODO
-    response: (msg, params) => {},
+const stats = require("../../db/tables/stats")
+
+module.exports = {
+    response: (msg, params) => {
+        console.log(stats.getStats(msg.member.id)) // TODO
+    },
     argModifier: (builder) => {
         builder.addUserOption((option) => 
             option

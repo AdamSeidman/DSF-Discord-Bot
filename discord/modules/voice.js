@@ -1,9 +1,9 @@
-const path = require('path')
-const logger = require('../../utils/logger')
-const effects = require('../../db/media/effects')
-const { randomNumber } = require('../../utils/utils')
+const path = require("path")
+const logger = require("@adamseidman/logger")
+const { randomNumber } = require("logic-kit")
+const effects = require("../../db/media/effects")
 const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
-    joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice')
+    joinVoiceChannel, AudioPlayerStatus } = require("@discordjs/voice")
 
 const MIN_SILENCE_SECONDS = 60 * 5
 const MAX_SILENCE_SECONDS = 60 * 15

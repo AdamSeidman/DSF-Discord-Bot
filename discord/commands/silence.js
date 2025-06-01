@@ -1,4 +1,4 @@
-const { startSilence } = require('../modules/voice')
+const { startSilence } = require("../modules/voice")
 
 module.exports = {
     response: (msg, params) => {
