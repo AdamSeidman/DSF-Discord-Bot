@@ -59,7 +59,6 @@ async function registerSlashCommands(client) {
     const rest = new Discord.REST().setToken(process.env.DISCORD_TOKEN)
 
     try {
-        // TODO make certain commands bot testing only
         logger.info(`Refreshing ${commands.length} application slash commands.`)
         await rest.put(
             Discord.Routes.applicationCommands(process.env.DISCORD_BOT_ID),

@@ -1,6 +1,7 @@
 const app = () => {
     require("dotenv").config()
-    require("@adamseidman/logger").init('DSF Bot', 'dsf_')
+    process.dsf = require('./config.json')
+    require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     const db = require("./db/database")
     require("./web/server")
     const discord = require("./discord/client")

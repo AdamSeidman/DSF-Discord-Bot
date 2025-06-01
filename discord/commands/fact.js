@@ -2,7 +2,7 @@ const Discord = require("discord.js")
 const stats = require("../../db/tables/stats")
 const { generateFact } = require("../../fact/construction")
 
-const MAX_FACTS = 20
+const MAX_FACTS = process.dsf.maxFactCount
 
 function handleMultiCommand(msg, params, factFn) {
     let numFacts = 1

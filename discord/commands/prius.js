@@ -1,7 +1,7 @@
 const prius = require("../../db/media/prius")
 const stats = require("../../db/tables/stats")
 
-module.exports = { // TODO (& tracking)
+module.exports = {
     response: (msg, params) => {
         const attachment = prius.getRandomImage()
         const name = attachment?.split('/').pop().toLowerCase()

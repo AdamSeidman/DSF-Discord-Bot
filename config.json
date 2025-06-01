@@ -1,0 +1,8 @@
+{
+    "dailyFactHour": 18,
+    "dailyFactMinute": 13,
+    "dailyFactSecond": 30,
+    "maxFactCount": 20,
+    "minSilenceMinutes": 5,
+    "maxSilenceMinutes": 15
+}
