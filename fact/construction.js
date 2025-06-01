@@ -1,5 +1,7 @@
+const override = require("./override")
 const items = require("../db/tables/items")
 const facts = require("../db/tables/facts")
+const logger = require("@adamseidman/logger")
 const people = require("../db/tables/people")
 const places = require("../db/tables/places")
 const acronym = require("../db/tables/acronyms")
@@ -12,8 +14,8 @@ const FACT_CACHE_SIZE = 5
 const usePrefix = 'use'
 const preparePrefix = 'prepare'
 const usageTerm = 'usage'
-const itemTypes = ['blank', 'item', 'food', 'inedible', 'animal'] // TODO
-const personTypes = ['alive', 'dead', 'person', 'male', 'female'] // TODO
+const itemTypes = ['blank', 'item', 'food', 'inedible', 'animal']
+const personTypes = ['alive', 'dead', 'person', 'male', 'female']
 
 let itemPrepared = false
 let personPrepared = false
@@ -36,7 +38,7 @@ const tagDictionary = {
     person: () => people.getNextPerson(),
     place: () => places.getNextPlace(),
 }
-tagDictionary.gibberish = () => { // TODO clean up?
+tagDictionary.gibberish = () => {
     let arr = []
     for (let i = 0; i < 5; i++) {
         arr = [...arr, ...getParsedTemplate(true).split(' ')]
@@ -115,7 +117,10 @@ function parseLists(template) {
 }
 
 function parseStringTag(tag) {
-    if (tag.length < 1) return 'BAD-TAG-LENGTH'
+    if (tag.length < 1) {
+        logger.error('Bad length error in parseStringTag!', tag)
+        return 'BAD-TAG-LENGTH'
+    }
     if (tag.includes('_')) {
         return people.getLastPerson().is_male? tag.split('_')[0] : tag.split('_')[1]
     }
@@ -131,6 +136,7 @@ function parseStringTag(tag) {
             queue.unshift(tagDictionary[baseTag]())
             itemPrepared = true
         } else {
+            logger.warn('Unknown prepare tag in parseStringTag!', tag)
             return 'UNKNOWN-PREPARE-TAG'
         }
         return ''
@@ -154,32 +160,34 @@ function parseStringTag(tag) {
         return person
     } else if (Object.keys(tagDictionary).includes(tag)) {
         let term = tagDictionary[tag]()
-        queue.unshift(term)
+        if (tag !== 'number') {
+            queue.unshift(term)
+        }
         return term
     } else if (dynamicTags.getTagList().includes(tag)) {
         let term = dynamicTags.getRandomTagItem(tag)
         queue.unshift(term)
         return term
     } else {
-        console.log(tag) // TODO
-
+        logger.warn('Unknown string tag!', tag)
         return 'UNKNOWN-STRING-TAG'
     }
 }
 
 function parseTag(tag) {
-
     if (typeof tag === 'string') {
         return parseStringTag(tag)
     }
     if (typeof tag === 'number') {
         if (queue.length < tag) {
+            logger.warn('Queue length error in parseTag', tag)
             return 'QUEUE-LENGTH-ERROR'
         } else {
             let item = queue[tag - 1]
             return (typeof item === 'string')? item : (item.name || item.term)
         }
     } else {
+        logger.warn('Unknown tag type in parseTag.', tag)
         return 'UNKNOWN-TAG-TYPE'
     }
 }
@@ -197,6 +205,7 @@ function parseNormalTags(template) {
         } else if (typeof tag === 'string') {
             return tag
         } else {
+            logger.warn(`Unknown item error in parseNormalTags (${tag})`, template)
             return 'UNKNOWN-ITEM-ERROR'
         }
     })
@@ -220,8 +229,11 @@ function getParsedTemplate(isFact, injectedTemplate) {
         if (typeof injectedTemplate === 'string') {
             template = parseInjectedTemplate(injectedTemplate)
         } else if (injectedTemplate) {
+            logger.error('Unknown parse error!', injectedTemplate)
             return 'UNKNOWN-PARSE-ERROR'
-        } else { // TODO override functions
+        } else if (override.isOverridden()) {
+            return `${isFact? '' : 'This is a lie: '}${override.getOverrideMessage()}`
+        } else {
             template = getNextTemplate()
         }
         template = parseObjects(template, isFact)
@@ -232,10 +244,13 @@ function getParsedTemplate(isFact, injectedTemplate) {
         template = `${template.charAt(0).toUpperCase()}${template.slice(1)}${
             isStringTerminated(template)? '' : '.'}`
     } catch (error) {
+        logger.warn('Error parsing template! ' + (injectedTemplate || template), error)
         return error
     }
     return template
 }
+
+getParsedTemplate()
 
 module.exports = {
     generateFact: () => getParsedTemplate(true),
