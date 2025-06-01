@@ -244,7 +244,9 @@ function getParsedTemplate(isFact, injectedTemplate) {
         template = `${template.charAt(0).toUpperCase()}${template.slice(1)}${
             isStringTerminated(template)? '' : '.'}`
     } catch (error) {
-        logger.warn('Error parsing template! ' + (injectedTemplate || template), error)
+        if (typeof injectedTemplate !== 'string') {
+            logger.warn('Error parsing template! ' + (injectedTemplate || template), error)
+        }
         return error
     }
     return template
