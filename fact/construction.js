@@ -250,7 +250,7 @@ function getParsedTemplate(isFact, injectedTemplate) {
     return template
 }
 
-getParsedTemplate()
+setTimeout(getParsedTemplate, 2000)
 
 module.exports = {
     generateFact: () => getParsedTemplate(true),

@@ -1,11 +1,9 @@
 const Discord = require("discord.js")
-const { matchesDiscordId } = require("logic-kit")
 const { getStats } = require("../../db/tables/stats")
+const { matchesDiscordId, postpone } = require("logic-kit")
 
 let discordClient = {}
-setTimeout(() => {
-    discordClient = require("../client").client
-}, 0)
+postpone(() => discordClient = require("../client").client)
 
 async function getUserById(id) {
     if (!id || typeof discordClient.users?.fetch !== 'function') return
