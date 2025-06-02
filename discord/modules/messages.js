@@ -3,11 +3,12 @@ const path = require("path")
 const voice = require("./voice")
 const commands = require("./commands")
 const { ChannelType } = require("discord.js")
+const hosts = require("../../db/tables/hosts")
 const stats = require("../../db/tables/stats")
 const effects = require("../../db/media/effects")
 const phrases = require("../../db/tables/phrases")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
-const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces } = require("logic-kit")
+const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces, probabilityCheck } = require("logic-kit")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -90,12 +91,19 @@ function handleSoundEffect(msg) {
     }
 }
 
+function handleHostMessage(msg) {
+    if (hosts.isHostMessage(msg) && probabilityCheck(0.05)) {
+        ['🇭', '🇴', '🇸', '🇹'].forEach(x => msg.react(x))
+    }
+}
+
 module.exports = {
     messageHandlers: [
         handleCommand,
         handlePlease,
         handlePhrase,
-        handleSoundEffect
+        handleSoundEffect,
+        handleHostMessage
     ],
     cmdPrefix: COMMAND_PREFIX
 }

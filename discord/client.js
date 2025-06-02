@@ -9,6 +9,7 @@ const client = new Discord.Client({
         'Guilds',
         'GuildVoiceStates',
         'GuildMessages',
+        'GuildMembers',
         'DirectMessages',
         'MessageContent',
         'GuildScheduledEvents'
@@ -17,7 +18,6 @@ const client = new Discord.Client({
 })
 
 client.on('ready', async () => {
-    // TODO setup hosts?
     // TODO schedule daily channels
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
@@ -36,10 +36,6 @@ client.on('messageCreate', (msg) => {
             logger.error('Error in message handler.', error)
         }
     })
-})
-
-client.on('guildCreate', (guild) => {
-    // TODO setup host
 })
 
 client.on('interactionCreate', async (interaction) => {
