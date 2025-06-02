@@ -22,6 +22,5 @@ module.exports = {
                 })
         }
     },
-    helpMsg: 'Get a stupid fact from OpenAI',
-    track: 'fact'
+    helpMsg: 'Get a stupid fact from OpenAI'
 }
