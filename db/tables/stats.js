@@ -8,18 +8,19 @@ function getStats(id) {
 }
 
 function updateStat(msg, stat, num=1) {
-    const user = table.data.find(x => x.user_id == msg.member.id)
+    const user = (msg.author || msg.member)
+    const userStats = table.data.find(x => x.user_id == user.id)
     const record = {
-        user_id: msg.member.id,
-        username: msg.member.user.username
+        user_id: user.id,
+        username: user.username || user.user.username
     }
-    record[stat] = (user?.[stat] || 0) + num
+    record[stat] = (userStats?.[stat] || 0) + num
     table.client
         .from(table.name)
         .upsert(record, { onConflict: ['user_id'] })
         .then(({ error }) => {
             if (error) {
-                logger.error(`Could not update stat for ${user.username} (${user.user_id})`, error)
+                logger.error(`Could not update stat for ${user.username} (${user.id})`, error)
             } else {
                 table.refresh()
             }

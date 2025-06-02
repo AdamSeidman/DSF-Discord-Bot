@@ -10,6 +10,8 @@ const phrases = require("../../db/tables/phrases")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
     probabilityCheck } = require("logic-kit")
+const adjectives = require("../../db/tables/adjectives")
+const fact = require("../commands/fact")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -71,14 +73,23 @@ function handlePlease(msg) {
     }
 }
 
-function handlePhrase(msg) { // TODO adjectives
-    let phrase = removeSpaces(phrases.getPhrase(stripPunctuation(msg.content.toLowerCase())))
+function handlePhrase(msg) {
+    const input = stripPunctuation(msg.content.toLowerCase())
+    const phrase = removeSpaces(phrases.getPhrase(input))
+    const adjective = adjectives.getAll().find(x => input.split(' ').includes(x))
     if (phrase) {
         if (phrase.is_reply) {
             msg.reply(phrase.response)
         } else {
             msg.channel.send(phrase.response)
         }
+    } else if (adjective) {
+        msg.reply = (content) => {
+            msg.channel.send(`Did someone say ${
+                adjective}?\nThis calls for a fact!\nReady? Here it is:\n${
+                content}`)
+        }
+        fact.response(msg, { injected: false })
     }
 }
 

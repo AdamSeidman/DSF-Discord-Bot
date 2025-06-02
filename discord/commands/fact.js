@@ -13,10 +13,7 @@ function handleMultiCommand(msg, params, factFn) {
             numFacts = 1
         }
     } else if (!params.injected) {
-        numFacts = msg.options.getInteger('num')
-        if (numFacts === null) {
-            numFacts = 1
-        }
+        numFacts = msg.options?.getInteger('num') || 1
     }
     numFacts = Math.min(Math.max(numFacts, 0), MAX_FACTS)
     if (numFacts < 1) {

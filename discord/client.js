@@ -27,7 +27,7 @@ client.on('ready', async () => {
 client.on('messageCreate', (msg) => {
     if (msg.author.bot) return
     if (msg.member === null) {
-        log.info('Received direct message.', `${msg.author.username}: ${msg.content}`)
+        logger.info('Received direct message.', `${msg.author.username}: ${msg.content}`)
     }
     messageHandlers.forEach((handlerFn) => {
         try {
