@@ -266,5 +266,8 @@ module.exports = {
     generateLie: () => getParsedTemplate(false),
     parseFactTemplate: (template) => getParsedTemplate(true, template),
     parseLieTemplate: (template) => getParsedTemplate(false, template),
-    findSpecificTemplate
+    findSpecificTemplate,
+    getGibberish: tagDictionary.gibberish,
+    tagList: Object.keys(tagDictionary),
+    itemTypes
 }

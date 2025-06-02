@@ -1,6 +1,6 @@
 const { createTextList } = require("logic-kit")
+const facts = require("../../fact/construction")
 const { getTagList } = require("../../db/tables/extraTags")
-const { tagDictionary, itemTypes } = require("../../db/tables/facts")
 
 const objectExampleText = createTextList([
     '{"truth":"is true","lie":"is false"}',
@@ -10,7 +10,7 @@ const objectExampleText = createTextList([
 module.exports = {
     response: (msg) => {
         msg.reply(`Tag List:\n${
-            [...Object.keys(tagDictionary), ...getTagList(), ...itemTypes.map(x => `${x}s`)].sort().join(', ')
+            [...facts.tagList, ...getTagList(), ...facts.itemTypes.map(x => `${x}s`)].sort().join(', ')
         }\n\nObject Examples:\n${objectExampleText}`)
     },
     isTesterCommand: true,
