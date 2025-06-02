@@ -2,6 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const voice = require("./voice")
 const commands = require("./commands")
+const fact = require("../commands/fact")
 const { ChannelType } = require("discord.js")
 const hosts = require("../../db/tables/hosts")
 const stats = require("../../db/tables/stats")
@@ -11,7 +12,7 @@ const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
     probabilityCheck } = require("logic-kit")
 const adjectives = require("../../db/tables/adjectives")
-const fact = require("../commands/fact")
+const construction = require("../../fact/construction")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -77,7 +78,27 @@ function handlePhrase(msg) {
     const input = stripPunctuation(msg.content.toLowerCase())
     const phrase = removeSpaces(phrases.getPhrase(input))
     const adjective = adjectives.getAll().find(x => input.split(' ').includes(x))
-    if (phrase) {
+    const findInput = cleanUpSpaces(input).split(' ')
+    let findResult = null
+    if (findInput.length >= 6) {
+        const testPhrase = findInput.slice(0, 5).join(' ')
+        if (testPhrase === 'tell me a fact about') {
+            findResult = true
+        } else if (testPhrase === 'tell me a lie about') {
+            findResult = false
+        }
+    }
+    if (typeof findResult === 'boolean') {
+        const subject = findInput.slice(5).join(' ')
+        const result = construction.findSpecificTemplate(subject, findResult)
+        if (result.found) {
+            msg.reply(result.fact)
+        } else {
+            msg.channel.send(`I could not find a ${findInput[3]} for "${subject
+                }" in my database.\nHere's a ${findInput[3]} about ${result.alternateSubject
+                } instead:\n${result.fact}`)
+        }
+    } else if (phrase) {
         if (phrase.is_reply) {
             msg.reply(phrase.response)
         } else {

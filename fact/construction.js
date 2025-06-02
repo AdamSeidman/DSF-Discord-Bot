@@ -252,11 +252,21 @@ function getParsedTemplate(isFact, injectedTemplate) {
     return template
 }
 
+function findSpecificTemplate(item, isFact) {
+    console.log('finding', item, isFact) // TODO
+    return {
+        found: false,
+        fact: '...',
+        alternateSubject: '[subject]'
+    }
+}
+
 setTimeout(getParsedTemplate, 2000)
 
 module.exports = {
     generateFact: () => getParsedTemplate(true),
     generateLie: () => getParsedTemplate(false),
     parseFactTemplate: (template) => getParsedTemplate(true, template),
-    parseLieTemplate: (template) => getParsedTemplate(false, template)
+    parseLieTemplate: (template) => getParsedTemplate(false, template),
+    findSpecificTemplate
 }
