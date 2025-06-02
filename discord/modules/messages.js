@@ -8,7 +8,8 @@ const stats = require("../../db/tables/stats")
 const effects = require("../../db/media/effects")
 const phrases = require("../../db/tables/phrases")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
-const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces, probabilityCheck } = require("logic-kit")
+const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
+    probabilityCheck } = require("logic-kit")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -70,7 +71,7 @@ function handlePlease(msg) {
     }
 }
 
-function handlePhrase(msg) {
+function handlePhrase(msg) { // TODO adjectives
     let phrase = removeSpaces(phrases.getPhrase(stripPunctuation(msg.content.toLowerCase())))
     if (phrase) {
         if (phrase.is_reply) {
