@@ -52,7 +52,7 @@ app.use((req, res) => {
 })
 
 // Server setup
-const PORT = process.env.EXPRESS_PORT || 80 // TODO config
+const PORT = process.env.EXPRESS_PORT || 80 // TODO
 app.listen(PORT, () => {
     logger.debug(`Express server listening on port ${PORT}`)
 })

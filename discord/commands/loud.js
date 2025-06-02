@@ -1,7 +1,7 @@
 const { startLoud } = require("../modules/voice")
 
 module.exports = {
-    response: (msg, params) => { // TODO (not in channel messages) for all!
+    response: (msg, params) => {
         const success = startLoud(msg)
         const message = success? 'Starting to be loud...' : 'Could not start screaming.'
         if (!params.injected) {

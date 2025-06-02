@@ -8,7 +8,17 @@ function hasGuild(id) {
 }
 
 async function setGuild(id, enabled, guildName) {
-    if (!id) return false
+    const result = {
+        error: null,
+        failed: false
+    }
+    if (!id) {
+        result.error = true
+        return result
+    } else if (hasGuild(id) === (!!enabled)) {
+        result.failed = true
+        return result
+    }
     try {
         const { error } = await table.client
             .from(table.name)
@@ -23,10 +33,10 @@ async function setGuild(id, enabled, guildName) {
         }
     } catch (error) {
         logger.error(`Could not set guild (${id} - ${guildName}) effects enabled to [${enabled}]`, error)
-        return false
+        result.error = error
     }
     table.refresh()
-    return true
+    return result
 }
 
 module.exports = {
