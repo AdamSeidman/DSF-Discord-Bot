@@ -119,8 +119,9 @@ function handleSoundEffect(msg) {
     const message = removeSpaces(stripPunctuation(msg.content.toLowerCase()))
     const effect = effects.getList().find(x => message.includes(x))
     if (effect) {
-        voice.playEffect(msg, effect)
-        stats.updateStat(msg, 'effect')
+        if (voice.playEffect(msg, effect)) {
+            stats.updateStat(msg, 'effect')
+        }
     }
 }
 
