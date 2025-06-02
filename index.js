@@ -10,8 +10,8 @@ const app = () => {
         await discord.close()
         process.exit(0)
     })
-    discord.init()
     db.init()
+    discord.init()
 }
 
 try {
