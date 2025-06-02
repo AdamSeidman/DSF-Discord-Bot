@@ -25,6 +25,7 @@ function getGuild(msg, createIfUnavailable=false) {
             persistent: false,
             periodic: false,
             isMusic: false,
+            vibing: false,
             originalMsg: msg,
             timeoutId: -1,
         }
@@ -34,6 +35,14 @@ function getGuild(msg, createIfUnavailable=false) {
 
 function userInVoice(msg) {
     return !!msg.member?.voice.channel
+}
+
+async function hasListeners(msg) {
+    const member = await msg.guild.members.cache.get(process.env.DISCORD_BOT_ID)
+    if (!member) {
+        return false
+    }
+    return ([...(member.voice?.channel?.members || [])].filter(x => !x[1].user.bot).length) > 0
 }
 
 function playResource(msg, args={}) {
@@ -55,11 +64,17 @@ function playResource(msg, args={}) {
             selfDeaf: false
         })
 
-        guild.player.on(AudioPlayerStatus.Idle, () => {
+        guild.player.on(AudioPlayerStatus.Idle, async () => {
             cancelSchedule(guild)
             if (guild.paused) return
 
-            if (guild.isMusic) {
+            const listening = await hasListeners(guild.originalMsg) 
+
+            if (!guild.isMusic && !guild.vibing && !listening) {
+                guild.connection.destroy()
+                delete guilds[guild.guildId]
+                logger.info('Leaving empty voice channel.', guild.name)
+            } else if (guild.isMusic) {
                 guild.player.play(createAudioResource(MUSIC_ASSET))
             } else if (guild.persistent) {
                 if (guild.periodic) {
@@ -67,7 +82,7 @@ function playResource(msg, args={}) {
                 } else {
                     guild.player.play(effects.getRandomEffect())
                 }
-            } else {
+            } else if (!guild.vibing) {
                 guild.connection.destroy()
                 delete guilds[guild.guildId]
             }
@@ -80,17 +95,25 @@ function playResource(msg, args={}) {
 
     if (typeof args.effect === 'string') {
         guild.music = false
+        guild.vibing = false
         const effect = effects.getEffect(args.effect)
         if (!effect) return false
         guild.player.play(effect)
+    } else if (args.vibe) {
+        guild.persistent = true
+        guild.isMusic = false
+        guild.periodic = false
+        guild.vibing = true
     } else if (args.continuous) {
         guild.persistent = true
         guild.isMusic = false
+        guild.vibing = false
         guild.periodic = !!args.periodic
         guild.player.play(createAudioResource(SILENCE_ASSET))
     } else {
         guild.persistent = false
         guild.isMusic = true
+        guild.vibing = false
         guild.player.play(createAudioResource(MUSIC_ASSET))
     }
     guild.connection.subscribe(guild.player)
@@ -130,6 +153,11 @@ function playEffect(msg, effect) {
 function playMusic(msg) {
     logger.info('Starting music.', msg.guild.name)
     return playResource(msg)
+}
+
+function vibe(msg) {
+    logger.info(`Just vibing in ${msg.member?.voice?.channel?.name}`, msg.guild.name)
+    return playResource(msg, { vibe: true })
 }
 
 function pause(msg) {
@@ -186,6 +214,7 @@ module.exports = {
     startLoud,
     playEffect,
     playMusic,
+    vibe,
     pause,
     resume,
     stop,
