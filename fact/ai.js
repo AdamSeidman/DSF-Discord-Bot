@@ -1,4 +1,5 @@
-const OpenAI = require("openai") // TODO Fix multi-instances
+const OpenAI = require('openai')
+const { postpone } = require('logic-kit')
 
 const POLL_INTERVAL_MSEC = 2500
 
@@ -50,21 +51,46 @@ async function checkingStatus(resolve, threadId, runId) {
         })
 
         resolve(messages[0][0].text.value)
+        postpone(tryNext)
     }
 }
 
-async function getAiFact() {
+const requests = []
+let resolving = false
+
+function getFact(resolve, reject) {
+    createThread()
+        .then((thread) => {
+            return addMessage(thread.id, 'fact')
+        })
+        .then((message) => {
+            return runAssistant(message.threadId)
+        })
+        .then((run) => {
+            const runId = run.response.id
+            pollingInterval = setInterval(() => {
+                checkingStatus(resolve, run.threadId, runId)
+            }, POLL_INTERVAL_MSEC)
+        })
+        .catch(reject)
+}
+
+function tryNext() {
+    const next = requests.shift()
+    if (next === undefined) {
+        resolving = false
+    } else {
+        resolving = true
+        getFact(next.resolve, next.reject)
+    }
+}
+
+function getAiFact() {
     return new Promise((resolve, reject) => {
-        createThread()
-            .then((thread) => addMessage(thread.id, 'fact'))
-            .then((message) => runAssistant(message.threadId))
-            .then((run) => {
-                const runId = run.response.id
-                pollingInterval = setInterval(() => {
-                    checkingStatus(resolve, run.threadId, runId)
-                }, POLL_INTERVAL_MSEC)
-            })
-            .catch(reject)
+        requests.push({ resolve, reject })
+        if (!resolving) {
+            tryNext()
+        }
     })
 }
 
