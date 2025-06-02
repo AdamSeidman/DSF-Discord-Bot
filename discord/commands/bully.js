@@ -46,7 +46,7 @@ module.exports = {
                 success = false
                 message = 'You cannot bully a bot!'
             } else {
-                const insult = `${Discord.userMention(msg.member.id)}> told me that you ${getRandomInsult() || 'INSULT_ERROR'}.${
+                const insult = `${Discord.userMention(msg.member.id)} told me that you ${getRandomInsult() || 'INSULT_ERROR'}.${
                     (extraMessage.length > 0)? ` Also they said "${
                         Discord.bold(extraMessage)}"${isStringTerminated(extraMessage)? '' : '.'
                     }` : ''

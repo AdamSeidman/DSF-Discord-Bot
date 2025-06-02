@@ -8,11 +8,11 @@ const hosts = require("../../db/tables/hosts")
 const stats = require("../../db/tables/stats")
 const effects = require("../../db/media/effects")
 const phrases = require("../../db/tables/phrases")
+const construction = require("../../fact/construction")
+const adjectives = require("../../db/tables/adjectives")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
     probabilityCheck } = require("logic-kit")
-const adjectives = require("../../db/tables/adjectives")
-const construction = require("../../fact/construction")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
