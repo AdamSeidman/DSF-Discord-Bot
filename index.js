@@ -14,9 +14,11 @@ const app = () => {
     discord.init()
 }
 
-try {
-    app()
-} catch (error) {
-    console.error('Error initializing DSF!', error)
-    process.exit(1)
+if (require.main === module) {
+    try {
+        app()
+    } catch (error) {
+        console.error('Error initializing DSF!', error)
+        process.exit(1)
+    }
 }

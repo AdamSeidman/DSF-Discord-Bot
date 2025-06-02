@@ -20,7 +20,7 @@ const personTypes = ['alive', 'dead', 'person', 'male', 'female']
 let itemPrepared = false
 let personPrepared = false
 let lastTemplateIds = Array(FACT_CACHE_SIZE).fill(-1)
-const queue = []
+const queue = ['(N/a)']
 
 const tagDictionary = {
     acronym: () => acronym.getAcronym(),
@@ -260,8 +260,6 @@ function findSpecificTemplate(item, isFact) {
         alternateSubject: '[subject]'
     }
 }
-
-setTimeout(getParsedTemplate, 2000)
 
 module.exports = {
     generateFact: () => getParsedTemplate(true),
