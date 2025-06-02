@@ -3,9 +3,7 @@ const { postpone } = require('logic-kit')
 
 const POLL_INTERVAL_MSEC = 2500
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-})
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const assistantId = process.env.OPENAI_ASSISTANT_ID
 let pollingInterval = undefined
 
@@ -30,7 +28,7 @@ async function runAssistant(threadId) {
         threadId,
         { assistant_id: assistantId }
     )
-    return {response, threadId}
+    return { response, threadId }
 }
 
 async function checkingStatus(resolve, threadId, runId) {
@@ -46,7 +44,7 @@ async function checkingStatus(resolve, threadId, runId) {
         const messagesList = await openai.beta.threads.messages.list(threadId)
         let messages = []
 
-        messagesList.body.data.forEach(message => {
+        messagesList.body.data.forEach((message) => {
             messages.push(message.content)
         })
 
@@ -60,12 +58,8 @@ let resolving = false
 
 function getFact(resolve, reject) {
     createThread()
-        .then((thread) => {
-            return addMessage(thread.id, 'fact')
-        })
-        .then((message) => {
-            return runAssistant(message.threadId)
-        })
+        .then((thread) => addMessage(thread.id, 'fact'))
+        .then((message) => runAssistant(message.threadId))
         .then((run) => {
             const runId = run.response.id
             pollingInterval = setInterval(() => {
