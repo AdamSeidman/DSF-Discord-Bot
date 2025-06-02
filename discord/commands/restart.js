@@ -1,4 +1,5 @@
 const logger = require("@adamseidman/logger")
+const { postpone } = require("logic-kit")
 
 module.exports = {
     response: async (msg, params) => {
@@ -15,10 +16,10 @@ module.exports = {
                     ephemeral: true
                 })
             }
+            await require('../client').close()
             logger.info('Restarting...', params)
-            setTimeout(() => {
-                process.kill(process.pid, 'SIGINT')
-            }, 1000)
+            console.log('\n')
+            postpone(() => process.kill(process.pid, 'SIGINT'))
         } else {
             msg.reply('Only the admin can restart the bot.')
         }
