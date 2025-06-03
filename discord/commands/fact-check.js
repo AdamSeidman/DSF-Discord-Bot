@@ -30,6 +30,7 @@ function parseInput(msg, params, template) {
     while (builder.length > 0) {
         if (out.join('').concat(builder[0]).length >= 2000) {
             print(out.join(''))
+            print = (x) => msg.channel.send(x)
             out = []
         }
         out.push(builder.shift())
