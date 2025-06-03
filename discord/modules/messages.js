@@ -76,7 +76,7 @@ function handlePlease(msg) {
 
 function handlePhrase(msg) {
     const input = stripPunctuation(msg.content.toLowerCase())
-    const phrase = removeSpaces(phrases.getPhrase(input))
+    const phrase = phrases.getPhrase(removeSpaces(input))
     const adjective = adjectives.getAll().find(x => input.split(' ').includes(x))
     const findInput = cleanUpSpaces(input).split(' ')
     let findResult = null
