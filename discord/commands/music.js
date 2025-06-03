@@ -1,5 +1,5 @@
-const { ChannelType } = require("discord.js")
 const { playMusic } = require("../modules/voice")
+const { ChannelType, MessageFlags } = require("discord.js")
 
 module.exports = {
     response: (msg, params) => {
@@ -15,7 +15,7 @@ module.exports = {
         const success = playMusic(msg)
         const message = success? 'Playing...' : 'Failed to start playing music.'
         if (!params.injected) {
-            msg.reply({ content: message, ephemeral: true })
+            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
             msg.channel.send(message)
         }

@@ -7,7 +7,7 @@ module.exports = {
         if (helpEmbed === null) {
             msg.reply({
                 content: 'Could not generate message! Please try again soon.',
-                ephemeral: true
+                flags: Discord.MessageFlags.Ephemeral
             })
         } else {
             if (params.injected) {

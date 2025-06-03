@@ -1,5 +1,6 @@
-const logger = require("@adamseidman/logger")
 const { postpone } = require("logic-kit")
+const logger = require("@adamseidman/logger")
+const { MessageFlags } = require("discord.js")
 
 module.exports = {
     response: async (msg, params) => {
@@ -13,7 +14,7 @@ module.exports = {
                 params = '(No reason specified.)'
                 await msg.reply({
                     content: 'Restarting...',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 })
             }
             await require("../client").close()

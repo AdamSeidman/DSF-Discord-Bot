@@ -86,7 +86,7 @@ async function handleSlashCommand(interaction) {
         logger.error('Requested slash command not found', command)
         interaction.reply({
             content: 'Internal Error! Command not found.',
-            ephemeral: true
+            flags: Discord.MessageFlags.Ephemeral
         })
         return
     }

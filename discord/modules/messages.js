@@ -123,9 +123,9 @@ function handlePhrase(msg) {
                 msg.channel.send(`${findResult.user}${result.fact}`)
             }
         } else {
-            msg.channel.send(`${findResult.user}I could not find a ${findResult.factPhrase} for "${findResult.subject
-                }" in my database.\nHere's a ${findResult.factPhrase} about ${result.alternateSubject
-                } instead:\n${result.fact}`)
+            msg.channel.send(`${findResult.user}I could not find a ${findResult.factPhrase} for "${
+                findResult.subject}" in my database.\nHere's a ${findResult.factPhrase} about ${
+                result.alternateSubject} instead:\n${result.fact}`)
         }
     } else if (phrase) {
         if (phrase.is_reply) {

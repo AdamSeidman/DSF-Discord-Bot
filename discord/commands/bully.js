@@ -64,7 +64,7 @@ module.exports = {
         } else {
             msg.reply({
                 content: success? 'Sending...' : message,
-                ephemeral: true
+                flags: Discord.MessageFlags.Ephemeral
             })
         }
     },

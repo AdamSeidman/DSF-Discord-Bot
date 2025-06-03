@@ -39,7 +39,7 @@ module.exports = {
             if (args.bot) {
                 msg.reply({
                     content: 'Cannot get statistics for a bot!',
-                    ephemeral: !msg.injected
+                    flags: Discord.MessageFlags.Ephemeral
                 })
                 return
             }

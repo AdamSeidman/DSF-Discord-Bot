@@ -8,7 +8,7 @@ module.exports = {
         if (result.error) {
             msg.reply({
                 content: 'There was an error with this command!',
-                ephemeral: !params.injected
+                flags: Discord.MessageFlags.Ephemeral
             })
             logger.error('Error running /repick', result.error)
         } else if (result.isHost) {

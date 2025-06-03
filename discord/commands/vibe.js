@@ -1,5 +1,5 @@
-const { ChannelType } = require("discord.js")
 const { vibe } = require("../modules/voice")
+const { ChannelType, MessageFlags } = require("discord.js")
 
 module.exports = {
     response: (msg, params) => {
@@ -15,7 +15,7 @@ module.exports = {
         const success = vibe(msg)
         const message = success? 'Vibing...' : 'Failed to start vibing.'
         if (!params.injected) {
-            msg.reply({ content: message, ephemeral: true })
+            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
             msg.channel.send(message)
         }
