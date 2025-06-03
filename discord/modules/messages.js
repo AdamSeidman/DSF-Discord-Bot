@@ -1,9 +1,9 @@
 const fs = require("fs")
 const path = require("path")
 const voice = require("./voice")
+const Discord = require("discord.js")
 const commands = require("./commands")
 const fact = require("../commands/fact")
-const { ChannelType } = require("discord.js")
 const hosts = require("../../db/tables/hosts")
 const stats = require("../../db/tables/stats")
 const effects = require("../../db/media/effects")
@@ -35,7 +35,7 @@ function handleCommand(msg) {
     msg.userParams = {
         injected: true,
         isPlease: false,
-        isDM: msg.channel.type === ChannelType.DM,
+        isDM: msg.channel.type === Discord.ChannelType.DM,
         isTestingGuild: msg.guild?.id == process.env.DISCORD_TESTING_GUILD_ID,
         params: copyObject(message)
     }
@@ -79,7 +79,7 @@ function getFindRequestPhrase(message) {
     const result = {
         hasPhrase: false,
         isMe: true,
-        userId: -1,
+        user: '',
         isFact: null,
         factPhrase: message[3],
         subject: ''
@@ -94,7 +94,7 @@ function getFindRequestPhrase(message) {
     if (!userId && message[1] !== 'me') {
         return result
     } else if (userId) {
-        result.userId = userId,
+        result.user = Discord.userMention(userId) + '\n',
         isMe = false
     }
     if (message[2] !== 'a' || message[4] !== 'about') {
@@ -117,9 +117,13 @@ function handlePhrase(msg) {
     if (findResult.hasPhrase) {
         const result = construction.findSpecificTemplate() // TODO
         if (result.found) {
-            msg.reply(result.fact)
+            if (findResult.isMe) {
+                msg.reply(result.fact)
+            } else {
+                msg.channel.send(`${findResult.user}${result.fact}`)
+            }
         } else {
-            msg.channel.send(`I could not find a ${findResult.factPhrase} for "${findResult.subject
+            msg.channel.send(`${findResult.user}I could not find a ${findResult.factPhrase} for "${findResult.subject
                 }" in my database.\nHere's a ${findResult.factPhrase} about ${result.alternateSubject
                 } instead:\n${result.fact}`)
         }
