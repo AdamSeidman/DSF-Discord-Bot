@@ -17,8 +17,20 @@ function getNextPlace() {
     return lastPlace.name
 }
 
+function getDictionary() {
+    const result = {}
+    table.data.forEach((place) => {
+        result[place.name] = {
+            tags: ['place', 'noun'],
+            name: place.name
+        }
+    })
+    return result
+}
+
 module.exports = {
     refresh: () => table.refresh(),
     getLastPlace,
-    getNextPlace
+    getNextPlace,
+    getDictionary
 }

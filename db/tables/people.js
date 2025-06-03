@@ -25,8 +25,28 @@ function getNextPerson(filters) {
     return person
 }
 
+function getDictionary() {
+    const result = {}
+    table.data.forEach((person) => {
+        const data = {
+            tags: [
+                'person',
+                (person.is_male? 'male' : 'female'),
+                (person.is_alive? 'alive' : 'dead'),
+                'noun'
+            ],
+            name: person.name
+        }
+        result[data.name] = data
+        result[data.plural] = data
+        result[`${data.usage} ${data.name}`] = data
+    })
+    return result
+}
+
 module.exports = {
     refresh: () => table.refresh(),
     getLastPerson,
-    getNextPerson
+    getNextPerson,
+    getDictionary
 }

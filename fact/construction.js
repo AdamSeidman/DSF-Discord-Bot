@@ -212,6 +212,90 @@ function parseNormalTags(template) {
     return template
 }
 
+
+
+function preParseNormalTags(template, subject, requiredTag) {
+    let hasPrep = false, wasPlural = false, numItems = 1
+    const builder = []
+
+    const put = (fn) => {
+        let item = template.shift()
+        if (Array.isArray(item) && item[0] !== 'number') {
+            const isNumber = typeof item[0] === 'number'
+            builder.push(fn(item[0], isNumber, !isNumber && item[0].endsWith('s'), !isNumber && item[0].startsWith(preparePrefix),
+                !isNumber && (item[0].endsWith(requiredTag) || item[0].slice(0, -1).endsWith(requiredTag))))
+        } else {
+            builder.push(item)
+        }
+    } 
+
+    let running = true
+    while (template.length > 0 && running) {
+        put((tag, isNumber, isPlural, isPrepare, isMainTag) => {
+            if (isMainTag) {
+                running = false
+                if (isPrepare) {
+                    hasPrep = true
+                    return ''
+                } else {
+                    wasPlural = isPlural
+                    queue.unshift(subject.name)
+                    return isPlural? subject.plural : subject.name
+                }
+            } else {
+                return [tag]
+            }
+        })
+    }
+    running = true
+    while (template.length > 0 && running) {
+        put((tag, isNumber, isPlural, isPrepare, isMainTag) => {
+            if (isNumber) {
+                if (hasPrep) {
+                    return [tag]
+                } else if (tag === 1) {
+                    return wasPlural? subject.plural : subject.name
+                } else {
+                    return [tag - 1]
+                }
+            } else if (tag === 'usage') {
+                return subject.usage
+            } else if (isMainTag) {
+                if (hasPrep) {
+                    hasPrep = false
+                    wasPlural = isPlural
+                    queue.unshift(subject.name)
+                    return isPlural? subject.plural : subject.name
+                } else {
+                    running = false
+                    return [tag]
+                }
+            } else if (tag.includes('_')) {
+                tag = tag.split('_')
+                return subject.isMale? tag[0] : tag[1]
+            } else {
+                running = false
+                return [tag]
+            }
+        })
+    }
+    while (template.length > 0) {
+        put((tag, isNumber) => {
+            if (isNumber) {
+                if (tag === numItems) {
+                    return wasPlural? subject.plural : subject.name
+                } else {
+                    return [tag[0] - numItems]
+                }
+            } else {
+                numItems++
+                return [tag]
+            }
+        })
+    }
+    return builder
+}
+
 function parseInjectedTemplate(templateStr) {
     let template = JSON.parse(templateStr)
     if (JSON.stringify(template).toLowerCase().includes('["fact"]')) {
@@ -253,12 +337,35 @@ function getParsedTemplate(isFact, injectedTemplate) {
 }
 
 function findSpecificTemplate(item, isFact) {
-    console.log('finding', item, isFact) // TODO
-    return {
-        found: false,
-        fact: '...',
-        alternateSubject: '[subject]'
+    const result = {
+        found: true,
+        fact: '',
+        alternateSubject: ''
     }
+    const dictionary = {
+        ...people.getDictionary(),
+        ...places.getDictionary(),
+        ...items.getDictionary()
+    }
+    let subject = dictionary[item]
+    if (!subject) {
+        subject = randomArrayItem(Object.values(dictionary))
+        result.found = false
+        result.alternateSubject = subject.name
+    }
+    let found = false
+    let template = ''
+    while (!found) {
+        template = getNextTemplate()
+        template = parseObjects(template, isFact)
+        template = parseLists(template)
+        template = parseMacros(template)
+        template = JSON.stringify(template)
+        found = subject.tags.find(x => template.includes(JSON.stringify([x])))
+    }
+    template = preParseNormalTags(JSON.parse(template), subject, found.toLowerCase())
+    result.fact = getParsedTemplate(isFact, JSON.stringify(template))
+    return result
 }
 
 module.exports = {

@@ -115,7 +115,7 @@ function handlePhrase(msg) {
     const findResult = getFindRequestPhrase(input)
 
     if (findResult.hasPhrase) {
-        const result = construction.findSpecificTemplate() // TODO
+        const result = construction.findSpecificTemplate(findResult.subject, findResult.isFact)
         if (result.found) {
             if (findResult.isMe) {
                 msg.reply(result.fact)
