@@ -6,7 +6,7 @@ const { createAudioResource } = require("@discordjs/voice")
 const bucket = new Bucket('effects')
 
 function getEffect(name) {
-    name = name.trim().toLowerCase()
+    name = name?.trim().toLowerCase()
     if (!Object.keys(bucket.data).includes(name)) return
 
     try {
@@ -24,7 +24,7 @@ function getList() {
 }
 
 function getRandomEffect() {
-    return getEffect(randomArrayItem(getList()))
+    return getEffect(randomArrayItem(getList()) || (getList()[0]))
 }
 
 module.exports = {
