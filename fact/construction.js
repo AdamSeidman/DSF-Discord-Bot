@@ -212,8 +212,6 @@ function parseNormalTags(template) {
     return template
 }
 
-
-
 function preParseNormalTags(template, subject, requiredTag) {
     let hasPrep = false, wasPlural = false, numItems = 1
     const builder = []
