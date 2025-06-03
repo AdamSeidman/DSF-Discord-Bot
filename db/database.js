@@ -58,7 +58,7 @@ class Bucket {
     }
 
     async #init() {
-        const { error, data } = await this.client.storage.from(this.name).list()
+        const { error, data } = await this.client.storage.from(this.name).list('', { limit: 1000 })
 
         if (error) {
             logger.error(`Error initializing ${this.name}`, error)
