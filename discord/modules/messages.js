@@ -12,7 +12,7 @@ const construction = require("../../fact/construction")
 const adjectives = require("../../db/tables/adjectives")
 const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
-    probabilityCheck } = require("logic-kit")
+    probabilityCheck, matchesDiscordId} = require("logic-kit")
 
 const COMMAND_PREFIX = 'd!' // TODO dsf
 const availableCommands = []
@@ -74,28 +74,53 @@ function handlePlease(msg) {
     }
 }
 
+function getFindRequestPhrase(message) {
+    message = cleanUpSpaces(message.toLowerCase()).split(' ')
+    const result = {
+        hasPhrase: false,
+        isMe: true,
+        userId: -1,
+        isFact: null,
+        factPhrase: message[3],
+        subject: ''
+    }
+    if (message.length < 6) {
+        return result
+    }
+    if (message[0] !== 'give' && message[0] !== 'tell') {
+        return result
+    }
+    const userId = matchesDiscordId(message[1])
+    if (!userId && message[1] !== 'me') {
+        return result
+    } else if (userId) {
+        result.userId = userId,
+        isMe = false
+    }
+    if (message[2] !== 'a' || message[4] !== 'about') {
+        return result
+    }
+    if (message[3] === 'fact' || message[3] === 'lie') {
+        result.isFact = (message[3] === 'fact')
+        result.hasPhrase = true
+    }
+    result.subject = message.slice(5).join(' ')
+    return result
+}
+
 function handlePhrase(msg) {
     const input = stripPunctuation(msg.content.toLowerCase())
     const phrase = phrases.getPhrase(removeSpaces(input))
     const adjective = adjectives.getAll().find(x => input.split(' ').includes(x))
-    const findInput = cleanUpSpaces(input).split(' ')
-    let findResult = null
-    if (findInput.length >= 6) {
-        const testPhrase = findInput.slice(0, 5).join(' ')
-        if (testPhrase === 'tell me a fact about') {
-            findResult = true
-        } else if (testPhrase === 'tell me a lie about') {
-            findResult = false
-        }
-    }
-    if (typeof findResult === 'boolean') {
-        const subject = findInput.slice(5).join(' ')
-        const result = construction.findSpecificTemplate(subject, findResult)
+    const findResult = getFindRequestPhrase(input)
+
+    if (findResult.hasPhrase) {
+        const result = construction.findSpecificTemplate() // TODO
         if (result.found) {
             msg.reply(result.fact)
         } else {
-            msg.channel.send(`I could not find a ${findInput[3]} for "${subject
-                }" in my database.\nHere's a ${findInput[3]} about ${result.alternateSubject
+            msg.channel.send(`I could not find a ${findResult.factPhrase} for "${findResult.subject
+                }" in my database.\nHere's a ${findResult.factPhrase} about ${result.alternateSubject
                 } instead:\n${result.fact}`)
         }
     } else if (phrase) {
@@ -113,6 +138,7 @@ function handlePhrase(msg) {
         fact.response(msg, { injected: false })
     }
 }
+
 
 function handleSoundEffect(msg) {
     if (msg.member === null || !effectsGuilds.hasGuild(msg.guild.id)) return
