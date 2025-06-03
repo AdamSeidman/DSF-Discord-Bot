@@ -1,13 +1,13 @@
-const Discord = require('discord.js')
-const scheduler = require('node-schedule')
-const logger = require('@adamseidman/logger')
-const { generateFact } = require('./construction')
+const Discord = require("discord.js")
+const scheduler = require("node-schedule")
+const logger = require("@adamseidman/logger")
+const { generateFact } = require("./construction")
 
 let dailyChannels = []
 let clientChannels = []
 
 function scheduleDailyChannels(channelIds) {
-    clientChannels = require('../discord/client')
+    clientChannels = require("../discord/client")
         .client.channels.cache.filter(x => x instanceof Discord.TextChannel)
     clientChannels = [...clientChannels].map(x => x[1])
     dailyChannels.push(...clientChannels.filter(x => channelIds.includes(`${x.id}`)))

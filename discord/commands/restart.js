@@ -16,7 +16,7 @@ module.exports = {
                     ephemeral: true
                 })
             }
-            await require('../client').close()
+            await require("../client").close()
             logger.info('Restarting...', params)
             console.log('\n')
             postpone(() => process.kill(process.pid, 'SIGINT'))

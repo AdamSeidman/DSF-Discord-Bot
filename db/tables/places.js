@@ -1,5 +1,5 @@
 const { Table } = require("../database")
-const { copyObject, randomArrayItem } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
 
 const table = new Table('allPlaces')
 let lastPlace = { id: -1 }
@@ -20,7 +20,7 @@ function getNextPlace() {
 function getDictionary() {
     const result = {}
     table.data.forEach((place) => {
-        result[place.name] = {
+        result[stripPunctuation(place.name).toLowerCase()] = {
             tags: ['place', 'noun'],
             name: place.name
         }

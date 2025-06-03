@@ -18,8 +18,8 @@ const client = new Discord.Client({
 })
 
 client.on('ready', async () => {
-    const channelIds = require('../db/tables/dailies').getAll().map(x => x.channelId)
-    require('../fact/scheduler').scheduleDailyChannels(channelIds)
+    const channelIds = require("../db/tables/dailies").getAll().map(x => x.channelId)
+    require("../fact/scheduler").scheduleDailyChannels(channelIds)
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
 })

@@ -1,5 +1,5 @@
 const { Table } = require("../database")
-const { copyObject, randomArrayItem } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
 
 const table = new Table('allPeople')
 let lastPerson = { id: -1 }
@@ -37,9 +37,7 @@ function getDictionary() {
             ],
             name: person.name
         }
-        result[data.name] = data
-        result[data.plural] = data
-        result[`${data.usage} ${data.name}`] = data
+        result[stripPunctuation(data.name).toLowerCase()] = data
     })
     return result
 }

@@ -1,5 +1,5 @@
-const OpenAI = require('openai')
-const { postpone } = require('logic-kit')
+const OpenAI = require("openai")
+const { postpone } = require("logic-kit")
 
 const POLL_INTERVAL_MSEC = 2500
 
