@@ -85,6 +85,13 @@ function parseMacros(template) {
     const out = []
     template.forEach((tag) => {
         if (Array.isArray(tag) && tag.length === 1 && (`${tag[0]}`).toLowerCase().startsWith(usePrefix)) {
+            if (tag[0].toLowerCase().endsWith('noun')) {
+                tag = randomArrayItem([['person'], ['place'], ['useblank']])
+                if (!tag[0].startsWith(usePrefix)) {
+                    out.push(tag)
+                    return
+                }
+            }
             const baseTag = tag[0].slice(usePrefix.length)
             out.push([`${preparePrefix}${baseTag}`], [usageTerm], ' ', [baseTag])
         } else {
