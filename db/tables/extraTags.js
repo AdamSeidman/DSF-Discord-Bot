@@ -9,6 +9,7 @@ function loadTableLibrary() {
         tableLibrary[row.table_name] = {
             table: new Table(`tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`),
             tag: row.table_name,
+            has_dictionary: row.has_dictionary,
             id: row.id,
             lastId: -1
         }
@@ -34,7 +35,7 @@ async function refresh() {
     Object.values(tableLibrary).forEach(({ table }) => {
         table.refresh()
     })
-}
+} // TODO Dynamic dictionaries and whatnot
 
 module.exports = {
     refresh,

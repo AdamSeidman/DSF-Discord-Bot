@@ -4,6 +4,7 @@ const facts = require("../db/tables/facts")
 const logger = require("@adamseidman/logger")
 const people = require("../db/tables/people")
 const places = require("../db/tables/places")
+const insults = require("../db/tables/insults")
 const acronym = require("../db/tables/acronyms")
 const { randomArrayItem, copyObject, randomNumber,
     shuffleArray, isStringTerminated } = require("logic-kit")
@@ -32,6 +33,7 @@ const tagDictionary = {
     female: () => people.getNextPerson({ male: false }),
     food: () => items.getNextItem({ food: true }),
     inedible: () => items.getNextItem({ food: false }),
+    insult: () => insults.getRandomInsult(),
     item: () => items.getNextItem({ alive: false }),
     male: () => people.getNextPerson({ male: true }),
     number: () => `${randomNumber()}`,
@@ -360,7 +362,7 @@ function findSpecificTemplate(item, isFact) {
     }
     let found = false
     let template = ''
-    while (!found) {
+    while (!found) { // TODO Filter instead of loop
         template = getNextTemplate()
         template = parseObjects(template, isFact)
         template = parseLists(template)
