@@ -1,7 +1,10 @@
 const Discord = require("discord.js")
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
+const { isOverridden } = require("./override")
+const { probabilityCheck } = require("logic-kit")
 const { generateFact } = require("./construction")
+const staticFacts = require("../db/tables/staticFacts")
 
 let dailyChannels = []
 let clientChannels = []
@@ -16,8 +19,17 @@ function scheduleDailyChannels(channelIds) {
         minute: process.dsf.dailyFactMinute,
         second: process.dsf.dailyFactSecond
     }, () => {
-        const fact = generateFact()
-        logger.info('Sending daily fact...', fact)
+        const overridden = isOverridden()
+        const shouldDoStatic = probabilityCheck(process.dsf.staticFactFrequency)
+        let fact = 'DAILY_FACT_ERROR'
+        let qualifier = overridden? ' (Overridden)' : '...' // TODO test
+        if (shouldDoStatic && !overridden) {
+            fact = staticFacts.getAndMark() // TODO test
+            qualifier = ' (Static!)'
+        } else {
+            fact = generateFact()
+        }
+        logger.info(`Sending daily fact${qualifier}`, fact)
         dailyChannels.forEach((channel) => {
             try {
                 channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
