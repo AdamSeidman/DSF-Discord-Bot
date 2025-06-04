@@ -94,7 +94,7 @@ function getFindRequestPhrase(message) {
     if (userId) {
         result.user = Discord.userMention(userId) + '\n',
         result.isMe = false
-    } else if (message[1] === 'me') {
+    } else if (message[1] !== 'me') {
         return result
     }
     if (message[2] !== 'a' || message[4] !== 'about') {
