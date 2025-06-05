@@ -33,6 +33,8 @@ function handleMultiCommand(msg, params, factFn) {
                 }
             })
         }
+    } else if (params.isPlease) {
+        msg.reply(facts[0])
     } else {
         facts.forEach(x => msg.channel.send(x))
     }
