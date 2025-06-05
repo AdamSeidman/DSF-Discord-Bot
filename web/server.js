@@ -10,14 +10,12 @@ let app = express()
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
 
-// Body parser setup // TODO ...
+// TODO ...
 let jsonParser = bodyParser.json()
 app.use(express.urlencoded({ extended: true }))
 
-// Static items
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Dynamic routes (API endpoints)
 const epHandlers = {}
 ;['get', 'post'].forEach((verb) => {
     fs.readdirSync(path.join(__dirname, verb)).forEach((file) => {
@@ -45,13 +43,11 @@ app.use('/api/:ep', jsonParser, (req, res, next) => {
     }
 })
 
-// Not Found handling catch-all
 app.use((req, res) => {
-    logger.warn('Incoming 404', `${req.method} ${req.url}`)
+    logger.warn('Incoming 404', `${req.method} ${req.url}`) // TODO ?
     res.status(404).sendFile(path.join(__dirname, 'public/404.html'))
 })
 
-// Server setup
 const PORT = process.env.EXPRESS_PORT || 80 // TODO
 app.listen(PORT, () => {
     logger.debug(`Express server listening on port ${PORT}`)
