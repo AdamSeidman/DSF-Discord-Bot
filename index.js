@@ -1,9 +1,10 @@
+const { postpone } = require("logic-kit")
+
 const app = () => {
     require("dotenv").config()
     process.dsf = require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     const db = require("./db/database")
-    require("./web/server")
     const discord = require("./discord/client")
     process.on('SIGINT', async () => {
         console.log('\nSIGINT: Shutting down...\n')
@@ -12,6 +13,7 @@ const app = () => {
     })
     db.init()
     discord.init()
+    postpone(() => require("./web/server"))
 }
 
 if (require.main === module) {
