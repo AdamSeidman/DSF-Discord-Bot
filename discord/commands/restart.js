@@ -4,7 +4,7 @@ const { MessageFlags } = require("discord.js")
 
 module.exports = {
     response: async (msg, params) => {
-        if ((msg.author || msg.member).id == process.env.DISCORD_ADMIN_USER_ID) {
+        if (params.user.id == process.env.DISCORD_ADMIN_USER_ID) {
             if (params.injected) {
                 params = params.params.join(' ')
                 if (params.length < 1) {

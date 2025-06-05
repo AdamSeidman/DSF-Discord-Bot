@@ -78,14 +78,17 @@ async function registerSlashCommands(client) {
 async function handleSlashCommand(interaction) {
     let command = interaction.client.commands.get(interaction.commandName)
     const isTestingGuild = interaction.guild?.id == process.env.DISCORD_TESTING_GUILD_ID
+    const isDM = interaction.channel?.type === Discord.ChannelType.DM
 
     if (!command && isTestingGuild) {
         command = testingGuild?.commands.get(interaction.commandName)
     }
     if (!command) {
-        logger.error('Requested slash command not found', command)
+        if (isDM) {
+            logger.error('Requested slash command not found', command)
+        }
         interaction.reply({
-            content: 'Internal Error! Command not found.',
+            content: isDM? 'Command unavailable.' : 'Internal Error! Command not found.',
             flags: Discord.MessageFlags.Ephemeral
         })
         return
@@ -94,9 +97,10 @@ async function handleSlashCommand(interaction) {
     const params = interaction.userParams || {
         injected: false,
         isPlease: false,
-        isDM: interaction.channel?.type === Discord.ChannelType.DM,
-        isTestingGuild
+        isTestingGuild,
+        isDM
     }
+    params.user = (interaction.member || interaction.author || interaction.user)
 
     try {
         command.execute(interaction, params)

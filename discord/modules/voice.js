@@ -18,7 +18,7 @@ function getGuild(msg, createIfUnavailable=false) {
         if (!createIfUnavailable) return
         guilds[msg.guild.id] = {
             guildId: msg.guild.id,
-            channelId: msg.member.voice.channel.id,
+            channelId: msg.member?.voice.channel.id,
             player: null,
             connection: null,
             paused: false,

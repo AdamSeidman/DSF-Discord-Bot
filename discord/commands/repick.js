@@ -4,7 +4,11 @@ const { submitRepick } = require("../../db/tables/hosts")
 
 module.exports = {
     response: async (msg, params) => {
-        const result = await submitRepick((msg.author || msg.member).id, msg.guild)
+        if (params.isDM) {
+            msg.reply('This command is not available in DMs!')
+            return
+        }
+        const result = await submitRepick(params.id, msg.guild)
         if (result.error) {
             msg.reply({
                 content: 'There was an error with this command!',

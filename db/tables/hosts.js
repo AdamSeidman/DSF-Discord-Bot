@@ -128,12 +128,11 @@ async function submitRepick(userId, guild) {
 }
 
 function isHostMessage(msg) {
-    const user = (msg.author || msg.member)
     const guild = table.data.filter(x => x.guild_id == msg.guild?.id)[0]
     if (!guild) {
         return false
     }
-    return (guild.host_id == user.id)
+    return (guild.host_id == msg.member?.id)
 }
 
 module.exports = {

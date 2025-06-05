@@ -19,7 +19,7 @@ module.exports = {
         } else {
             msg.reply(message)
         }
-        stats.updateStat(msg, 'prius')
+        stats.updateStat(params.user, 'prius')
     },
     helpMsg: 'No explanation needed.'
 }

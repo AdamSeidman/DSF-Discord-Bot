@@ -4,10 +4,10 @@ const MAX_DELETIONS = 25
 
 module.exports = {
     response: (msg, params) => {
-        if (msg.member?.id != process.env.DISCORD_ADMIN_USER_ID) {
+        if (params.isDM || msg.member?.id != process.env.DISCORD_ADMIN_USER_ID) {
             if (!params.injected) {
                 msg.reply({
-                    content: 'Yeah...',
+                    content: 'Yeah',
                     flags: Discord.MessageFlags.Ephemeral
                 })
             }

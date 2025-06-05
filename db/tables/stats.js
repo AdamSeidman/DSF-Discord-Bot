@@ -7,8 +7,7 @@ function getStats(id) {
     return table.data.find(x => x.user_id == id)
 }
 
-function updateStat(msg, stat, num=1) {
-    const user = (msg.author || msg.member)
+function updateStat(user, stat, num=1) {
     const userStats = table.data.find(x => x.user_id == user.id)
     const record = {
         user_id: user.id,

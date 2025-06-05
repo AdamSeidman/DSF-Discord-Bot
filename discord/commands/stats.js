@@ -14,9 +14,9 @@ async function getUserById(id) {
 module.exports = {
     response: async (msg, params) => {
         let user = {
-            id: msg.member.id,
-            username: msg.member.username || msg.member.user.username,
-            avatar: msg.member.displayAvatarURL()
+            id: params.user.id,
+            username: params.user.username || params.user.user.username,
+            avatar: params.user.displayAvatarURL()
         }
         let args = null
         if (!params.injected) {

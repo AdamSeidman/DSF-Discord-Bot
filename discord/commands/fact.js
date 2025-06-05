@@ -42,7 +42,7 @@ function handleMultiCommand(msg, params, factFn) {
 module.exports = {
     response: (msg, params) => {
         const num = handleMultiCommand(msg, params, generateFact)
-        stats.updateStat(msg, 'fact', num)
+        stats.updateStat(params.user, 'fact', num)
     },
     argModifier: (builder, desc='facts') =>  {
         builder.addIntegerOption((option) =>
