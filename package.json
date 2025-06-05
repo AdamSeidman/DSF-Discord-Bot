@@ -4,6 +4,8 @@
   "description": "Daily Stupid Facts REVAMPED",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adam Seidman",
@@ -23,5 +25,8 @@
     "logic-kit": "^1.0.0",
     "node-schedule": "^2.1.1",
     "openai": "^4.100.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
