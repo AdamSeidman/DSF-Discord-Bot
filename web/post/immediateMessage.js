@@ -48,7 +48,7 @@ function handle(req) {
     } else if (!client) {
         return 500
     }
-    sendMessageTo(req.body?.id, req.body.message)
+    sendMessageTo(req.body.id, req.body.message)
     return 202
 }
 
