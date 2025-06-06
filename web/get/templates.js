@@ -1,5 +1,10 @@
+const { getAllTemplates } = require("../../db/tables/facts")
+
 function handle(req, res) {
-    return 200
+    return {
+        code: 200,
+        data: getAllTemplates()
+    }
 }
 
 module.exports = handle

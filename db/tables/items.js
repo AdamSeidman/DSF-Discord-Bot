@@ -52,9 +52,14 @@ function getDictionary() {
     return result
 }
 
+function getAll() {
+    return table.data
+}
+
 module.exports = {
     refresh: () => table.refresh(),
     getLastItem,
     getNextItem,
-    getDictionary
+    getDictionary,
+    getAll
 }

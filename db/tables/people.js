@@ -42,9 +42,14 @@ function getDictionary() {
     return result
 }
 
+function getAll() {
+    return table.data
+}
+
 module.exports = {
     refresh: () => table.refresh(),
     getLastPerson,
     getNextPerson,
-    getDictionary
+    getDictionary,
+    getAll
 }
