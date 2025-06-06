@@ -155,13 +155,23 @@ function handleHostMessage(msg) {
     }
 }
 
+function handleMentions(msg) {
+    if (!!msg.member && msg.content.includes(Discord.userMention(process.env.DISCORD_BOT_ID))) {
+        msg.reply({
+            content: 'My reaction to that information:',
+            files: [{ attachment: './assets/logo.png' }]
+        })
+    }
+}
+
 module.exports = {
     messageHandlers: [
         handleCommand,
         handlePlease,
         handlePhrase,
         handleSoundEffect,
-        handleHostMessage
+        handleHostMessage,
+        handleMentions
     ],
     cmdPrefix: COMMAND_PREFIX
 }
