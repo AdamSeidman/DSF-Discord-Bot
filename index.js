@@ -1,6 +1,7 @@
 const { postpone } = require("logic-kit")
 
 const app = (config) => {
+    require('./assets/loadBearingRaccoon').check()
     require("dotenv").config()
     process.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
