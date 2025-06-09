@@ -2,7 +2,7 @@ const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
 const { messageHandlers } = require("./modules/messages")
-const { Client, GatewayIntentBits, Partials } = require('discord.js')
+const { Client, GatewayIntentBits, Partials } = require("discord.js")
 
 const client = new Client({
     intents: [

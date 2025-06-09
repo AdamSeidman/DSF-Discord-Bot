@@ -1,5 +1,5 @@
 const { postpone } = require("logic-kit")
-const logger = require('@adamseidman/logger')
+const logger = require("@adamseidman/logger")
 
 async function handle(req) {
     await require("../../discord/client").close()

@@ -1,6 +1,6 @@
-const logger = require("@adamseidman/logger")
 const Discord = require("discord.js")
 const { postpone } = require("logic-kit")
+const logger = require("@adamseidman/logger")
 
 let client = null
 postpone(() => client = require("../../discord/client").client)

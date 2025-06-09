@@ -1,4 +1,4 @@
-const { createHash } = require('crypto')
+const { createHash } = require("crypto")
 
 const raccoonAscii = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢂⡜⣪⣶⣿⣿⣿⣿⣿⣿⡻⣜⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⡇⠠⠐⠀⠂⢆⡙⣮⢏⡷⣹⣜⣣⡟⣭⡟⣽⣻⣿
