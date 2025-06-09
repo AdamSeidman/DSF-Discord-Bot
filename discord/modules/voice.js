@@ -38,7 +38,7 @@ function userInVoice(msg) {
 }
 
 async function hasListeners(msg) {
-    const member = await msg.guild.members.cache.get(process.env.DISCORD_BOT_ID)
+    const member = await msg.guild.members.cache.get(process.bot.id)
     if (!member) {
         return false
     }

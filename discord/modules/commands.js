@@ -56,17 +56,17 @@ async function registerSlashCommands(client) {
 
     require("../commands/help").buildEmbed(helpMessages)
 
-    const rest = new Discord.REST().setToken(process.env.DISCORD_TOKEN)
+    const rest = new Discord.REST().setToken(process.discordToken)
 
     try {
         logger.info(`Refreshing ${commands.length} application slash commands.`)
         await rest.put(
-            Discord.Routes.applicationCommands(process.env.DISCORD_BOT_ID),
+            Discord.Routes.applicationCommands(client.user.id),
             { body: commands }
         )
         logger.info(`Refreshing ${testerCommands.length} tester guild slash commands.`)
         await rest.put(
-            Discord.Routes.applicationGuildCommands(process.env.DISCORD_BOT_ID, process.env.DISCORD_TESTING_GUILD_ID),
+            Discord.Routes.applicationGuildCommands(client.user.id, process.env.DISCORD_TESTING_GUILD_ID),
             { body: testerCommands }
         )
     } catch (err) {

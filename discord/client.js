@@ -22,6 +22,11 @@ client.on('ready', async () => {
     require("../fact/scheduler").scheduleDailyChannels(channelIds)
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
+    process.bot = client.user
+    client.application.fetch()
+        .then(() => {
+            process.owner = client.application.owner
+        })
 })
 
 client.on('messageCreate', (msg) => {
@@ -49,7 +54,9 @@ client.on('error', (err) => {
 })
 
 function init() {
-    client.login(process.env.DISCORD_TOKEN)
+    process.discordToken = process.env.DEBUG?
+        process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
+    client.login(process.discordToken)
 }
 
 async function close() {
