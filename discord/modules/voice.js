@@ -100,7 +100,7 @@ function playResource(msg, args={}) {
         if (!effect) return false
         guild.player.play(effect)
     } else if (args.vibe) {
-        guild.persistent = true
+        guild.persistent = false
         guild.isMusic = false
         guild.periodic = false
         guild.vibing = true
