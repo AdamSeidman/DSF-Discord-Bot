@@ -2,7 +2,7 @@ const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
 const { messageHandlers } = require("./modules/messages")
-const { Client, GatewayIntentBits, Partials } = require("discord.js")
+const { Client, GatewayIntentBits, Partials, ActivityType } = require("discord.js")
 
 const client = new Client({
     intents: [
@@ -23,6 +23,7 @@ client.on('ready', async () => {
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
     process.bot = client.user
+    await client.user.setActivity(process.dsf.activityText, { type: ActivityType.Custom })
     client.application.fetch()
         .then(() => {
             process.owner = client.application.owner
