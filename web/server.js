@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 const epHandlers = {}
-;['get', 'post'].forEach((verb) => {
+;['get', 'post', 'put'].forEach((verb) => {
     fs.readdirSync(path.join(__dirname, verb)).forEach((file) => {
         if (path.extname(file) === '.js') {
             const handle = `./${verb}/${file.slice(0, file.indexOf('.'))}`
