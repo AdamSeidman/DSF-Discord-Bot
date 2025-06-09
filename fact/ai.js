@@ -88,6 +88,4 @@ function getAiFact() {
     })
 }
 
-module.exports = {
-    getAiFact
-}
+module.exports = { getAiFact }

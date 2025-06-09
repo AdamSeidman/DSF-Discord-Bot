@@ -1,6 +1,6 @@
 const { createHash } = require("crypto")
 
-const raccoonAscii = `
+const raccoon = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢂⡜⣪⣶⣿⣿⣿⣿⣿⣿⡻⣜⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⡇⠠⠐⠀⠂⢆⡙⣮⢏⡷⣹⣜⣣⡟⣭⡟⣽⣻⣿
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠈⡆⢹⣿⣿⣿⣿⣿⣿⣿⣷⣎⡱⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠇⠀⠀⡀⠡⠦⡹⣜⢯⣞⡷⣞⣷⣻⢷⣻⢧⣿⣿
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠰⡈⢿⣿⣿⣿⣿⣿⣿⣷⡞⣡⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠄⡈⠠⢄⠱⣪⢕⣮⣛⡾⣿⣽⣾⣟⣿⣿⣿⣿⣿
@@ -55,15 +55,14 @@ const raccoonHash = '58dd85146ee18dd62d9d2fc07d5ba65988f53c8c74ac76f76e19d918cba
 
 function check() {
     const hash = createHash('sha256')
-    hash.update(raccoonAscii)
+    hash.update(raccoon)
     if (hash.digest('hex') === raccoonHash) {
         console.log('Load bearing raccoon check completed successfully.')
     } else {
         console.error('The load bearing raccoon is unstable!! Shutting down...')
         process.exit(1)
     }
+    return raccoon
 }
 
-module.exports = {
-    check
-}
+module.exports = { check }
