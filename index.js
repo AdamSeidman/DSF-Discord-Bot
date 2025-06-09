@@ -2,7 +2,7 @@ const { postpone } = require("logic-kit")
 
 const app = (config) => {
     require("dotenv").config()
-    process.env.DEBUG = process.argv.slice(2).includes('DEBUG')
+    process.env.DEBUG = process.argv.slice(2).includes('--DEBUG')
     console.log('DEBUG =', process.env.DEBUG)
     require("./assets/loadBearingRaccoon").check()
     process.dsf = config || require("./config.json")
