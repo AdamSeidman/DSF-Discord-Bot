@@ -70,11 +70,11 @@
             <div class="form">
                 <h3>Item</h3>
                 <label for="singleItem">Item Name:</label>
-                <input type="text" id="singleItem" name="singleItem" required>
+                <input type="text" id="singleItem" name="singleItem" maxlength="100" required>
                 <label for="itemUsage">Usage:</label>
-                <input type="text" id="itemUsage" name="itemUsage" required>
+                <input type="text" id="itemUsage" name="itemUsage" maxlength="100" required>
                 <label for="multipleItems">Plural:</label>
-                <input type="text" id="multipleItems" name="multipleItems" required>
+                <input type="text" id="multipleItems" name="multipleItems" maxlength="100" required>
                 <div class="item-btn-box">
                     <div>
                         <h4>Is Food?</h4>
@@ -107,7 +107,7 @@
             <div class="form">
                 <h3>Person</h3>
                 <label for="personName">Name:</label>
-                <input type="text" id="personName" name="personName" required>
+                <input type="text" id="personName" name="personName" maxlength="100" required>
                 <div class="item-btn-box">
                     <div>
                         <h4>Is Male?</h4>
@@ -133,7 +133,7 @@
             <div class="form">
                 <h3>Place</h3>
                 <label for="placeName">Name:</label>
-                <input type="text" id="placeName" name="placeName" required>
+                <input type="text" id="placeName" name="placeName" maxlength="100" required>
                 <br>
                 <button type="submit" onclick="submitPlace()" disabled>Submit</button>
             </div>
@@ -143,7 +143,7 @@
             <div class="form">
                 <h3>Submit Fact Template</h3>
                 <label for="factTemplate">Template:</label>
-                <input type="text" id="factTemplate" name="factTemplate" required>
+                <input type="text" id="factTemplate" name="factTemplate" maxlength="500" required>
                 <br>
                 <button type="submit" onclick="submitFactTemplate()" disabled>Submit</button>
             </div>
@@ -153,7 +153,7 @@
             <div class="form">
                 <h3>Static Fact</h3>
                 <label for="staticFactInput">Fact:</label>
-                <input type="text" id="staticFactInput" name="staticFactInput" required>
+                <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" required>
                 <br>
                 <button type="submit" onclick="submitStaticFact()" disabled>Submit</button>
             </div>
@@ -165,7 +165,7 @@
                 <label for="pickedTag">Tag:</label>
                 <select id="pickedTag" name="pickedTag" required></select>
                 <label for="tagInput">Item:</label>
-                <input type="text" id="tagInput" name="tagInput" required>
+                <input type="text" id="tagInput" name="tagInput" maxlength="100" required>
                 <br>
                 <button type="submit" onclick="submitTagItem()" disabled>Submit</button>
             </div>
