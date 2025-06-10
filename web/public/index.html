@@ -45,15 +45,86 @@
         </div>
 
         <div id="ItemTab" class="tab-content">
-            <div class="form">item</div>
+            <div class="form">
+                <h3>Item</h3>
+                <label for="singleItem">Item Name:</label>
+                <input type="text" id="singleItem" name="singleItem" required>
+                <label for="itemUsage">Usage:</label>
+                <input type="text" id="itemUsage" name="itemUsage" required>
+                <label for="multipleItems">Plural:</label>
+                <input type="text" id="multipleItems" name="multipleItems" required>
+                <div class="item-btn-box">
+                    <div>
+                        <h4>Is Food?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="item-food-cb">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <h4>Is Alive?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="item-alive-cb">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="item-example-box">
+                        <strong>"Use" Example:</strong>&nbsp;
+                        <span id="usage-example-text"></span> <span id="item-example-text"></span>
+                        <br>
+                        <strong>Plural Example:</strong>&nbsp;
+                        a few <span id="plural-example-text"></span>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" onclick="submitItem()" disabled>Submit</button>
+            </div>
         </div>
 
         <div id="PersonTab" class="tab-content">
-            <div class="form">person</div>
+            <div class="form">
+                <h3>Person</h3>
+                <label for="personName">Name:</label>
+                <input type="text" id="personName" name="personName" required>
+                <div class="item-btn-box">
+                    <div>
+                        <h4>Is Male?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="person-male-cb">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <h4>Is Alive?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="person-alive-cb">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" onclick="submitPerson()" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="PlaceTab" class="tab-content">
+            <div class="form">
+                <h3>Place</h3>
+                <label for="placeName">Name:</label>
+                <input type="text" id="placeName" name="placeName" required>
+                <br>
+                <button type="submit" onclick="submitPlace()" disabled>Submit</button>
+            </div>
         </div>
 
         <div id="StaticTab" class="tab-content">
-            <div class="form">static facts</div>
+            <div class="form">
+                <h3>Static Fact</h3>
+                <label for="staticFactInput">Fact:</label>
+                <input type="text" id="staticFactInput" name="staticFactInput" required>
+                <br>
+                <button type="submit" onclick="submitStaticFact()" disabled>Submit</button>
+            </div>
         </div>
 
         <div id="TagTab" class="tab-content">
