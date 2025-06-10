@@ -1,0 +1,92 @@
+.hidden {
+    display: none !important;
+}
+
+.pointable {
+    cursor: pointer;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+@media (hover: hover) {
+    .requires-touch {
+        display: none;
+    }
+}
+
+@media (hover: none) {
+    .requires-mouse {
+        display: none;
+    }
+}
+
+@media only screen and (orientation: landscape) {
+    .portrait-only {
+        display: none;
+    }
+}
+
+@media only screen and (orientation: portrait) {
+    .landscape-only {
+        display: none;
+    }
+}
+
+.logout {
+    background-color: #db4437;
+    margin-top: 0;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #c1351d;
+    transition: 0.3s;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 2rem;
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4285F4;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #2769d3;
+}
+
+.logout-btn {
+    background-color: #db4437;
+}
+
+.logout-btn:hover {
+    background-color: #c1351d;
+}
+
+.unclickable-text {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+}

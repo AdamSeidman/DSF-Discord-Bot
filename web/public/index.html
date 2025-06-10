@@ -4,15 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSF Portal</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="/css/portal.css">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/dsf.js"></script>
+    <script src="/js/portal.js"></script>
 </head>
 <body>
-    portal
+    <header class="navbar">
+        <nav class="navbar-links">
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <div class="form-container">
+        <h2>Submit DSF Data</h2>
+        <div class="tabs">
+            <button id="tab-UserTab" class="tab-button active" onclick="openTab(event, 'UserTab')">Dashboard</button>
+            <button id="tab-AdminTab" class="tab-button hidden" onclick="openTab(event, 'AdminTab')">Admin</button>
+            <button id="tab-ItemTab" class="tab-button hidden" onclick="openTab(event, 'ItemTab')">Items</button>
+            <button id="tab-PersonTab" class="tab-button hidden" onclick="openTab(event, 'PersonTab')">People</button>
+            <button id="tab-PlaceTab" class="tab-button hidden" onclick="openTab(event, 'PlaceTab')">Places</button>
+            <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
+            <button id="tab-TagsTab" class="tab-button hidden" onclick="openTab(event, 'TagTab')">Tags</button>
+        </div>
+
+        <div id="UserTab" class="tab-content">
+            <div class="form">you</div>
+        </div>
+
+        <div id="AdminTab" class="tab-content">
+            <div class="form">admin</div>
+        </div>
+
+        <div id="ItemTab" class="tab-content">
+            <div class="form">item</div>
+        </div>
+
+        <div id="PersonTab" class="tab-content">
+            <div class="form">person</div>
+        </div>
+
+        <div id="StaticTab" class="tab-content">
+            <div class="form">static facts</div>
+        </div>
+
+        <div id="TagTab" class="tab-content">
+            <div class="form">tags</div>
+        </div>
+    </div>
 </body>
 </html>

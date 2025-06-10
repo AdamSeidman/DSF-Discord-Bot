@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+}
+
+.navbar-links a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.form-container {
+    margin: 10px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    margin-block: 10px;
+}
+
+h3 {
+    margin-block: 0.5em;
+}
+
+.form,
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    &:disabled {
+        cursor: not-allowed;
+        background-color: #7da887;
+        color: lightgrey;
+    }
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background-color: #218838;
+}
+
+hr {
+    margin: 10px 0;
+}
+
+.question-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.question-container h3 {
+    margin-right: 20px;
+}
+
+.description-box {
+    background-color: #f0f0f0;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+    font-style: italic;
+}
+
+.tabs {
+    display: flex;
+    margin-block: 20px;
+}
+
+.tab-button {
+    padding: 10px;
+    cursor: pointer;
+    background: #ccc;
+    border: none;
+    margin-right: 5px;
+}
+
+.tab-button.active {
+    background: #666;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+#tabs-submit-btn,
+#tabTitle,
+#tabUrl {
+    position: relative;
+}
+
+.small-text {
+    font-size: 10px;
+    font-weight: normal;
+}
+
+#tabs-tab p {
+    margin-block: 0 5px;
+}
