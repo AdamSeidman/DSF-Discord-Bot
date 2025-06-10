@@ -31,6 +31,8 @@ const sessionOptions = {
 }
 app.use(session(sessionOptions))
 
+app.set('trust proxy', true)
+
 app.use(passport.initialize())
 app.use(passport.session())
 
