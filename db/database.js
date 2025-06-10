@@ -126,8 +126,8 @@ setInterval(() => {
     if (refreshFns.length < 1) return
     try {
         refreshFns[refreshIdx]()
-    } catch (err) {
-        logger.error(`Error refreshing db function ${refreshIdx}.`, err)
+    } catch (error) {
+        logger.error(`Error refreshing db function ${refreshIdx}.`, error)
     }
     refreshIdx = (refreshIdx + 1) % refreshFns.length
 }, (REFRESH_MINUTES * 1000 * 60))
@@ -157,8 +157,8 @@ function forceRefresh() {
     refreshFns.forEach((fn, idx) => {
         try {
             fn()
-        } catch (err) {
-            logger.error(`Error forcing db refresh of index ${idx}`, err)
+        } catch (error) {
+            logger.error(`Error forcing db refresh of index ${idx}`, error)
         }
     })
 }

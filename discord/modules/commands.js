@@ -69,8 +69,8 @@ async function registerSlashCommands(client) {
             Discord.Routes.applicationGuildCommands(client.user.id, process.env.DISCORD_TESTING_GUILD_ID),
             { body: testerCommands }
         )
-    } catch (err) {
-        logger.fatal('Could not deploy slash commands.', err)
+    } catch (error) {
+        logger.fatal('Could not deploy slash commands.', error)
     }
     logger.debug('Finished reloading slash commands.')
 }

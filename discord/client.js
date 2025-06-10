@@ -45,13 +45,13 @@ client.on('messageCreate', (msg) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
-    if (interaction.isChatInputCommand) {
+    if (interaction.isChatInputCommand()) {
         commands.handleSlashCommand(interaction)
     }
 })
 
-client.on('error', (err) => {
-    logger.error('Discord client error.', err)
+client.on('error', (error) => {
+    logger.error('Discord client error.', error)
 })
 
 function init() {

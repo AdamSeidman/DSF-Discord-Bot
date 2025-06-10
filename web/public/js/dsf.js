@@ -1,20 +1,20 @@
 function standardREQUEST(ep, query, options) {
     return new Promise((resolve, reject) => {
         try {
-            let err = false
+            let error = false
             fetch(`/api/${ep}${(typeof query !== 'undefined')? '?' : ''}${[(query || [])].flat().join('&')}`, options)
-                .then(data => {
-                    err = !data.ok
+                .then((data) => {
+                    error = !data.ok
                     return data.json()
                 })
-                .then(json => {
-                    if (err) {
+                .then((json) => {
+                    if (error) {
                         reject(json)
                     } else {
                         resolve(json)
                     }
                 })
-                .catch(err => reject(err))
+                .catch((error) => reject(error))
         } catch (error) {
             reject(error)
         }
@@ -40,8 +40,4 @@ function standardPUT(ep, data) {
 
 function standardPOST(ep, data) {
     return standardVERB(ep, 'POST', data)
-}
-
-function standardDELETE(ep, data) {
-    return standardVERB(ep, 'DELETE', data)
 }
