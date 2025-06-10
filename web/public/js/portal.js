@@ -43,6 +43,7 @@ $(document).ready(() => {
                 pluralize('prius', 'es', user.stats.prius)}, ${
                 pluralize('acronym', 's', user.stats.acronym)}, and ${
                 pluralize('effect', 's', user.stats.effect)}!\n`)
+            $('.requires-owner').toggleClass('hidden', !user.is_owner)
             Object.entries(permsTabMap).forEach(([ perm, tabName ]) => {
                 if (user[perm]) {
                     $(`#tab-${tabName}Tab`).removeClass('hidden')

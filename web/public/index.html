@@ -48,23 +48,23 @@
                 <h3>Administrator Portal</h3>
                 <button type="Submit" onclick="sendRefresh()">Force Refresh</button>
                 <button type="Submit" onclick="sendRestart()">Restart Bot</button>
-                <hr>
-                <h4>Immediate Messages</h4>
-                <label for="immChannelId">Channel ID:</label>
-                <input type="text" id="immChannelId" name="immChannelId" oninput="immMsgValidator()">
-                <label for="immMessage">Message:</label>
-                <input type="text" id="immMessage" name="immMessage" oninput="immMsgValidator()">
-                <button type="Submit" id="send-imm-btn" onclick="sendImmediateMessage()" disabled>Send</button>
-                <hr>
-                <div id="override-box" class="item-btn-box">
+                <hr class="requires-owner">
+                <h4 class="requires-owner">Immediate Messages</h4>
+                <label class="requires-owner" for="immChannelId">Channel ID:</label>
+                <input class="requires-owner" type="text" id="immChannelId" name="immChannelId" oninput="immMsgValidator()">
+                <label class="requires-owner" for="immMessage">Message:</label>
+                <input class="requires-owner" type="text" id="immMessage" name="immMessage" oninput="immMsgValidator()">
+                <button class="requires-owner" type="Submit" id="send-imm-btn" onclick="sendImmediateMessage()" disabled>Send</button>
+                <hr class="requires-owner">
+                <div id="override-box" class="item-btn-box requires-owner">
                     <h3>Override</h3>
                     <label class="switch">
                         <input type="checkbox" id="override-cb" onchange="validateOverrideChange(this)">
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <label for="overrideMessage">Message:</label>
-                <input type="text" id="overrideMessage" name="overrideMessage" oninput="setOverrideTimeout()">
+                <label for="overrideMessage" class="requires-owner">Message:</label>
+                <input type="text" id="overrideMessage" name="overrideMessage" oninput="setOverrideTimeout()" class="requires-owner">
             </div>
         </div>
 
