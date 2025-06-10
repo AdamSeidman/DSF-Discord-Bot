@@ -43,7 +43,12 @@ async function refresh() {
     users = table.data
 }
 
+function get(discordId) {
+    return users.find(x => x.discord_id == discordId)
+}
+
 module.exports = {
     refresh,
-    login
+    login,
+    get
 }
