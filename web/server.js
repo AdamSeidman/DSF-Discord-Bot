@@ -3,16 +3,84 @@ const cors = require("cors")
 const path = require("path")
 const helmet = require("helmet")
 const express = require("express")
+const passport = require("passport")
 const bodyParser = require("body-parser")
+const session = require("express-session")
+const users = require("../db/tables/users")
 const logger = require("@adamseidman/logger")
+const userSessions = require("../db/tables/sessions")
+const DiscordStrategy = require("passport-discord").Strategy
 
 let app = express()
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
 
-// TODO ...
 let jsonParser = bodyParser.json()
 app.use(express.urlencoded({ extended: true }))
+
+const sessionOptions = {
+    secret: process.env.OAUTH_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: 'Lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    },
+    store: new userSessions.SessionStore()
+}
+app.use(session(sessionOptions))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.use(new DiscordStrategy({
+    clientID: process.env.OAUTH_DISCORD_CLIENT_ID,
+    clientSecret: process.env.OAUTH_DISCORD_CLIENT_SECRET,
+    callbackURL: '/auth/discord/callback',
+    scope: ['identify', 'email', 'guilds']
+}, async (accessToken, refreshToken, profile, done) => {
+    const user = {
+        id: profile.id,
+        username: `${profile.username}#${profile.discriminator}`
+    }
+    const res = await users.login(user)
+    if (res) return done(null, user)
+    return done(null, false)
+}))
+
+passport.serializeUser((user, done) => done(null, user))
+passport.deserializeUser((obj, done) => done(null, obj))
+
+app.get('/auth/discord', passport.authenticate('discord'))
+app.get('/auth/discord/callback', passport.authenticate('discord', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}))
+
+app.use((req, res, next) => {
+    if (req.path.startsWith('/login')) {
+        if (req.isAuthenticated()) {
+            return res.redirect('/')
+        }
+    } else if ((req.path.endsWith('.html') || !req.path.includes('.'))
+        && !req.isAuthenticated()) {
+            return req.logout(() => {
+                res.redirect('/login')
+            })
+    }
+    next()
+})
+
+app.get('/logout', (req, res) => {
+    req.logout(() => {
+        res.clearCookie('connect.sid')
+        if (req.sessionID) {
+            userSessions.destroy(req.sessionID)
+        }
+        res.status(200).redirect('/login')
+    })
+})
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -48,7 +116,8 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public/404.html'))
 })
 
-const PORT = process.env.EXPRESS_PORT || 80 // TODO
+const PORT = (process.env.DEBUG && process.env.EXPRESS_PORT_ALT)
+    || process.env.EXPRESS_PORT || 80
 app.listen(PORT, () => {
     logger.debug(`Express server listening on port ${PORT}`)
 })
