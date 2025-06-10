@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
+const users = require("../../db/tables/users")
 
 let client = null
 postpone(() => client = require("../../discord/client").client)
@@ -42,6 +43,13 @@ async function sendMessageTo(id, message) {
 }
 
 function handle(req) {
+    const user = users.get(req.user?.id)
+    if (!user) {
+        return { code: 401 }
+    }
+    if (!user.is_owner) {
+        return { code: 403 }
+    }
     if (typeof req.body?.id !== 'string' || typeof req.body.message !== 'string' || 
         req.body.message.trim().length < 1 && req.body.id.length) {
             return 400

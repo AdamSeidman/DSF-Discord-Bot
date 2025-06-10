@@ -93,7 +93,7 @@ function sendRestart() {
 }
 
 function sendRefresh() {
-    standardPOST('refresh')
+    standardPUT('refresh')
         .then(() => alert('Refresh command sent.'))
         .catch((error) => {
             console.error('Error with refresh', error)

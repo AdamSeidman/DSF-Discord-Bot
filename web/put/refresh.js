@@ -1,7 +1,18 @@
+const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
+const users = require("../../db/tables/users")
+const { forceRefresh } = require("../../db/database")
 
 async function handle(req) {
-    logger.info('Forcing DB refresh...') // TODO
+    const user = users.get(req.user?.id)
+    if (!user) {
+        return { code: 401 }
+    }
+    if (!user.can_restart_bot) {
+        return { code: 403 }
+    }
+    logger.info('Forcing DB refresh...')
+    postpone(() => forceRefresh())
     return 202
 }
 

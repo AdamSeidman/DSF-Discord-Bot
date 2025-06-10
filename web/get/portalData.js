@@ -8,7 +8,7 @@ const tags = require("../../db/tables/extraTags")
 const { generateFact } = require("../../fact/construction")
 
 function handle(req, res) {
-    const user = users.get(req.user?.id) || null
+    const user = users.get(req.user?.id)
     if (!user) {
         return { code: 400 }
     }

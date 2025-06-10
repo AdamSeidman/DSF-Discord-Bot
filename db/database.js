@@ -161,6 +161,7 @@ function forceRefresh() {
             logger.error(`Error forcing db refresh of index ${idx}`, error)
         }
     })
+    logger.debug('Full refresh complete.')
 }
 
 module.exports = {
