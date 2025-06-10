@@ -55,7 +55,7 @@ client.on('error', (err) => {
 })
 
 function init() {
-    process.discordToken = process.env.DEBUG?
+    process.discordToken = process.DEBUG?
         process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
     client.login(process.discordToken)
 }

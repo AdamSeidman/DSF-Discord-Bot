@@ -14,7 +14,7 @@ const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
     probabilityCheck, matchesDiscordId} = require("logic-kit")
 
-const COMMAND_PREFIX = process.env.DEBUG? 'd!' : 'dsf!'
+const COMMAND_PREFIX = process.DEBUG? 'd!' : 'dsf!'
 const availableCommands = []
 
 fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {

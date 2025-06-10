@@ -118,8 +118,7 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public/404.html'))
 })
 
-const PORT = (process.env.DEBUG && process.env.EXPRESS_PORT_ALT)
-    || process.env.EXPRESS_PORT || 80
+const PORT = (process.DEBUG? process.env.EXPRESS_PORT_ALT : process.env.EXPRESS_PORT) || 80
 app.listen(PORT, () => {
     logger.debug(`Express server listening on port ${PORT}`)
 })
