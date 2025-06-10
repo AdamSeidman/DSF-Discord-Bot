@@ -144,3 +144,68 @@ async function overrideTimeoutCb() {
         console.error('Error setting override message.', error)
     }
 }
+
+function itemTabValidator() {
+    let valid = $('#singleItem').val().trim().length > 0
+    valid &&= ($('#itemUsage').val().trim().length > 0)
+    valid &&= ($('#multipleItems').val().trim().length > 0)
+    $('#usage-example-text').text($('#itemUsage').val().trim())
+    $('#item-example-text').text($('#singleItem').val().trim())
+    $('#plural-example-text').text($('#multipleItems').val().trim())
+    $('button#item-submit-btn').attr('disabled', !valid)
+}
+
+function submitItem() {
+    alert(1) // TODO
+}
+
+function personValidator() {
+    $('button#person-submit-btn').attr('disabled', $('#personName').val().trim().length <= 0)
+}
+
+function submitPerson() {
+    alert(1) // TODO
+}
+
+function placeValidator() {
+    $('button#place-submit-btn').attr('disabled', $('#placeName').val().trim().length <= 0)
+}
+
+function submitPlace() {
+    alert(1) // TODO
+}
+
+function templateValidator() {
+    const template = $('#factTemplate').val().trim()
+    let valid = template.length >= 0
+    if (valid) {
+        try {
+            JSON.parse(template)
+        } catch {
+            valid = false
+        }
+    }
+    $('button#template-submit-btn').attr('disabled', !valid)
+}
+
+function submitFactTemplate() {
+    alert(1) // TODO
+}
+
+function staticFactValidator() {
+    $('button#static-submit-btn').attr('disabled', $('#staticFactInput').val().trim().length <= 0)
+}
+
+function submitStaticFact() {
+    alert(1) // TODO
+}
+
+function tagAddonValidator() {
+    let valid = $('select#pickedTag').val().length > 0
+    valid &&= ($('#tagInput').val().trim().length > 0)
+    $('button#addon-tags-submit-btn').attr('disabled', !valid)
+}
+
+function submitTagItem() {
+    alert(1) // TODO
+}
