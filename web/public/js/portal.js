@@ -15,6 +15,7 @@ const unhideTabMap = {
     submit_new_places: 'Place',
     submit_new_tags: 'Tags',
     submit_static_facts: 'Static',
+    submit_new_templates: 'Fact',
     is_owner: 'Admin'
 }
 
