@@ -1,4 +1,5 @@
 const { postpone } = require("logic-kit")
+const { execSync } = require('child_process')
 const logger = require("@adamseidman/logger")
 const users = require("../../db/tables/users")
 
@@ -13,7 +14,18 @@ async function handle(req) {
     await require("../../discord/client").close()
     logger.info('Restarting from POST...', req.query.reason || '(no query reason)')
     console.log('\n')
-    postpone(() => process.kill(process.pid, 'SIGINT'))
+    postpone(() => {
+        if (!process.DEBUG && !process.dsf.disableGitPull) {
+            console.log('Pulling latest from git...')
+            try {
+                execSync('git pull', { stdio: 'inherit' })
+                console.log('Git pull complete.\n')
+            } catch (error) {
+                console.error(`Git pull failed: ${error.message}\n`)
+            }
+        }
+        process.kill(process.pid, 'SIGINT')
+    })
     return 202
 }
 
