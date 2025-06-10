@@ -6,6 +6,7 @@ const { createClient } = require("@supabase/supabase-js")
 
 const REFRESH_MINUTES = 2
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_PUBLIC_KEY
+const allTables = []
 
 let client = createClient(process.env.SUPABASE_URL, key)
 if (!client) {
@@ -20,6 +21,7 @@ class Table {
         this.name = tableName
         this.client = client
         this.#init(callback)
+        allTables.push(this)
     }
     
     async #init(callback) {
@@ -129,6 +131,27 @@ setInterval(() => {
     }
     refreshIdx = (refreshIdx + 1) % refreshFns.length
 }, (REFRESH_MINUTES * 1000 * 60))
+
+setInterval(async () => {
+    const out = {}
+    allTables.forEach((table) => {
+        out[table.name] = table.data
+    })
+    const backupDir = path.join(__dirname, '../backups')
+    await fs.mkdir(backupDir, { recursive: true }, (error) => {
+        if (error) {
+            logger.error(`Issue with fs.mkdir (${backupDir})`, error)
+        }
+    })
+    await fs.writeFile(path.join(backupDir, `backup_${new Date().toISOString()
+        .replace(/[-:]/g, '').slice(0,15).replace('T', '-')}.json`),
+        JSON.stringify(out, null, 2), 'utf8', (error) => {
+            if (error) {
+                logger.error('Issue with fs.writeFile', error)
+            }
+        })
+    logger.info('Backup Completed')
+}, (24 * 60 * 60 * 1000))
 
 function forceRefresh() {
     refreshFns.forEach((fn, idx) => {
