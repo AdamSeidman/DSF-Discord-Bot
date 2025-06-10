@@ -1,4 +1,5 @@
 const { postpone } = require("logic-kit")
+const { execSync } = require('child_process')
 
 const app = (config) => {
     require("dotenv").config()
@@ -24,6 +25,18 @@ const app = (config) => {
 if (require.main === module) {
     try {
         app()
+        if (!process.DEBUG && !process.dsf.disableGitPull) {
+            process.on('exit', (code) => {
+                console.log(`Process exiting with exit code ${code
+                    }.\nPulling latest from git...`)
+                try {
+                    execSync('git pull', { stdio: 'inherit' })
+                    console.log('Git pull complete.\n')
+                } catch (error) {
+                    console.error(`Git pull failed: ${error.message}\n`)
+                }
+            })
+        }
     } catch (error) {
         console.error('Error initializing DSF!', error)
         process.exit(1)
