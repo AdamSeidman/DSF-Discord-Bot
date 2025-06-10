@@ -106,7 +106,9 @@ hr {
     display: none;
 }
 
-#welcome-text {
+#welcome-text,
+#fact-text,
+#stats-text {
     white-space: pre-line;
     margin-block: 10px;
 }

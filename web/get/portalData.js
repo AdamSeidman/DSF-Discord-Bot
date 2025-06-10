@@ -1,4 +1,5 @@
 const items = require("../../db/tables/items")
+const stats = require("../../db/tables/stats")
 const users = require("../../db/tables/users")
 const override = require("../../fact/override")
 const people = require("../../db/tables/people")
@@ -11,6 +12,7 @@ function handle(req, res) {
     if (!user) {
         return { code: 400 }
     }
+    user.stats = stats.getStats(req.user.id)
     const ret = {
         code: 200,
         user,
@@ -18,7 +20,7 @@ function handle(req, res) {
         places: places.getAll(),
         items: items.getAll(),
         people: people.getAll(),
-        tags: tags.getTagList()
+        tags: tags.getTagList(),
     }
     if (user.is_owner) {
         ret.isOverriden = override.isOverridden()

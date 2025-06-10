@@ -41,3 +41,7 @@ function standardPUT(ep, data) {
 function standardPOST(ep, data) {
     return standardVERB(ep, 'POST', data)
 }
+
+function pluralize(base, plural, num) {
+    return `${num} ${base}${(num === 1)? '' : plural}`
+}

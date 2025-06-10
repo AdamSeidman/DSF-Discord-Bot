@@ -35,7 +35,14 @@ $(document).ready(() => {
             allPeople = people || []
             allTags = tags || []
             allTags.sort()
-            $('#welcome-text').text(`Welcome, ${user.username}!\n\nDid you know:\n${fact}`)
+            $('#welcome-text').text(`Welcome, ${user.username}!\n`)
+            $('#fact-text').text(`Did you know:\n${fact}\n`)
+            $('#stats-text').text(`You have requested ${
+                pluralize('fact', 's', user.stats.fact)}, ${
+                pluralize('lie', 's', user.stats.lie)}, ${
+                pluralize('prius', 'es', user.stats.prius)}, ${
+                pluralize('acronym', 's', user.stats.acronym)}, and ${
+                pluralize('effect', 's', user.stats.effect)}!\n`)
             Object.entries(permsTabMap).forEach(([ perm, tabName ]) => {
                 if (user[perm]) {
                     $(`#tab-${tabName}Tab`).removeClass('hidden')
