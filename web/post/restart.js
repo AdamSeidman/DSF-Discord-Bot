@@ -6,7 +6,7 @@ async function handle(req) {
     logger.info('Restarting from POST...', req.query.reason || '(no query reason)')
     console.log('\n')
     postpone(() => process.kill(process.pid, 'SIGINT'))
-    return 200
+    return 202
 }
 
 module.exports = handle
