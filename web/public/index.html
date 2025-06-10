@@ -48,21 +48,21 @@
                 <button type="Submit" onclick="sendRestart()">Restart Bot</button>
                 <hr>
                 <h4>Immediate Messages</h4>
-                <label for="immChannelId">Item Name:</label>
-                <input type="text" id="immChannelId" name="immChannelId">
-                <label for="immMessage">Item Name:</label>
-                <input type="text" id="immMessage" name="immMessage">
-                <button type="Submit" onclick="sendImmediateMessage()" disabled>Send</button>
+                <label for="immChannelId">Channel ID:</label>
+                <input type="text" id="immChannelId" name="immChannelId" oninput="immMsgValidator()">
+                <label for="immMessage">Message:</label>
+                <input type="text" id="immMessage" name="immMessage" oninput="immMsgValidator()">
+                <button type="Submit" id="send-imm-btn" onclick="sendImmediateMessage()" disabled>Send</button>
                 <hr>
                 <div id="override-box" class="item-btn-box">
                     <h3>Override</h3>
                     <label class="switch">
-                        <input type="checkbox" id="override-cb">
+                        <input type="checkbox" id="override-cb" onchange="validateOverrideChange(this)">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <label for="overrideMessage">Message:</label>
-                <input type="text" id="overrideMessage" name="overrideMessage">
+                <input type="text" id="overrideMessage" name="overrideMessage" oninput="setOverrideTimeout()">
             </div>
         </div>
 

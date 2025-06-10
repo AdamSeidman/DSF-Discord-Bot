@@ -54,3 +54,85 @@ $(document).ready(() => {
             alert('Could not load page!')
         })
 })
+
+function immMsgValidator() {
+    let valid = $('#immChannelId').val().trim().length === 18
+    valid &&= ($('#immMessage').val().trim().length > 0)
+    $('button#send-imm-btn').attr('disabled', !valid)
+}
+
+function sendImmediateMessage() {
+    const message = $('#immMessage').val().trim()
+    const id = $('#immChannelId').val().trim()
+    standardPUT('immediateMessage', { message, id })
+        .then(() => {
+            $('#immMessage').val('')
+        })
+        .catch((error) => {
+            console.error('Could not send immediate message!', error)
+            alert('Could not send message!')
+            $('#immMessage').val('')
+            $('#immChannelId').val('')
+        })
+}
+
+function sendRestart() {
+    standardPOST('restart')
+        .then(() => alert('Restart command sent.'))
+        .catch((error) => {
+            console.error('Error with restart!', error)
+            alert('Error!')
+        })
+}
+
+function sendRefresh() {
+    standardPOST('refresh')
+        .then(() => alert('Refresh command sent.'))
+        .catch((error) => {
+            console.error('Error with refresh', error)
+            alert('Error!')
+        })
+}
+
+let overrideTimeoutId = -1
+
+async function validateOverrideChange(el) {
+    if (overrideTimeoutId >= 0) {
+        clearTimeout(overrideTimeoutId)
+        overrideTimeoutId = -1
+    }
+    let message = $('#overrideMessage').val().trim()
+    if (!el.checked || message.length <= 0) {
+        message = null
+    }
+    try {
+        await standardPUT('overrideMessage', { message })
+    } catch (error) {
+        console.error('Error setting override message.', error)
+    }
+}
+
+function setOverrideTimeout() {
+    if (overrideTimeoutId >= 0) {
+        clearTimeout(overrideTimeoutId)
+    }
+    if ($('#override-cb').is(':checked')) {
+        overrideTimeoutId = setTimeout(overrideTimeoutCb, 1000)
+    } else {
+        overrideTimeoutId = -1
+    }
+}
+
+async function overrideTimeoutCb() {
+    overrideTimeoutId = -1
+    let message = $('#overrideMessage').val().trim()
+    if (message.length <= 0) {
+        message = null
+        $('#override-cb').attr('checked', false)
+    }
+    try {
+        await standardPUT('overrideMessage', { message })
+    } catch (error) {
+        console.error('Error setting override message.', error)
+    }
+}
