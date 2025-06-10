@@ -44,7 +44,7 @@ passport.use(new DiscordStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     const user = {
         id: profile.id,
-        username: `${profile.username}#${profile.discriminator}`
+        username: profile.username
     }
     const res = await users.login(user)
     if (res) return done(null, user)
