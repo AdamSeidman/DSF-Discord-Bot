@@ -23,15 +23,14 @@ $(document).ready(() => {
     let tabName = params.get('tab') || 'UserTab'
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('perms')
-        .then(({ data }) => {
+        .then(({ data, fact }) => {
             if (!data) {
                 throw new Error('No data returned!')
             }
-            $('#welcome-text').text(`Welcome, ${data.username}!`)
+            $('#welcome-text').text(`Welcome, ${data.username}!\n\nDid you know:\n${fact}`)
             Object.entries(unhideTabMap).forEach(([ key, tabName ]) => {
                 if (data[key]) {
                     $(`#tab-${tabName}Tab`).removeClass('hidden')
-                } else {
                 }
             })
         })
