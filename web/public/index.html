@@ -41,7 +41,23 @@
         </div>
 
         <div id="AdminTab" class="tab-content">
-            <div class="form">admin</div>
+            <div class="form">
+                <h3>Administrator Portal</h3>
+                <button type="Submit" onclick="sendRefresh()">Force Refresh</button>
+                <button type="Submit" onclick="sendRestart()">Restart Bot</button>
+                <hr>
+                <h4>Immediate Messages</h4>
+                <label for="immChannelId">Item Name:</label>
+                <input type="text" id="immChannelId" name="immChannelId">
+                <label for="immMessage">Item Name:</label>
+                <input type="text" id="immMessage" name="immMessage">
+                <button type="Submit" onclick="sendImmediateMessage()" disabled>Send</button>
+                <hr>
+                <h4>Submit Fact Template</h4>
+                <label for="factTemplate">Template:</label>
+                <input type="text" id="factTemplate" name="factTemplate">
+                <button type="Submit" onclick="submitFactTemplate()" disabled>Submit</button>
+            </div>
         </div>
 
         <div id="ItemTab" class="tab-content">
@@ -128,7 +144,15 @@
         </div>
 
         <div id="TagTab" class="tab-content">
-            <div class="form">tags</div>
+            <div class="form">
+                <h3>Tag Items</h3>
+                <label for="pickedTag">Tag:</label>
+                <select id="pickedTag" name="pickedTag" required></select>
+                <label for="tagInput">Item:</label>
+                <input type="text" id="tagInput" name="tagInput" required>
+                <br>
+                <button type="submit" onclick="submitTagItem()" disabled>Submit</button>
+            </div>
         </div>
     </div>
 </body>

@@ -51,7 +51,8 @@ label {
     font-weight: bold;
 }
 
-input[type="text"] {
+input[type="text"],
+select {
     padding: 8px;
     font-size: 16px;
     margin-bottom: 10px;
@@ -107,6 +108,7 @@ hr {
 
 #welcome-text {
     white-space: pre-line;
+    margin-block: 10px;
 }
 
 .switch {
