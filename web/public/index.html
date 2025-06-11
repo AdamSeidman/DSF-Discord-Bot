@@ -51,9 +51,9 @@
                 <hr class="requires-owner">
                 <h4 class="requires-owner">Immediate Messages</h4>
                 <label class="requires-owner" for="immChannelId">Channel ID:</label>
-                <input class="requires-owner" type="text" id="immChannelId" name="immChannelId" oninput="immMsgValidator()">
+                <input class="requires-owner use-autocomplete" type="text" id="immChannelId" name="immChannelId" oninput="immMsgValidator()">
                 <label class="requires-owner" for="immMessage">Message:</label>
-                <input class="requires-owner" type="text" id="immMessage" name="immMessage" oninput="immMsgValidator()">
+                <input class="requires-owner use-autocomplete" type="text" id="immMessage" name="immMessage" oninput="immMsgValidator()">
                 <button class="requires-owner" type="Submit" id="send-imm-btn" onclick="sendImmediateMessage()" disabled>Send</button>
                 <hr class="requires-owner">
                 <div id="override-box" class="item-btn-box requires-owner">
@@ -64,7 +64,7 @@
                     </label>
                 </div>
                 <label for="overrideMessage" class="requires-owner">Message:</label>
-                <input type="text" id="overrideMessage" name="overrideMessage" oninput="setOverrideTimeout()" class="requires-owner">
+                <input type="text" id="overrideMessage" class="use-autocomplete" name="overrideMessage" oninput="setOverrideTimeout()" class="requires-owner">
             </div>
         </div>
 
@@ -72,11 +72,11 @@
             <div class="form">
                 <h3>Item</h3>
                 <label for="singleItem">Item Name:</label>
-                <input type="text" id="singleItem" name="singleItem" maxlength="100" oninput="itemTabValidator()" required>
+                <input type="text" id="singleItem" name="singleItem" maxlength="100" oninput="itemTabValidator()">
                 <label for="itemUsage">Usage:</label>
-                <input type="text" id="itemUsage" name="itemUsage" maxlength="100" oninput="itemTabValidator()" required>
+                <input type="text" id="itemUsage" name="itemUsage" maxlength="100" oninput="itemTabValidator()">
                 <label for="multipleItems">Plural:</label>
-                <input type="text" id="multipleItems" name="multipleItems" maxlength="100" oninput="itemTabValidator()" required>
+                <input type="text" id="multipleItems" name="multipleItems" maxlength="100" oninput="itemTabValidator()">
                 <div class="item-btn-box">
                     <div>
                         <h4>Is Food?</h4>
@@ -109,7 +109,7 @@
             <div class="form">
                 <h3>Person</h3>
                 <label for="personName">Name:</label>
-                <input type="text" id="personName" name="personName" maxlength="100" oninput="personValidator()" required>
+                <input type="text" id="personName" name="personName" maxlength="100" oninput="personValidator()">
                 <div class="item-btn-box">
                     <div>
                         <h4>Is Male?</h4>
@@ -135,7 +135,7 @@
             <div class="form">
                 <h3>Place</h3>
                 <label for="placeName">Name:</label>
-                <input type="text" id="placeName" name="placeName" maxlength="100" oninput="placeValidator()" required>
+                <input type="text" id="placeName" name="placeName" maxlength="100" oninput="placeValidator()">
                 <br>
                 <button type="submit" id="place-submit-btn" onclick="submitPlace()" disabled>Submit</button>
             </div>
@@ -145,7 +145,7 @@
             <div class="form">
                 <h3>Submit Fact Template</h3>
                 <label for="factTemplate">Template:</label>
-                <input type="text" id="factTemplate" name="factTemplate" maxlength="500" oninput="templateValidator()" required>
+                <input type="text" id="factTemplate" name="factTemplate" maxlength="500" oninput="templateValidator()">
                 <br>
                 <button type="submit" id="template-submit-btn" onclick="submitFactTemplate()" disabled>Submit</button>
             </div>
@@ -155,7 +155,7 @@
             <div class="form">
                 <h3>Static Fact</h3>
                 <label for="staticFactInput">Fact:</label>
-                <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" oninput="staticFactValidator()" required>
+                <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" oninput="staticFactValidator()">
                 <br>
                 <button type="submit" id="static-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
             </div>
@@ -165,9 +165,9 @@
             <div class="form">
                 <h3>Tag Items</h3>
                 <label for="pickedTag">Tag:</label>
-                <select id="pickedTag" name="pickedTag" required></select>
+                <select id="pickedTag" name="pickedTag"></select>
                 <label for="tagInput">Item:</label>
-                <input type="text" id="tagInput" name="tagInput" maxlength="100" oninput="tagAddonValidator()" required>
+                <input type="text" id="tagInput" name="tagInput" maxlength="100" oninput="tagAddonValidator()">
                 <br>
                 <button type="submit" id="addon-tags-submit-btn" onclick="submitTagItem()" disabled>Submit</button>
             </div>

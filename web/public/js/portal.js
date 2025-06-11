@@ -21,7 +21,7 @@ const permsTabMap = {
     is_owner: 'Admin'
 }
 
-$(document).ready(() => {
+$(() => {
     let params = new URLSearchParams(window.location.search)
     let tabName = params.get('tab') || 'UserTab'
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
