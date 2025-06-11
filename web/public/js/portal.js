@@ -36,7 +36,7 @@ $(document).ready(() => {
             allTags = tags || []
             allTags.sort()
             $('#welcome-text').text(`Welcome, ${user.username}!\n`)
-            $('#fact-text').text(`Did you know:\n${fact}\n`)
+            $('#fact-text').text(`Fun fact:\n${fact}\n`)
             $('#stats-text').text(`You have requested ${
                 pluralize('fact', 's', user.stats.fact)}, ${
                 pluralize('lie', 's', user.stats.lie)}, ${

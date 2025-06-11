@@ -47,4 +47,4 @@ jspm_packages/
 .vscode-test
 
 # Backups
-/backups
+backups/
