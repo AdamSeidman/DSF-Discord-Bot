@@ -1,20 +1,23 @@
-const fs = require("fs")
-const path = require("path")
+const storage = require('node-persist')
 const logger = require("@adamseidman/logger")
 const { PresenceUpdateStatus, ActivityType } = require("discord.js")
 
 async function setPresence(msg) {
-    const presence = {
-        activities: [{
-            name: msg.options.getString('activity'),
-            type: msg.options.getInteger('activity-type')
-        }],
-        status: msg.options.getString('status')
+    let presence = {
+        activities: [],
+        status: msg.options.getString('status') || PresenceUpdateStatus.Online
     }
-    logger.log(`Setting bot presence to (${presence.status}) (${
-        presence.activities.map(x => x.name).join(', ')})`, presence)
+    const activity = {
+        name: msg.options.getString('activity')?.trim(),
+        type: msg.options.getInteger('activity-type') ?? ActivityType.Custom
+    }
+    if (typeof activity.name === 'string' && activity.name.length > 0) {
+        presence.activities.push(activity)
+    }
+    logger.log(`Setting bot presence to (Status: ${presence.status}) (Activities: [${
+        presence.activities.map(x => x.name).join(', ')}])`, presence)
     await process.bot.setPresence(presence)
-    fs.writeFileSync(path.join(__dirname, '../presence.json'), JSON.stringify(presence))
+    await storage.setItem('presence', presence)
 }
 
 module.exports = {
@@ -41,10 +44,16 @@ module.exports = {
                 .setChoices(
                     { name: 'Online', value: PresenceUpdateStatus.Online },
                     { name: 'Idle', value: PresenceUpdateStatus.Idle },
-                    { name: 'DoNotDisturb', value: PresenceUpdateStatus.DoNotDisturb },
-                    { name: 'Invisible', value: PresenceUpdateStatus.Invisible }
+                    { name: 'Do Not Disturb', value: PresenceUpdateStatus.DoNotDisturb },
+                    { name: 'Offline', value: PresenceUpdateStatus.Invisible }
                 )
-                .setRequired(true)
+                .setRequired(false)
+        )
+        builder.addStringOption((option) => 
+            option
+                .setName('activity')
+                .setDescription('Activity String')
+                .setRequired(false)
         )
         builder.addIntegerOption((option) =>
             option
@@ -58,13 +67,7 @@ module.exports = {
                     { name: 'Watching', value: ActivityType.Watching },
                     { name: 'Competing', value: ActivityType.Competing }
                 )
-                .setRequired(true)
-        )
-        builder.addStringOption((option) => 
-            option
-                .setName('activity')
-                .setDescription('Activity String')
-                .setRequired(true)
+                .setRequired(false)
         )
     },
     isTesterCommand: true,

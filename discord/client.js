@@ -1,10 +1,10 @@
-const fs = require("fs")
-const path = require("path")
+const storage = require('node-persist')
 const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
 const { messageHandlers } = require("./modules/messages")
-const { Client, GatewayIntentBits, Partials, ActivityType } = require("discord.js")
+const { Client, GatewayIntentBits, Partials,
+    DefaultWebSocketManagerOptions } = require("discord.js")
 
 const client = new Client({
     intents: [
@@ -25,11 +25,6 @@ client.on('ready', async () => {
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
     process.bot = client.user
-    if (fs.existsSync(path.join(__dirname, 'presence.json'))) {
-        const presence = require("./presence.json")
-        logger.debug('Setting bot presence...', presence)
-        await client.user.setPresence(presence)
-    }
     client.application.fetch()
         .then(() => {
             process.owner = client.application.owner
@@ -60,9 +55,13 @@ client.on('error', (error) => {
     logger.error('Discord client error.', error)
 })
 
-function init() {
+async function init() {
     process.discordToken = process.DEBUG?
         process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
+    if (await storage.getItem('isMobile')) {
+        DefaultWebSocketManagerOptions.identifyProperties.browser = 'Discord iOS'
+    }
+    client.options.presence = await storage.getItem('presence')
     client.login(process.discordToken)
 }
 

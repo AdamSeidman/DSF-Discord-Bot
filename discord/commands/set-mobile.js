@@ -1,0 +1,65 @@
+const restart = require('./restart')
+const storage = require('node-persist')
+const { postpone } = require('logic-kit')
+const logger = require("@adamseidman/logger")
+const { MessageFlags } = require("discord.js")
+
+async function setMobile(msg) {
+    const usesMobile = msg.options.getBoolean('mobile')
+    const doRestart = msg.options.getBoolean('do-restart') || false
+    const wasMobile = await storage.getItem('isMobile') || false
+    if (wasMobile === usesMobile) {
+        return null
+    }
+    logger.info(`Setting isMobile to ${usesMobile}.`)
+    await storage.setItem('isMobile', usesMobile)
+    if (doRestart) {
+        postpone(() => {
+            restart.response(msg, {
+                user: process.owner,
+                params: `Auto-Reason- Setting mobile to ${usesMobile}.`.split(' '),
+                injected: true
+            })
+        })
+    }
+    return doRestart
+}
+
+module.exports = {
+    response: async (msg, params) => {
+        if (params.injected) {
+            return
+        }
+        if (params.user.id == process.owner?.id) {
+            const restarting = await setMobile(msg)
+            let content = 'Setting...'
+            if (typeof restarting !== 'boolean') {
+                content = 'Redundant request.'
+            } else if (restarting) {
+                content = 'Restarting...'
+            }
+            msg.reply({
+                content,
+                flags: MessageFlags.Ephemeral
+            })
+        } else {
+            msg.reply('You are not the bot owner.')
+        }
+    },
+    argModifier: (builder) => {
+        builder.addBooleanOption((option) =>
+            option
+                .setName('mobile')
+                .setDescription('Using Phone')
+                .setRequired(true)
+        )
+        builder.addBooleanOption((option) =>
+            option
+                .setName('do-restart')
+                .setDescription('Do immediate restart if changed.')
+                .setRequired(false)
+        )
+    },
+    isTesterCommand: true,
+    altMsg: 'Set whether the bot is on mobile. (Bot Owner Only)'
+}

@@ -25,6 +25,7 @@
     "ffmpeg-static": "^5.2.0",
     "helmet": "^8.1.0",
     "logic-kit": "^1.0.0",
+    "node-persist": "^4.0.4",
     "node-schedule": "^2.1.1",
     "openai": "^4.100.0",
     "passport": "^0.7.0",

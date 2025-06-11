@@ -50,4 +50,4 @@ jspm_packages/
 backups/
 
 # Application Files
-presence.json
+.node-persist/
