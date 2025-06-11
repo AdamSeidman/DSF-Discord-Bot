@@ -1,3 +1,5 @@
+const fs = require("fs")
+const path = require("path")
 const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
@@ -23,7 +25,11 @@ client.on('ready', async () => {
     await commands.registerSlashCommands(client)
     logger.info('Discord Bot initialized.')
     process.bot = client.user
-    await client.user.setActivity(process.dsf.activityText, { type: ActivityType.Custom })
+    if (fs.existsSync(path.join(__dirname, 'presence.json'))) {
+        const presence = require("./presence.json")
+        logger.debug('Setting bot presence...', presence)
+        await client.user.setPresence(presence)
+    }
     client.application.fetch()
         .then(() => {
             process.owner = client.application.owner

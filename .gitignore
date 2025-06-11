@@ -48,3 +48,6 @@ jspm_packages/
 
 # Backups
 backups/
+
+# Application Files
+presence.json

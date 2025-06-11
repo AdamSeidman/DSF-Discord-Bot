@@ -26,5 +26,5 @@ module.exports = {
         }
     },
     isTesterCommand: true,
-    altMsg: 'Restart the bot.'
+    altMsg: 'Restart the bot. (Bot Owner Only)'
 }

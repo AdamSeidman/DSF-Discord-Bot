@@ -1,5 +1,5 @@
 const { postpone } = require("logic-kit")
-const { execSync } = require('child_process')
+const { execSync } = require("child_process")
 const logger = require("@adamseidman/logger")
 const users = require("../../db/tables/users")
 
