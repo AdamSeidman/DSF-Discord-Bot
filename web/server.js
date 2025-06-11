@@ -97,7 +97,7 @@ const epHandlers = {}
 })
 app.use('/api/:ep', jsonParser, (req, res, next) => {
     const handle = `./${req.method.toLowerCase()}/${req.params?.ep || ''}`
-    if (epHandlers[handle]) {
+    if (Object.prototype.hasOwnProperty.call(epHandlers, handle) && typeof epHandlers[handle] === 'function') {
         let ret = epHandlers[handle](req, res) // TODO sub-handle?
         if (typeof ret === 'number') {
             res.status(ret).json({})
