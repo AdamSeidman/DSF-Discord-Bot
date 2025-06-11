@@ -14,7 +14,7 @@ const effectsGuilds = require("../../db/tables/effectsGuilds")
 const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
     probabilityCheck, matchesDiscordId} = require("logic-kit")
 
-const COMMAND_PREFIX = process.DEBUG? 'd!' : 'dsf!'
+const COMMAND_PREFIX = global.DEBUG? 'd!' : 'dsf!'
 const availableCommands = []
 
 fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
@@ -156,7 +156,7 @@ function handleHostMessage(msg) {
 }
 
 function handleMentions(msg) {
-    if (!!msg.member && msg.content.includes(Discord.userMention(process.bot.id))) {
+    if (!!msg.member && msg.content.includes(Discord.userMention(global.bot.id))) {
         msg.reply({
             content: 'My reaction to that information:',
             files: [{ attachment: './assets/logo.png' }]

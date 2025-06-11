@@ -23,10 +23,10 @@ client.once(Events.ClientReady, async ({ user }) => {
     const channelIds = require("../db/tables/dailies").getAll().map(x => x.channelId)
     require("../fact/scheduler").scheduleDailyChannels(channelIds)
     await commands.registerSlashCommands(client)
-    process.bot = client.user
+    global.bot = client.user
     client.application.fetch()
         .then(() => {
-            process.owner = client.application.owner
+            global.owner = client.application.owner
         })
     logger.info(`Discord Bot initialized.
         Logged in as ${user.username}#${user.discriminator}.`)
@@ -57,13 +57,13 @@ client.on(Events.Error, (error) => {
 })
 
 async function init() {
-    process.discordToken = process.DEBUG?
+    global.discordToken = global.DEBUG?
         process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
     if (await storage.getItem('isMobile')) {
         DefaultWebSocketManagerOptions.identifyProperties.browser = 'Discord iOS'
     }
     client.options.presence = await storage.getItem('presence')
-    client.login(process.discordToken)
+    client.login(global.discordToken)
 }
 
 async function close() {

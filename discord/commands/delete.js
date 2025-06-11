@@ -4,7 +4,7 @@ const MAX_DELETIONS = 25
 
 module.exports = {
     response: (msg, params) => {
-        if (params.isDM || msg.member?.id != process.owner?.id) {
+        if (params.isDM || msg.member?.id != global.owner?.id) {
             if (!params.injected) {
                 msg.reply({
                     content: 'Yeah',

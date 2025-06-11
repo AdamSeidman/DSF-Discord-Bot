@@ -16,7 +16,7 @@ async function setPresence(msg) {
     }
     logger.log(`Setting bot presence to (Status: ${presence.status}) (Activities: [${
         presence.activities.map(x => x.name).join(', ')}])`, presence)
-    await process.bot.setPresence(presence)
+    await global.bot.setPresence(presence)
     await storage.setItem('presence', presence)
 }
 
@@ -25,7 +25,7 @@ module.exports = {
         if (params.injected) {
             return
         }
-        if (params.user.id == process.owner?.id) {
+        if (params.user.id == global.owner?.id) {
             msg.reply('Setting presence...')
             try {
                 await setPresence(msg)

@@ -16,7 +16,7 @@ async function setMobile(msg) {
     if (doRestart) {
         postpone(() => {
             restart.response(msg, {
-                user: process.owner,
+                user: global.owner,
                 params: `Auto-Reason- Setting mobile to ${usesMobile}.`.split(' '),
                 injected: true
             })
@@ -30,7 +30,7 @@ module.exports = {
         if (params.injected) {
             return
         }
-        if (params.user.id == process.owner?.id) {
+        if (params.user.id == global.owner?.id) {
             const restarting = await setMobile(msg)
             let content = 'Setting...'
             if (typeof restarting !== 'boolean') {

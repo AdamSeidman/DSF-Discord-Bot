@@ -15,7 +15,7 @@ async function handle(req) {
     logger.info('Restarting from POST...', req.query.reason || '(no query reason)')
     console.log('\n')
     postpone(() => {
-        if (!process.DEBUG && !process.dsf.disableGitPull) {
+        if (!global.DEBUG && !global.dsf.disableGitPull) {
             console.log('Pulling latest from git...')
             try {
                 execSync('git pull', { stdio: 'inherit' })

@@ -15,12 +15,12 @@ function scheduleDailyChannels(channelIds) {
     clientChannels = [...clientChannels].map(x => x[1])
     dailyChannels.push(...clientChannels.filter(x => channelIds.includes(`${x.id}`)))
     scheduler.scheduleJob({
-        hour: process.dsf.dailyFactHour,
-        minute: process.dsf.dailyFactMinute,
-        second: process.dsf.dailyFactSecond
+        hour: global.dsf.dailyFactHour,
+        minute: global.dsf.dailyFactMinute,
+        second: global.dsf.dailyFactSecond
     }, () => {
         const overridden = isOverridden()
-        const shouldDoStatic = probabilityCheck(process.dsf.staticFactFrequency)
+        const shouldDoStatic = probabilityCheck(global.dsf.staticFactFrequency)
         let fact = 'DAILY_FACT_ERROR'
         let qualifier = overridden? ' (Overridden)' : '...' // TODO test
         if (shouldDoStatic && !overridden) {

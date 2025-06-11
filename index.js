@@ -2,15 +2,15 @@ const { postpone } = require("logic-kit")
 
 const app = async (config) => {
     require("dotenv").config()
-    process.DEBUG = process.argv.slice(2).includes('--DEBUG')
-    console.log('DEBUG =', process.DEBUG)
+    global.DEBUG = process.argv.slice(2).includes('--DEBUG')
+    console.log('DEBUG =', global.DEBUG)
     require("./assets/loadBearingRaccoon").check()
     await require('node-persist').init()
-    process.dsf = config || require("./config.json")
+    global.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     const db = require("./db/database")
     const discord = require("./discord/client")
-    if (!process.dsf.disableSIGINT) {
+    if (!global.dsf.disableSIGINT) {
         process.on('SIGINT', async () => {
             console.log('\nSIGINT: Shutting down...\n')
             await discord.close()
