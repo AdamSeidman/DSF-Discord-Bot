@@ -4,3 +4,4 @@ logs/
 *.log
 .gitignore
 backups/
+.node-persist/
