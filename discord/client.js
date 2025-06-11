@@ -3,7 +3,7 @@ const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
 const { messageHandlers } = require("./modules/messages")
-const { Client, GatewayIntentBits, Partials,
+const { Client, Events, GatewayIntentBits, Partials,
     DefaultWebSocketManagerOptions } = require("discord.js")
 
 const client = new Client({
@@ -19,19 +19,20 @@ const client = new Client({
     partials: [ Partials.Channel ]
 })
 
-client.on('ready', async () => {
+client.once(Events.ClientReady, async ({ user }) => {
     const channelIds = require("../db/tables/dailies").getAll().map(x => x.channelId)
     require("../fact/scheduler").scheduleDailyChannels(channelIds)
     await commands.registerSlashCommands(client)
-    logger.info('Discord Bot initialized.')
     process.bot = client.user
     client.application.fetch()
         .then(() => {
             process.owner = client.application.owner
         })
+    logger.info(`Discord Bot initialized.
+        Logged in as ${user.username}#${user.discriminator}.`)
 })
 
-client.on('messageCreate', (msg) => {
+client.on(Events.MessageCreate, (msg) => {
     if (msg.author.bot) return
     if (msg.member === null) {
         logger.info('Received direct message.', `${msg.author.username}: ${msg.content}`)
@@ -45,13 +46,13 @@ client.on('messageCreate', (msg) => {
     })
 })
 
-client.on('interactionCreate', async (interaction) => {
+client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isChatInputCommand()) {
         commands.handleSlashCommand(interaction)
     }
 })
 
-client.on('error', (error) => {
+client.on(Events.Error, (error) => {
     logger.error('Discord client error.', error)
 })
 
