@@ -30,10 +30,10 @@ $(() => {
             if (!user) {
                 throw new Error('No data returned!')
             }
-            allPlaces = places || []
-            allItems = items || []
-            allPeople = people || []
-            allTags = tags || []
+            allPlaces = (places || []).map(x => x.name)
+            allItems = (items || []).map(x => x.name)
+            allPeople = (people || []).map(x => x.name)
+            allTags = (tags || [])
             allTags.sort()
             $('#welcome-text').text(`Welcome, ${user.username}!\n`)
             $('#fact-text').text(`Fun fact:\n${fact}\n`)
@@ -145,6 +145,35 @@ async function overrideTimeoutCb() {
     }
 }
 
+function confirmSubmission(word, list) {
+    let items = list.filter(x => (x.includes(word) || word.includes(x)))
+    if (items.length < 1) {
+        return true
+    } else if (items.length > 10) {
+        alert('Found too many possible matches!')
+        return false
+    }
+    return confirm(`Found possible matches below.\nConfirm submission?\n\n-${items.join('\n-')}`)
+}
+
+function submit(key, list, mainInput, additional={}, clearList=[]) {
+    $(`button#${key}-submit-btn`).attr('disabled', true)
+    let name = $(`#${mainInput}`).val().trim()
+    if (confirmSubmission(name, list)) {
+        standardPOST(key, { submission: { name, ...additional } })
+            .then(() => {
+                $(`#${mainInput}`).val('')
+                clearList.forEach((id) => {
+                    $(`#${id}`).val('')
+                })
+            })
+            .catch((error) => {
+                console.error(`Could not submit ${key}.`, error)
+                alert('Could not submit!')
+            })
+    }
+}
+
 function itemTabValidator() {
     let valid = $('#singleItem').val().trim().length > 0
     valid &&= ($('#itemUsage').val().trim().length > 0)
@@ -156,7 +185,12 @@ function itemTabValidator() {
 }
 
 function submitItem() {
-    alert(1) // TODO
+    submit('item', allItems, 'singleItem', {
+        usage: $('#itemUsage').val().trim(),
+        plural: $('#multipleItems').val().trim(),
+        is_food: $('#item-food-cb').is(':checked'),
+        is_alive: $('#item-alive-cb').is(':checked')
+    }, ['itemUsage', 'multipleItems'])
 }
 
 function personValidator() {
@@ -164,7 +198,10 @@ function personValidator() {
 }
 
 function submitPerson() {
-    alert(1) // TODO
+    submit('person', allPeople, 'personName', {
+        is_male: $('#person-male-cb').is(':checked'),
+        is_alive: $('#person-alive-cb').is(':checked')
+    })
 }
 
 function placeValidator() {
@@ -172,7 +209,7 @@ function placeValidator() {
 }
 
 function submitPlace() {
-    alert(1) // TODO
+    submit('place', allPlaces, 'placeName')
 }
 
 function templateValidator() {
