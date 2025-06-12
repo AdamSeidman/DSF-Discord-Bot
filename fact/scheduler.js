@@ -1,10 +1,10 @@
 const Discord = require("discord.js")
+const storage = require('node-persist')
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
-const { isOverridden } = require("./override")
-const { probabilityCheck } = require("logic-kit")
-const { generateFact } = require("./construction")
 const staticFacts = require("../db/tables/staticFacts")
+const { generateFact, generateLie } = require("./construction")
+const { probabilityCheck, isAprilFools } = require("logic-kit")
 
 let dailyChannels = []
 let clientChannels = []
@@ -18,18 +18,23 @@ function scheduleDailyChannels(channelIds) {
         hour: global.dsf.dailyFactHour,
         minute: global.dsf.dailyFactMinute,
         second: global.dsf.dailyFactSecond
-    }, () => {
-        const overridden = isOverridden()
-        const shouldDoStatic = probabilityCheck(global.dsf.staticFactFrequency)
-        let fact = 'DAILY_FACT_ERROR'
-        let qualifier = overridden? ' (Overridden)' : '...' // TODO test
-        if (shouldDoStatic && !overridden) {
+    }, async () => {
+        const aprilFools = isAprilFools()
+        let fact = ((!aprilFools && await storage.getItem('dailyFact')) || '').trim()
+        let qualifier = ''
+        if (fact) {
+            storage.removeItem('dailyFact')
+            qualifier = 'Overridden'
+        } else if (aprilFools) {
+            fact = generateLie()
+            qualifier = 'April Fools!'
+        } else if (probabilityCheck(global.dsf.staticFactFrequency)) {
             fact = staticFacts.getAndMark() // TODO test
-            qualifier = ' (Static!)'
+            qualifer = 'Static Fact'
         } else {
             fact = generateFact()
         }
-        logger.info(`Sending daily fact${qualifier}`, fact)
+        logger.info(`Sending daily fact${(qualifier.length > 0)? ` (${qualifier})` : '...'}`, fact)
         dailyChannels.forEach((channel) => {
             try {
                 channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
@@ -37,6 +42,17 @@ function scheduleDailyChannels(channelIds) {
                 logger.error(`Could not send daily fact to '${channel.name}' (${channel.id})`, error)
             }
         })
+        if (aprilFools) {
+            setTimeout(() => {
+                dailyChannels.forEach((channel) => {
+                    try {
+                        channel.send('April fools!')
+                    } catch {
+                        logger.warn('Could not send april fools follow up.')
+                    }
+                })
+            }, 5 * 60 * 1000)
+        }
     })
     logger.debug(`Scheduled daily facts job for ${dailyChannels.length} channel(s).`)
 }
