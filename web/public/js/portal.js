@@ -1,4 +1,5 @@
 let allPlaces = [], allItems = [], allPeople = [], allTags = []
+const CACHED_LIST_KEY = 'cachedListInfo'
 
 function openTab(evt, tabName) {
     $('.tab-content').hide()
@@ -55,6 +56,10 @@ $(() => {
             if (user.is_owner) {
                 $('#overrideMessage').val(overrideMsg)
                 $('#override-cb').attr('checked', isOverriden)
+            }
+            const itemCache = JSON.parse(localStorage.getItem(CACHED_LIST_KEY) || '{}')
+            if (itemCache.date && (Date.now() - new Date(itemCache.date).getTime()) >= (2 * 60 * 60 * 1000)) {
+                localStorage.removeItem(CACHED_LIST_KEY)
             }
         })
         .catch((error) => {
@@ -145,32 +150,62 @@ async function overrideTimeoutCb() {
     }
 }
 
+function removeAll(word, characters) {
+    [...characters].forEach((c) => {
+        word = word.split(c).join('')
+    })
+    return word
+}
+
 function confirmSubmission(word, list) {
-    let items = list.filter(x => (x.includes(word) || word.includes(x)))
+    if (list.includes(word)) {
+        alert('Exact match found in existing database!')
+        return false
+    }
+    word = removeAll(word, ',. ').toLowerCase()
+    const originMap = {}
+    let items = list.map((item) => {
+        const modded = removeAll(item, ',. ').toLowerCase()
+        originMap[modded] = item
+        return modded
+    }).filter(x => (x.includes(word) || word.includes(x)))
     if (items.length < 1) {
         return true
     } else if (items.length > 10) {
         alert('Found too many possible matches!')
         return false
     }
-    return confirm(`Found possible matches below.\nConfirm submission?\n\n-${items.join('\n-')}`)
+    return confirm(`Found possible matches below.\nConfirm submission?\n\n-${
+        items.map(x => (originMap[x] || x)).join('\n-')}`)
 }
 
 function submit(key, list, mainInput, additional={}, clearList=[]) {
     $(`button#${key}-submit-btn`).attr('disabled', true)
     let name = $(`#${mainInput}`).val().trim()
-    if (confirmSubmission(name, list)) {
+    const cachedItems = JSON.parse(localStorage.getItem(CACHED_LIST_KEY)
+        || JSON.stringify({ list: [] })).list
+    if (confirmSubmission(name, [...list, ...cachedItems])) {
         standardPOST(key, { submission: { name, ...additional } })
             .then(() => {
                 $(`#${mainInput}`).val('')
                 clearList.forEach((id) => {
                     $(`#${id}`).val('')
+                    $(`span.${id}`).text('')
                 })
+                if (!key.toLowerCase().includes('fact')) {
+                    localStorage.setItem(CACHED_LIST_KEY, JSON.stringify({
+                        list: [...cachedItems, name],
+                        date: Date.now()
+                    }))
+                }
             })
             .catch((error) => {
                 console.error(`Could not submit ${key}.`, error)
                 alert('Could not submit!')
+                $(`button#${key}-submit-btn`).attr('disabled', false)
             })
+    } else {
+        $(`button#${key}-submit-btn`).attr('disabled', false)
     }
 }
 
@@ -190,7 +225,7 @@ function submitItem() {
         plural: $('#multipleItems').val().trim(),
         is_food: $('#item-food-cb').is(':checked'),
         is_alive: $('#item-alive-cb').is(':checked')
-    }, ['itemUsage', 'multipleItems'])
+    }, ['itemUsage', 'multipleItems', 'item-preview-text'])
 }
 
 function personValidator() {
@@ -230,11 +265,11 @@ function submitFactTemplate() {
 }
 
 function staticFactValidator() {
-    $('button#static-submit-btn').attr('disabled', $('#staticFactInput').val().trim().length <= 0)
+    $('button#staticFact-submit-btn').attr('disabled', $('#staticFactInput').val().trim().length <= 0)
 }
 
 function submitStaticFact() {
-    alert(1) // TODO
+    submit('staticFact', [], 'staticFactInput')
 }
 
 function tagAddonValidator() {

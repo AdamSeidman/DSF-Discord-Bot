@@ -29,7 +29,7 @@ function scheduleDailyChannels(channelIds) {
             fact = generateLie()
             qualifier = 'April Fools!'
         } else if (probabilityCheck(global.dsf.staticFactFrequency)) {
-            fact = staticFacts.getAndMark() // TODO test
+            fact = await staticFacts.getAndMark()
             qualifer = 'Static Fact'
         } else {
             fact = generateFact()

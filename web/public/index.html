@@ -94,10 +94,11 @@
                     </div>
                     <div class="item-example-box">
                         <strong>"Use" Preview:</strong>&nbsp;
-                        <span id="usage-example-text"></span> <span id="item-example-text"></span>
+                        <span id="usage-example-text" class="item-preview-text"></span>
+                        <span id="item-example-text" class="item-preview-text"></span>
                         <br>
                         <strong>Plural Preview:</strong>&nbsp;
-                        a few <span id="plural-example-text"></span>
+                        a few <span id="plural-example-text" class="item-preview-text"></span>
                     </div>
                 </div>
                 <br>
@@ -157,7 +158,7 @@
                 <label for="staticFactInput">Fact:</label>
                 <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" oninput="staticFactValidator()">
                 <br>
-                <button type="submit" id="static-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
+                <button type="submit" id="staticFact-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
             </div>
         </div>
 
