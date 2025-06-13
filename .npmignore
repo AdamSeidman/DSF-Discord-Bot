@@ -5,3 +5,4 @@ logs/
 .gitignore
 backups/
 .node-persist/
+.VsCodeCounter/

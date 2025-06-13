@@ -1,4 +1,4 @@
-const storage = require('node-persist')
+const storage = require("node-persist")
 const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")

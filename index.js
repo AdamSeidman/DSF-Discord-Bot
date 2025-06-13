@@ -5,7 +5,7 @@ const app = async (config) => {
     global.DEBUG = process.argv.slice(2).includes('--DEBUG')
     console.log('DEBUG =', global.DEBUG)
     require("./assets/loadBearingRaccoon").check()
-    await require('node-persist').init()
+    await require("node-persist").init()
     global.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     const db = require("./db/database")

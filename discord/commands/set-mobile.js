@@ -1,6 +1,6 @@
-const restart = require('./restart')
-const storage = require('node-persist')
-const { postpone } = require('logic-kit')
+const restart = require("./restart")
+const storage = require("node-persist")
+const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
 const { MessageFlags } = require("discord.js")
 

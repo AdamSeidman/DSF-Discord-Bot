@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const storage = require('node-persist')
+const storage = require("node-persist")
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
 const staticFacts = require("../db/tables/staticFacts")

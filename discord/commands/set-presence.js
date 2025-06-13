@@ -1,4 +1,4 @@
-const storage = require('node-persist')
+const storage = require("node-persist")
 const logger = require("@adamseidman/logger")
 const { PresenceUpdateStatus, ActivityType } = require("discord.js")
 
