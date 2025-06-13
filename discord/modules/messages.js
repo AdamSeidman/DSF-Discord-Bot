@@ -150,7 +150,7 @@ function handleSoundEffect(msg) {
 }
 
 function handleHostMessage(msg) {
-    if (!!msg.member && hosts.isHostMessage(msg) && probabilityCheck(0.05)) {
+    if (!!msg.member && hosts.isHostMessage(msg) && probabilityCheck(global.dsf.hostReactionFrequency)) {
         ['🇭', '🇴', '🇸', '🇹'].forEach(x => msg.react(x))
     }
 }
