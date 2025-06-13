@@ -279,13 +279,3 @@ function staticFactValidator() {
 function submitStaticFact() {
     submit('staticFact', [], 'staticFactInput')
 }
-
-function tagAddonValidator() {
-    let valid = $('select#pickedTag').val().length > 0
-    valid &&= ($('#tagInput').val().trim().length > 0)
-    $('button#addon-tags-submit-btn').attr('disabled', !valid)
-}
-
-function submitTagItem() {
-    alert('TODO!') // TODO Implement
-}
