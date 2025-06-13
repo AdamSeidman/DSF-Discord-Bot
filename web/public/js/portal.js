@@ -24,7 +24,8 @@ const permsTabMap = {
 
 $(() => {
     let params = new URLSearchParams(window.location.search)
-    let tabName = params.get('tab') || 'UserTab'
+    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'TagsTab', 'StaticTab', 'FactTab', 'AdminTab'];
+    let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : 'UserTab';
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
         .then(({ user, fact, places, items, people, tags, isOverriden, overrideMsg }) => {
