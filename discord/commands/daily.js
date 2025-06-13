@@ -1,16 +1,12 @@
 const logger = require("@adamseidman/logger")
 const database = require("../../db/tables/dailies")
 
-let scheduler = null
-
 const yesAnswers = ['1', 'true', 'on']
 const noAnswers = ['0', 'false', 'off']
 
 module.exports = {
     response: (msg, params) => {
-        if (!scheduler) {
-            scheduler = require("../../fact/scheduler")
-        }
+        const scheduler = require("../../fact/scheduler")
         if (params.isDM) {
             msg.reply('Cannot set up daily facts in DMs.')
             return
