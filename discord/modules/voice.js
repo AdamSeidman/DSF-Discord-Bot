@@ -5,8 +5,8 @@ const effects = require("../../db/media/effects")
 const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require("@discordjs/voice")
 
-const MIN_SILENCE_SECONDS = 60 * process.dsf.minSilenceMinutes
-const MAX_SILENCE_SECONDS = 60 * process.dsf.maxSilenceMinutes
+const MIN_SILENCE_SECONDS = 60 * global.dsf.minSilenceMinutes
+const MAX_SILENCE_SECONDS = 60 * global.dsf.maxSilenceMinutes
 
 const MUSIC_ASSET = path.join(__dirname, '../../assets', 'music.mp3')
 const SILENCE_ASSET = path.join(__dirname, '../../assets', 'silence.mp3')
@@ -38,7 +38,7 @@ function userInVoice(msg) {
 }
 
 async function hasListeners(msg) {
-    const member = await msg.guild.members.cache.get(process.bot.id)
+    const member = await msg.guild.members.cache.get(global.bot.id)
     if (!member) {
         return false
     }

@@ -56,7 +56,7 @@ async function registerSlashCommands(client) {
 
     require("../commands/help").buildEmbed(helpMessages)
 
-    const rest = new Discord.REST().setToken(process.discordToken)
+    const rest = new Discord.REST().setToken(global.discordToken)
 
     try {
         logger.info(`Refreshing ${commands.length} application slash commands.`)

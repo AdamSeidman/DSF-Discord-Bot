@@ -358,7 +358,7 @@ function findSpecificTemplate(item, isFact) {
     if (!subject) {
         subject = randomArrayItem(Object.values(dictionary))
         result.found = false
-        result.alternateSubject = subject.name
+        result.alternateSubject = subject.plural || subject.name
     }
     let found = false
     let template = ''

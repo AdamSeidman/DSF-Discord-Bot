@@ -1,4 +1,5 @@
 const { Table } = require("../database")
+const logger = require("@adamseidman/logger")
 const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
 
 const table = new Table('allPlaces')
@@ -15,6 +16,17 @@ function getLastPlace() {
 function getNextPlace() {
     lastPlace = randomArrayItem(table.data.filter(x => x.id !== lastPlace.id))
     return lastPlace.name
+}
+
+async function addPlace(place, submitted_by) {
+    const { error } = await table.client
+        .from(table.name)
+        .insert({ ...place, submitted_by })
+    if (error) {
+        logger.error(`Could not insert new place from ${submitted_by}! ${
+            JSON.stringify(place)}`, error)
+    }
+    return error
 }
 
 function getDictionary() {
@@ -36,6 +48,7 @@ module.exports = {
     refresh: () => table.refresh(),
     getLastPlace,
     getNextPlace,
+    addPlace,
     getDictionary,
     getAll
 }

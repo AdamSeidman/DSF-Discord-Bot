@@ -1,4 +1,5 @@
 let allPlaces = [], allItems = [], allPeople = [], allTags = []
+const CACHED_LIST_KEY = 'cachedListInfo'
 
 function openTab(evt, tabName) {
     $('.tab-content').hide()
@@ -30,10 +31,10 @@ $(() => {
             if (!user) {
                 throw new Error('No data returned!')
             }
-            allPlaces = places || []
-            allItems = items || []
-            allPeople = people || []
-            allTags = tags || []
+            allPlaces = (places || []).map(x => x.name)
+            allItems = (items || []).map(x => x.name)
+            allPeople = (people || []).map(x => x.name)
+            allTags = (tags || [])
             allTags.sort()
             $('#welcome-text').text(`Welcome, ${user.username}!\n`)
             $('#fact-text').text(`Fun fact:\n${fact}\n`)
@@ -55,6 +56,10 @@ $(() => {
             if (user.is_owner) {
                 $('#overrideMessage').val(overrideMsg)
                 $('#override-cb').attr('checked', isOverriden)
+            }
+            const itemCache = JSON.parse(localStorage.getItem(CACHED_LIST_KEY) || '{}')
+            if (itemCache.date && (Date.now() - new Date(itemCache.date).getTime()) >= (2 * 60 * 60 * 1000)) {
+                localStorage.removeItem(CACHED_LIST_KEY)
             }
         })
         .catch((error) => {
@@ -145,6 +150,68 @@ async function overrideTimeoutCb() {
     }
 }
 
+function removeAll(word, characters) {
+    [...characters].forEach((c) => {
+        word = word.split(c).join('')
+    })
+    return word
+}
+
+function confirmSubmission(word, list) {
+    if (list.includes(word)) {
+        alert('Exact match found in existing database!')
+        return false
+    }
+    word = removeAll(word, ',. ').toLowerCase()
+    const originMap = {}
+    let items = list.map((item) => {
+        const modded = removeAll(item, ',. ').toLowerCase()
+        originMap[modded] = item
+        return modded
+    }).filter(x => (x.includes(word) || word.includes(x)))
+    if (items.length < 1) {
+        return true
+    } else if (items.length > 10) {
+        alert('Found too many possible matches!')
+        return false
+    }
+    return confirm(`Found possible matches below.\nConfirm submission?\n\n-${
+        items.map(x => (originMap[x] || x)).join('\n-')}`)
+}
+
+function submit(key, list, mainInput, additional={}, clearList=[], cb) {
+    $(`button#${key}-submit-btn`).attr('disabled', true)
+    let name = $(`#${mainInput}`).val().trim()
+    const cachedItems = JSON.parse(localStorage.getItem(CACHED_LIST_KEY)
+        || JSON.stringify({ list: [] })).list
+    if (confirmSubmission(name, (list.length > 0)? [...list, ...cachedItems] : [])) {
+        standardPOST(key, { submission: { name, ...additional } })
+            .then(() => {
+                $(`#${mainInput}`).val('')
+                clearList.forEach((id) => {
+                    $(`#${id}`).val('')
+                    $(`span.${id}`).text('')
+                })
+                if (list.length > 0) {
+                    localStorage.setItem(CACHED_LIST_KEY, JSON.stringify({
+                        list: [...cachedItems, name],
+                        date: Date.now()
+                    }))
+                }
+                if (typeof cb === 'function') {
+                    cb()
+                }
+            })
+            .catch((error) => {
+                console.error(`Could not submit ${key}.`, error)
+                alert('Could not submit!')
+                $(`button#${key}-submit-btn`).attr('disabled', false)
+            })
+    } else {
+        $(`button#${key}-submit-btn`).attr('disabled', false)
+    }
+}
+
 function itemTabValidator() {
     let valid = $('#singleItem').val().trim().length > 0
     valid &&= ($('#itemUsage').val().trim().length > 0)
@@ -156,7 +223,12 @@ function itemTabValidator() {
 }
 
 function submitItem() {
-    alert(1) // TODO
+    submit('item', allItems, 'singleItem', {
+        usage: $('#itemUsage').val().trim(),
+        plural: $('#multipleItems').val().trim(),
+        is_food: $('#item-food-cb').is(':checked'),
+        is_alive: $('#item-alive-cb').is(':checked')
+    }, ['itemUsage', 'multipleItems', 'item-preview-text'])
 }
 
 function personValidator() {
@@ -164,7 +236,10 @@ function personValidator() {
 }
 
 function submitPerson() {
-    alert(1) // TODO
+    submit('person', allPeople, 'personName', {
+        is_male: $('#person-male-cb').is(':checked'),
+        is_alive: $('#person-alive-cb').is(':checked')
+    })
 }
 
 function placeValidator() {
@@ -172,7 +247,7 @@ function placeValidator() {
 }
 
 function submitPlace() {
-    alert(1) // TODO
+    submit('place', allPlaces, 'placeName')
 }
 
 function templateValidator() {
@@ -189,23 +264,18 @@ function templateValidator() {
 }
 
 function submitFactTemplate() {
-    alert(1) // TODO
+    submit('template', [], 'factTemplate', {
+        can_recurse: $('#fact-recurse-cb').is(':checked')
+    }, [], () => {
+        $(`#fact-recurse-cb`).attr('checked', true)
+        alert('Submitted!')
+    })
 }
 
 function staticFactValidator() {
-    $('button#static-submit-btn').attr('disabled', $('#staticFactInput').val().trim().length <= 0)
+    $('button#staticFact-submit-btn').attr('disabled', $('#staticFactInput').val().trim().length <= 0)
 }
 
 function submitStaticFact() {
-    alert(1) // TODO
-}
-
-function tagAddonValidator() {
-    let valid = $('select#pickedTag').val().length > 0
-    valid &&= ($('#tagInput').val().trim().length > 0)
-    $('button#addon-tags-submit-btn').attr('disabled', !valid)
-}
-
-function submitTagItem() {
-    alert(1) // TODO
+    submit('staticFact', [], 'staticFactInput')
 }

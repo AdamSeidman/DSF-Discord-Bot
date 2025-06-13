@@ -12,7 +12,7 @@ async function handle(req) {
         return { code: 403 }
     }
     logger.info('Forcing DB refresh...')
-    postpone(() => forceRefresh())
+    postpone(forceRefresh)
     return 202
 }
 

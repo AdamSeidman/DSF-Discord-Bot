@@ -32,7 +32,6 @@
             <button id="tab-PlaceTab" class="tab-button hidden" onclick="openTab(event, 'PlaceTab')">Places</button>
             <button id="tab-FactTab" class="tab-button hidden" onclick="openTab(event, 'FactTab')">Templates</button>
             <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
-            <button id="tab-TagsTab" class="tab-button hidden" onclick="openTab(event, 'TagTab')">Tags</button>
         </div>
 
         <div id="UserTab" class="tab-content">
@@ -94,10 +93,11 @@
                     </div>
                     <div class="item-example-box">
                         <strong>"Use" Preview:</strong>&nbsp;
-                        <span id="usage-example-text"></span> <span id="item-example-text"></span>
+                        <span id="usage-example-text" class="item-preview-text"></span>
+                        <span id="item-example-text" class="item-preview-text"></span>
                         <br>
                         <strong>Plural Preview:</strong>&nbsp;
-                        a few <span id="plural-example-text"></span>
+                        a few <span id="plural-example-text" class="item-preview-text"></span>
                     </div>
                 </div>
                 <br>
@@ -146,6 +146,15 @@
                 <h3>Submit Fact Template</h3>
                 <label for="factTemplate">Template:</label>
                 <input type="text" id="factTemplate" name="factTemplate" maxlength="500" oninput="templateValidator()">
+                <div class="item-btn-box">
+                    <div>
+                        <h4>Can recurse?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="fact-recurse-cb" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
                 <br>
                 <button type="submit" id="template-submit-btn" onclick="submitFactTemplate()" disabled>Submit</button>
             </div>
@@ -157,19 +166,7 @@
                 <label for="staticFactInput">Fact:</label>
                 <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" oninput="staticFactValidator()">
                 <br>
-                <button type="submit" id="static-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
-            </div>
-        </div>
-
-        <div id="TagTab" class="tab-content">
-            <div class="form">
-                <h3>Tag Items</h3>
-                <label for="pickedTag">Tag:</label>
-                <select id="pickedTag" name="pickedTag"></select>
-                <label for="tagInput">Item:</label>
-                <input type="text" id="tagInput" name="tagInput" maxlength="100" oninput="tagAddonValidator()">
-                <br>
-                <button type="submit" id="addon-tags-submit-btn" onclick="submitTagItem()" disabled>Submit</button>
+                <button type="submit" id="staticFact-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
             </div>
         </div>
     </div>

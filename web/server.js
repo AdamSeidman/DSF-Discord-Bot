@@ -95,10 +95,10 @@ const epHandlers = {}
         }
     })
 })
-app.use('/api/:ep', jsonParser, (req, res, next) => {
+app.use('/api/:ep', jsonParser, async (req, res, next) => {
     const handle = `./${req.method.toLowerCase()}/${req.params?.ep || ''}`
     if (Object.prototype.hasOwnProperty.call(epHandlers, handle) && typeof epHandlers[handle] === 'function') {
-        let ret = epHandlers[handle](req, res) // TODO sub-handle?
+        let ret = await epHandlers[handle](req, res)
         if (typeof ret === 'number') {
             res.status(ret).json({})
         } else if (ret) {
@@ -114,13 +114,13 @@ app.use('/api/:ep', jsonParser, (req, res, next) => {
 })
 
 app.use((req, res) => {
-    if (!process.DEBUG) {
+    if (!global.DEBUG) {
         logger.warn('Incoming 404', `${req.method} ${req.url}`)
     }
     res.status(404).sendFile(path.join(__dirname, 'public/404.html'))
 })
 
-const PORT = (process.DEBUG? process.env.EXPRESS_PORT_ALT : process.env.EXPRESS_PORT) || 80
+const PORT = (global.DEBUG? process.env.EXPRESS_PORT_ALT : process.env.EXPRESS_PORT) || 80
 app.listen(PORT, () => {
     logger.debug(`Express server listening on port ${PORT}`)
 })

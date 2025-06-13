@@ -5,5 +5,5 @@
     "maxFactCount": 20,
     "minSilenceMinutes": 5,
     "maxSilenceMinutes": 15,
-    "staticFactFrequency": 0.025
+    "staticFactFrequency": 0.04
 }

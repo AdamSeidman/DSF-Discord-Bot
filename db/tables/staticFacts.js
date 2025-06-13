@@ -1,3 +1,4 @@
+const { randomArrayItem } = require("logic-kit")
 const { Table } = require("../database")
 const logger = require("@adamseidman/logger")
 
@@ -12,11 +13,29 @@ function getNumUnused() {
     return getUsableFacts().length
 }
 
-function getAndMark() {
+async function addStaticFact(submission) {
+    if (typeof submission?.name === 'string' && submission.name.trim().length > 0) {
+        logger.info('Adding static fact...', submission.name)
+        const { error } = await table.client
+            .from(table.name)
+            .insert({
+                fact: submission.name
+            })
+        if (error) {
+            logger.error(`Could not insert new static fact: "${
+                submission.name}"`, error)
+        }
+        return error
+    } else {
+        return true
+    }
+}
+
+async function getAndMark() {
     const fact = randomArrayItem(getUsableFacts())
     if (!fact?.id) return
     usedIdCache.push(fact.id)
-    const { error } = table.client
+    const { error } = await table.client
         .from(table.name)
         .update({
             used: true
@@ -31,5 +50,6 @@ function getAndMark() {
 module.exports = {
     refresh: () => table.refresh(),
     getNumUnused,
+    addStaticFact,
     getAndMark
 }
