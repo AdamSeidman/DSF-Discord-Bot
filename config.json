@@ -6,5 +6,8 @@
     "minSilenceMinutes": 5,
     "maxSilenceMinutes": 15,
     "staticFactFrequency": 0.04,
-    "hostReactionFrequency": 0.02
+    "hostReactionFrequency": 0.02,
+    "dsfHolidayMonth": 6,
+    "dsfHolidayDay" : 13,
+    "dsfHolidayTotalFacts": 13
 }

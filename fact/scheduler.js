@@ -35,9 +35,27 @@ function scheduleDailyChannels(channelIds) {
             fact = generateFact()
         }
         logger.info(`Sending daily fact${(qualifier.length > 0)? ` (${qualifier})` : '...'}`, fact)
+        let isDSFDay = (new Date().getMonth() === (global.dsf.dsfHolidayMonth - 1)) &&
+            (new Date().getDate() === global.dsf.dsfHolidayDay)
+        const extra = []
+        if (isDSFDay && (global.dsf.dsfHolidayTotalFacts > 1)) {
+            logger.info(`Sending ${global.dsf.dsfHolidayTotalFacts} fact(s) for DSF day...`)
+            for (let i = 0; i < (global.dsf.dsfHolidayTotalFacts - 1); i++) {
+                const extraFact = generateFact()
+                if (extra.length < 1 || `${extra[extra.length - 1]} ${extraFact}`.length >= 2000) {
+                    extra.push(extraFact)
+                } else {
+                    extra[extra.length - 1] += `\n${extraFact}`
+                }
+            }
+        }
         dailyChannels.forEach((channel) => {
             try {
-                channel.send(`It's time for the fact of the day!\nAre you ready? Here it is:\n${fact}`)
+                channel.send(`${isDSFDay? 'Happy DSF day!\n' : ''}It's time for the ${
+                    (isDSFDay && extra.length)? `${global.dsf.dsfHolidayTotalFacts} facts` : 'fact'
+                    } of the day!\nAre you ready? Here ${(extra.length > 0)? 'they are' : 'it is'
+                    }:\n${fact}`)
+                extra.forEach((part) => channel.send(part))
             } catch (error) {
                 logger.error(`Could not send daily fact to '${channel.name}' (${channel.id})`, error)
             }
