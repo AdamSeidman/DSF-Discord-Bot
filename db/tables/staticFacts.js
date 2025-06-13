@@ -14,7 +14,6 @@ function getNumUnused() {
 }
 
 async function addStaticFact(submission) {
-    console.log(submission)
     if (typeof submission?.name === 'string' && submission.name.trim().length > 0) {
         logger.info('Adding static fact...', submission.name)
         const { error } = await table.client
@@ -27,6 +26,8 @@ async function addStaticFact(submission) {
                 submission.name}"`, error)
         }
         return error
+    } else {
+        return true
     }
 }
 

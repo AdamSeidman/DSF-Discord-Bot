@@ -147,6 +147,15 @@
                 <h3>Submit Fact Template</h3>
                 <label for="factTemplate">Template:</label>
                 <input type="text" id="factTemplate" name="factTemplate" maxlength="500" oninput="templateValidator()">
+                <div class="item-btn-box">
+                    <div>
+                        <h4>Can recurse?</h4>
+                        <label class="switch">
+                            <input type="checkbox" id="fact-recurse-cb" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
                 <br>
                 <button type="submit" id="template-submit-btn" onclick="submitFactTemplate()" disabled>Submit</button>
             </div>

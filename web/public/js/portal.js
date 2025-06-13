@@ -179,12 +179,12 @@ function confirmSubmission(word, list) {
         items.map(x => (originMap[x] || x)).join('\n-')}`)
 }
 
-function submit(key, list, mainInput, additional={}, clearList=[]) {
+function submit(key, list, mainInput, additional={}, clearList=[], cb) {
     $(`button#${key}-submit-btn`).attr('disabled', true)
     let name = $(`#${mainInput}`).val().trim()
     const cachedItems = JSON.parse(localStorage.getItem(CACHED_LIST_KEY)
         || JSON.stringify({ list: [] })).list
-    if (confirmSubmission(name, [...list, ...cachedItems])) {
+    if (confirmSubmission(name, (list.length > 0)? [...list, ...cachedItems] : [])) {
         standardPOST(key, { submission: { name, ...additional } })
             .then(() => {
                 $(`#${mainInput}`).val('')
@@ -192,11 +192,14 @@ function submit(key, list, mainInput, additional={}, clearList=[]) {
                     $(`#${id}`).val('')
                     $(`span.${id}`).text('')
                 })
-                if (!key.toLowerCase().includes('fact')) {
+                if (list.length > 0) {
                     localStorage.setItem(CACHED_LIST_KEY, JSON.stringify({
                         list: [...cachedItems, name],
                         date: Date.now()
                     }))
+                }
+                if (typeof cb === 'function') {
+                    cb()
                 }
             })
             .catch((error) => {
@@ -261,7 +264,12 @@ function templateValidator() {
 }
 
 function submitFactTemplate() {
-    alert(1) // TODO
+    submit('template', [], 'factTemplate', {
+        can_recurse: $('#fact-recurse-cb').is(':checked')
+    }, [], () => {
+        $(`#fact-recurse-cb`).attr('checked', true)
+        alert('Submitted!')
+    })
 }
 
 function staticFactValidator() {
@@ -279,5 +287,5 @@ function tagAddonValidator() {
 }
 
 function submitTagItem() {
-    alert(1) // TODO
+    alert('TODO!') // TODO Implement
 }
