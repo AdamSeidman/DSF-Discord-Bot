@@ -7,10 +7,10 @@ const tags = require("@tables/extraTags")
 const override = require("@facts/override")
 const { generateFact } = require("@facts/construction")
 
-function handle(req, res) {
+function handle(req) {
     const user = users.get(req.user?.id)
     if (!user) {
-        return { code: 400 }
+        return 400
     }
     user.stats = stats.getStats(req.user.id)
     const ret = {

@@ -6,10 +6,10 @@ const { forceRefresh } = require("../../db/database")
 async function handle(req) {
     const user = users.get(req.user?.id)
     if (!user) {
-        return { code: 401 }
+        return 401
     }
     if (!user.can_restart_bot) {
-        return { code: 403 }
+        return 403
     }
     logger.info('Forcing DB refresh...')
     postpone(forceRefresh)
