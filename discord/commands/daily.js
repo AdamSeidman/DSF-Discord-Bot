@@ -1,12 +1,12 @@
 const logger = require("@adamseidman/logger")
-const database = require("../../db/tables/dailies")
+const { setChannel } = require("@tables/dailies")
 
 const yesAnswers = ['1', 'true', 'on']
 const noAnswers = ['0', 'false', 'off']
 
 module.exports = {
     response: (msg, params) => {
-        const scheduler = require("../../fact/scheduler")
+        const scheduler = require("@facts/scheduler")
         if (params.isDM) {
             msg.reply('Cannot set up daily facts in DMs.')
             return
@@ -31,7 +31,7 @@ module.exports = {
             return
         }
 
-        let result = database.setChannel(msg, arg)
+        let result = setChannel(msg, arg)
         if (!result) {
             msg.reply('An error occurred. Please try again later.')
             logger.error('Could not complete /daily', arg)

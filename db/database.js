@@ -98,7 +98,7 @@ function init() {
     fs.readdirSync(path.join(__dirname, 'tables')).forEach((file) => {
         if (path.extname(file) === '.js') {
             const tableName = file.slice(0, file.indexOf('.'))
-            const table = require(`./tables/${tableName}`)
+            const table = require(`@tables/${tableName}`)
             if (!table) {
                 logger.error(`Could not load table: ${tableName}`, table)
                 return
@@ -111,7 +111,7 @@ function init() {
     fs.readdirSync(path.join(__dirname, 'media')).forEach((file) => {
         if (path.extname(file) === '.js') {
             const bucketName = file.slice(0, file.indexOf('.'))
-            const bucket = require(`./media/${bucketName}`)
+            const bucket = require(`@media/${bucketName}`)
             if (!bucket) {
                 logger.error(`Could not load bucket: ${bucketName}`, bucket)
                 return

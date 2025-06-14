@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@discord": ["discord/*"],
+            "@facts": ["fact/*"],
+            "@media/*": ["db/media/*"],
+            "@tables/*": ["db/tables/*"]
+        }
+    },
+    "include": ["**/*"]
+}

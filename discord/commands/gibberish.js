@@ -1,4 +1,4 @@
-const { getGibberish } = require("../../fact/construction")
+const { getGibberish } = require("@facts/construction")
 const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {

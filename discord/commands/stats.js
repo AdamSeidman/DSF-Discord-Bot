@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
-const { getStats } = require("../../db/tables/stats")
-const { matchesDiscordId, postpone } = require("logic-kit")
+const { getStats } = require("@tables/stats")
+const { matchesDiscordId } = require("logic-kit")
 
 async function getUserById(id) {
     const { client } = require("../client")

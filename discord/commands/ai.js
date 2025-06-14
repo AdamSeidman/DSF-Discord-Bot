@@ -1,5 +1,5 @@
+const { getAiFact } = require("@facts/ai")
 const logger = require("@adamseidman/logger")
-const { getAiFact } = require("../../fact/ai")
 
 const ERROR_MESSAGE = 'Error generating AI fact.'
 

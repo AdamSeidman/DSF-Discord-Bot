@@ -1,5 +1,5 @@
 const { post } = require("../util/post")
-const { addPerson } = require("../../db/tables/people")
+const { addPerson } = require("@tables/people")
 
 async function handle(req) {
     return await post(req, 'submit_new_people', addPerson)

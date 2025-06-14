@@ -1,5 +1,5 @@
 const logger = require("@adamseidman/logger")
-const database = require("../../db/tables/effectsGuilds")
+const database = require("@tables/effectsGuilds")
 
 const yesAnswers = ['1', 'true', 'on']
 const noAnswers = ['0', 'false', 'off']

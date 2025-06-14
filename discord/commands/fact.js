@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
-const stats = require("../../db/tables/stats")
-const { generateFact } = require("../../fact/construction")
+const stats = require("@tables/stats")
+const { generateFact } = require("@facts/construction")
 
 const MAX_FACTS = global.dsf.maxFactCount
 

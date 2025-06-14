@@ -1,3 +1,4 @@
+require("module-alias/register")
 const { postpone } = require("logic-kit")
 
 const app = async (config) => {

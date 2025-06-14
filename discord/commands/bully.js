@@ -1,8 +1,8 @@
 const Discord = require("discord.js")
 const logger = require("@adamseidman/logger")
 const { matchesDiscordId, randomEmojis, isStringTerminated,
-    randomNumber, postpone } = require("logic-kit")
-const { getRandomInsult } = require("../../db/tables/insults")
+    randomNumber } = require("logic-kit")
+const { getRandomInsult } = require("@tables/insults")
 
 async function getUserById(id) {
     const { client } = require("../client")

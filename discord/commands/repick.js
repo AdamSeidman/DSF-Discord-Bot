@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const logger = require("@adamseidman/logger")
-const { submitRepick } = require("../../db/tables/hosts")
+const { submitRepick } = require("@tables/hosts")
 
 module.exports = {
     response: async (msg, params) => {

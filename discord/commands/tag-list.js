@@ -1,6 +1,6 @@
+const facts = require("@facts/construction")
 const { createTextList } = require("logic-kit")
-const facts = require("../../fact/construction")
-const { getTagList } = require("../../db/tables/extraTags")
+const { getTagList } = require("@tables/extraTags")
 
 const objectExampleText = createTextList([
     '{"truth":"is true","lie":"is false"}',

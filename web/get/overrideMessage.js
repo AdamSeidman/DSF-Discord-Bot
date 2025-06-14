@@ -1,6 +1,6 @@
-const { isOverridden, getOverrideMessage } = require("../../fact/override")
+const { isOverridden, getOverrideMessage } = require("@facts/override")
 
-function handle(req, res) {
+function handle() {
     return {
         code: 200,
         override: isOverridden()? (getOverrideMessage() || '') : null

@@ -1,5 +1,5 @@
-const stats = require("../../db/tables/stats")
-const { generateLie } = require("../../fact/construction")
+const stats = require("@tables/stats")
+const { generateLie } = require("@facts/construction")
 const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {

@@ -1,5 +1,5 @@
-const prius = require("../../db/media/prius")
-const stats = require("../../db/tables/stats")
+const prius = require("@media/prius")
+const stats = require("@tables/stats")
 
 module.exports = {
     response: (msg, params) => {

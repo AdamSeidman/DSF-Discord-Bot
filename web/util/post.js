@@ -1,4 +1,4 @@
-const users = require("../../db/tables/users")
+const users = require("@tables/users")
 
 async function post(req, perm, addFn) {
     const user = users.get(req.user?.id)

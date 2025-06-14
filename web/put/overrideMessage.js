@@ -1,5 +1,5 @@
-const users = require("../../db/tables/users")
-const override = require("../../fact/override")
+const users = require("@tables/users")
+const override = require("@facts/override")
 
 function handle(req) {
     const user = users.get(req.user?.id)

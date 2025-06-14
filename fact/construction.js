@@ -1,14 +1,14 @@
+const items = require("@tables/items")
+const facts = require("@tables/facts")
 const override = require("./override")
-const items = require("../db/tables/items")
-const facts = require("../db/tables/facts")
+const people = require("@tables/people")
+const places = require("@tables/places")
+const insults = require("@tables/insults")
+const acronym = require("@tables/acronyms")
 const logger = require("@adamseidman/logger")
-const people = require("../db/tables/people")
-const places = require("../db/tables/places")
-const insults = require("../db/tables/insults")
-const acronym = require("../db/tables/acronyms")
+const dynamicTags = require("@tables/extraTags")
 const { randomArrayItem, copyObject, randomNumber,
     shuffleArray, isStringTerminated } = require("logic-kit")
-const dynamicTags = require("../db/tables/extraTags")
 
 const FACT_CACHE_SIZE = 5
 

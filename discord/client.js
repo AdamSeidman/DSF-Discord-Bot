@@ -19,8 +19,8 @@ const client = new Client({
 })
 
 client.once(Events.ClientReady, async ({ user }) => {
-    const channelIds = require("../db/tables/dailies").getAll().map(x => x.channelId)
-    require("../fact/scheduler").scheduleDailyChannels(channelIds)
+    const channelIds = require("@tables/dailies").getAll().map(x => x.channelId)
+    require("@facts/scheduler").scheduleDailyChannels(channelIds)
     await commands.registerSlashCommands(client)
     global.bot = client.user
     client.application.fetch()

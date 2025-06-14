@@ -4,11 +4,11 @@ const path = require("path")
 const helmet = require("helmet")
 const express = require("express")
 const passport = require("passport")
+const users = require("@tables/users")
 const bodyParser = require("body-parser")
 const session = require("express-session")
-const users = require("../db/tables/users")
 const logger = require("@adamseidman/logger")
-const userSessions = require("../db/tables/sessions")
+const userSessions = require("@tables/sessions")
 const DiscordStrategy = require("passport-discord").Strategy
 
 let app = express()

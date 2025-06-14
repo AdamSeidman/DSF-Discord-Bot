@@ -1,7 +1,7 @@
 const path = require("path")
+const effects = require("@media/effects")
 const logger = require("@adamseidman/logger")
 const { randomNumber } = require("logic-kit")
-const effects = require("../../db/media/effects")
 const { createAudioResource, createAudioPlayer, NoSubscriberBehavior,
     joinVoiceChannel, AudioPlayerStatus } = require("@discordjs/voice")
 

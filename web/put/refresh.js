@@ -1,6 +1,6 @@
+const users = require("@tables/users")
 const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
-const users = require("../../db/tables/users")
 const { forceRefresh } = require("../../db/database")
 
 async function handle(req) {

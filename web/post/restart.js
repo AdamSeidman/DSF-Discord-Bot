@@ -1,7 +1,7 @@
+const users = require("@tables/users")
 const { postpone } = require("logic-kit")
 const { execSync } = require("child_process")
 const logger = require("@adamseidman/logger")
-const users = require("../../db/tables/users")
 
 async function handle(req) {
     const user = users.get(req.user?.id)
@@ -11,7 +11,7 @@ async function handle(req) {
     if (!user.can_restart_bot) {
         return 403
     }
-    await require("../../discord/client").close()
+    await require("@discord/client").close()
     logger.info('Restarting from POST...', req.query.reason || '(no query reason)')
     console.log('\n')
     postpone(() => {

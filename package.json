@@ -25,6 +25,7 @@
     "ffmpeg-static": "^5.2.0",
     "helmet": "^8.1.0",
     "logic-kit": "^1.0.0",
+    "module-alias": "^2.2.3",
     "node-persist": "^4.0.4",
     "node-schedule": "^2.1.1",
     "openai": "^4.100.0",
@@ -33,5 +34,11 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "_moduleAliases": {
+    "@discord": "discord",
+    "@facts": "fact",
+    "@media": "db/media",
+    "@tables": "db/tables"
   }
 }

@@ -1,5 +1,5 @@
-const stats = require("../../db/tables/stats")
-const { getAcronym } = require("../../db/tables/acronyms")
+const stats = require("@tables/stats")
+const { getAcronym } = require("@tables/acronyms")
 const { argModifier, handleMultiCommand } = require("./fact")
 
 module.exports = {

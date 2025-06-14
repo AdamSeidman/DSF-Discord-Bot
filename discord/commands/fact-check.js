@@ -1,5 +1,5 @@
 const logger = require("@adamseidman/logger")
-const { parseFactTemplate, parseLieTemplate } = require("../../fact/construction")
+const { parseFactTemplate, parseLieTemplate } = require("@facts/construction")
 
 const NUM_EXAMPLES = 10
 
