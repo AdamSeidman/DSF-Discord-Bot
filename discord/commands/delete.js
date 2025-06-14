@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const { MessageFlags } = require("discord.js")
 
 const MAX_DELETIONS = 25
 
@@ -8,7 +8,7 @@ module.exports = {
             if (!params.injected) {
                 msg.reply({
                     content: 'Yeah',
-                    flags: Discord.MessageFlags.Ephemeral
+                    flags: MessageFlags.Ephemeral
                 })
             }
             return
@@ -33,7 +33,7 @@ module.exports = {
             if (!params.injected) {
                 msg.reply({
                     content: 'Deleting...',
-                    flags: Discord.MessageFlags.Ephemeral
+                    flags: MessageFlags.Ephemeral
                 })
             }
             msg.channel.bulkDelete(num + 1)

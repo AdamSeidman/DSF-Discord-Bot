@@ -11,7 +11,7 @@ async function handle(req) {
     if (!user.can_restart_bot) {
         return 403
     }
-    await require("@discord/client").close()
+    await require("discord").close()
     logger.info('Restarting from POST...', req.query.reason || '(no query reason)')
     console.log('\n')
     postpone(() => {

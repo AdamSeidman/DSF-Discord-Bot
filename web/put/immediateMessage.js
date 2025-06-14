@@ -1,11 +1,10 @@
-const Discord = require("discord.js")
 const users = require("@tables/users")
 const logger = require("@adamseidman/logger")
+const { TextChannel } = require("discord.js")
 
 function getUserById(id) {
-    const { client } = require("@discord/client")
     return new Promise((resolve, reject) => {
-        client.users.fetch(id)
+        require("discord").users.fetch(id)
             .then((user) => {
                 resolve(user)
             })
@@ -17,9 +16,8 @@ function getUserById(id) {
 }
 
 function getChannelById(id) {
-    const { client } = require("@discord/client")
-    return client?.channels.cache
-        .filter(x => x instanceof Discord.TextChannel)
+    return require("discord").channels.cache
+        .filter(x => x instanceof TextChannel)
         .find(x => x.id === id)
 }
 

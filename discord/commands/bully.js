@@ -1,11 +1,11 @@
 const Discord = require("discord.js")
 const logger = require("@adamseidman/logger")
-const { matchesDiscordId, randomEmojis, isStringTerminated,
-    randomNumber } = require("logic-kit")
 const { getRandomInsult } = require("@tables/insults")
+const { matchesDiscordId, randomEmojis,
+    isStringTerminated, randomNumber } = require("logic-kit")
 
 async function getUserById(id) {
-    const { client } = require("../client")
+    const { client } = require("..")
     if (!id || typeof client.users?.fetch !== 'function') return
     const user = await client.users.fetch(id)
     return user

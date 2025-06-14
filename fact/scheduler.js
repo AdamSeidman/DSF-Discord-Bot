@@ -1,7 +1,7 @@
-const Discord = require("discord.js")
 const storage = require("node-persist")
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
+const { TextChannel } = require("discord.js")
 const staticFacts = require("@tables/staticFacts")
 const { generateFact, generateLie } = require("./construction")
 const { probabilityCheck, isAprilFools } = require("logic-kit")
@@ -10,8 +10,7 @@ let dailyChannels = []
 let clientChannels = []
 
 function scheduleDailyChannels(channelIds) {
-    clientChannels = require("../discord/client")
-        .client.channels.cache.filter(x => x instanceof Discord.TextChannel)
+    clientChannels = require("discord").channels.cache.filter(x => x instanceof TextChannel)
     clientChannels = [...clientChannels].map(x => x[1])
     dailyChannels.push(...clientChannels.filter(x => channelIds.includes(`${x.id}`)))
     scheduler.scheduleJob({

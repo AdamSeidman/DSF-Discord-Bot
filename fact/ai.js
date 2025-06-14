@@ -14,8 +14,7 @@ async function createThread() {
 
 async function addMessage(threadId, message) {
     const response = await openai.beta.threads.messages.create(
-        threadId,
-        {
+        threadId, {
             role: 'user',
             content: message
         }
@@ -32,10 +31,7 @@ async function runAssistant(threadId) {
 }
 
 async function checkingStatus(resolve, threadId, runId) {
-    const runObject = await openai.beta.threads.runs.retrieve(
-        threadId,
-        runId
-    )
+    const runObject = await openai.beta.threads.runs.retrieve(threadId, runId)
 
     const status = runObject.status
     if (status == 'completed') {

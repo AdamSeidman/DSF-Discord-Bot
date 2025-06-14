@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const { EmbedBuilder, MessageFlags } = require("discord.js")
 
 let helpEmbed = null
 
@@ -7,7 +7,7 @@ module.exports = {
         if (helpEmbed === null) {
             msg.reply({
                 content: 'Could not generate message! Please try again soon.',
-                flags: Discord.MessageFlags.Ephemeral
+                flags: MessageFlags.Ephemeral
             })
         } else {
             if (params.injected) {
@@ -19,7 +19,7 @@ module.exports = {
     },
     buildEmbed: (messages) => {
         const { cmdPrefix } = require("../modules/messages")
-        helpEmbed = new Discord.EmbedBuilder()
+        helpEmbed = new EmbedBuilder()
             .setColor('#0099ff')
             .setTitle('DSF Commands List')
             .setDescription(`Enter '${cmdPrefix}' or '/' followed by desired command.`)

@@ -3,7 +3,7 @@ const { getStats } = require("@tables/stats")
 const { matchesDiscordId } = require("logic-kit")
 
 async function getUserById(id) {
-    const { client } = require("../client")
+    const { client } = require("..")
     if (!id || typeof client.users?.fetch !== 'function') return
     const user = await client.users.fetch(id)
     return user

@@ -10,7 +10,7 @@ const app = async (config) => {
     global.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     const db = require("./db/database")
-    const discord = require("./discord/client")
+    const discord = require("discord")
     if (!global.dsf.disableSIGINT) {
         process.on('SIGINT', async () => {
             console.log('\nSIGINT: Shutting down...\n')

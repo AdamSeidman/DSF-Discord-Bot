@@ -55,7 +55,7 @@ client.on(Events.Error, (error) => {
     logger.error('Discord client error.', error)
 })
 
-async function init() {
+client.init = async () => {
     global.discordToken = global.DEBUG?
         process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
     if (await storage.getItem('isMobile')) {
@@ -65,13 +65,9 @@ async function init() {
     client.login(global.discordToken)
 }
 
-async function close() {
+client.close = async () => {
     await voice.stopAll()
     await client.destroy()
 }
 
-module.exports = {
-    init,
-    close,
-    client
-}
+module.exports = client
