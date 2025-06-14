@@ -5,7 +5,7 @@ const { matchesDiscordId, randomEmojis,
     isStringTerminated, randomNumber } = require("logic-kit")
 
 async function getUserById(id) {
-    const { client } = require("..")
+    const client = require("discord")
     if (!id || typeof client.users?.fetch !== 'function') return
     const user = await client.users.fetch(id)
     return user
