@@ -35,7 +35,6 @@ async function sendMessageTo(id, message) {
         }
     } catch (error) {
         logger.error('Error in sendMessageTo', error)
-        return 500
     }
 }
 
@@ -51,7 +50,8 @@ function handle(req) {
         req.body.message.trim().length < 1 && req.body.id.length) {
             return 400
     }
-    return sendMessageTo(req.body.id, req.body.message) || 202
+    sendMessageTo(req.body.id, req.body.message)
+    return 202
 }
 
 module.exports = handle
