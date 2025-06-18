@@ -51,7 +51,7 @@ function scheduleDailyChannels(channelIds) {
         dailyChannels.forEach((channel) => {
             try {
                 channel.send(`${isDSFDay? 'Happy DSF day!\n' : ''}It's time for the ${
-                    (isDSFDay && extra.length)? `${global.dsf.dsfHolidayTotalFacts} facts` : 'fact'
+                    (isDSFDay && extra.length > 0)? `${global.dsf.dsfHolidayTotalFacts} facts` : 'fact'
                     } of the day!\nAre you ready? Here ${(extra.length > 0)? 'they are' : 'it is'
                     }:\n${fact}`)
                 extra.forEach((part) => channel.send(part))
@@ -68,7 +68,7 @@ function scheduleDailyChannels(channelIds) {
                         logger.warn('Could not send april fools follow up.')
                     }
                 })
-            }, 5 * 60 * 1000)
+            }, (5 * 60 * 1000))
         }
     })
     logger.debug(`Scheduled daily facts job for ${dailyChannels.length} channel(s).`)
