@@ -1,9 +1,10 @@
 const { Table } = require("../database")
 const logger = require("@adamseidman/logger")
-const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation, shuffleArray } = require("logic-kit")
 
 const table = new Table('allPeople')
 let lastPerson = { id: -1 }
+let dictionary = null
 
 function getLastPerson() {
     let person = lastPerson
@@ -38,7 +39,10 @@ async function addPerson(person, submitted_by) {
 }
 
 function getDictionary() {
-    const result = {}
+    if (dictionary) {
+        return copyObject(dictionary)
+    }
+    dictionary = {}
     table.data.forEach((person) => {
         const data = {
             tags: [
@@ -49,17 +53,25 @@ function getDictionary() {
             ],
             name: person.name
         }
-        result[stripPunctuation(data.name).toLowerCase()] = data
+        shuffleArray(data.tags)
+        dictionary[stripPunctuation(data.name).toLowerCase()] = data
     })
-    return result
+    return copyObject(dictionary)
 }
 
 function getAll() {
     return table.data
 }
 
+function refresh() {
+    table.refresh()
+        .then(() => {
+            dictionary = null
+        })
+}
+
 module.exports = {
-    refresh: () => table.refresh(),
+    refresh,
     getLastPerson,
     getNextPerson,
     addPerson,

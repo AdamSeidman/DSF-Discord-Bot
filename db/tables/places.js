@@ -4,6 +4,7 @@ const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
 
 const table = new Table('allPlaces')
 let lastPlace = { id: -1 }
+let dictionary = null
 
 function getLastPlace() {
     let place = lastPlace
@@ -30,22 +31,32 @@ async function addPlace(place, submitted_by) {
 }
 
 function getDictionary() {
-    const result = {}
+    if (dictionary) {
+        return copyObject(dictionary)
+    }
+    dictionary = {}
     table.data.forEach((place) => {
-        result[stripPunctuation(place.name).toLowerCase()] = {
+        dictionary[stripPunctuation(place.name).toLowerCase()] = {
             tags: ['place', 'noun'],
             name: place.name
         }
     })
-    return result
+    return copyObject(dictionary)
 }
 
 function getAll() {
     return table.data
 }
 
+function refresh() {
+    table.refresh()
+        .then(() => {
+            dictionary = null
+        })
+}
+
 module.exports = {
-    refresh: () => table.refresh(),
+    refresh,
     getLastPlace,
     getNextPlace,
     addPlace,

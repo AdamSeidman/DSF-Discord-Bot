@@ -1,9 +1,10 @@
 const { Table } = require("../database")
 const logger = require("@adamseidman/logger")
-const { copyObject, randomArrayItem, stripPunctuation } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation, shuffleArray } = require("logic-kit")
 
 const table = new Table('allItems')
 let lastItem = { id: -1 }
+let dictionary = null
 
 function getLastItem() {
     let item = lastItem
@@ -38,7 +39,10 @@ async function addItem(item, submitted_by) {
 }
 
 function getDictionary() {
-    const result = {} // TODO All dictionaries should only rebuild after refresh and should shuffle tags
+    if (dictionary) {
+        return copyObject(dictionary)
+    }
+    dictionary = {}
     table.data.forEach((item) => {
         const data = {
             tags: ['blank', 'blanks', 'noun'],
@@ -56,20 +60,27 @@ function getDictionary() {
         } else {
             data.tags.push('item', 'items')
         }
-        const name = stripPunctuation
-        result[stripPunctuation(data.name).toLowerCase()] = data
-        result[stripPunctuation(data.plural).toLowerCase()] = data
-        result[stripPunctuation(`${data.usage} ${data.name}`).toLowerCase()] = data
+        shuffleArray(data.tags)
+        dictionary[stripPunctuation(data.name).toLowerCase()] = data
+        dictionary[stripPunctuation(data.plural).toLowerCase()] = data
+        dictionary[stripPunctuation(`${data.usage} ${data.name}`).toLowerCase()] = data
     })
-    return result
+    return copyObject(dictionary)
 }
 
 function getAll() {
     return table.data
 }
 
+function refresh() {
+    table.refresh()
+        .then(() => {
+            dictionary = null
+        })
+}
+
 module.exports = {
-    refresh: () => table.refresh(),
+    refresh,
     getLastItem,
     getNextItem,
     addItem,
