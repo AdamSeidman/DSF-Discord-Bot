@@ -6,6 +6,7 @@ const places = require("@tables/places")
 const insults = require("@tables/insults")
 const acronym = require("@tables/acronyms")
 const logger = require("@adamseidman/logger")
+const numConverter = require("number-to-words")
 const dynamicTags = require("@tables/extraTags")
 const { randomArrayItem, copyObject, randomNumber,
     shuffleArray, isStringTerminated } = require("logic-kit")
@@ -108,8 +109,20 @@ function parseObjects(template, isFact) {
         if (typeof tag === 'object') {
             if (tag.truth || tag.lie) {
                 return isFact? tag.truth : tag.lie
-            } else if (tag.low || tag.high) {
-                return `${randomNumber(tag.low, tag.high)}`
+            } else if (tag.low || tag.high || tag.num) {
+                let num = tag.num || randomNumber(tag.low, tag.high)
+                switch (tag.param?.toUpperCase()) {
+                    case 'WORDS':
+                        num = numConverter.toWords(num)
+                        break;
+                    case 'ORDINAL':
+                        num = numConverter.toOrdinal(num)
+                        break;
+                    case 'WORDSORDINAL':
+                        num = numConverter.toWordsOrdinal(num)
+                        break;
+                }
+                return `${num}`
             }
         }
         return tag
