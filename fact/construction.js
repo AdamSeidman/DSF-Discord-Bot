@@ -282,7 +282,7 @@ function preParseNormalTags(template, subject, requiredTag) {
                 } else {
                     return [tag - 1]
                 }
-            } else if (tag === 'usage') {
+            } else if (tag.toLowerCase() === 'usage') {
                 return subject.usage
             } else if (isMainTag) {
                 if (hasPrep) {
