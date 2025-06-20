@@ -199,8 +199,7 @@ function parseStringTag(tag) {
 function parseTag(tag) {
     if (typeof tag === 'string') {
         return parseStringTag(tag)
-    }
-    if (typeof tag === 'number') {
+    } else if (typeof tag === 'number') {
         if (queue.length < tag) {
             logger.warn('Queue length error in parseTag', tag)
             return 'QUEUE-LENGTH-ERROR'
@@ -235,7 +234,7 @@ function parseNormalTags(template) {
 }
 
 function preParseNormalTags(template, subject, requiredTag) {
-    let hasPrep = false, wasPlural = false, numItems = 1
+    let hasPrep = false, wasPlural = false, numItems = 2
     const builder = []
 
     const put = (fn) => {
@@ -291,8 +290,12 @@ function preParseNormalTags(template, subject, requiredTag) {
                     return [tag]
                 }
             } else if (tag.includes('_')) {
-                tag = tag.split('_')
-                return subject.isMale? tag[0] : tag[1]
+                if (personTypes.includes(tag.toLowerCase())) {
+                    tag = tag.split('_')
+                    return subject.isMale? tag[0] : tag[1]
+                } else {
+                    return [tag]
+                }
             } else {
                 running = false
                 return [tag]
@@ -305,7 +308,7 @@ function preParseNormalTags(template, subject, requiredTag) {
                 if (tag === numItems) {
                     return wasPlural? subject.plural : subject.name
                 } else {
-                    return [tag[0] - numItems]
+                    return [tag]
                 }
             } else {
                 numItems++
@@ -375,7 +378,7 @@ function findSpecificTemplate(item, isFact) {
     }
     let found = false
     let template = ''
-    while (!found) { // TODO Filter instead of loop
+    while (!found) {
         template = getNextTemplate()
         template = parseObjects(template, isFact)
         template = parseLists(template)
