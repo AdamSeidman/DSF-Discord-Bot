@@ -109,7 +109,7 @@ function parseObjects(template, isFact) {
             if (tag.truth || tag.lie) {
                 return isFact? tag.truth : tag.lie
             } else if (tag.low || tag.high) {
-                return [`${randomNumber(tag.low, tag.high)}`]
+                return `${randomNumber(tag.low, tag.high)}`
             }
         }
         return tag
