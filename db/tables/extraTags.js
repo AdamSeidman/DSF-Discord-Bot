@@ -35,7 +35,7 @@ async function refresh() {
     Object.values(tableLibrary).forEach(({ table }) => {
         table.refresh()
     })
-} // TODO Dynamic dictionaries and whatnot
+}
 
 module.exports = {
     refresh,

@@ -51,7 +51,8 @@ function getDictionary() {
                 (person.is_alive? 'alive' : 'dead'),
                 'noun'
             ],
-            name: person.name
+            name: person.name,
+            isMale: person.is_male
         }
         shuffleArray(data.tags)
         dictionary[stripPunctuation(data.name).toLowerCase()] = data

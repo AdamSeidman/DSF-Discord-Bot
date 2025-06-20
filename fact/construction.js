@@ -234,14 +234,19 @@ function parseNormalTags(template) {
 }
 
 function preParseNormalTags(template, subject, requiredTag) {
-    let hasPrep = false, wasPlural = false, numItems = 2
+    let hasPrep = false, wasPlural = false, numItems = 2, personActive = true
     const builder = []
+
+    if (!personTypes.find(x => x.endsWith(requiredTag))) {
+        personActive = false
+    }
 
     const put = (fn) => {
         let item = template.shift()
         if (Array.isArray(item) && item[0] !== 'number') {
             const isNumber = typeof item[0] === 'number'
-            builder.push(fn(item[0], isNumber, !isNumber && item[0].endsWith('s'), !isNumber && item[0].startsWith(preparePrefix),
+            builder.push(fn(item[0], isNumber, !!personTypes.find(x => x.endsWith(item[0])),
+                !isNumber && item[0].endsWith('s'), !isNumber && item[0].startsWith(preparePrefix),
                 !isNumber && (item[0].endsWith(requiredTag) || item[0].slice(0, -1).endsWith(requiredTag))))
         } else {
             builder.push(item)
@@ -250,7 +255,7 @@ function preParseNormalTags(template, subject, requiredTag) {
 
     let running = true
     while (template.length > 0 && running) {
-        put((tag, isNumber, isPlural, isPrepare, isMainTag) => {
+        put((tag, isNumber, isPerson, isPlural, isPrepare, isMainTag) => {
             if (isMainTag) {
                 running = false
                 if (isPrepare) {
@@ -268,7 +273,7 @@ function preParseNormalTags(template, subject, requiredTag) {
     }
     running = true
     while (template.length > 0 && running) {
-        put((tag, isNumber, isPlural, isPrepare, isMainTag) => {
+        put((tag, isNumber, isPerson, isPlural, isPrepare, isMainTag) => {
             if (isNumber) {
                 if (hasPrep) {
                     return [tag]
@@ -289,28 +294,33 @@ function preParseNormalTags(template, subject, requiredTag) {
                     running = false
                     return [tag]
                 }
-            } else if (tag.includes('_')) {
-                if (personTypes.includes(tag.toLowerCase())) {
-                    tag = tag.split('_')
-                    return subject.isMale? tag[0] : tag[1]
-                } else {
-                    return [tag]
-                }
+            } else if (personActive && tag.includes('_')) {
+                tag = tag.split('_')
+                return subject.isMale? tag[0] : tag[1]
             } else {
+                if (isPerson) {
+                    personActive = false
+                }
                 running = false
                 return [tag]
             }
         })
     }
     while (template.length > 0) {
-        put((tag, isNumber) => {
+        put((tag, isNumber, isPerson) => {
             if (isNumber) {
                 if (tag === numItems) {
                     return wasPlural? subject.plural : subject.name
                 } else {
                     return [tag]
                 }
+            } else if (personActive && tag.includes('_')) {
+                tag = tag.split('_')
+                return subject.isMale? tag[0] : tag[1]
             } else {
+                if (isPerson) {
+                    personActive = false
+                }
                 numItems++
                 return [tag]
             }
