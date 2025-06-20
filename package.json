@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "node index.js --DEBUG",
     "dev-reload": "nodemon index.js --DEBUG",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clear": "node scripts/clearSlashCommands.js"
   },
   "author": "Adam Seidman",
   "license": "MIT",

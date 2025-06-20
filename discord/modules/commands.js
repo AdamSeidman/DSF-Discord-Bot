@@ -23,10 +23,11 @@ async function registerSlashCommands(client) {
         logger.error('Could not find testing guild.', testingGuild)
     }
 
-    fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
+    const cmdDir = global.clearSlashCommands? '../logs' : '/commands'
+    fs.readdirSync(path.join(__dirname, `../${cmdDir}`)).forEach((file) => {
         if (path.extname(file) === '.js') {
             const phrase = file.slice(0, file.indexOf('.'))
-            const cmd = require(`../commands/${phrase}`)
+            const cmd = require(`../${cmdDir}/${phrase}`)
             if (!cmd || typeof cmd.response !== 'function') return
 
             cmd.data = new Discord.SlashCommandBuilder()
