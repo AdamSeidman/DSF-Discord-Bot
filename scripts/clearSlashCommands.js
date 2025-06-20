@@ -8,7 +8,7 @@ const app = async () => {
     global.clearSlashCommands = true
     await require("node-persist").init()
     global.dsf = require("../config.json")
-    logger.init('Clearing Slash Commands', 'dsfClear_')
+    logger.init('Clearing Slash Commands', 'dsfClear_', 'red', null)
     const db = require("../db/database")
     const discord = require("discord")
     db.init()
