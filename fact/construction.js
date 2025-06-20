@@ -109,8 +109,8 @@ function parseObjects(template, isFact) {
         if (typeof tag === 'object') {
             if (tag.truth || tag.lie) {
                 return isFact? tag.truth : tag.lie
-            } else if (tag.low || tag.high || tag.num) {
-                let num = tag.num || randomNumber(tag.low, tag.high)
+            } else if (tag.low || tag.high) {
+                let num = randomNumber(tag.low, tag.high)
                 switch (tag.param?.toUpperCase()) {
                     case 'WORDS':
                         num = numConverter.toWords(num)
