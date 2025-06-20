@@ -7,7 +7,7 @@ function setupHost(userId, guild) {
     return new Promise((resolve, reject) => {
         guild.members.fetch({ force: true })
         .then(async (members) => {
-            const users = [...members].map(x => x[1]).filter(x => !x.user.bot && x.user.id != userId)
+            let users = [...members].map(x => x[1]).filter(x => !x.user.bot && x.user.id != userId)
             if (users.length < 1) {
                 users = [...members].map(x => x[1])
             }
