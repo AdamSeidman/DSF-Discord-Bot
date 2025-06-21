@@ -4,7 +4,7 @@ const { getTagList } = require("@tables/extraTags")
 
 const objectExampleText = createTextList([
     '{"truth":"is true","lie":"is false"}',
-    '{"high":1999,"low":1950}'
+    '\n{"high":1999,"low":1950}  ("param": [none], words, ordinal, wordsOrdinal)'
 ])
 
 module.exports = {
