@@ -6,9 +6,9 @@ const logger = require("@adamseidman/logger")
 
 const KEY_FILE = 'google-service-account-key.json'
 
-let backupsEnabled = fs.existsSync(path.join(__dirname, KEY_FILE))
+let backupsEnabled = fs.existsSync(path.join(__dirname, KEY_FILE)) && !global.DEBUG
 if (!backupsEnabled) {
-    console.warn('No key file! Google backups not enabled.')
+    console.warn(`${global.DEBUG? '' : 'No key file! '}Google backups not enabled.`)
 }
 
 async function uploadBackup(filename, data) {
