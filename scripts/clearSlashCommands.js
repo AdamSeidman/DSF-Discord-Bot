@@ -1,5 +1,6 @@
 require("module-alias/register")
 require("dotenv").config()
+const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
 
 const app = async () => {
@@ -15,14 +16,26 @@ const app = async () => {
     await discord.init()
 }
 
+async function waitForCompletion() {
+    let count = 0
+    while (!global.owner) {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        if (++count > 1000) {
+            logger.fatal('Bot never logged in!')
+            process.exit(1)
+        }
+    }
+    postpone(async () => {
+        logger.info('Closing...\r\n')
+        await require("discord").close()
+        process.exit(0)
+    })
+}
+
 if (require.main === module) {
     try {
         app()
-        setTimeout(async () => {
-            logger.info('Closing...\r\n')
-            await require("discord").close()
-            process.exit(0)
-        }, 5000)
+        waitForCompletion()
     } catch (error) {
         console.error('Error with clear script!', error)
         process.exit(1)

@@ -3,8 +3,6 @@ require("dotenv").config()
 const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
 
-const WAIT_TIME = 2000
-
 const app = () => {
     console.log('Running application...')
     global.DEBUG = true
@@ -17,10 +15,18 @@ const app = () => {
     })
 }
 
-function pruneSessions() {
+async function pruneSessions() {
     const sessions = require("@tables/sessions")
-    const nonExpired = { expired: false }
     let count = 0
+    while (sessions.getAll().length < 1) {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        if (++count > 1000) {
+            logger.fatal('Never retrieved sessions from database!')
+            process.exit(1)
+        }
+    }
+    count = 0
+    const nonExpired = { expired: false }
     let ran = false
     sessions.getAll()
         .map((session) => {
@@ -58,9 +64,7 @@ function pruneSessions() {
 if (require.main === module) {
     try {
         app()
-        setTimeout(() => {
-            pruneSessions()
-        }, WAIT_TIME)
+        pruneSessions()
     } catch (error) {
         console.error('Error with session script!', error)
         process.exit(1)
