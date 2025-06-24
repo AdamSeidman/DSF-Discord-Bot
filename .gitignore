@@ -51,3 +51,6 @@ backups/
 
 # Node Persist storage
 .node-persist/
+
+# Other API keys
+apis/*.json

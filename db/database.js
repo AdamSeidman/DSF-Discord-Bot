@@ -3,6 +3,7 @@ const path = require("path")
 const { copyObject } = require("logic-kit")
 const logger = require("@adamseidman/logger")
 const { createClient } = require("@supabase/supabase-js")
+const { uploadBackup: googleBackup } = require("../apis/google")
 
 const BACKUP_HOURS = 24
 const REFRESH_MINUTES = 2
@@ -139,19 +140,8 @@ setInterval(async () => {
     allTables.forEach((table) => {
         out[table.name] = table.data
     })
-    const backupDir = path.join(__dirname, '../backups')
-    await fs.mkdir(backupDir, { recursive: true }, (error) => {
-        if (error) {
-            logger.error(`Issue with fs.mkdir (${backupDir})`, error)
-        }
-    })
-    await fs.writeFile(path.join(backupDir, `backup_${new Date().toISOString()
-        .replace(/[-:]/g, '').slice(0, 15).replace('T', '-')}.json`),
-        JSON.stringify(out, null, 2), 'utf8', (error) => {
-            if (error) {
-                logger.error('Issue with fs.writeFile', error)
-            }
-        })
+    await googleBackup(`backup_${new Date().toISOString()
+        .replace(/[-:]/g, '').slice(0, 15).replace('T', '-')}.json`, out)
     logger.info('Backup Completed')
 }, (BACKUP_HOURS * 60 * 60 * 1000))
 
