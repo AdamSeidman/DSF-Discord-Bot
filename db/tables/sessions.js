@@ -77,5 +77,6 @@ class SessionStore extends session.Store {
 module.exports = {
     refresh: () => table.refresh(),
     SessionStore,
-    destroy: destroySession
+    destroy: destroySession,
+    getAll: () => table.data
 }
