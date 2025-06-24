@@ -114,13 +114,13 @@ function parseObjects(template, isFact) {
                 switch (tag.param?.toUpperCase()) {
                     case 'WORDS':
                         num = numConverter.toWords(num)
-                        break;
+                        break
                     case 'ORDINAL':
                         num = numConverter.toOrdinal(num)
-                        break;
+                        break
                     case 'WORDSORDINAL':
                         num = numConverter.toWordsOrdinal(num)
-                        break;
+                        break
                 }
                 return `${num}`
             }
