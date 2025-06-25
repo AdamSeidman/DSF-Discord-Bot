@@ -57,9 +57,13 @@ function getMeme(mainCaption, extraCaptionFn, template) {
                     }&${boxes.map((caption, idx) => `boxes[${idx}][text]=${caption}`).join('&')}`)
             })
             .then(x => x.json())
-            .then(({ data }) => {
-                logger.info('New meme generated.', data?.url)
-                resolve(data.url)
+            .then(({ data, error_message }) => {
+                if (error_message) {
+                    reject(error_message)
+                } else {
+                    logger.info('New meme generated.', data?.url)
+                    resolve(data.url)
+                }
             })
             .catch(reject)
     })
