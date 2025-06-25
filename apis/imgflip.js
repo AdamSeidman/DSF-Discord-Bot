@@ -17,34 +17,43 @@ function getRandomTemplate() {
     return new Promise((resolve, reject) => {
         fetch(`${BASE_URL}/get_memes`)
             .then(x => x.json())
-            .then(({ data }) => randomArrayItem(data?.memes || [])?.id)
-            .then(resolve)
+            .then(({ data }) => {
+                const template = randomArrayItem(data?.memes || [])
+                resolve({
+                    templateId: template.id,
+                    boxCount: template.box_count
+                })
+            })
             .catch(reject)
     })
 }
 
-function getMeme(caption1, caption2, template) {
-    logger.debug('Attempting to generate custom meme.',{ caption1, caption2, template })
+function getMeme(mainCaption, extraCaptionFn, template) {
+    logger.debug('Attempting to generate custom meme.',{ mainCaption, template })
     if (!enabled) {
         return Promise.reject('Imgflip API not enabled.')
-    } else if (typeof caption1 !== 'string' || caption1.trim().length < 1) {
+    } else if (typeof mainCaption !== 'string' || mainCaption.trim().length < 1) {
         return Promise.reject('No Caption Provided.')
     }
-    if (typeof caption2 !== 'string' || caption2.trim().length < 1) {
-        caption2 = null
+    if (typeof extraCaptionFn !== 'function') {
+        extraCaptionFn = () => 'Bottom Text'
     }
     return new Promise((resolve, reject) => {
         let getTemplate = getRandomTemplate
         if (typeof template === 'string') {
-            getTemplate = async () => template
-        } else if (typeof template === 'function') {
-            getTemplate = async () => await template() 
+            getTemplate = async () => {
+                return { templateId: template, boxCount: 1 }
+            }
         }
+        const boxes = [mainCaption]
         getTemplate()
-            .then((templateId) => {
+            .then(({ templateId, boxCount }) => {
+                while (boxes.length < Math.min(boxCount, 10)) {
+                    boxes.push(extraCaptionFn())
+                }
                 return fetch(`${BASE_URL}/caption_image?template_id=${templateId
                     }&username=${process.env.IMGFLIP_USERNAME}&password=${process.env.IMGFLIP_PASSWORD
-                    }&text0=${caption1}${caption2? `&text1=${caption2}` : ''}`)
+                    }&${boxes.map((caption, idx) => `boxes[${idx}][text]=${caption}`).join('&')}`)
             })
             .then(x => x.json())
             .then(({ data }) => {

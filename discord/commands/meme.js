@@ -9,8 +9,7 @@ if (Imgflip.isEnabled()) {
         response: async (msg, params) => {
             let message = 'Internal Error Occurred'
             try {
-                const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''),
-                    items.getRandom())
+                const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''), items.getRandom)
                 message = { files: [{ attachment }] }
             } catch (error) {
                 logger.error('Error generating meme.', error)
