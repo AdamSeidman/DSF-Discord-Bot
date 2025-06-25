@@ -6,23 +6,14 @@ const { MessageFlags } = require("discord.js")
 
 async function setMobile(msg) {
     const usesMobile = msg.options.getBoolean('mobile')
-    const doRestart = msg.options.getBoolean('do-restart') || false
+    const restarting = msg.options.getBoolean('do-restart') || false
     const wasMobile = await storage.getItem('isMobile') || false
     if (wasMobile === usesMobile) {
         return null
     }
     logger.info(`Setting isMobile to ${usesMobile}.`)
     await storage.setItem('isMobile', usesMobile)
-    if (doRestart) {
-        postpone(() => {
-            restart.response(msg, {
-                user: global.owner,
-                params: `Auto-Reason- Setting mobile to ${usesMobile}.`.split(' '),
-                injected: true
-            })
-        })
-    }
-    return doRestart
+    return { restarting, usesMobile }
 }
 
 module.exports = {
@@ -31,17 +22,26 @@ module.exports = {
             return
         }
         if (params.user.id == global.owner?.id) {
-            const restarting = await setMobile(msg)
+            const { restarting, usesMobile } = await setMobile(msg)
             let content = 'Setting...'
             if (typeof restarting !== 'boolean') {
                 content = 'Redundant request.'
             } else if (restarting) {
                 content = 'Restarting...'
             }
-            msg.reply({
+            await msg.reply({
                 content,
                 flags: MessageFlags.Ephemeral
             })
+            if (restarting) {
+                postpone(() => {
+                    restart.response(msg, {
+                        user: global.owner,
+                        params: `Auto-Reason- Setting mobile to ${usesMobile}.`.split(' '),
+                        injected: true
+                    })
+                })
+            }
         } else {
             msg.reply('You are not the bot owner.')
         }

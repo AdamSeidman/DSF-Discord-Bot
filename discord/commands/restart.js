@@ -17,7 +17,6 @@ module.exports = {
                     flags: MessageFlags.Ephemeral
                 })
             }
-            await require("discord").close()
             logger.info('Restarting...', params)
             console.log('\n')
             postpone(() => process.kill(process.pid, 'SIGINT'))
