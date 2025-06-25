@@ -13,9 +13,9 @@ if (Imgflip.isEnabled()) {
                 const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''),
                     (idx, total) => {
                         if (total === 2) {
-                            if (probabilityCheck(global.dsf.bottomTextChance || 0.05)) {
+                            if (probabilityCheck(global.dsf.bottomTextChance)) {
                                 return 'Bottom Text'
-                            } else if (probabilityCheck(0.5) && typeof getLastSubject() === 'string') {
+                            } else if (probabilityCheck(0.85) && typeof getLastSubject() === 'string') {
                                 return getLastSubject()
                             } else {
                                 return items.getRandom()
