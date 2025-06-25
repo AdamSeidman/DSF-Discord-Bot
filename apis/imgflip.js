@@ -6,7 +6,7 @@ const BASE_URL = 'https://api.imgflip.com'
 let enabled = (typeof process.env.IMGFLIP_USERNAME === 'string'
     && typeof process.env.IMGFLIP_PASSWORD === 'string')
 if (!enabled) {
-    logger.warn('Imgflip API not enabled! Cannot generated memes.')
+    logger.warn('Imgflip API not enabled! Cannot generate memes.')
 }
 
 function isEnabled() {
