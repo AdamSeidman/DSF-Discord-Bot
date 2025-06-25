@@ -9,6 +9,7 @@ const app = async (config) => {
     await require("node-persist").init()
     global.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
+    require("./apis/imgflip")
     const db = require("./db/database")
     const discord = require("discord")
     if (!global.dsf.disableSIGINT) {

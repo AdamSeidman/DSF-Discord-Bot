@@ -1,6 +1,7 @@
 const { Table } = require("../database")
 const logger = require("@adamseidman/logger")
-const { copyObject, randomArrayItem, stripPunctuation, shuffleArray } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation,
+    shuffleArray, probabilityCheck } = require("logic-kit")
 
 const table = new Table('allItems')
 let lastItem = { id: -1 }
@@ -68,6 +69,15 @@ function getDictionary() {
     return copyObject(dictionary)
 }
 
+function getRandom() {
+    const item = randomArrayItem(table.data)
+    if (probabilityCheck(0.5)) {
+        return `${item.usage} ${item.name}`
+    } else {
+        return item.plural
+    }
+}
+
 function getAll() {
     return table.data
 }
@@ -85,5 +95,6 @@ module.exports = {
     getNextItem,
     addItem,
     getDictionary,
-    getAll
+    getAll,
+    getRandom
 }
