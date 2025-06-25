@@ -133,7 +133,7 @@ function handlePhrase(msg) {
                 adjective}?\nThis calls for a fact!\nReady? Here it is:\n${
                 content}`)
         }
-        fact.response(msg, { injected: false })
+        fact.response(msg, { injected: false, user: msg.member })
     }
 }
 
