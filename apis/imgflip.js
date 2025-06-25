@@ -48,8 +48,9 @@ function getMeme(mainCaption, extraCaptionFn, template) {
         const boxes = [mainCaption]
         getTemplate()
             .then(({ templateId, boxCount }) => {
+                let count = 0
                 while (boxes.length < Math.min(boxCount, 10)) {
-                    boxes.push(extraCaptionFn())
+                    boxes.push(extraCaptionFn(count++, boxCount))
                 }
                 return fetch(`${BASE_URL}/caption_image?template_id=${templateId
                     }&username=${process.env.IMGFLIP_USERNAME}&password=${process.env.IMGFLIP_PASSWORD

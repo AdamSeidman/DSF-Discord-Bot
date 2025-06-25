@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const items = require("@tables/items")
 const logger = require("@adamseidman/logger")
 const Imgflip = require("../../apis/imgflip")
+const { probabilityCheck } = require("logic-kit")
 const { generateFact } = require("@facts/construction")
 
 if (Imgflip.isEnabled()) {
@@ -9,7 +10,16 @@ if (Imgflip.isEnabled()) {
         response: async (msg, params) => {
             let message = 'Internal Error Occurred'
             try {
-                const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''), items.getRandom)
+                const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''),
+                    (idx, total) => {
+                        if (total === 2 && probabilityCheck(global.dsf.bottomTextChance || 0.05)) {
+                            return 'Bottom Text'
+                        } else if (total > 3 && idx % 2 === 1) {
+                            return generateFact()
+                        } else {
+                            return items.getRandom()
+                        }
+                    })
                 message = { files: [{ attachment }] }
             } catch (error) {
                 logger.error('Error generating meme.', error)
