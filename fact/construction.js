@@ -401,6 +401,10 @@ function findSpecificTemplate(item, isFact) {
     return result
 }
 
+function getLastSubject() {
+    return queue[0]
+}
+
 module.exports = {
     generateFact: () => getParsedTemplate(true),
     generateLie: () => getParsedTemplate(false),
@@ -409,5 +413,6 @@ module.exports = {
     findSpecificTemplate,
     getGibberish: tagDictionary.gibberish,
     tagList: Object.keys(tagDictionary),
-    itemTypes
+    itemTypes,
+    getLastSubject
 }
