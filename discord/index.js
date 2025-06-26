@@ -51,9 +51,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 })
 
-client.on(Events.Error, (error) => {
-    logger.error('Discord client error.', error)
-})
+if (global.DEBUG) {
+    client.on(Events.Debug, logger.debug)
+    client.on(Events.Warn, logger.warn)
+}
+client.on(Events.Error, logger.error)
 
 client.init = async () => {
     global.discordToken = global.DEBUG?
