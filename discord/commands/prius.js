@@ -9,7 +9,7 @@ module.exports = {
             content: 'Ya like jazz?',
             files: [{ attachment }]
         }
-        if (!name.endsWith('.jpg')) {
+        if (!(name || '').endsWith('.jpg')) {
             message = 'Could not find a Toyota dealership!'
         } else if (!name.includes('prius')) {
             message.content = 'Oops! RAV4?'
