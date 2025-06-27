@@ -9,6 +9,5 @@
     "hostReactionFrequency": 0.02,
     "dsfHolidayMonth": 6,
     "dsfHolidayDay" : 13,
-    "dsfHolidayTotalFacts": 13,
-    "bottomTextChance": 0.01
+    "dsfHolidayTotalFacts": 13
 }

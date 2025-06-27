@@ -3,17 +3,21 @@ const items = require("@tables/items")
 const logger = require("@adamseidman/logger")
 const Imgflip = require("../../apis/imgflip")
 const { probabilityCheck } = require("logic-kit")
-const { generateFact, getLastSubject } = require("@facts/construction")
+const { generateFact, getLastSubject, getGibberish } = require("@facts/construction")
 
 if (Imgflip.isEnabled()) {
     module.exports = {
         response: async (msg, params) => {
             let message = 'Internal Error Occurred'
             try {
-                const attachment = await Imgflip.getMeme(generateFact().replaceAll('_', ''),
+                const isGibberish = probabilityCheck(0.005)
+                const attachment = await Imgflip.getMeme(
+                    isGibberish? getGibberish() : generateFact().replaceAll('_', ''),
                     (idx, total) => {
-                        if (total === 2) {
-                            if (probabilityCheck(global.dsf.bottomTextChance)) {
+                        if (isGibberish) {
+                            return getGibberish()
+                        } else if (total === 2) {
+                            if (probabilityCheck(0.01)) {
                                 return 'Bottom Text'
                             } else if (probabilityCheck(0.85) && typeof getLastSubject() === 'string') {
                                 return getLastSubject()
