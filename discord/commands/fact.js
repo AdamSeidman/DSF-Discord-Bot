@@ -3,6 +3,25 @@ const stats = require("@tables/stats")
 const { generateFact } = require("@facts/construction")
 
 const MAX_FACTS = global.dsf.maxFactCount
+const TYPING_TIMEOUT = 350
+
+async function sendMultipleMessages(channel, arr) {
+    if (!Array.isArray(arr)) return
+
+    for (const [idx, item] of arr.entries()) {
+        let timeoutTriggered = false
+        const timer = setTimeout(() => {
+            timeoutTriggered = true
+            if (idx < (arr.length - 1)) {
+                channel.sendTyping()
+            }
+        }, TYPING_TIMEOUT)
+        await channel.send(item)
+        if (!timeoutTriggered) {
+            clearTimeout(timer)
+        }
+    }
+}
 
 function handleMultiCommand(msg, params, factFn) {
     let numFacts = 1
@@ -25,18 +44,13 @@ function handleMultiCommand(msg, params, factFn) {
         if (facts.join('\n').length < 2000) {
             msg.reply(facts.join('\n'))
         } else {
-            facts.forEach((item, idx) => {
-                if (idx === 0) {
-                    msg.reply(`${item}  ${Discord.italic(`(+${numFacts - 1})`)}`)
-                } else {
-                    msg.channel.send(item)
-                }
-            })
+            msg.reply(`${facts.shift()}  ${Discord.italic(`(+${numFacts - 1})`)}`)
+                .then(() => sendMultipleMessages(msg.channel, facts))
         }
     } else if (params.isPlease) {
         msg.reply(facts[0])
     } else {
-        facts.forEach(x => msg.channel.send(x))
+        sendMultipleMessages(msg.channel, facts)
     }
     return numFacts
 }
