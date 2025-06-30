@@ -27,6 +27,7 @@
         <div class="tabs">
             <button id="tab-UserTab" class="tab-button active" onclick="openTab(event, 'UserTab')">Dashboard</button>
             <button id="tab-AdminTab" class="tab-button hidden" onclick="openTab(event, 'AdminTab')">Admin</button>
+            <button id="tab-DMsTab" class="tab-button hidden" onclick="openTab(event, 'DMsTab')">DMs</button>
             <button id="tab-ItemTab" class="tab-button hidden" onclick="openTab(event, 'ItemTab')">Items</button>
             <button id="tab-PersonTab" class="tab-button hidden" onclick="openTab(event, 'PersonTab')">People</button>
             <button id="tab-PlaceTab" class="tab-button hidden" onclick="openTab(event, 'PlaceTab')">Places</button>
@@ -64,6 +65,15 @@
                 </div>
                 <label for="overrideMessage" class="requires-owner">Message:</label>
                 <input type="text" id="overrideMessage" class="use-autocomplete" name="overrideMessage" oninput="setOverrideTimeout()" class="requires-owner">
+            </div>
+        </div>
+
+        <div id="DMsTab" class="tab-content">
+            <div class="form">
+                <h3>Direct Message Log&nbsp;
+                    <button onclick="refreshDMs()" class="requires-owner">Refresh</button>
+                </h3>
+                <div id="dms-container"><br><hr>&nbsp;</div>
             </div>
         </div>
 

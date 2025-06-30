@@ -13,18 +13,19 @@ function openTab(evt, tabName) {
 }
 
 const permsTabMap = {
-    submit_new_items: 'Item',
-    submit_new_people: 'Person',
-    submit_new_places: 'Place',
-    submit_new_tags: 'Tags',
-    submit_static_facts: 'Static',
-    submit_new_templates: 'Fact',
-    is_owner: 'Admin'
+    Item: 'submit_new_items',
+    Person: 'submit_new_people',
+    Place: 'submit_new_places',
+    Tags: 'submit_new_tags',
+    Static: 'submit_static_facts',
+    Fact: 'submit_new_templates',
+    Admin: 'is_owner',
+    DMs: 'is_owner'
 }
 
 $(() => {
     let params = new URLSearchParams(window.location.search)
-    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab']
+    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab']
     let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : 'UserTab';
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
@@ -46,7 +47,7 @@ $(() => {
                 pluralize('acronym', 's', user.stats.acronym)}, and ${
                 pluralize('effect', 's', user.stats.effect)}!\n`)
             $('.requires-owner').toggleClass('hidden', !user.is_owner)
-            Object.entries(permsTabMap).forEach(([ perm, tabName ]) => {
+            Object.entries(permsTabMap).forEach(([ tabName, perm ]) => {
                 if (user[perm]) {
                     $(`#tab-${tabName}Tab`).removeClass('hidden')
                 }
@@ -280,3 +281,35 @@ function staticFactValidator() {
 function submitStaticFact() {
     submit('staticFact', [], 'staticFactInput')
 }
+
+function refreshDMs() {
+    standardGET('directMessages')
+        .then(({ data }) => {
+            if (!Array.isArray(data?.messages)) {
+                throw new Error("No messages array.")
+            } else {
+                console.log(data)
+            }
+            const users = []
+            const messages = []
+            data.messages.forEach((message) => {
+                if (message.includes('): ')) {
+                    users.push(`${message.slice(0, message.indexOf('(u:')).trim()} (${message.slice(message.indexOf('(u:') + 3, message.indexOf(' ch:')).trim()})`)
+                    messages.push(`${message.slice(0, message.indexOf(' (u:'))}: ${message.slice(message.indexOf('): ') + 2).trim()}`)
+                } else {
+                    messages.push(message)
+                }
+            })
+            let html = '<hr>' + messages.join('<br><br>')
+            if (users.length > 0) {
+                html = `<h4>Users:</h4>${([...new Set(users)]).join('<br>')}<br>&nbsp;<hr><h4>Messages:</h4>${
+                    messages.map(x => x.trim().replaceAll('\n', '<br>')).join('<br><br>')}<br>&nbsp;`
+            }
+            $('div#dms-container').html(html)
+        })
+        .catch((error) => {
+            console.error('Error fetching DMs', error)
+            alert('Error: ' + error)
+        })
+}
+
