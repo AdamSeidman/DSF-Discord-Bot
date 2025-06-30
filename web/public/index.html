@@ -70,9 +70,12 @@
 
         <div id="DMsTab" class="tab-content">
             <div class="form">
-                <h3>Direct Message Log&nbsp;
-                    <button onclick="refreshDMs()" class="requires-owner">Refresh</button>
+                <h3>Message Log&nbsp;
+                    <button onclick="refreshDMs()" class="requires-owner">General Refresh</button>
                 </h3>
+                <label for="channelIdInput">Channel ID:</label>
+                <input type="text" id="channelIdInput" class="use-autocomplete" name="channelIdInput">
+                <button type="submit" onclick="fetchSpecificMessages()" class="requires-owner">Fetch</button>
                 <div id="dms-container"><br><hr>&nbsp;</div>
             </div>
         </div>

@@ -286,7 +286,7 @@ function refreshDMs() {
     standardGET('directMessages')
         .then(({ data }) => {
             if (!Array.isArray(data?.messages)) {
-                throw new Error("No messages array.")
+                throw new Error('No messages array.')
             } else {
                 console.log(data)
             }
@@ -313,3 +313,20 @@ function refreshDMs() {
         })
 }
 
+function fetchSpecificMessages() {
+    let id = $('input#channelIdInput').val()
+    console.log(id)
+    standardGET('directMessages', `id=${id}`)
+        .then(({ data }) => {
+            if (!Array.isArray(data?.messages)) {
+                throw new Error('No messages array.')
+            }
+            $('div#dms-container').html(`<h4>Messages:</h4><div>${data.messages.map(x => x.trim().replaceAll('\n', '<br>')).join('<br><br>')}</div>`)
+        })
+        .catch((error) => {
+            console.error('Error fetching specific DMs', error)
+            alert('Error: ' + error)
+        })
+
+    // console.log(id)
+}

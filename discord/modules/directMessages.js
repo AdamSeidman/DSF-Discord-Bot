@@ -6,7 +6,9 @@ const DEFAULT_LIMIT=100
 
 async function getAll(channel, limit) {
     const messages = await channel?.messages?.fetch({ limit })
-    return (messages || []).filter(x => x.content.length > 0 && x.author.id != global.bot?.id).map(x => x.content)
+    return (messages || [])
+        .filter(x => x.content.length > 0 && x.author.id != global.bot?.id)
+        .map((message) => `(${new Date(message.createdTimestamp).toLocaleString()}) "${message.content.trim()}"`)
 }
 
 async function getAllFromUser(userId, limit=DEFAULT_LIMIT) {
