@@ -12,7 +12,12 @@ async function getAll(channel, limit) {
 }
 
 async function getAllFromUser(userId, limit=DEFAULT_LIMIT) {
-    const user = await require("discord").users.fetch(userId)
+    let user = {}
+    try {
+        user = await require("discord").users.fetch(userId)
+    } catch {
+        return []
+    }
     if (!user) {
         return []
     }
