@@ -61,7 +61,7 @@ module.exports = {
         })
         msg.reply({
             embeds: [new Discord.EmbedBuilder()
-                .setColor("#34EB3A")
+                .setColor('#34EB3A')
                 .setTitle('User Stats')
                 .setAuthor({ name: user.username, iconURL: user.avatar })
                 .addFields(...fields)
