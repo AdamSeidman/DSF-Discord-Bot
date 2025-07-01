@@ -81,10 +81,23 @@ async function handleSlashCommand(interaction) {
     const isTestingGuild = interaction.guild?.id == process.env.DISCORD_TESTING_GUILD_ID
     const isDM = interaction.channel?.type === Discord.ChannelType.DM
 
-    if (!command && isTestingGuild) {
-        command = testingGuild?.commands.get(interaction.commandName)
+    const params = interaction.userParams || {
+        injected: false,
+        isPlease: false,
+        isTestingGuild,
+        isDM
+    }
+    params.user = (interaction.member || interaction.author || interaction.user)
+
+    if (!command && (isTestingGuild || params.user.id == global.owner?.id)) {
+        command = testingGuild.commands.get(interaction.commandName)
     }
     if (!command) {
+        if (testingGuild.commands.get(interaction.commandName)) {
+            logger.debug(`Internal command requested outside of testing guild by ${params.user.username}.`,
+                interaction.commandName)
+            return
+        }
         if (isDM) {
             logger.error('Requested slash command not found', command)
         }
@@ -94,14 +107,6 @@ async function handleSlashCommand(interaction) {
         })
         return
     }
-
-    const params = interaction.userParams || {
-        injected: false,
-        isPlease: false,
-        isTestingGuild,
-        isDM
-    }
-    params.user = (interaction.member || interaction.author || interaction.user)
 
     try {
         command.execute(interaction, params)
