@@ -10,7 +10,7 @@ module.exports = {
                 value: '[GitHub](https://github.com/AdamSeidman/DSF-Discord-Bot)'
             }, {
                 name: 'Copyright',
-                value: '© 2020-2025 Adam Seidman'
+                value: `© 2020-${new Date().getFullYear()} Adam Seidman`
             })
             .setTimestamp()
         if (params.injected) {
@@ -19,5 +19,5 @@ module.exports = {
             msg.reply({ embeds: [embed] })
         }
     },
-    altMsg: 'Information about DSF Bot'
+    helpMsg: 'Information about DSF Bot'
 }

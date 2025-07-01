@@ -33,5 +33,5 @@ module.exports = {
             .setTimestamp()
         msg.reply({ embeds: [embed] })
     },
-    helpMsg: 'View the bot\'s uptime.'
+    altMsg: 'View the bot\'s uptime.'
 }
