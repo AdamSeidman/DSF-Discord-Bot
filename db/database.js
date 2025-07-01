@@ -7,6 +7,7 @@ const { uploadBackup: googleBackup } = require("../apis/google")
 
 const BACKUP_HOURS = 24
 const REFRESH_MINUTES = 2
+const BUCKET_LIMIT = 1000
 
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_PUBLIC_KEY
 const allTables = []
@@ -63,7 +64,7 @@ class Bucket {
     }
 
     async #init() {
-        const { error, data } = await this.client.storage.from(this.name).list('', { limit: 1000 })
+        const { error, data } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
 
         if (error) {
             logger.error(`Error initializing ${this.name}`, error)
@@ -75,7 +76,7 @@ class Bucket {
     }
 
     async refresh() {
-        const { data, error } = await this.client.storage.from(this.name).list(this.name)
+        const { data, error } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
         if (error) {
             logger.error(`Error refreshing ${this.name}`, error)
         } else if (data) {
@@ -135,15 +136,23 @@ setInterval(() => {
     refreshIdx = (refreshIdx + 1) % refreshFns.length
 }, (REFRESH_MINUTES * 1000 * 60))
 
-setInterval(async () => {
+function backup() {
+    logger.debug('Starting backup...')
     const out = {}
     allTables.forEach((table) => {
         out[table.name] = table.data
     })
-    await googleBackup(`backup_${new Date().toISOString()
-        .replace(/[-:]/g, '').slice(0, 15).replace('T', '-')}.json`, out)
-    logger.info('Backup Completed')
-}, (BACKUP_HOURS * 60 * 60 * 1000))
+    const filename = `backup_${new Date().toISOString()
+        .replace(/[-:]/g, '').slice(0, 15).replace('T', '-')}.json`
+    googleBackup(filename, out)
+        .then(() => logger.info('Backup Completed', filename))
+        .catch(logger.error)
+}
+
+setTimeout(() => {
+    backup()
+    setInterval(backup, (BACKUP_HOURS * 60 * 60 * 1000))
+}, (INITIAL_BACKUP_HOURS * 60 * 60 * 1000))
 
 function forceRefresh() {
     refreshFns.forEach((fn, idx) => {
