@@ -50,7 +50,7 @@ async function pruneSessions() {
             ran = true
             sessions.destroy(session, () => {
                 if (++count >= arr.length) {
-                    logger.info('Pruned expired sessions!\n')
+                    logger.info(`Pruned ${arr.length} expired session(s)!\n`)
                     postpone(() => { process.exit(0) })
                 }
             })
