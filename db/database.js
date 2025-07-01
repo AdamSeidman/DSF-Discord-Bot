@@ -6,6 +6,7 @@ const { createClient } = require("@supabase/supabase-js")
 const { uploadBackup: googleBackup } = require("../apis/google")
 
 const BACKUP_HOURS = 24
+const INITIAL_BACKUP_HOURS = 2
 const REFRESH_MINUTES = 2
 const BUCKET_LIMIT = 1000
 
