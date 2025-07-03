@@ -27,8 +27,7 @@ async function pruneSessions() {
     }
     count = 0
     const nonExpired = { expired: false }
-    let ran = false
-    sessions.getAll()
+    let promises = sessions.getAll()
         .map((session, idx, arr) => {
             if (idx === 0) {
                 logger.info(`There are ${arr.length} total session(s).`)
@@ -48,19 +47,24 @@ async function pruneSessions() {
             return session
         })
         .filter(x => x.expired)
-        .map(x => x.session_id)
-        .forEach((session, _, arr) => {
-            ran = true
-            sessions.destroy(session, () => {
-                if (++count >= arr.length) {
-                    logger.info(`Pruned ${arr.length} expired session(s)!\n`)
-                    postpone(() => { process.exit(0) })
-                }
-            })
+        .map((session, idx, arr) => {
+            return () => {
+                return sessions.destroy(session.session_id, () => {
+                    console.log(`Destroyed session ${idx + 1} of ${arr.length}`)
+                    if (++count >= arr.length) {
+                        logger.info(`Pruned ${arr.length} expired session(s)!\n`)
+                        postpone(() => { process.exit(0) })
+                    }
+                })
+            }
         })
-    if (!ran) {
+    if (promises.length < 1) {
         logger.warn('Nothing to prune!\n')
         postpone(() => { process.exit(0) })
+    } else {
+        for (const fn of promises) {
+            let xx = await fn()
+        }
     }
 }
 
