@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const items = require("@tables/items")
+const stats = require("@tables/stats")
 const logger = require("@adamseidman/logger")
 const Imgflip = require("../../apis/imgflip")
 const { probabilityCheck } = require("logic-kit")
@@ -43,6 +44,7 @@ if (Imgflip.isEnabled()) {
             } else {
                 msg.reply(message)
             }
+            stats.updateStat(params.user, 'meme')
         },
         helpMsg: 'Attempts to generate a stupid fact meme.'
     }

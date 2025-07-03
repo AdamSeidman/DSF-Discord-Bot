@@ -51,7 +51,8 @@ module.exports = {
             lie: 'Lies',
             prius: 'Priuses',
             effect: 'Effects',
-            acronym: 'Acronyms'
+            acronym: 'Acronyms',
+            meme: 'Memes'
         }).map(([key, title]) => {
             return {
                 name: Discord.bold(title),
