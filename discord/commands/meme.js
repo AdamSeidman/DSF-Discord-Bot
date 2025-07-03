@@ -10,6 +10,10 @@ if (Imgflip.isEnabled()) {
     module.exports = {
         response: async (msg, params) => {
             let message = 'Internal Error Occurred'
+            let deferral = null
+            if (!params.injected) {
+                deferral = msg.deferReply()
+            }
             try {
                 const isGibberish = probabilityCheck(0.005)
                 const attachment = await Imgflip.getMeme(
@@ -42,7 +46,8 @@ if (Imgflip.isEnabled()) {
             if (params.injected) {
                 msg.channel.send(message)
             } else {
-                msg.reply(message)
+                await deferral
+                msg.followUp(message)
             }
             stats.updateStat(params.user, 'meme')
         },
