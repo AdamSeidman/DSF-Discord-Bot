@@ -8,7 +8,7 @@ module.exports = {
             msg.reply('This command is not available in DMs!')
             return
         }
-        const result = await submitRepick(params.id, msg.guild)
+        const result = await submitRepick(params.user?.id, msg.guild)
         if (result.error) {
             msg.reply({
                 content: 'There was an error with this command!',
