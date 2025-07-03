@@ -8,6 +8,7 @@ const stats = require("@tables/stats")
 const fact = require("../commands/fact")
 const effects = require("@media/effects")
 const phrases = require("@tables/phrases")
+const logger = require("@adamseidman/logger")
 const adjectives = require("@tables/adjectives")
 const construction = require("@facts/construction")
 const effectsGuilds = require("@tables/effectsGuilds")
@@ -40,6 +41,7 @@ function handleCommand(msg) {
         params: copyObject(message)
     }
     commands.handleSlashCommand(msg)
+        .catch(logger.error)
 }
 
 const pleaseMap = {
@@ -65,6 +67,7 @@ function handlePlease(msg) {
             params: []
         }
         commands.handleSlashCommand(msg)
+            .catch(logger.error)
     }
 }
 
@@ -112,24 +115,24 @@ function handlePhrase(msg) {
         const result = construction.findSpecificTemplate(findResult.subject, findResult.isFact)
         if (result.found) {
             if (findResult.isMe) {
-                msg.reply(result.fact)
+                return msg.reply(result.fact)
             } else {
-                msg.channel.send(`${findResult.user}${result.fact}`)
+                return msg.channel.send(`${findResult.user}${result.fact}`)
             }
         } else {
-            msg.channel.send(`${findResult.user}I could not find a ${findResult.factPhrase} for "${
+            return msg.channel.send(`${findResult.user}I could not find a ${findResult.factPhrase} for "${
                 findResult.subject}" in my database.\nHere's a ${findResult.factPhrase} about ${
                 result.alternateSubject} instead:\n${result.fact}`)
         }
     } else if (phrase) {
         if (phrase.is_reply) {
-            msg.reply(phrase.response)
+            return msg.reply(phrase.response)
         } else {
-            msg.channel.send(phrase.response)
+            return msg.channel.send(phrase.response)
         }
     } else if (adjective) {
         msg.reply = (content) => {
-            msg.channel.send(`Did someone say ${
+            return msg.channel.send(`Did someone say ${
                 adjective}?\nThis calls for a fact!\nReady? Here it is:\n${
                 content}`)
         }
@@ -151,13 +154,13 @@ function handleSoundEffect(msg) {
 
 function handleHostMessage(msg) {
     if (!!msg.member && hosts.isHostMessage(msg) && probabilityCheck(global.dsf.hostReactionFrequency)) {
-        ['🇭', '🇴', '🇸', '🇹'].forEach(x => msg.react(x))
+        ['🇭', '🇴', '🇸', '🇹'].forEach(x => msg.react(x).catch(logger.warn))
     }
 }
 
 function handleMentions(msg) {
     if (!!msg.member && msg.content.includes(Discord.userMention(global.bot.id))) {
-        msg.reply({
+        return msg.reply({
             content: 'My reaction to that information:',
             files: [{ attachment: './assets/logo.png' }]
         })

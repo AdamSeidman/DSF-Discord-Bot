@@ -6,9 +6,9 @@ module.exports = {
         const success = resume(msg)
         const message = success? 'Resuming music...' : 'Could not find music to resume.'
         if (!params.injected) {
-            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
+            return msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
-            msg.channel.send(message)
+            return msg.channel.send(message)
         }
     },
     helpMsg: 'Resumes music, if playing.'

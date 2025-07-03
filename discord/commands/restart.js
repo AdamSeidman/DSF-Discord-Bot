@@ -21,7 +21,7 @@ module.exports = {
             console.log('\n')
             postpone(() => process.kill(process.pid, 'SIGINT'))
         } else {
-            msg.reply('Only the admin can restart the bot.')
+            await msg.reply('Only the admin can restart the bot.')
         }
     },
     isTesterCommand: true,

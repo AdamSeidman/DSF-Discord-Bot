@@ -6,9 +6,9 @@ module.exports = {
         const success = stop(msg)
         const message = success? 'Stopping music...' : 'Could not find music to stop.'
         if (!params.injected) {
-            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
+            return msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
-            msg.channel.send(message)
+            return msg.channel.send(message)
         }
     },
     helpMsg: 'Stops music and removes bot from voice channel.'

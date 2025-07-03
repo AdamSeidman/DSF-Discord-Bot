@@ -53,6 +53,7 @@ function refresh() {
         .then(() => {
             dictionary = null
         })
+        .catch(logger.warn)
 }
 
 module.exports = {

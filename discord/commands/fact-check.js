@@ -3,14 +3,14 @@ const { parseFactTemplate, parseLieTemplate } = require("@facts/construction")
 
 const NUM_EXAMPLES = 10
 
-function parseInput(msg, params, template) {
-    let print = (x) => msg.reply(x)
+async function parseInput(msg, params, template) {
+    let print = async (x) => await msg.reply(x)
     if (params.injected) {
-        print = (x) => msg.channel.send(x)
+        print = async (x) => await msg.channel.send(x)
     }
     template = template.trim()
     if (template.length < 1 || !template.startsWith('[') || !template.endsWith(']')) {
-        print('You need to send a fact template.')
+        await print('You need to send a fact template.')
         return
     }
     logger.info('Received new fact template.', template)
@@ -29,13 +29,13 @@ function parseInput(msg, params, template) {
     let out = []
     while (builder.length > 0) {
         if (out.join('').concat(builder[0]).length >= 2000) {
-            print(out.join(''))
-            print = (x) => msg.channel.send(x)
+            await print(out.join(''))
+            print = async (x) => await msg.channel.send(x)
             out = []
         }
         out.push(builder.shift())
     }
-    print(out.join(''))
+    await print(out.join(''))
 }
 
 module.exports = {
@@ -46,7 +46,7 @@ module.exports = {
         } else {
             template = msg.options.getString('template') || ''
         }
-        parseInput(msg, params, template)
+        return parseInput(msg, params, template)
     },
     argModifier: (builder) => {
         builder.addStringOption((option) => 

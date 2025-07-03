@@ -9,7 +9,7 @@ const objectExampleText = createTextList([
 
 module.exports = {
     response: (msg) => {
-        msg.reply(`Tag List:\n${
+        return msg.reply(`Tag List:\n${
             [...facts.tagList, ...getTagList(), ...facts.itemTypes.map(x => `${x}s`)].sort().join(', ')
         }\n\nObject Examples:\n${objectExampleText}`)
     },

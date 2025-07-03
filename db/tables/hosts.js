@@ -37,7 +37,7 @@ function setupHost(userId, guild) {
     })
 }
 
-async function attemptRepick(userId, guild, data) {
+function attemptRepick(userId, guild, data) {
     const result = {
         error: null,
         repicked: false,

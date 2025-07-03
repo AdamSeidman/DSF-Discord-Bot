@@ -32,9 +32,11 @@ async function refresh() {
                 `tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`)
         }
     })
+    let refreshPromises = []
     Object.values(tableLibrary).forEach(({ table }) => {
-        table.refresh()
+        refreshPromises.push(table.refresh())
     })
+    await Promise.all(refreshPromises)
 }
 
 module.exports = {

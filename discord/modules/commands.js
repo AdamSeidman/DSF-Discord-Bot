@@ -101,7 +101,7 @@ async function handleSlashCommand(interaction) {
         if (isDM) {
             logger.error('Requested slash command not found', command)
         }
-        interaction.reply({
+        await interaction.reply({
             content: isDM? 'Command unavailable.' : 'Internal Error! Command not found.',
             flags: Discord.MessageFlags.Ephemeral
         })
@@ -109,7 +109,7 @@ async function handleSlashCommand(interaction) {
     }
 
     try {
-        command.execute(interaction, params)
+        await command.execute(interaction, params)
     } catch (error) {
         logger.error('Error in slash command: ' + interaction.commandName, error)
     }

@@ -14,9 +14,9 @@ module.exports = {
             })
             .setTimestamp()
         if (params.injected) {
-            msg.channel.send({ embeds: [embed] })
+            await msg.channel.send({ embeds: [embed] })
         } else {
-            msg.reply({ embeds: [embed] })
+            await msg.reply({ embeds: [embed] })
         }
     },
     helpMsg: 'Information about DSF Bot'

@@ -14,12 +14,12 @@ module.exports = {
         } else if (!name.includes('prius')) {
             message.content = 'Oops! RAV4?'
         }
-        if (params.injected || params.isPlease) {
-            msg.channel.send(message)
-        } else {
-            msg.reply(message)
-        }
         stats.updateStat(params.user, 'prius')
+        if (params.injected || params.isPlease) {
+            return msg.channel.send(message)
+        } else {
+            return msg.reply(message)
+        }
     },
     helpMsg: 'No explanation needed.'
 }

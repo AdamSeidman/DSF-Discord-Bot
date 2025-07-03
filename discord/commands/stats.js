@@ -30,12 +30,13 @@ module.exports = {
                 }
             }
             if (!id || !user) {
-                msg.reply(`Could not find user: ${params.params[0]}`)
+                await msg.reply(`Could not find user: ${params.params[0]}`)
+                return
             }
         }
         if (args !== null) {
             if (args.bot) {
-                msg.reply({
+                await msg.reply({
                     content: 'Cannot get statistics for a bot!',
                     flags: Discord.MessageFlags.Ephemeral
                 })
@@ -60,7 +61,7 @@ module.exports = {
                 inline: true
             }
         })
-        msg.reply({
+        await msg.reply({
             embeds: [new Discord.EmbedBuilder()
                 .setColor('#34EB3A')
                 .setTitle('User Stats')

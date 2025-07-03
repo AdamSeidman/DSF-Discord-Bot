@@ -43,7 +43,7 @@ module.exports = {
                 })
             }
         } else {
-            msg.reply('You are not the bot owner.')
+            await msg.reply('You are not the bot owner.')
         }
     },
     argModifier: (builder) => {

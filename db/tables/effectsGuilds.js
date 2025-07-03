@@ -35,7 +35,7 @@ async function setGuild(id, enabled, guildName) {
         logger.error(`Could not set guild (${id} - ${guildName}) effects enabled to [${enabled}]`, error)
         result.error = error
     }
-    table.refresh()
+    await table.refresh()
     return result
 }
 

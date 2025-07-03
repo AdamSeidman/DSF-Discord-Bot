@@ -9,7 +9,7 @@ module.exports = {
             template = msg.options.getString('template') || ''
         }
         template = template.replace(/“|”|„|‟|〝|〞|＂/g, '"')
-        factCheck.parseInput(msg, params, template)
+        return factCheck.parseInput(msg, params, template)
     },
     argModifier: factCheck.argModifier,
     isTesterCommand: true,

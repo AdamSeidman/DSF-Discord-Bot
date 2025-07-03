@@ -24,6 +24,7 @@ function updateStat(user, stat, num=1) {
                 table.refresh()
             }
         })
+        .catch(logger.error)
 }
 
 module.exports = {

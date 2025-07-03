@@ -8,8 +8,7 @@ module.exports = {
     response: (msg, params) => {
         const scheduler = require("@facts/scheduler")
         if (params.isDM) {
-            msg.reply('Cannot set up daily facts in DMs.')
-            return
+            return msg.reply('Cannot set up daily facts in DMs.')
         }
         let arg = null
         if (params.injected) {
@@ -19,23 +18,20 @@ module.exports = {
             } else if (noAnswers.includes(arg)) {
                 arg = false
             } else {
-                msg.reply('Did not understand argument!')
-                return
+                return msg.reply('Did not understand argument!')
             }
         } else {
             arg = msg.options.getBoolean('enabled')
         }
         if (typeof arg !== 'boolean') {
-            msg.reply('Received invalid command!')
             logger.warn('Could not parse arg in /daily')
-            return
+            return msg.reply('Received invalid command!')
         }
 
         let result = setChannel(msg, arg)
         if (!result) {
-            msg.reply('An error occurred. Please try again later.')
             logger.error('Could not complete /daily', arg)
-            return
+            return msg.reply('An error occurred. Please try again later.')
         }
         if (arg) {
             result = scheduler.addDailyChannel(msg.channel)
@@ -48,9 +44,9 @@ module.exports = {
                 }${arg? '' : '\n(You should consider turning it back on though...)'}`
         }
         if (params.injected) {
-            msg.channel.send(message)
+            return msg.channel.send(message)
         } else {
-            msg.reply(message)
+            return msg.reply(message)
         }
     },
     argModifier: (builder) => {

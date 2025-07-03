@@ -31,7 +31,7 @@ async function sendMessageTo(id, message) {
             logger.warn('Supplied ID for immediate message was invalid.', message)
         } else {
             logger.info('Sending immediate message.', `(${id}) ${message}`)
-            channel.send(message)
+            await channel.send(message)
         }
     } catch (error) {
         logger.error('Error in sendMessageTo', error)

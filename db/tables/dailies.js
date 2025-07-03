@@ -32,7 +32,7 @@ async function setChannel(msg, enabled) {
         logger.error(`Could not set daily channel (${msg.channel.id || '??'}) to [${enabled}]`, error)
         return false
     }
-    table.refresh()
+    await table.refresh()
     return true
 }
 

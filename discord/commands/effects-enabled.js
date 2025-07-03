@@ -7,7 +7,7 @@ const noAnswers = ['0', 'false', 'off']
 module.exports = {
     response: async (msg, params) => {
         if (params.isDM) {
-            msg.reply('This command is not available in DMs.')
+            await msg.reply('This command is not available in DMs.')
             return
         }
         let arg = null
@@ -25,7 +25,7 @@ module.exports = {
             arg = msg.options.getBoolean('enabled')
         }
         if (typeof arg !== 'boolean') {
-            msg.reply('Received invalid command!')
+            await msg.reply('Received invalid command!')
             logger.warn('Could not parse arg in /effects-enabled')
             return
         }
@@ -36,14 +36,13 @@ module.exports = {
             message = 'An error occurred. Please try again later.'
             params.injected = false
             logger.error('Could not complete /effects-enabled', arg)
-            return
         } else if (result.failed) {
             message = arg? 'Server is already set up for sound effects.' : 'Effects are not enabled on this server.'
         }
         if (params.injected) {
-            msg.channel.send(message)
+            await msg.channel.send(message)
         } else {
-            msg.reply(message)
+            await msg.reply(message)
         }
     },
     argModifier: (builder) => {

@@ -155,14 +155,18 @@ setTimeout(() => {
 }, (INITIAL_BACKUP_HOURS * 60 * 60 * 1000))
 
 function forceRefresh() {
-    refreshFns.forEach((fn, idx) => {
+    let refreshRoutines = refreshFns.map(async (fn, idx) => {
         try {
-            fn()
+            await Promise.resolve(fn())
         } catch (error) {
             logger.error(`Error forcing db refresh of index ${idx}`, error)
         }
     })
-    logger.debug('Full refresh complete.')
+    Promise.all(refreshRoutines)
+        .then(() => logger.debug('Full refresh complete.'))
+        .catch((error) => {
+            logger.warn('Unexpected error during full db refresh', error)
+        })
 }
 
 module.exports = {

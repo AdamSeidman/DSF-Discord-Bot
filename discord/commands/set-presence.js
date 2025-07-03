@@ -26,14 +26,14 @@ module.exports = {
             return
         }
         if (params.user.id == global.owner?.id) {
-            msg.reply('Setting presence...')
+            await msg.reply('Setting presence...')
             try {
                 await setPresence(msg)
             } catch (error) {
                 logger.error('Error setting bot presence!', error)
             }
         } else {
-            msg.reply('You are not the bot owner.')
+            await msg.reply('You are not the bot owner.')
         }
     },
     argModifier: (builder) => {

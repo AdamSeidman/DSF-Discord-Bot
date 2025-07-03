@@ -28,6 +28,7 @@ client.once(Events.ClientReady, async ({ user }) => {
         .then(() => {
             global.owner = client.application.owner
         })
+        .catch(logger.fatal)
     logger.info(`Discord Bot initialized.
         Logged in as ${user.username}#${user.discriminator}.`)
 })
@@ -37,18 +38,19 @@ client.on(Events.MessageCreate, (msg) => {
     if (msg.member === null) {
         directMessages.logMessage(msg)
     }
-    messageHandlers.forEach((handlerFn) => {
+    messageHandlers.forEach(async (handlerFn) => {
         try {
-            handlerFn(msg)
+            await handlerFn(msg)
         } catch (error) {
             logger.error('Error in message handler.', error)
         }
     })
 })
 
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.InteractionCreate, (interaction) => {
     if (interaction.isChatInputCommand()) {
         commands.handleSlashCommand(interaction)
+            .catch(logger.error)
     }
 })
 
@@ -65,7 +67,7 @@ client.init = async () => {
         DefaultWebSocketManagerOptions.identifyProperties.browser = 'Discord iOS'
     }
     client.options.presence = await storage.getItem('presence')
-    client.login(global.discordToken)
+    await client.login(global.discordToken)
 }
 
 client.close = async () => {

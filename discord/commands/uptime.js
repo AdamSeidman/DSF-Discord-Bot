@@ -12,10 +12,8 @@ const units = {
 function getString() {
     let remainingSeconds = process.uptime()
     const result = []
-
     Object.entries(units).forEach(([label, seconds]) => {
         const count = Math.floor(remainingSeconds / seconds)
-        
         if (count > 0) {
             result.push(`${count} ${label}${count > 1 ? 's' : ''}`)
             remainingSeconds %= seconds
@@ -31,7 +29,7 @@ module.exports = {
             .setTitle('Bot Uptime')
             .setDescription(getString())
             .setTimestamp()
-        msg.reply({ embeds: [embed] })
+        return msg.reply({ embeds: [embed] })
     },
     altMsg: 'View the bot\'s uptime.'
 }

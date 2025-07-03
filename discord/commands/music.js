@@ -15,9 +15,9 @@ module.exports = {
         const success = playMusic(msg)
         const message = success? 'Playing...' : 'Failed to start playing music.'
         if (!params.injected) {
-            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
+            return msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
-            msg.channel.send(message)
+            return msg.channel.send(message)
         }
     },
     argModifier: (builder) => {

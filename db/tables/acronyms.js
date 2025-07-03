@@ -1,4 +1,5 @@
 const { Table } = require("../database")
+const logger = require("@adamseidman/logger")
 const { randomArrayItem } = require("logic-kit")
 
 const dTable = new Table('dAdverbs')
@@ -13,7 +14,7 @@ function refresh() {
         .then(() => {
             return fTable.refresh()
         })
-        .catch(() => {})
+        .catch(logger.warn)
 }
 
 function getAcronym() {

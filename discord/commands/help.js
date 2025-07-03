@@ -5,15 +5,15 @@ let helpEmbed = null
 module.exports = {
     response: (msg, params) => {
         if (helpEmbed === null) {
-            msg.reply({
+            return msg.reply({
                 content: 'Could not generate message! Please try again soon.',
                 flags: MessageFlags.Ephemeral
             })
         } else {
             if (params.injected) {
-                msg.channel.send({ embeds: [helpEmbed] })
+                return msg.channel.send({ embeds: [helpEmbed] })
             } else {
-                msg.reply({ embeds: [helpEmbed] })
+                return msg.reply({ embeds: [helpEmbed] })
             }
         }
     },

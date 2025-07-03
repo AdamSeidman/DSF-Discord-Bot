@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const stats = require("@tables/stats")
+const logger = require("@adamseidman/logger")
 const { generateFact } = require("@facts/construction")
 
 const MAX_FACTS = global.dsf.maxFactCount
@@ -14,6 +15,7 @@ async function sendMultipleMessages(channel, arr) {
             timeoutTriggered = true
             if (idx < (arr.length - 1)) {
                 channel.sendTyping()
+                    .catch(logger.warn)
             }
         }, TYPING_TIMEOUT)
         await channel.send(item)
@@ -37,20 +39,24 @@ function handleMultiCommand(msg, params, factFn) {
     numFacts = Math.min(Math.max(numFacts, 0), MAX_FACTS)
     if (numFacts < 1) {
         msg.reply('...')
+            .catch(logger.warn)
         return 0
     }
     const facts = Array.from({length: numFacts}, () => factFn())
     if (!params.injected) {
         if (facts.join('\n').length < 2000) {
             msg.reply(facts.join('\n'))
+                .catch(logger.error)
         } else {
             msg.reply(`${facts.shift()}  ${Discord.italic(`(+${numFacts - 1})`)}`)
                 .then(() => sendMultipleMessages(msg.channel, facts))
+                .catch(logger.error)
         }
     } else if (params.isPlease) {
         msg.reply(facts[0])
     } else {
         sendMultipleMessages(msg.channel, facts)
+            .catch(logger.error)
     }
     return numFacts
 }

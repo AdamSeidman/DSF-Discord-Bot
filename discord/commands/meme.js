@@ -44,10 +44,10 @@ if (Imgflip.isEnabled()) {
                 }
             }
             if (params.injected) {
-                msg.channel.send(message)
+                await msg.channel.send(message)
             } else {
                 await deferral
-                msg.followUp(message)
+                await msg.followUp(message)
             }
             stats.updateStat(params.user, 'meme')
         },

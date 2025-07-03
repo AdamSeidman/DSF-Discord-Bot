@@ -15,9 +15,9 @@ module.exports = {
         const success = vibe(msg)
         const message = success? 'Vibing...' : 'Failed to start vibing.'
         if (!params.injected) {
-            msg.reply({ content: message, flags: MessageFlags.Ephemeral })
+            return msg.reply({ content: message, flags: MessageFlags.Ephemeral })
         } else if (!success) {
-            msg.channel.send(message)
+            return msg.channel.send(message)
         }
     },
     argModifier: (builder) => {

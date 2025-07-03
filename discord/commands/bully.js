@@ -57,10 +57,10 @@ module.exports = {
         if (params.injected) {
             randomEmojis(randomNumber(2, 5)).forEach(x => msg.react(x))
             if (!success && message.length > 0) {
-                msg.reply(message)
+                await msg.reply(message)
             }
         } else {
-            msg.reply({
+            await msg.reply({
                 content: success? 'Sending...' : message,
                 flags: Discord.MessageFlags.Ephemeral
             })

@@ -6,7 +6,7 @@ module.exports = {
     response: (msg, params) => {
         if (params.isDM || msg.member?.id != global.owner?.id) {
             if (!params.injected) {
-                msg.reply({
+                return msg.reply({
                     content: 'Yeah',
                     flags: MessageFlags.Ephemeral
                 })
@@ -16,8 +16,7 @@ module.exports = {
         let num = 0
         if (params.injected) {
             if (params.params.length < 1) {
-                msg.reply('Delete command requires an argument.')
-                return
+                return msg.reply('Delete command requires an argument.')
             }
             try {
                 num = parseInt(params.params[0])
@@ -28,7 +27,7 @@ module.exports = {
             num = msg.options?.getInteger('messages') || 0
         }
         if (num < 1 || num > MAX_DELETIONS) {
-            msg.reply(`Argument should be a number 1-${MAX_DELETIONS}.`)
+            return msg.reply(`Argument should be a number 1-${MAX_DELETIONS}.`)
         } else {
             if (!params.injected) {
                 msg.reply({
@@ -36,7 +35,7 @@ module.exports = {
                     flags: MessageFlags.Ephemeral
                 })
             }
-            msg.channel.bulkDelete(num + 1)
+            return msg.channel.bulkDelete(num + 1)
         }
     },
     argModifier: (builder) => {
