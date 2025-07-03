@@ -63,7 +63,7 @@ async function pruneSessions() {
         postpone(() => { process.exit(0) })
     } else {
         for (const fn of promises) {
-            let xx = await fn()
+            await fn()
         }
     }
 }
