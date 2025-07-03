@@ -29,7 +29,10 @@ async function pruneSessions() {
     const nonExpired = { expired: false }
     let ran = false
     sessions.getAll()
-        .map((session) => {
+        .map((session, idx, arr) => {
+            if (idx === 0) {
+                logger.info(`There are ${arr.length} total session(s).`)
+            }
             let data = {}
             try {
                 data = JSON.parse(session.data)
