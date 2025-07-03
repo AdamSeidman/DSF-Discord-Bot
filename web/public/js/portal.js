@@ -327,6 +327,4 @@ function fetchSpecificMessages() {
             console.error('Error fetching specific DMs', error)
             alert('Error: ' + error)
         })
-
-    // console.log(id)
 }
