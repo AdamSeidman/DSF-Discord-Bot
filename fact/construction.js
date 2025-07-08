@@ -329,6 +329,12 @@ function preParseNormalTags(template, subject, requiredTag) {
     return builder
 }
 
+function postParseArticles(template) {
+    return template.split(' a ').map((piece, idx) => `${
+        (idx > 0 && piece.length > 0 && ['a', 'e', 'i', 'o', 'u'].includes(piece.split('')[0].toLowerCase()))?
+         'n' : ''} ${piece}`).join(' a')
+}
+
 function parseInjectedTemplate(templateStr) {
     let template = JSON.parse(templateStr)
     if (JSON.stringify(template).toLowerCase().includes('["fact"]')) {
@@ -360,6 +366,7 @@ function getParsedTemplate(isFact, injectedTemplate) {
         template = template.join('')
         template = `${template.charAt(0).toUpperCase()}${template.slice(1)}${
             isStringTerminated(template)? '' : '.'}`
+        template = postParseArticles(template)
     } catch (error) {
         if (typeof injectedTemplate !== 'string') {
             logger.warn('Error parsing template! ' + (injectedTemplate || template), error)
