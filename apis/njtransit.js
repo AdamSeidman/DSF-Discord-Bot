@@ -75,7 +75,7 @@ async function checkToken() {
     if (token === null) {
         token = await storage.getItem(TOKEN_STORAGE_KEY)
     }
-    if (!token) {
+    if (!token?.length) {
         token = await getToken()
     }
     let valid = await isTokenValid()
