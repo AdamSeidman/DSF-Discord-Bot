@@ -332,7 +332,7 @@ function preParseNormalTags(template, subject, requiredTag) {
 function postParseArticles(template) {
     return template.split(' a ').map((piece, idx) => `${
         (idx > 0 && piece.length > 0 && ['a', 'e', 'i', 'o', 'u'].includes(piece.split('')[0].toLowerCase()))?
-         'n' : ''} ${piece}`).join(' a')
+        'n' : ''} ${piece}`).join(' a')
 }
 
 function parseInjectedTemplate(templateStr) {
