@@ -71,7 +71,7 @@ $(() => {
 })
 
 function immMsgValidator() {
-    let valid = $('#immChannelId').val().trim().length >= 18
+    let valid = $('#immChannelId').val().trim().length >= 17
     valid &&= ($('#immMessage').val().trim().length > 0)
     $('button#send-imm-btn').attr('disabled', !valid)
 }

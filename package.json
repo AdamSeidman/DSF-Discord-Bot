@@ -27,7 +27,7 @@
     "ffmpeg-static": "^5.2.0",
     "googleapis": "^150.0.1",
     "helmet": "^8.1.0",
-    "logic-kit": "^1.0.0",
+    "logic-kit": "^1.0.3",
     "module-alias": "^2.2.3",
     "node-persist": "^4.0.4",
     "node-schedule": "^2.1.1",

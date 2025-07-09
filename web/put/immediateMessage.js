@@ -1,29 +1,10 @@
 const users = require("@tables/users")
 const logger = require("@adamseidman/logger")
-const { TextChannel } = require("discord.js")
-
-function getUserById(id) {
-    return new Promise((resolve, reject) => {
-        require("discord").users.fetch(id)
-            .then((user) => {
-                resolve(user)
-            })
-            .catch((error) => {
-                logger.error(`Could not getUserById (${id})`, error)
-                reject(error)
-            })
-    })
-}
-
-function getChannelById(id) {
-    return require("discord").channels.cache
-        .filter(x => x instanceof TextChannel)
-        .find(x => x.id === id)
-}
+const { getUserById, getTextChannelById } = require("discord/modules/helpers")
 
 async function sendMessageTo(id, message) {
     try {
-        let channel = getChannelById(id)
+        let channel = getTextChannelById(id)
         if (!channel) {
             channel = await getUserById(id)
         }

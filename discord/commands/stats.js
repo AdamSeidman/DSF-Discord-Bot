@@ -1,13 +1,7 @@
 const Discord = require("discord.js")
 const { getStats } = require("@tables/stats")
 const { matchesDiscordId } = require("logic-kit")
-
-async function getUserById(id) {
-    const client = require("discord")
-    if (!id || typeof client.users?.fetch !== 'function') return
-    const user = await client.users.fetch(id)
-    return user
-}
+const { getUserById } = require("discord/modules/helpers")
 
 module.exports = {
     response: async (msg, params) => {
