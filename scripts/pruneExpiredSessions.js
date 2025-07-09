@@ -26,43 +26,36 @@ async function pruneSessions() {
         }
     }
     count = 0
-    const nonExpired = { expired: false }
-    let poolSize = -1
     let promises = sessions.getAll()
-        .map((session, idx, arr) => {
+        .reduce((out, session, idx, arr) => {
             if (idx === 0) {
-                poolSize = arr.length
-                logger.info(`There are ${poolSize} total session(s).`)
+                logger.info(`There are ${arr.length} total session(s).`)
             }
-            let data = {}
             try {
-                data = JSON.parse(session.data)
-            } catch {
-                return nonExpired
-            }
-            if (!data.cookie?.expires) {
-                return nonExpired
-            } else if (typeof data.cookie.expires === 'string') {
-                data.cookie.expires = new Date(data.cookie.expires)
-            }
-            session.expired = (data.cookie.expires < Date.now())
-            return session
-        })
-        .filter(x => x.expired)
+                const data = JSON.parse(session.data)
+                if (typeof data.cookie?.expires !== 'string') {
+                    throw null
+                }
+                if (new Date(data.cookie.expires) < Date.now()) {
+                    out.push({ ...session, poolSize: arr.length })
+                }
+            } catch {}
+            return out
+        }, [])
         .map((session, idx, arr) => {
             return () => {
                 return sessions.destroy(session.session_id, () => {
                     console.log(`Destroyed session ${idx + 1} of ${arr.length}`)
                     if (++count >= arr.length) {
-                        logger.info(`Pruned ${arr.length} expired session(s) from a pool of ${poolSize}\n`)
-                        postpone(() => { process.exit(0) })
+                        logger.info(`Pruned ${arr.length} expired session(s) from a pool of ${session.poolSize}\n`)
+                        postpone(process.exit, [0])
                     }
                 })
             }
         })
     if (promises.length < 1) {
         logger.warn('Nothing to prune!\n')
-        postpone(() => { process.exit(0) })
+        postpone(process.exit, [0])
     } else {
         for (const fn of promises) {
             await fn()

@@ -4,7 +4,7 @@ const logger = require("@adamseidman/logger")
 const table = new Table('effectsGuilds')
 
 function hasGuild(id) {
-    return table.data.filter(x => x.is_enabled).map(x => x.guild_id).includes(`${id}`)
+    return table.data.some(x => x.is_enabled && x.guild_id === `${id}`)
 }
 
 async function setGuild(id, enabled, guildName) {
