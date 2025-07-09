@@ -20,12 +20,13 @@ const permsTabMap = {
     Static: 'submit_static_facts',
     Fact: 'submit_new_templates',
     Admin: 'is_owner',
-    DMs: 'is_owner'
+    DMs: 'is_owner',
+    Insult: 'submit_insults'
 }
 
 $(() => {
     let params = new URLSearchParams(window.location.search)
-    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab']
+    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab', 'InsultTab']
     let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : 'UserTab';
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
@@ -39,6 +40,7 @@ $(() => {
             allTags = (tags || [])
             allTags.sort()
             $('#welcome-text').text(`Welcome, ${user.username}!\n`)
+            $('.fill-username').text(user.username.slice(0, 1).toUpperCase() + user.username.slice(1))
             $('#fact-text').text(`Fun fact:\n${fact}\n`)
             $('#stats-text').text(`You have requested ${
                 pluralize('fact', 's', user.stats.fact)}, ${
@@ -231,6 +233,16 @@ function submitItem() {
         is_food: $('#item-food-cb').is(':checked'),
         is_alive: $('#item-alive-cb').is(':checked')
     }, ['itemUsage', 'multipleItems', 'item-preview-text'])
+}
+
+function insultValidator() {
+    const input = $('#insultInput').val()?.trim() || ''
+    $('#insult-example-text').text(input)
+    $('button#insult-submit-btn').attr('disabled', input.length < 1 || input.split(' ').length < 2)
+}
+
+function submitInsult() {
+    submit('insult', [], 'insultInput')
 }
 
 function personValidator() {

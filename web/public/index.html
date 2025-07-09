@@ -33,6 +33,7 @@
             <button id="tab-PlaceTab" class="tab-button hidden" onclick="openTab(event, 'PlaceTab')">Places</button>
             <button id="tab-FactTab" class="tab-button hidden" onclick="openTab(event, 'FactTab')">Templates</button>
             <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
+            <button id="tab-InsultTab" class="tab-button hidden" onclick="openTab(event, 'InsultTab')">Insults</button>
         </div>
 
         <div id="UserTab" class="tab-content">
@@ -180,6 +181,21 @@
                 <input type="text" id="staticFactInput" name="staticFactInput" maxlength="500" oninput="staticFactValidator()">
                 <br>
                 <button type="submit" id="staticFact-submit-btn" onclick="submitStaticFact()" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="InsultTab" class="tab-content">
+            <div class="form">
+                <br>
+                <label for="insultInput">Insult:</label>
+                <input type="text" id="insultInput" name="insultInput" maxlength="150" oninput="insultValidator()">
+                <div class="item-example-box">
+                    <strong>Insult Preview:</strong>&nbsp;
+                    <span class="fill-username">Someone</span> told me that you 
+                    <span id="insult-example-text" class="item-preview-text"></span>.
+                </div>
+                <br>
+                <button type="submit" id="insult-submit-btn" onclick="submitInsult()" disabled>Submit</button>
             </div>
         </div>
     </div>
