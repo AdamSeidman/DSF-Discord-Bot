@@ -27,10 +27,12 @@ async function pruneSessions() {
     }
     count = 0
     const nonExpired = { expired: false }
+    let poolSize = -1
     let promises = sessions.getAll()
         .map((session, idx, arr) => {
             if (idx === 0) {
-                logger.info(`There are ${arr.length} total session(s).`)
+                poolSize = arr.length
+                logger.info(`There are ${poolSize} total session(s).`)
             }
             let data = {}
             try {
@@ -52,7 +54,7 @@ async function pruneSessions() {
                 return sessions.destroy(session.session_id, () => {
                     console.log(`Destroyed session ${idx + 1} of ${arr.length}`)
                     if (++count >= arr.length) {
-                        logger.info(`Pruned ${arr.length} expired session(s)!\n`)
+                        logger.info(`Pruned ${arr.length} expired session(s) from a pool of ${poolSize}\n`)
                         postpone(() => { process.exit(0) })
                     }
                 })
