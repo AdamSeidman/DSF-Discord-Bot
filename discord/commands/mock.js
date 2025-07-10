@@ -86,5 +86,5 @@ module.exports = {
                 .setRequired(true)
         )
     },
-    altMsg: 'Display help menu with available commands.'
+    altMsg: 'Reply with a mocking meme to a specified message.'
 }
