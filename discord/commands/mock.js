@@ -5,45 +5,12 @@ const { getMessageByUrl } = require("../modules/helpers")
 
 const DEFAULT_TEMPLATE = 'Spongebob'
 
-const templateMap = {
-    'Batman': {
-        id: '438680',
-        caption1: (msg) => msg.content.trim(),
-        caption2: () => 'Please Stop Talking'
-    },
-    'Book': {
-        id: '237236273',
-        caption1: (msg) => `"${msg.content.trim()}"`,
-        caption2: (msg) => `If ${msg.author.username} didn't speak`
-    },
-    'Brick Wall': {
-        id: '44618107',
-        caption1: (msg) => msg.content.trim(),
-        caption2: (msg) => msg.author.username
-    },
-    'Change My Mind': {
-        id: '129242436',
-        caption1: (msg) => msg.content.trim(),
-        caption2: (msg) => msg.author.username
-    },
-    'Dominos': {
-        id: '162372564',
-        caption1: (msg) => `${msg.author.username} saying "${msg.content.trim()}"`,
-        caption2: (msg) => `${msg.author.username} being born`
-    },
-    'Kid Laughing': {
-        id: '136840273',
-        caption1: (msg) => `"${msg.content.trim()}"`,
-        caption2: () => ''
-    },
-    'Salary': {
-        id: '389270386',
-        caption1: () => '',
-        caption2: (msg) => `${msg.author.username}, why they said "${msg.content.trim()}"`
-    },
-    'Spongebob': {
-        id: '102156234',
-        caption1: (msg) => {
+const to = {
+    message: (msg) => msg.content.trim(),
+    quoted: (msg) => `"${msg.content.trim()}"`,
+    username: (msg) => msg.author.username,
+    nothing: () => '',
+    mocked: (msg) => {
             return [...(msg.content.trim())].reduce((out, letter, idx) => {
                 if (idx % 2 === 0) {
                     letter = letter.toLowerCase()
@@ -52,8 +19,49 @@ const templateMap = {
                 }
                 return out + letter
             }, '"') + '"'
-        },
-        caption2: (msg) => msg.author.username
+        }
+}
+
+const templateMap = {
+    'Batman': {
+        id: '438680',
+        caption1: to.message,
+        caption2: () => 'Please Stop Talking'
+    },
+    'Book': {
+        id: '237236273',
+        caption1: to.quoted,
+        caption2: (msg) => `If ${to.username(msg)} didn't speak`
+    },
+    'Brick Wall': {
+        id: '44618107',
+        caption1: to.message,
+        caption2: to.username
+    },
+    'Change My Mind': {
+        id: '129242436',
+        caption1: to.message,
+        caption2: to.username
+    },
+    'Dominos': {
+        id: '162372564',
+        caption1: (msg) => `${to.username(msg)} saying "${to.message(msg)}"`,
+        caption2: (msg) => `${to.username(msg)} being born`
+    },
+    'Kid Laughing': {
+        id: '136840273',
+        caption1: to.quoted,
+        caption2: to.nothing
+    },
+    'Salary': {
+        id: '389270386',
+        caption1: to.nothing,
+        caption2: (msg) => `${to.username(msg)}, why they said "${to.message(msg)}"`
+    },
+    'Spongebob': {
+        id: '102156234',
+        caption1: to.mocked,
+        caption2: to.username
     }
 }
 
