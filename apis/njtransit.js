@@ -30,7 +30,7 @@ function njtRequest(ep, params={}) {
         throw new Error('No endpoint specified.')
     }
     const form = new FormData()
-    Object.entries(params).forEach(([key, obj]) => form.append(key, obj))
+    Object.entries(params).forEach(([key, obj]) => form.append(key, `${obj}`))
     if (!params.token && !params.username) {
         form.append('token', `${token}`)
     }
