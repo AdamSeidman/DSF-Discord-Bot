@@ -11,15 +11,15 @@ const to = {
     username: (msg) => msg.author.username,
     nothing: () => '',
     mocked: (msg) => {
-            return [...(msg.content.trim())].reduce((out, letter, idx) => {
-                if (idx % 2 === 0) {
-                    letter = letter.toLowerCase()
-                } else {
-                    letter = letter.toUpperCase()
-                }
-                return out + letter
-            }, '"') + '"'
-        }
+        return [...(msg.content.trim())].reduce((out, letter, idx) => {
+            if (idx % 2 === 0) {
+                letter = letter.toLowerCase()
+            } else {
+                letter = letter.toUpperCase()
+            }
+            return out + letter
+        }, '"') + '"'
+    }
 }
 
 const templateMap = {
