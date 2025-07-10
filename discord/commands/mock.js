@@ -37,9 +37,11 @@ module.exports = {
         if (typeof error !== 'string') {
             if (typeof url !== 'string') {
                 error = 'You must provide a valid argument for this command.'
-            } else if (!url.includes('/')) {
-                url = `${msg.channel.id}/${url}`
-                originalMessage = await getMessageByUrl(url)
+            } else {
+                if (!url.includes('/')) {
+                    url = `${msg.channel.id}/${url}`
+                }
+                originalMessage = await getMessageByUrl(url, msg.guild?.id)
                 if (typeof originalMessage?.content !== 'string') {
                     error = 'Could not find specified message by URL or ID.'
                 } else if (originalMessage.content.trim().length < 3) {
