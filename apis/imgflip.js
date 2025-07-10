@@ -32,8 +32,9 @@ function getMeme(mainCaption, extraCaptionFn, template) {
     logger.debug('Attempting to generate custom meme.',{ mainCaption, template })
     if (!enabled) {
         return Promise.reject('Imgflip API not enabled.')
-    } else if (typeof mainCaption !== 'string' || mainCaption.trim().length < 1) {
-        return Promise.reject('No Caption Provided.')
+    } else if (typeof mainCaption !== 'string' ||
+        (typeof template !== 'string' && mainCaption.trim().length < 1)) {
+            return Promise.reject('No Caption Provided.')
     }
     if (typeof extraCaptionFn !== 'function') {
         extraCaptionFn = () => 'Bottom Text'

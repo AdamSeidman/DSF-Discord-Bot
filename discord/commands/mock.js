@@ -1,18 +1,60 @@
+const { copyObject } = require("logic-kit")
 const Imgflip = require("../../apis/imgflip")
 const { MessageFlags } = require("discord.js")
 const { getMessageByUrl } = require("../modules/helpers")
 
-const MOCKING_TEMPLATE_ID = '102156234'
+const DEFAULT_TEMPLATE = 'Spongebob'
 
-function toMockingText(str) {
-    return [...str].reduce((out, letter, idx) => {
-        if (idx % 2 === 0) {
-            letter = letter.toLowerCase()
-        } else {
-            letter = letter.toUpperCase()
-        }
-        return out + letter
-    }, '"') + '"'
+const templateMap = {
+    'Batman': {
+        id: '438680',
+        caption1: (msg) => msg.content.trim(),
+        caption2: () => 'Please Stop Talking'
+    },
+    'Book': {
+        id: '237236273',
+        caption1: (msg) => `"${msg.content.trim()}"`,
+        caption2: (msg) => `If ${msg.author.username} didn't speak`
+    },
+    'Brick Wall': {
+        id: '44618107',
+        caption1: (msg) => msg.content.trim(),
+        caption2: (msg) => msg.author.username
+    },
+    'Change My Mind': {
+        id: '129242436',
+        caption1: (msg) => msg.content.trim(),
+        caption2: (msg) => msg.author.username
+    },
+    'Dominos': {
+        id: '162372564',
+        caption1: (msg) => `${msg.author.username} saying "${msg.content.trim()}"`,
+        caption2: (msg) => `${msg.author.username} being born`
+    },
+    'Kid Laughing': {
+        id: '136840273',
+        caption1: (msg) => `"${msg.content.trim()}"`,
+        caption2: () => ''
+    },
+    'Salary': {
+        id: '389270386',
+        caption1: () => '',
+        caption2: (msg) => `${msg.author.username}, why they said "${msg.content.trim()}"`
+    },
+    'Spongebob': {
+        id: '102156234',
+        caption1: (msg) => {
+            return [...(msg.content.trim())].reduce((out, letter, idx) => {
+                if (idx % 2 === 0) {
+                    letter = letter.toLowerCase()
+                } else {
+                    letter = letter.toUpperCase()
+                }
+                return out + letter
+            }, '"') + '"'
+        },
+        caption2: (msg) => msg.author.username
+    }
 }
 
 module.exports = {
@@ -47,6 +89,8 @@ module.exports = {
                 } else if (originalMessage.content.trim().length < 3) {
                     error = 'The message is not long enough to mock.'
                 } else {
+                    const template = copyObject((!params.injected && templateMap[msg.options.getString('meme')])
+                        || templateMap[DEFAULT_TEMPLATE])
                     if (originalMessage.author?.id == global.bot?.id) {
                         if (!params.injected) {
                             await msg.followUp('No.')
@@ -55,12 +99,12 @@ module.exports = {
                             params.injected = true
                         }
                         originalMessage = msg
-                        originalMessage.mockedPhrase = 'I Tried To Get The Bot To Mock Itself'
-                    } else {
-                        originalMessage.mockedPhrase = toMockingText(originalMessage.content.trim())
+                        template.id = templateMap[DEFAULT_TEMPLATE].id
+                        template.caption1 = () => 'I Tried To Get The Bot To Mock Itself'
+                        template.caption2 = (msg) => templateMap[DEFAULT_TEMPLATE].caption2(msg)
                     }
-                    attachment = await Imgflip.getMeme(originalMessage.mockedPhrase,
-                        () => originalMessage.author.username, MOCKING_TEMPLATE_ID)
+                    attachment = await Imgflip.getMeme(template.caption1(originalMessage),
+                        () => template.caption2(originalMessage), template.id)
                 }
             }
         }
@@ -84,6 +128,15 @@ module.exports = {
                 .setName('message')
                 .setDescription('Message URL or ID to mock.')
                 .setRequired(true)
+        )
+        builder.addStringOption((option) =>
+            option
+                .setName('meme')
+                .setDescription('Pick a set meme template')
+                .setChoices(...Object.keys(templateMap).map(name => {
+                    return { name, value: name }
+                }))
+                .setRequired(false)
         )
     },
     altMsg: 'Reply with a mocking meme to a specified message.'
