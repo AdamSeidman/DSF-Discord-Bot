@@ -26,6 +26,8 @@ const app = async (config) => {
 
 if (require.main === module) {
     try {
+        console.error('INCORRECT BRANCH!!!')
+        process.exit(1)
         app()
     } catch (error) {
         console.error('Error initializing DSF!', error)

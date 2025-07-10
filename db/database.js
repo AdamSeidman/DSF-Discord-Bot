@@ -10,12 +10,12 @@ const INITIAL_BACKUP_HOURS = 2
 const REFRESH_MINUTES = 2
 const BUCKET_LIMIT = 1000
 
-const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_PUBLIC_KEY
+const key = process.env.vlivoeSUPABASE_SERVICE_ROLE_KEY || process.env.vlivoeSUPABASE_PUBLIC_KEY
 const allTables = []
 
-let client = createClient(process.env.SUPABASE_URL, key)
+let client = createClient(process.env.vlivoeSUPABASE_URL, key)
 if (!client) {
-    logger.fatal('Could not create database!', process.env.SUPABASE_URL)
+    logger.fatal('Could not create database!', process.env.vlivoeSUPABASE_URL)
     throw new Error()
 }
 

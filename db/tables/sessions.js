@@ -2,7 +2,7 @@ const crypto = require("crypto")
 const { Table } = require("../database")
 const session = require("express-session")
 
-const table = new Table('webSessions')
+const table = new Table('sessions')
 
 const ERROR_CODE_NO_DATA = 'PGRST116'
 
