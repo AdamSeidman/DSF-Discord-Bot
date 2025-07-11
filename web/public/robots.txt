@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /auth/
+Disallow: /logout
+Disallow: /404.html
+Disallow: /css/
+Disallow: /js/
+Disallow: /api/
+
+Sitemap: https://dsf.adamseidman.com/sitemap.xml

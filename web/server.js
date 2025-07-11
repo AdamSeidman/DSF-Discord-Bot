@@ -97,6 +97,7 @@ app.get('/logout', (req, res) => {
 })
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/.well-known/security.txt', express.static(path.join(__dirname, 'public/security.txt')))
 
 const epHandlers = {}
 ;['get', 'post', 'put'].forEach((verb) => {
