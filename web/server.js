@@ -8,11 +8,23 @@ const users = require("@tables/users")
 const bodyParser = require("body-parser")
 const session = require("express-session")
 const logger = require("@adamseidman/logger")
+const RateLimit = require("express-rate-limit")
 const userSessions = require("@tables/sessions")
 const DiscordStrategy = require("passport-discord").Strategy
 
 let app = express()
+
+const rateLimiter = RateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    handler: (req, res) => {
+        logger.warn(`Rate limit exceeded by IP: ${req.ip} path: ${req.path}`)
+        res.status(429).json({ message: 'Too Many Requests' })
+    }
+})
+
 app.use(helmet({ contentSecurityPolicy: false }))
+app.use(rateLimiter)
 app.use(cors())
 
 let jsonParser = bodyParser.json()
@@ -31,7 +43,7 @@ const sessionOptions = {
 }
 app.use(session(sessionOptions))
 
-app.set('trust proxy', true)
+app.set('trust proxy', !global.DEBUG)
 
 app.use(passport.initialize())
 app.use(passport.session())
