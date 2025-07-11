@@ -48,14 +48,14 @@ async function pruneSessions() {
                     console.log(`Destroyed session ${idx + 1} of ${arr.length}`)
                     if (++count >= arr.length) {
                         logger.info(`Pruned ${arr.length} expired session(s) from a pool of ${session.poolSize}\n`)
-                        postpone(process.exit, [0])
+                        postpone(process.exit)
                     }
                 })
             }
         })
     if (promises.length < 1) {
         logger.warn('Nothing to prune!\n')
-        postpone(process.exit, [0])
+        postpone(process.exit)
     } else {
         for (const fn of promises) {
             await fn()
