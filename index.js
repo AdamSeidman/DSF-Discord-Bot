@@ -25,6 +25,15 @@ const app = async (config) => {
 }
 
 if (require.main === module) {
+    process.on('uncaughtException', (error) => {
+        if (error.code === 'MODULE_NOT_FOUND') {
+            const { execSync } = require('child_process')
+            execSync('npm install', { stdio: 'inherit' })
+            console.log('\nModule Not Found. Restarting...\n')
+            process.exit(1)
+        }
+        throw error
+    })
     try {
         app()
     } catch (error) {
