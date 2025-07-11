@@ -4,7 +4,7 @@ const CACHED_LIST_KEY = 'cachedListInfo'
 function openTab(evt, tabName) {
     $('.tab-content').hide()
     $('.tab-button').removeClass('active')
-    $(`#${tabName}`).show()
+    $(`#${$.escapeSelector(tabName)}`).show()
     $(evt.currentTarget).addClass('active')
 
     let params = new URLSearchParams(window.location.search)
