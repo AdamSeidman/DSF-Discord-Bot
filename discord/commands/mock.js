@@ -68,7 +68,7 @@ const templateMap = {
 module.exports = {
     response: async (msg, params) => {
         if (params.isDM) {
-            return msg.reply('This function isn\'t available in DMs.\nBesides, why would you want to mock yourself?')
+            return msg.reply('This function isn\'t available in DMs... for obvious reasons...')
         } else if (!params.injected) {
             await msg.deferReply({ flags: MessageFlags.Ephemeral })
         }
