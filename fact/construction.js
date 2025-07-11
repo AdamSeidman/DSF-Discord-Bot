@@ -330,9 +330,15 @@ function preParseNormalTags(template, subject, requiredTag) {
 }
 
 function postParseArticles(template) {
-    return template.split(' a ').map((piece, idx) => `${
-        (idx > 0 && piece.length > 0 && ['a', 'e', 'i', 'o', 'u'].includes(piece.split('')[0].toLowerCase()))?
-        'n' : ''} ${piece}`).join(' a')
+    return template.split(' a ').reduce((out, piece, idx) => {
+        if (idx === 0 || piece.length < 1) {
+            return `${out}${piece}`
+        } else if (['a', 'e', 'i', 'o', 'u'].includes(piece.charAt(0).toLowerCase())) {
+            return `${out} an ${piece}`
+        } else {
+            return `${out} a ${piece}`
+        }
+    }, '')
 }
 
 function parseInjectedTemplate(templateStr) {
