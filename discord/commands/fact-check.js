@@ -16,7 +16,7 @@ async function parseInput(msg, params, template) {
     logger.info('Received new fact template.', template)
     const facts = []
     const lies = []
-    for (let i = 0; i < NUM_EXAMPLES; i++) {
+    for (let _ of new Array(NUM_EXAMPLES)) {
         facts.push(parseFactTemplate(template))
         lies.push(parseLieTemplate(template))
     }

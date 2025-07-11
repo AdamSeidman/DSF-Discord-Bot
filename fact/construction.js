@@ -43,7 +43,7 @@ const tagDictionary = {
 }
 tagDictionary.gibberish = () => {
     let arr = []
-    for (let i = 0; i < 5; i++) {
+    for (let _ of new Array(5)) {
         arr = [...arr, ...getParsedTemplate(true).split(' ')]
     }
     return shuffleArray(arr).slice(0, randomNumber(3, 10)).join(' ')
