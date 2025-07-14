@@ -242,7 +242,7 @@ function insultValidator() {
 }
 
 function submitInsult() {
-    submit('insult', [], 'insultInput')
+    submit('insult', [], 'insultInput', {}, ['insultExample'])
 }
 
 function personValidator() {
