@@ -14,13 +14,11 @@ function validateTable(tbl) {
 }
 
 function getAllTemplates() {
-    return table.data.map(({ id, can_recurse, template }) => {
-        return {
-            canRecurse: can_recurse,
-            template: JSON.parse(template),
-            id
-        }
-    })
+    return table.data.map(({ id, can_recurse, template }) => ({
+        canRecurse: can_recurse,
+        template: JSON.parse(template),
+        id
+    }))
 }
 
 async function addTemplate(submission) {

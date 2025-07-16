@@ -42,9 +42,10 @@ function getMeme(mainCaption, extraCaptionFn, template) {
     return new Promise((resolve, reject) => {
         let getTemplate = getRandomTemplate
         if (typeof template === 'string') {
-            getTemplate = async () => {
-                return { templateId: template, boxCount: 2 }
-            }
+            getTemplate = async () => ({
+                boxCount: 2,
+                templateId: template
+            })
         }
         const boxes = [mainCaption]
         getTemplate()

@@ -48,13 +48,11 @@ module.exports = {
             effect: 'Effects',
             acronym: 'Acronyms',
             meme: 'Memes'
-        }).map(([key, title]) => {
-            return {
-                name: Discord.bold(title),
-                value: `${stats[key] || 0}`,
-                inline: true
-            }
-        })
+        }).map(([key, title]) => ({
+            name: Discord.bold(title),
+            value: `${stats[key] || 0}`,
+            inline: true
+        }))
         await msg.reply({
             embeds: [new Discord.EmbedBuilder()
                 .setColor('#34EB3A')

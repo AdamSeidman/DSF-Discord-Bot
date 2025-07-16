@@ -22,12 +22,12 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setTitle('Today\'s Holidays')
             .setDescription(getDateString())
-            .addFields(...Object.entries(countryMap).map(([country, holidays]) => {
-                return {
+            .addFields(...Object.entries(countryMap)
+                .map(([country, holidays]) => ({
                     name: country,
                     value: holidays.join('\n')
-                }
-            }))
+                }))
+            )
         return msg.reply({ embeds: [embed] })
     },
     helpMsg: 'Get Today\'s Holidays'

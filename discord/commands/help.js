@@ -23,13 +23,11 @@ module.exports = {
             .setColor('#0099ff')
             .setTitle('DSF Commands List')
             .setDescription(`Enter '${cmdPrefix}' or '/' followed by desired command.`)
-            .addFields(...Object.entries(messages).map(([phrase, msg]) => {
-                return {
-                    name: phrase.slice(0, 1).toUpperCase() + phrase.slice(1),
-                    value: msg,
-                    inline: true
-                }
-            }))
+            .addFields(...Object.entries(messages).map(([phrase, msg]) => ({
+                name: phrase.slice(0, 1).toUpperCase() + phrase.slice(1),
+                value: msg,
+                inline: true
+            })))
     },
     altMsg: 'Display help menu with available commands.'
 }

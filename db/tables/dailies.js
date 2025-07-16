@@ -4,12 +4,10 @@ const logger = require("@adamseidman/logger")
 const table = new Table('dailyChannels')
 
 function getAll() {
-    return table.data.filter(x => x.is_enabled).map((row) => {
-        return {
-            guildId: row.guild_id,
-            channelId: row.channel_id
-        }
-    })
+    return table.data.filter(x => x.is_enabled).map((row) => ({
+        guildId: row.guild_id,
+        channelId: row.channel_id
+    }))
 }
 
 async function setChannel(msg, enabled) {
