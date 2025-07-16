@@ -29,7 +29,7 @@ async function getCurrentHolidays() {
         .then((data) => {
             return Promise.allSettled(data.map(({ countryCode, name }) => {
                 countries[countryCode] = name
-                return fetch(`${BASE_URL}/PublicHolidays/${2025}/${countryCode}`)
+                return fetch(`${BASE_URL}/PublicHolidays/${dateString.slice(0, 4)}/${countryCode}`)
                     .then(x => x.json())
                     .then(x => holidays.push(...x))
                     .catch(console.error)
