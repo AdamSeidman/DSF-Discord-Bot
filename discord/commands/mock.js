@@ -65,87 +65,87 @@ const templateMap = {
     }
 }
 
-module.exports = {
-    response: async (msg, params) => {
-        if (params.isDM) {
-            return msg.reply('This function isn\'t available in DMs... for obvious reasons...')
-        } else if (!params.injected) {
-            await msg.deferReply({ flags: MessageFlags.Ephemeral })
-        }
-        let url = null
-        let error = null
-        if (params.injected) {
-            if (params.params.length < 1) {
-                error = 'You must provide a valid message URL.'
+if (Imgflip.isEnabled()) {
+    module.exports = {
+        response: async (msg, params) => {
+            if (params.isDM) {
+                return msg.reply('This function isn\'t available in DMs... for obvious reasons...')
+            } else if (!params.injected) {
+                await msg.deferReply({ flags: MessageFlags.Ephemeral })
             }
-            url = params.params[0]
-        } else {
-            url = msg.options.getString('message')
-        }
-        let attachment = null
-        let originalMessage = null
-        if (typeof error !== 'string') {
-            if (typeof url !== 'string') {
-                error = 'You must provide a valid argument for this command.'
-            } else {
-                if (!url.includes('/')) {
-                    url = `${msg.channel.id}/${url}`
-                }
-                originalMessage = await getMessageByUrl(url, msg.guild?.id)
-                if (typeof originalMessage?.content !== 'string') {
-                    error = 'Could not find specified message by URL or ID.'
-                } else if (originalMessage.content.trim().length < 3) {
-                    error = 'The message is not long enough to mock.'
-                } else {
-                    const template = copyObject((!params.injected && templateMap[msg.options.getString('meme')])
-                        || templateMap[DEFAULT_TEMPLATE])
-                    if (originalMessage.author?.id == global.bot?.id) {
-                        if (!params.injected) {
-                            await msg.followUp('No.')
-                            msg.reply = (x) => msg.channel.send(x)
-                            msg.author = { username: msg.member?.user?.username }
-                            params.injected = true
-                        }
-                        originalMessage = msg
-                        template.id = templateMap[DEFAULT_TEMPLATE].id
-                        template.caption1 = () => 'I Tried To Get The Bot To Mock Itself'
-                        template.caption2 = (msg) => templateMap[DEFAULT_TEMPLATE].caption2(msg)
-                    }
-                    attachment = await Imgflip.getMeme(template.caption1(originalMessage),
-                        () => template.caption2(originalMessage), template.id)
-                }
-            }
-        }
-        if (!attachment && typeof error !== 'string') {
-            error = 'Could not generate mocking meme.'
-        }
-        if (typeof error === 'string') {
+            let url = null
+            let error = null
             if (params.injected) {
-                return msg.reply(error)
+                if (params.params.length < 1) {
+                    error = 'You must provide a valid message URL.'
+                }
+                url = params.params[0]
             } else {
-                return msg.followUp({ content: error })
+                url = msg.options.getString('message')
             }
-        } else if (!params.injected) {
-            await msg.followUp({ content: 'Sending...' })
-        }
-        return originalMessage.reply({ files: [{ attachment }] })
-    },
-    argModifier: (builder) => {
-        builder.addStringOption((option) => 
-            option
-                .setName('message')
-                .setDescription('Message URL or ID to mock.')
-                .setRequired(true)
-        )
-        builder.addStringOption((option) =>
-            option
-                .setName('meme')
-                .setDescription('Pick a set meme template')
-                .setChoices(...Object.keys(templateMap).map(name => {
-                    return { name, value: name }
-                }))
-                .setRequired(false)
-        )
-    },
-    altMsg: 'Reply with a mocking meme to a specified message.'
+            let attachment = null
+            let originalMessage = null
+            if (typeof error !== 'string') {
+                if (typeof url !== 'string') {
+                    error = 'You must provide a valid argument for this command.'
+                } else {
+                    if (!url.includes('/')) {
+                        url = `${msg.channel.id}/${url}`
+                    }
+                    originalMessage = await getMessageByUrl(url, msg.guild?.id)
+                    if (typeof originalMessage?.content !== 'string') {
+                        error = 'Could not find specified message by URL or ID.'
+                    } else if (originalMessage.content.trim().length < 3) {
+                        error = 'The message is not long enough to mock.'
+                    } else {
+                        const template = copyObject((!params.injected && templateMap[msg.options.getString('meme')])
+                            || templateMap[DEFAULT_TEMPLATE])
+                        if (originalMessage.author?.id == global.bot?.id) {
+                            if (!params.injected) {
+                                await msg.followUp('No.')
+                                msg.reply = (x) => msg.channel.send(x)
+                                msg.author = { username: msg.member?.user?.username }
+                                params.injected = true
+                            }
+                            originalMessage = msg
+                            template.id = templateMap[DEFAULT_TEMPLATE].id
+                            template.caption1 = () => 'I Tried To Get The Bot To Mock Itself'
+                            template.caption2 = (msg) => templateMap[DEFAULT_TEMPLATE].caption2(msg)
+                        }
+                        attachment = await Imgflip.getMeme(template.caption1(originalMessage),
+                            () => template.caption2(originalMessage), template.id)
+                    }
+                }
+            }
+            if (!attachment && typeof error !== 'string') {
+                error = 'Could not generate mocking meme.'
+            }
+            if (typeof error === 'string') {
+                if (params.injected) {
+                    return msg.reply(error)
+                } else {
+                    return msg.followUp({ content: error })
+                }
+            } else if (!params.injected) {
+                await msg.followUp({ content: 'Sending...' })
+            }
+            return originalMessage.reply({ files: [{ attachment }] })
+        },
+        argModifier: (builder) => {
+            builder.addStringOption((option) => 
+                option
+                    .setName('message')
+                    .setDescription('Message URL or ID to mock.')
+                    .setRequired(true)
+            )
+            builder.addStringOption((option) =>
+                option
+                    .setName('meme')
+                    .setDescription('Pick a set meme template')
+                    .setChoices(...Object.keys(templateMap).map(name => ({ name, value: name })))
+                    .setRequired(false)
+            )
+        },
+        altMsg: 'Reply with a mocking meme to a specified message.'
+    }
 }
