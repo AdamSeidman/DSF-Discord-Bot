@@ -86,7 +86,9 @@ hr {
 
 .tabs {
     display: flex;
+    flex-wrap: wrap;
     margin-block: 20px;
+    gap: 10px 0;
 }
 
 .tab-button {
