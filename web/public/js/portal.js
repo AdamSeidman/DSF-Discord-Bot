@@ -21,12 +21,13 @@ const permsTabMap = {
     Fact: 'submit_new_templates',
     Admin: 'is_owner',
     DMs: 'is_owner',
-    Insult: 'submit_insults'
+    Insult: 'submit_insults',
+    Holiday: 'submit_holidays'
 }
 
 $(() => {
     let params = new URLSearchParams(window.location.search)
-    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab', 'InsultTab']
+    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab', 'InsultTab', 'HolidayTab']
     let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : 'UserTab';
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
@@ -292,6 +293,50 @@ function staticFactValidator() {
 
 function submitStaticFact() {
     submit('staticFact', [], 'staticFactInput')
+}
+
+const LONG_MONTHS = [1, 3, 5, 7, 8, 10, 12];
+function holidayValidator() {
+    try {
+        let month = parseInt($('#holidayMonth').find(':selected').val())
+        if (month < 1 || month > 12 || isNaN(month)) {
+            throw null
+        }
+        let day = parseInt($('#holidayDay').find(':selected').val())
+        if (day < 1 || day > 31 || isNaN(day)) {
+            throw null
+        }
+        if (day > 29 && month === 2) {
+            throw null
+        }
+        if (day === 30 && !(LONG_MONTHS.includes(month))) {
+            throw null
+        }
+        let title = $('#holidayNameInput').val().trim()
+        if (typeof title !== 'string' || title.length < 1) {
+            throw null
+        }
+        $('#holiday-submit-btn').attr('disabled', false)
+        return { month, day, title, valid: true }
+    } catch {
+        $('#holiday-submit-btn').attr('disabled', true)
+    }
+    return { valid: false }
+}
+
+function submitHoliday() {
+    try {
+        const { valid, month, day } = holidayValidator()
+        if (!valid) {
+            $('#holiday-submit-btn').attr('disabled', true)
+            console.error('Bad holiday input.', month, day)
+            alert('Could not parse input to submit holiday!')
+            return
+        }
+        submit('holiday', [], 'holidayNameInput', { month, day }, ['HolidayTab select'])
+    } catch (error) {
+        console.error('Error submitting holiday', error)
+    }
 }
 
 function refreshDMs() {
