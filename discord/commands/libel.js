@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const { matchesDiscordId } = require("logic-kit") // TODO Redo npm installation for logic-kit
+const { matchesDiscordId } = require("logic-kit")
 const { getRandomInsult } = require("@tables/insults")
 const { getUserById } = require("discord/modules/helpers")
 

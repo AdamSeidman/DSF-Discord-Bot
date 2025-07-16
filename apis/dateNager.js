@@ -46,7 +46,7 @@ async function getCurrentHolidays() {
             }, [])
             return holidays
         })
-        .catch(console.error)
+        .catch((error) => logger.error('Error fetching holidays.', error))
 }
 
 module.exports = {
