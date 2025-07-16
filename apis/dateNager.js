@@ -3,8 +3,12 @@ const { copyObject } = require("logic-kit")
 let holidays = []
 const BASE_URL = 'https://date.nager.at/api/v3'
 
+function getDateString() {
+    return new Date().toLocaleDateString('en-CA', { timeZone: global.dsf.timeZone })
+}
+
 async function getCurrentHolidays() {
-    const dateString = new Date().toISOString().slice(0, 10)
+    const dateString = getDateString()
     if (holidays.length > 0 && holidays[0].date === dateString) {
         return copyObject(holidays)
     }
@@ -16,7 +20,7 @@ async function getCurrentHolidays() {
             String(global.dsf.dsfHolidayMonth).padStart(2, '0')}-${
             String(global.dsf.dsfHolidayDay).padStart(2, '0')}`
     }]
-    const countries = { DSF: 'Everywhere' }
+    const countries = { DSF: 'Global' }
     return await fetch(`${BASE_URL}/AvailableCountries`)
         .then(x => x.json())
         .then((data) => {
@@ -45,4 +49,7 @@ async function getCurrentHolidays() {
         .catch(console.error)
 }
 
-module.exports = { getCurrentHolidays }
+module.exports = {
+    getCurrentHolidays,
+    getDateString
+}

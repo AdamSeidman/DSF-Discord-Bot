@@ -9,5 +9,6 @@
     "hostReactionFrequency": 0.02,
     "dsfHolidayMonth": 6,
     "dsfHolidayDay" : 13,
-    "dsfHolidayTotalFacts": 13
+    "dsfHolidayTotalFacts": 13,
+    "timeZone": "America/New_York"
 }
