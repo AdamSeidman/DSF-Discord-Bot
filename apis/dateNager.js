@@ -1,10 +1,20 @@
 const { copyObject } = require("logic-kit")
+const { getAll: getExtraHolidays } = require("@tables/holidays")
 
 let holidays = []
 const BASE_URL = 'https://date.nager.at/api/v3'
 
 function getDateString() {
-    return new Date().toLocaleDateString('en-CA', { timeZone: global.dsf.timeZone })
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const parts = Intl.DateTimeFormat(undefined, {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).formatToParts(new Date())
+    return `${parts.find(x => x.type === 'year').value}-${
+        parts.find(x => x.type === 'month').value}-${
+        parts.find(x => x.type === 'day').value}`
 }
 
 async function getCurrentHolidays() {
@@ -12,21 +22,14 @@ async function getCurrentHolidays() {
     if (holidays.length > 0 && holidays[0].date === dateString) {
         return copyObject(holidays)
     }
-    const year = new Date().getFullYear()
-    holidays = [{
-        name: 'DSF Day',
-        countryCode: 'DSF',
-        date: `${year}-${
-            String(global.dsf.dsfHolidayMonth).padStart(2, '0')}-${
-            String(global.dsf.dsfHolidayDay).padStart(2, '0')}`
-    }]
+    holidays = getExtraHolidays()
     const countries = { DSF: 'Global' }
     return await fetch(`${BASE_URL}/AvailableCountries`)
         .then(x => x.json())
         .then((data) => {
             return Promise.allSettled(data.map(({ countryCode, name }) => {
                 countries[countryCode] = name
-                return fetch(`${BASE_URL}/PublicHolidays/${year}/${countryCode}`)
+                return fetch(`${BASE_URL}/PublicHolidays/${2025}/${countryCode}`)
                     .then(x => x.json())
                     .then(x => holidays.push(...x))
                     .catch(console.error)
