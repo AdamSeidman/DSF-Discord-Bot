@@ -20,7 +20,7 @@ module.exports = {
         const countryMap = {}
         holidays.forEach(({ holiday, country }) => (countryMap[country] ??= []).push(holiday))
         const embed = new EmbedBuilder()
-            .setTitle('Today\' Holidays')
+            .setTitle('Today\'s Holidays')
             .setDescription(getDateString())
             .addFields(...Object.entries(countryMap).map(([country, holidays]) => {
                 return {
