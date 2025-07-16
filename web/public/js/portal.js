@@ -47,8 +47,9 @@ $(() => {
                 pluralize('fact', 's', user.stats.fact)}, ${
                 pluralize('lie', 's', user.stats.lie)}, ${
                 pluralize('prius', 'es', user.stats.prius)}, ${
-                pluralize('acronym', 's', user.stats.acronym)}, and ${
-                pluralize('effect', 's', user.stats.effect)}!\n`)
+                pluralize('acronym', 's', user.stats.acronym)}, ${
+                pluralize('effect', 's', user.stats.effect)}, and ${
+                pluralize('meme', 's', user.stats.meme)}!\n`)
             $('.requires-owner').toggleClass('hidden', !user.is_owner)
             Object.entries(permsTabMap).forEach(([ tabName, perm ]) => {
                 if (user[perm]) {
