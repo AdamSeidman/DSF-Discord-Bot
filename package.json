@@ -35,7 +35,8 @@
     "number-to-words": "^1.2.4",
     "openai": "^4.100.0",
     "passport": "^0.7.0",
-    "passport-discord": "^0.1.4"
+    "passport-discord": "^0.1.4",
+    "tmp": "^0.2.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

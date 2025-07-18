@@ -58,13 +58,13 @@ class Table {
 class Bucket {
     #data = {}
 
-    constructor(bucketName) {
+    constructor(bucketName, callback) {
         this.name = bucketName
         this.client = client
-        this.#init()
+        this.#init(callback)
     }
 
-    async #init() {
+    async #init(callback) {
         const { error, data } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
         if (error) {
             logger.error(`Error initializing ${this.name}`, error)
@@ -73,6 +73,9 @@ class Bucket {
         data.forEach((item) => {
             this.#data[item.name.slice(0, item.name.indexOf('.')).toLowerCase()] = `${this.name}/${item.name}`
         })
+        if (typeof callback === 'function') {
+            callback(this)
+        }
     }
 
     async refresh() {
@@ -85,6 +88,37 @@ class Bucket {
                 this.#data[item.name.slice(0, item.name.indexOf('.')).toLowerCase()] = `${this.name}/${item.name}`
             })
         }
+    }
+
+    async #download(dirPath, fileKey) {
+        const fileRemotePath = this.#data[fileKey]
+        const fileLocalPath = path.join(dirPath, fileRemotePath.slice(fileRemotePath.lastIndexOf('/') + 1))
+        if (fs.existsSync(fileLocalPath)) {
+            return
+        }
+        const { data, error } = await this.client.storage.from(this.name)
+            .download(fileRemotePath.replace(`${this.name}/`, ''))
+        if (error || !data) {
+            throw error || data
+        }
+        try {
+            const buffer = await data.arrayBuffer()
+            await fs.promises.writeFile(fileLocalPath, Buffer.from(buffer))
+        } catch (error) {
+            logger.error('Error writing db file.', { fileLocalPath, fileRemotePath, error })
+        }
+    }
+
+    async downloadToDir(dirPath) {
+        if (!fs.existsSync(dirPath)) {
+            throw new Error('Dir not found.')
+        }
+        await this.refresh()
+        let promises = []
+        for (let fileKey in this.#data) {
+            promises.push(this.#download(dirPath, fileKey))
+        }
+        await Promise.allSettled(promises)
     }
 
     get data() {

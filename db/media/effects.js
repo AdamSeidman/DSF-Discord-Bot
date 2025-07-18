@@ -1,19 +1,19 @@
+const tmp = require("tmp")
 const { Bucket } = require("../database")
 const logger = require("@adamseidman/logger")
 const { randomArrayItem } = require("logic-kit")
 const { createAudioResource } = require("@discordjs/voice")
 
-const bucket = new Bucket('effects')
+const tempDir = tmp.dirSync({ unsafeCleanup: true })
+logger.debug(`Temporary directory for voice effects: ${tempDir.name}`, tempDir)
+const bucket = new Bucket('effects', refresh)
 
 function getEffect(name) {
     name = name?.trim().toLowerCase()
     if (!Object.keys(bucket.data).includes(name)) return
 
     try {
-        const { data } = bucket.client.storage.from(bucket.name).getPublicUrl(name)
-        if (data?.publicUrl) {
-            return createAudioResource(`${data.publicUrl}.mp3`)
-        }
+        return createAudioResource(path.join(tempDir.name, `${name}.mp3`))
     } catch (error) {
         logger.warn(`Error loading effect (${name})`, error)
     }
@@ -27,8 +27,12 @@ function getRandomEffect() {
     return getEffect(randomArrayItem(getList()) || (getList()[0]))
 }
 
+function refresh() {
+    bucket.downloadToDir(tempDir.name)
+}
+
 module.exports = {
-    refresh: () => bucket.refresh(),
+    refresh,
     getList,
     getEffect,
     getRandomEffect
