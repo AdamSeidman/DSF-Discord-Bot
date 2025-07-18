@@ -7,6 +7,7 @@ const app = async (config) => {
     console.log('DEBUG =', global.DEBUG)
     require("./assets/loadBearingRaccoon").check()
     await require("node-persist").init()
+    require("tmp").setGracefulCleanup()
     global.dsf = config || require("./config.json")
     require("@adamseidman/logger").init('DSF Bot', 'dsf_', 'yellow')
     require("./apis/imgflip")
