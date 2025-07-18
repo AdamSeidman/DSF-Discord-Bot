@@ -1,4 +1,5 @@
 const tmp = require("tmp")
+const path = require("path")
 const { Bucket } = require("../database")
 const logger = require("@adamseidman/logger")
 const { randomArrayItem } = require("logic-kit")
