@@ -93,9 +93,7 @@ class Bucket {
     async #download(dirPath, fileKey) {
         const fileRemotePath = this.#data[fileKey]
         const fileLocalPath = path.join(dirPath, fileRemotePath.slice(fileRemotePath.lastIndexOf('/') + 1))
-        if (fs.existsSync(fileLocalPath)) {
-            return
-        }
+        if (fs.existsSync(fileLocalPath)) return
         const { data, error } = await this.client.storage.from(this.name)
             .download(fileRemotePath.replace(`${this.name}/`, ''))
         if (error || !data) {

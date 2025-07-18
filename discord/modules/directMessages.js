@@ -43,9 +43,7 @@ async function getAllMessages(id, limit=DEFAULT_LIMIT) {
 
 function logMessage(msg) {
     logger.info('Received direct message.', `${msg.author.username}: ${msg.content}`)
-    if (msg.author?.bot || msg.author?.id == global.bot.id) {
-        return
-    }
+    if (msg.author?.bot || msg.author?.id == global.bot.id) return
     sessionDMs.push(`${msg.author.username} (u:${msg.author?.id} ch:${msg.channelId}): ${msg.content}`)
 }
 

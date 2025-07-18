@@ -22,9 +22,8 @@ async function setPresence(msg) {
 
 module.exports = {
     response: async (msg, params) => {
-        if (params.injected) {
-            return
-        }
+        if (params.injected) return
+        
         if (params.user.id == global.owner?.id) {
             await msg.reply('Setting presence...')
             try {

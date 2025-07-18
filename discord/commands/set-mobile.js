@@ -18,9 +18,8 @@ async function setMobile(msg) {
 
 module.exports = {
     response: async (msg, params) => {
-        if (params.injected) {
-            return
-        }
+        if (params.injected) return
+        
         if (params.user.id == global.owner?.id) {
             const { restarting, usesMobile } = await setMobile(msg)
             let content = 'Setting...'
