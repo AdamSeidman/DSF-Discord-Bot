@@ -30,6 +30,7 @@
             <button id="tab-DMsTab" class="tab-button hidden" onclick="openTab(event, 'DMsTab')">DMs</button>
             <button id="tab-ItemTab" class="tab-button hidden" onclick="openTab(event, 'ItemTab')">Items</button>
             <button id="tab-PersonTab" class="tab-button hidden" onclick="openTab(event, 'PersonTab')">People</button>
+            <button id="tab-KillTab" class="tab-button hidden" onclick="openTab(event, 'KillTab')">Kill</button>
             <button id="tab-PlaceTab" class="tab-button hidden" onclick="openTab(event, 'PlaceTab')">Places</button>
             <button id="tab-FactTab" class="tab-button hidden" onclick="openTab(event, 'FactTab')">Templates</button>
             <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
@@ -143,6 +144,18 @@
                 </div>
                 <br>
                 <button type="submit" id="person-submit-btn" onclick="submitPerson()" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="KillTab" class="tab-content">
+            <div class="form">
+                <h3>Kill</h3>
+                <label for="killPersonName">Dead Person's Name:</label>
+                <select name="killPersonName" id="killPersonName" onchange="deadPersonValidator()">
+                    <option value="-1" class="killedDefault" selected></option>
+                </select>
+                <br>
+                <button type="submit" id="kill-submit-btn" onclick="murderPerson()" disabled>Submit</button>
             </div>
         </div>
 

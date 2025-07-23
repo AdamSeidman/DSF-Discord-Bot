@@ -1,6 +1,7 @@
 const { Table } = require("../database")
 const logger = require("@adamseidman/logger")
-const { copyObject, randomArrayItem, stripPunctuation, shuffleArray } = require("logic-kit")
+const { copyObject, randomArrayItem, stripPunctuation,
+    shuffleArray, removeSpaces } = require("logic-kit")
 
 const table = new Table('allPeople')
 let lastPerson = { id: -1 }
@@ -35,6 +36,30 @@ async function addPerson(person, submitted_by) {
         logger.error(`Could not insert new person from ${submitted_by}! ${
             JSON.stringify(person)}`, error)
     }
+    return error
+}
+
+async function killPerson(person) {
+    const personShort = removeSpaces(person).toLowerCase()
+    let candidates = table.data.filter(({ name }) => removeSpaces(name).toLowerCase() === personShort)
+    if (candidates.length < 1) return true
+    if (candidates.length > 1) {
+        let target = candidates.find(({ name }) => name.trim() === person.trim())
+        if (!target) {
+            candidates = candidates.filter(x => x.is_alive)
+            if (candidates.length !== 1) return true
+            target = candidates[0]
+        }
+        candidates = [target]
+    }
+    person = candidates[0]
+    if (isNaN(person?.id)) return true
+    const { error } = await table.client
+        .from(table.name)
+        .update({
+            is_alive: false
+        })
+        .eq('id', person.id)
     return error
 }
 
@@ -77,6 +102,7 @@ module.exports = {
     getLastPerson,
     getNextPerson,
     addPerson,
+    killPerson,
     getDictionary,
     getAll
 }

@@ -15,6 +15,7 @@ function openTab(evt, tabName) {
 const permsTabMap = {
     Item: 'submit_new_items',
     Person: 'submit_new_people',
+    Kill: 'submit_new_people',
     Place: 'submit_new_places',
     Tags: 'submit_new_tags',
     Static: 'submit_static_facts',
@@ -27,8 +28,9 @@ const permsTabMap = {
 
 $(() => {
     let params = new URLSearchParams(window.location.search)
-    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'PlaceTab', 'StaticTab', 'FactTab', 'AdminTab', 'DMsTab', 'InsultTab', 'HolidayTab']
-    let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : 'UserTab';
+    const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'Kill Tab', 'PlaceTab', 'StaticTab', 'FactTab',
+        'AdminTab','DMsTab', 'InsultTab', 'HolidayTab']
+    let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : validTabs[0];
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
         .then(({ user, fact, places, items, people, tags, isOverriden, overrideMsg }) => {
@@ -40,6 +42,9 @@ $(() => {
             allPeople = (people || []).map(x => x.name)
             allTags = (tags || [])
             allTags.sort()
+            const killSelect = $('select#killPersonName')
+            killSelect.html(killSelect.html() + people.sort((a, b) => a.name.localeCompare(b.name)).reduce(
+                (out, person) => `${out}${person.is_alive? `<option value="${person.name}">${person.name}</option>` : ''}`, ''))
             $('#welcome-text').text(`Welcome, ${user.username}!\n`)
             $('.fill-username').text(user.username.slice(0, 1).toUpperCase() + user.username.slice(1))
             $('#fact-text').text(`Fun fact:\n${fact}\n`)
@@ -256,6 +261,19 @@ function submitPerson() {
         is_male: $('#person-male-cb').is(':checked'),
         is_alive: $('#person-alive-cb').is(':checked')
     })
+}
+
+function deadPersonValidator() {
+    let disabled = true
+    try {
+        let name = $('select#killPersonName').find(':selected').val()
+        if (name.trim().length > 1) disabled = false
+    } catch {}
+    $('#kill-submit-btn').attr('disabled', disabled)
+}
+
+function murderPerson() {
+    // TODO standardPUT('kill', {})
 }
 
 function placeValidator() {
