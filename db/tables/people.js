@@ -41,7 +41,8 @@ async function addPerson(person, submitted_by) {
 
 async function killPerson(person) {
     const personShort = removeSpaces(person).toLowerCase()
-    let candidates = table.data.filter(({ name }) => removeSpaces(name).toLowerCase() === personShort)
+    let candidates = table.data
+        .filter(({ name }) => removeSpaces(name).toLowerCase() === personShort)
     if (candidates.length < 1) return true
     if (candidates.length > 1) {
         let target = candidates.find(({ name }) => name.trim() === person.trim())
@@ -60,6 +61,7 @@ async function killPerson(person) {
             is_alive: false
         })
         .eq('id', person.id)
+    await table.refresh()
     return error
 }
 

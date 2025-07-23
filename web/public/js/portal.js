@@ -267,13 +267,23 @@ function deadPersonValidator() {
     let disabled = true
     try {
         let name = $('select#killPersonName').find(':selected').val()
-        if (name.trim().length > 1) disabled = false
+        if (name.trim()?.length > 1) disabled = false
     } catch {}
     $('#kill-submit-btn').attr('disabled', disabled)
 }
 
 function murderPerson() {
-    // TODO standardPUT('kill', {})
+    $('#kill-submit-btn').attr('disabled', true)
+    const body = {
+        name: $('select#killPersonName').find(':selected')?.val()
+    }
+    standardPUT('kill', body)
+        .then(() => location.reload())
+        .catch((error) => {
+            console.error('Could not murder', body, error)
+            alert('Could not submit kill request!')
+            setTimeout(() => location.reload(), 5000)
+        })
 }
 
 function placeValidator() {
