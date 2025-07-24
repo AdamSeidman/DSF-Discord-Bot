@@ -64,6 +64,7 @@ async function pruneSessions() {
 }
 
 if (require.main === module) {
+    global.pruning = true
     try {
         app()
         pruneSessions()

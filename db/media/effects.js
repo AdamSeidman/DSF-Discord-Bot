@@ -1,11 +1,10 @@
-const tmp = require("tmp")
 const path = require("path")
 const { Bucket } = require("../database")
 const logger = require("@adamseidman/logger")
 const { randomArrayItem } = require("logic-kit")
 const { createAudioResource } = require("@discordjs/voice")
 
-const tempDir = tmp.dirSync({ unsafeCleanup: true })
+const tempDir = global.pruning? {} : require("tmp").dirSync({ unsafeCleanup: true })
 logger.debug(`Temporary directory for voice effects: ${tempDir.name}`, tempDir)
 const bucket = new Bucket('effects', refresh)
 
@@ -29,7 +28,9 @@ function getRandomEffect() {
 }
 
 function refresh() {
-    bucket.downloadToDir(tempDir.name)
+    if (tempDir.name) {
+        bucket.downloadToDir(tempDir.name)
+    }
 }
 
 module.exports = {
