@@ -6,34 +6,34 @@ const table = new Table('hosts')
 function setupHost(userId, guild) {
     return new Promise((resolve, reject) => {
         guild.members.fetch({ force: true })
-        .then(async (members) => {
-            let users = [...members].map(x => x[1]).filter(x => !x.user.bot && x.user.id != userId)
-            if (users.length < 1) {
-                users = [...members].map(x => x[1])
-            }
-            const host = randomArrayItem(users)?.user
-            if (!host) {
-                throw new Error('Could not pick host!')
-            }
-            const record = {
-                host_name: host.username,
-                host_id: host.id,
-                guild_name: guild.name,
-                guild_id: guild.id,
-                repick_list: JSON.stringify([`${userId}`])
-            }
-            const { error } = await table.client
-                .from(table.name)
-                .insert(record)
-            if (error) {
-                throw error
-            } else {
-                resolve(record.host_id)
-            }
-        })
-        .catch((error) => {
-            reject(error)
-        })
+            .then(async (members) => {
+                let users = [...members].map(x => x[1]).filter(x => !x.user.bot && x.user.id != userId)
+                if (users.length < 1) {
+                    users = [...members].map(x => x[1])
+                }
+                const host = randomArrayItem(users)?.user
+                if (!host) {
+                    throw new Error('Could not pick host!')
+                }
+                const record = {
+                    host_name: host.username,
+                    host_id: host.id,
+                    guild_name: guild.name,
+                    guild_id: guild.id,
+                    repick_list: JSON.stringify([`${userId}`])
+                }
+                const { error } = await table.client
+                    .from(table.name)
+                    .insert(record)
+                if (error) {
+                    throw error
+                } else {
+                    resolve(record.host_id)
+                }
+            })
+            .catch((error) => {
+                reject(error)
+            })
     })
 }
 
