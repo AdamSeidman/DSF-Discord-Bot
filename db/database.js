@@ -7,7 +7,7 @@ const { uploadBackup: googleBackup } = require("../apis/google")
 
 const BACKUP_HOURS = 24
 const INITIAL_BACKUP_HOURS = 2
-const REFRESH_MINUTES = 2
+const REFRESH_MINUTES = 20
 const BUCKET_LIMIT = 1000
 
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_PUBLIC_KEY
