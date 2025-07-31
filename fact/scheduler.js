@@ -13,11 +13,7 @@ function scheduleDailyChannels(channelIds) {
     clientChannels = require("discord").channels.cache.filter(x => x instanceof TextChannel)
     clientChannels = [...clientChannels].map(x => x[1])
     dailyChannels.push(...clientChannels.filter(x => channelIds.includes(`${x.id}`)))
-    scheduler.scheduleJob({
-        hour: global.dsf.dailyFactHour,
-        minute: global.dsf.dailyFactMinute,
-        second: global.dsf.dailyFactSecond
-    }, async () => {
+    scheduler.scheduleJob(global.dsf.dailyFactTime, async () => {
         const aprilFools = isAprilFools()
         let fact = ((!aprilFools && await storage.getItem('dailyFact')) || '').trim()
         let qualifier = ''

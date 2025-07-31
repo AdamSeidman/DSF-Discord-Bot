@@ -1,7 +1,4 @@
 {
-    "dailyFactHour": 18,
-    "dailyFactMinute": 13,
-    "dailyFactSecond": 30,
     "maxFactCount": 20,
     "minSilenceMinutes": 5,
     "maxSilenceMinutes": 15,
@@ -9,5 +6,16 @@
     "hostReactionFrequency": 0.02,
     "dsfHolidayMonth": 6,
     "dsfHolidayDay" : 13,
-    "dsfHolidayTotalFacts": 13
+    "dsfHolidayTotalFacts": 13,
+    "dailyHolidaysChannelName": "holidays",
+    "dailyFactTime": {
+        "hour": 18,
+        "minute": 13,
+        "second": 30
+    },
+    "dailyHolidaysTime": {
+        "hour": 12,
+        "minute": 0,
+        "second": 30
+    }
 }
