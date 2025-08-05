@@ -1,5 +1,6 @@
 const { copyObject } = require("logic-kit")
 const logger = require("@adamseidman/logger")
+const { userMention } = require("discord.js")
 
 const sessionDMs = []
 const DEFAULT_LIMIT=100
@@ -43,8 +44,16 @@ async function getAllMessages(id, limit=DEFAULT_LIMIT) {
 
 function logMessage(msg) {
     logger.info('Received direct message.', `${msg.author.username}: ${msg.content}`)
-    if (msg.author?.bot || msg.author?.id == global.bot.id) return
-    sessionDMs.push(`${msg.author.username} (u:${msg.author?.id} ch:${msg.channelId}): ${msg.content}`)
+    if (msg.author?.bot || !global.bot || msg.author?.id == global.bot.id) return
+    sessionDMs.push(`${msg.author?.username} (u:${msg.author?.id} ch:${msg.channelId}): ${msg.content}`)
+    if (global.owner?.id && msg.author?.id !== global.owner?.id) {
+        global.owner
+            .send(`Received message from ${userMention(msg.author?.id)} (${
+                msg.author?.username}): "${msg.content}"`)
+            .catch((error) => {
+                logger.warn('Could not forward DM to owner.', error)
+            })
+    }
 }
 
 function getLog() {
