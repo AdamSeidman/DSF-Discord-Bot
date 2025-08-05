@@ -27,6 +27,9 @@ client.once(Events.ClientReady, async ({ user }) => {
     client.application.fetch()
         .then(() => {
             global.owner = client.application.owner
+            if (!global.DEBUG) {
+                return global.owner.send('Bot online.')
+            }
         })
         .catch(logger.fatal)
     logger.info(`Discord Bot initialized.
