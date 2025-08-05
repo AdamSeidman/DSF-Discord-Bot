@@ -3,7 +3,7 @@ const logger = require("@adamseidman/logger")
 const { userMention } = require("discord.js")
 
 const sessionDMs = []
-const DEFAULT_LIMIT=100
+const DEFAULT_LIMIT = 100
 
 async function getAll(channel, limit) {
     const messages = await channel?.messages?.fetch({ limit })
