@@ -1,7 +1,7 @@
 const logger = require("@adamseidman/logger")
-const { getUserById } = require("discord/modules/helpers")
 const { userMention, MessageType } = require("discord.js")
-const { copyObject, matchesDiscordId } = require("logic-kit")
+const { copyObject, matchesDiscordId, cleanUpSpaces } = require("logic-kit")
+const { getUserById, getTextChannelById } = require("discord/modules/helpers")
 
 const sessionDMs = []
 const DEFAULT_LIMIT = 100
@@ -51,13 +51,29 @@ function logMessage(msg) {
 }
 
 async function handleOwnerMessage(msg) {
-    if (msg.type === MessageType.Reply && msg.content?.trim().length > 0) {
+    if (msg.content?.trim().length < 1) return
+    if (msg.type === MessageType.Reply) {
         const originalMsg = await msg.fetchReference()
         if (!originalMsg.content?.startsWith(MESSAGE_NOTICE_TEXT)) return
         const userId = matchesDiscordId(originalMsg.content.slice(MESSAGE_NOTICE_TEXT.length).split(' ')[0])
         if (userId) {
             const user = await getUserById(userId)
-            user?.send(msg.content.trim())
+            await user?.send(msg.content.trim())
+        }
+    } else if (msg.content?.trim().startsWith('<')) {
+        // TODO Update matchesDiscordId to look for <# as well (regex: /^<[@#]\d{17,22}>$/)
+        const id = matchesDiscordId(cleanUpSpaces(msg.content).split(' ')[0]) // TODO toParts function?
+        const messageParts = msg.content.trim().split(' ')
+        messageParts.shift()
+        const message = messageParts.join(' ').trim()
+        if (id && message.length > 0) {
+            let channel = getTextChannelById(id)
+            if (!channel) {
+                channel = await getUserById(id)
+            }
+            if (channel?.send) {
+                await channel.send(message)
+            }
         }
     }
 }
