@@ -65,6 +65,13 @@ class Bucket {
     }
 
     async #init(callback) {
+        if (typeof callback !== 'function') {
+            callback = () => {}
+        }
+        if (global.DEBUG) {
+            callback(this)
+            return
+        }
         const { error, data } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
         if (error) {
             logger.error(`Error initializing ${this.name}`, error)
@@ -73,12 +80,11 @@ class Bucket {
         data.forEach((item) => {
             this.#data[item.name.slice(0, item.name.indexOf('.')).toLowerCase()] = `${this.name}/${item.name}`
         })
-        if (typeof callback === 'function') {
-            callback(this)
-        }
+        callback(this)
     }
 
     async refresh() {
+        if (global.DEBUG) return
         const { data, error } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
         if (error) {
             logger.error(`Error refreshing ${this.name}`, error)
@@ -108,6 +114,7 @@ class Bucket {
     }
 
     async downloadToDir(dirPath) {
+        if (!global.DEBUG) return
         if (!fs.existsSync(dirPath)) {
             throw new Error('Dir not found.')
         }

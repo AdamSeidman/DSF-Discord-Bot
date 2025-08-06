@@ -28,7 +28,7 @@ function getRandomEffect() {
 }
 
 function refresh() {
-    if (tempDir.name) {
+    if (tempDir.name && !global.DEBUG) {
         bucket.downloadToDir(tempDir.name)
     }
 }

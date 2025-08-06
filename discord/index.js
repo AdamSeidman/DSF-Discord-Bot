@@ -2,8 +2,8 @@ const storage = require("node-persist")
 const voice = require("./modules/voice")
 const logger = require("@adamseidman/logger")
 const commands = require("./modules/commands")
+const { handleDM } = require("./modules/directMessages")
 const { messageHandlers } = require("./modules/messages")
-const directMessages = require("./modules/directMessages")
 const { Client, Events, GatewayIntentBits, Partials,
     DefaultWebSocketManagerOptions } = require("discord.js")
 
@@ -39,7 +39,7 @@ client.once(Events.ClientReady, async ({ user }) => {
 client.on(Events.MessageCreate, (msg) => {
     if (msg.author.bot) return
     if (msg.member === null) {
-        directMessages.logMessage(msg)
+        handleDM(msg)
     }
     messageHandlers.forEach(async (handlerFn) => {
         try {
