@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Debugger Bot",
+            "type": "npm",
+            "script": "dev",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "Clear Discord Commands",
+            "type": "npm",
+            "script": "clear",
+            "problemMatcher": []
+        },
+        {
+            "label": "Prune Old Web Sessions",
+            "type": "npm",
+            "script": "prune",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -8,3 +8,4 @@ backups/
 .VsCodeCounter/
 scripts/
 apis/*.json
+.vscode/
