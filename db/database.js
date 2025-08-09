@@ -114,7 +114,7 @@ class Bucket {
     }
 
     async downloadToDir(dirPath) {
-        if (!global.DEBUG) return
+        if (global.DEBUG) return
         if (!fs.existsSync(dirPath)) {
             throw new Error('Dir not found.')
         }
