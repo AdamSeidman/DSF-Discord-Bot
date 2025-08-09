@@ -30,6 +30,7 @@ function handleMultiCommand(msg, params, factFn) {
     if (params.injected && params.params.length > 0) {
         try {
             numFacts = parseInt(params.params[0].trim())
+            if (isNaN(numFacts)) throw null
         } catch {
             numFacts = 1
         }
