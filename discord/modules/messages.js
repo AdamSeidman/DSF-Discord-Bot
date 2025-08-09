@@ -140,7 +140,6 @@ function handlePhrase(msg) {
     }
 }
 
-
 function handleSoundEffect(msg) {
     if (msg.member === null || !effectsGuilds.hasGuild(msg.guild.id)) return
     const message = removeSpaces(stripPunctuation(msg.content.toLowerCase()))
