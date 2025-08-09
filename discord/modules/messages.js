@@ -12,7 +12,7 @@ const logger = require("@adamseidman/logger")
 const adjectives = require("@tables/adjectives")
 const construction = require("@facts/construction")
 const effectsGuilds = require("@tables/effectsGuilds")
-const { copyObject, stripPunctuation, removeSpaces, cleanUpSpaces,
+const { copyObject, stripPunctuation, removeSpaces, toParts,
     probabilityCheck, matchesDiscordId} = require("logic-kit")
 
 const COMMAND_PREFIX = global.DEBUG? 'd!' : 'dsf!'
@@ -30,7 +30,7 @@ fs.readdirSync(path.join(__dirname, '../commands')).forEach((file) => {
 function handleCommand(msg) {
     let message = msg.content.trim()
     if (!message.toLowerCase().startsWith(COMMAND_PREFIX)) return
-    message = cleanUpSpaces(message.slice(COMMAND_PREFIX.length)).split(' ')
+    message = toParts(message.slice(COMMAND_PREFIX.length))
     msg.commandName = message.shift().toLowerCase()
     if (!availableCommands.includes(msg.commandName)) return
     msg.userParams = {
@@ -72,7 +72,7 @@ function handlePlease(msg) {
 }
 
 function getFindRequestPhrase(message) {
-    message = cleanUpSpaces(message.toLowerCase()).split(' ')
+    message = toParts(message.toLowerCase())
     const result = {
         hasPhrase: false,
         isMe: true,
@@ -108,7 +108,7 @@ function getFindRequestPhrase(message) {
 function handlePhrase(msg) {
     const input = stripPunctuation(msg.content.toLowerCase())
     const phrase = phrases.getPhrase(removeSpaces(input))
-    const adjective = adjectives.getAll().find(x => input.split(' ').includes(x))
+    const adjective = adjectives.getAll().find(x => toParts(input).includes(x))
     const findResult = getFindRequestPhrase(input)
 
     if (findResult.hasPhrase) {

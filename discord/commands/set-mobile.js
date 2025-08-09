@@ -1,8 +1,8 @@
 const restart = require("./restart")
 const storage = require("node-persist")
-const { postpone } = require("logic-kit")
 const logger = require("@adamseidman/logger")
 const { MessageFlags } = require("discord.js")
+const { postpone, toParts } = require("logic-kit")
 
 async function setMobile(msg) {
     const usesMobile = msg.options.getBoolean('mobile')
@@ -20,7 +20,7 @@ module.exports = {
     response: async (msg, params) => {
         if (params.injected) return
         
-        if (params.user.id == global.owner?.id) {
+        if (params.user.id == global.owner.id) {
             const { restarting, usesMobile } = await setMobile(msg)
             let content = 'Setting...'
             if (typeof restarting !== 'boolean') {
@@ -36,7 +36,7 @@ module.exports = {
                 postpone(() => {
                     restart.response(msg, {
                         user: global.owner,
-                        params: `Auto-Reason- Setting mobile to ${usesMobile}.`.split(' '),
+                        params: toParts(`Auto-Reason- Setting mobile to ${usesMobile}.`),
                         injected: true
                     })
                 })

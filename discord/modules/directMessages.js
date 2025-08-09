@@ -1,6 +1,6 @@
 const logger = require("@adamseidman/logger")
 const { userMention, MessageType } = require("discord.js")
-const { copyObject, matchesDiscordId, cleanUpSpaces } = require("logic-kit")
+const { copyObject, matchesDiscordId, toParts } = require("logic-kit")
 const { getUserById, getTextChannelById } = require("discord/modules/helpers")
 
 const sessionDMs = []
@@ -46,7 +46,7 @@ async function getAllMessages(id, limit=DEFAULT_LIMIT) {
 
 function logMessage(msg) {
     logger.info('Received direct message.', `${msg.author?.username}: ${msg.content}`)
-    if (!msg.author || msg.author.bot || !global.bot || msg.author.id == global.bot.id) return
+    if (!msg.author || msg.author.bot || msg.author.id == global.bot.id) return
     sessionDMs.push(`${msg.author.username} (u:${msg.author.id} ch:${msg.channelId}): ${msg.content}`)
 }
 
@@ -55,15 +55,14 @@ async function handleOwnerMessage(msg) {
     if (msg.type === MessageType.Reply) {
         const originalMsg = await msg.fetchReference()
         if (!originalMsg.content?.startsWith(MESSAGE_NOTICE_TEXT)) return
-        const userId = matchesDiscordId(originalMsg.content.slice(MESSAGE_NOTICE_TEXT.length).split(' ')[0])
+        const userId = matchesDiscordId(toParts(originalMsg.content.slice(MESSAGE_NOTICE_TEXT.length))[0])
         if (userId) {
             const user = await getUserById(userId)
             await user?.send(msg.content.trim())
         }
     } else if (msg.content?.trim().startsWith('<')) {
-        // TODO Update matchesDiscordId to look for <# as well (regex: /^<[@#]\d{17,22}>$/)
-        const id = matchesDiscordId(cleanUpSpaces(msg.content).split(' ')[0]) // TODO toParts function?
-        const messageParts = msg.content.trim().split(' ')
+        const id = matchesDiscordId(toParts(msg.content)[0], true)
+        const messageParts = toParts(msg.content)
         messageParts.shift()
         const message = messageParts.join(' ').trim()
         if (id && message.length > 0) {
@@ -80,7 +79,7 @@ async function handleOwnerMessage(msg) {
 
 function handleDM(msg) {
     logMessage(msg)
-    if (!global.owner?.id || !msg.author?.id) return
+    if (!global.owner.id || !msg.author?.id) return
     if (global.owner.id === msg.author.id) {
         handleOwnerMessage(msg)
             .catch((error) => {
