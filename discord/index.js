@@ -19,6 +19,9 @@ const client = new Client({
     partials: [ Partials.Channel ]
 })
 
+global.bot = {}
+global.owner = {}
+
 client.once(Events.ClientReady, async ({ user }) => {
     const channelIds = require("@tables/dailies").getAll().map(x => x.channelId)
     require("@facts/scheduler").scheduleDailyChannels(channelIds)
