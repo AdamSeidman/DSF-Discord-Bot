@@ -24,7 +24,7 @@ module.exports = {
     response: async (msg, params) => {
         if (params.injected) return
         
-        if (params.user.id == global.owner?.id) {
+        if (params.user.id == global.owner.id) {
             await msg.reply('Setting presence...')
             try {
                 await setPresence(msg)

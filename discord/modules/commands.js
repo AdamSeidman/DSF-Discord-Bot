@@ -89,7 +89,7 @@ async function handleSlashCommand(interaction) {
     }
     params.user = (interaction.member || interaction.author || interaction.user)
 
-    if (!command && (isTestingGuild || params.user.id == global.owner?.id)) {
+    if (!command && (isTestingGuild || params.user.id == global.owner.id)) {
         command = testingGuild.commands.get(interaction.commandName)
     }
     if (!command) {

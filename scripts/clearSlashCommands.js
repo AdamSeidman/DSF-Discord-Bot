@@ -19,7 +19,7 @@ const app = async () => {
 
 async function waitForCompletion() {
     let count = 0
-    while (!global.owner) {
+    while (!global.owner?.id) {
         await new Promise((resolve) => setTimeout(resolve, 100))
         if (++count > 1000) {
             logger.fatal('Bot never logged in!')

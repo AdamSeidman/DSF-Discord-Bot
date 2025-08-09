@@ -100,7 +100,7 @@ if (Imgflip.isEnabled()) {
                     } else {
                         const template = copyObject((!params.injected && templateMap[msg.options.getString('meme')])
                             || templateMap[DEFAULT_TEMPLATE])
-                        if (originalMessage.author?.id == global.bot?.id) {
+                        if (originalMessage.author?.id == global.bot.id) {
                             if (!params.injected) {
                                 await msg.followUp('No.')
                                 msg.reply = (x) => msg.channel.send(x)
