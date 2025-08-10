@@ -127,7 +127,7 @@ app.use('/api/:ep', jsonParser, async (req, res, next) => {
 })
 
 app.use((req, res) => {
-    if (!global.DEBUG) {
+    if (global.DEBUG) {
         logger.warn('Incoming 404', `${req.method} ${req.url}`)
     }
     res.status(404).sendFile(path.join(__dirname, 'public/404.html'))
