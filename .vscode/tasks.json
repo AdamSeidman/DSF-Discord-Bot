@@ -30,6 +30,19 @@
             "type": "npm",
             "script": "prune",
             "problemMatcher": []
+        },
+        {
+            "label": "Preinstall",
+            "type": "npm",
+            "script": "preinstall",
+            "problemMatcher": []
+        },
+        {
+            "label": "Globally install pnpm",
+            "type": "shell",
+            "command": "npm",
+            "args": ["install", "-g", "pnpm"],
+            "problemMatcher": []
         }
     ]
 }
