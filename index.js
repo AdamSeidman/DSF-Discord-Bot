@@ -1,10 +1,11 @@
 require("module-alias/register")
-const { postpone } = require("logic-kit")
+const { postpone, processHasArgument } = require("logic-kit")
 
 const app = async (config) => {
     require("dotenv").config()
-    global.DEBUG = process.argv.slice(2).includes('--DEBUG')
+    global.DEBUG = processHasArgument('DEBUG')
     console.log('DEBUG =', global.DEBUG)
+    global.allowMedia = processHasArgument('use-media') || !global.DEBUG
     require("./assets/loadBearingRaccoon").check()
     await require("node-persist").init()
     require("tmp").setGracefulCleanup()

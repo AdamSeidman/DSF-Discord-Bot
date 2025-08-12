@@ -68,7 +68,7 @@ class Bucket {
         if (typeof callback !== 'function') {
             callback = () => {}
         }
-        if (global.DEBUG) {
+        if (!global.allowMedia) {
             callback(this)
             return
         }
@@ -84,7 +84,7 @@ class Bucket {
     }
 
     async refresh() {
-        if (global.DEBUG) return
+        if (!global.allowMedia) return
         const { data, error } = await this.client.storage.from(this.name).list('', { limit: BUCKET_LIMIT })
         if (error) {
             logger.error(`Error refreshing ${this.name}`, error)
@@ -114,7 +114,7 @@ class Bucket {
     }
 
     async downloadToDir(dirPath) {
-        if (global.DEBUG) return
+        if (!global.allowMedia) return
         if (!fs.existsSync(dirPath)) {
             throw new Error('Dir not found.')
         }

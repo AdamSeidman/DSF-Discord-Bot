@@ -28,7 +28,7 @@ function getRandomEffect() {
 }
 
 function refresh() {
-    if (tempDir.name && !global.DEBUG) {
+    if (tempDir.name && global.allowMedia) {
         bucket.downloadToDir(tempDir.name)
     }
 }
