@@ -5,7 +5,7 @@ const { getCurrentHolidays, getDateString } = require("../../apis/dateNager")
 function createHolidayMessage(countryMap) {
     if (Object.keys(countryMap).length >= 20) {
         let msg = Object.entries(countryMap).reduce((out, entry) => `${
-            out}${entry[0]}\n>${[...new Set(entry[1])].join('\n>')}\n`, `${
+            out}${entry[0]}\n> ${[...new Set(entry[1])].join('\n> ')}\n`, `${
             bold('Today\'s Holidays')}\n${italic(getDateString())}\n`)
         if (msg.length >= 2000) {
             const append = `...\n${italic('And more!')}`
