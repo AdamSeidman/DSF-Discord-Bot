@@ -1,10 +1,12 @@
 const Discord = require("discord.js")
+const { version } = require("../../package.json")
 
 module.exports = {
     response: async (msg, params) => {
         let embed = new Discord.EmbedBuilder()
             .setColor('#34EB3A')
             .setTitle('About DSF')
+            .setDescription(`Version ${version}`)
             .setFields({
                 name: 'GitHub Repository',
                 value: '[GitHub](https://github.com/AdamSeidman/DSF-Discord-Bot)'
