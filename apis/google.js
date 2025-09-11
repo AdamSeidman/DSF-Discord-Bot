@@ -8,7 +8,7 @@ const KEY_FILE = 'google-service-account-key.json'
 
 let backupsEnabled = fs.existsSync(path.join(__dirname, KEY_FILE)) && !global.DEBUG
 if (!backupsEnabled) {
-    console.warn(`${global.DEBUG? '' : 'No key file! '}Google backups not enabled.`)
+    logger.warn(`${global.DEBUG? '' : 'No key file! '}Google backups not enabled.`)
 }
 
 async function uploadBackup(filename, data) {
