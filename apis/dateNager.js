@@ -6,7 +6,7 @@ const BASE_URL = 'https://date.nager.at/api/v3'
 
 function getDateString() {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const parts = Intl.DateTimeFormat(undefined, {
+    const parts = Intl.DateTimeFormat(global.dsf.languageCode, {
         timeZone,
         year: 'numeric',
         month: '2-digit',
