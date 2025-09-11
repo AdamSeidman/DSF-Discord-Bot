@@ -36,7 +36,10 @@ async function uploadBackup(filename, data) {
         })
         logger.debug('Google backup uploaded.', response.data?.id)
     } catch (error) {
-        logger.error('Error uploading Google backup.', error)
+        logger.error('Error uploading Google backup.', error?.message)
+        if (global.DEBUG) {
+            console.error('Google Error:', error)
+        }
     }
 }
 
