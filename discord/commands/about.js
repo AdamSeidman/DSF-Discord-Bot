@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const { version } = require("../../package.json")
+const { author, homepage, version } = require("../../package.json")
 
 module.exports = {
     response: async (msg, params) => {
@@ -9,10 +9,10 @@ module.exports = {
             .setDescription(`Version ${version}`)
             .setFields({
                 name: 'GitHub Repository',
-                value: '[GitHub](https://github.com/AdamSeidman/DSF-Discord-Bot)'
+                value: `[GitHub](${homepage})`
             }, {
                 name: 'Copyright',
-                value: `© 2020-${new Date().getFullYear()} Adam Seidman`
+                value: `© 2020-${new Date().getFullYear()} ${author}`
             })
             .setTimestamp()
         if (params.injected) {

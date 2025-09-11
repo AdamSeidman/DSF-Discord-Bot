@@ -13,8 +13,16 @@
     "prune": "node scripts/pruneExpiredSessions.js",
     "preinstall": "npx only-allow pnpm"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdamSeidman/DSF-Discord-Bot.git"
+  },
   "author": "Adam Seidman",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdamSeidman/DSF-Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/AdamSeidman/DSF-Discord-Bot",
   "dependencies": {
     "@adamseidman/logger": "^1.0.0",
     "@discordjs/voice": "^0.18.0",
