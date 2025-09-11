@@ -12,20 +12,6 @@ function openTab(evt, tabName) {
     history.replaceState(null, '', '?' + params.toString())
 }
 
-const permsTabMap = {
-    Item: 'submit_new_items',
-    Person: 'submit_new_people',
-    Kill: 'submit_new_people',
-    Place: 'submit_new_places',
-    Tags: 'submit_new_tags',
-    Static: 'submit_static_facts',
-    Fact: 'submit_new_templates',
-    Admin: 'is_owner',
-    DMs: 'is_owner',
-    Insult: 'submit_insults',
-    Holiday: 'submit_holidays'
-}
-
 $(() => {
     let params = new URLSearchParams(window.location.search)
     const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'Kill Tab', 'PlaceTab', 'StaticTab', 'FactTab',
@@ -56,6 +42,19 @@ $(() => {
                 pluralize('effect', 's', user.stats.effect)}, and ${
                 pluralize('meme', 's', user.stats.meme)}!\n`)
             $('.requires-owner').toggleClass('hidden', !user.is_owner)
+            const permsTabMap = {
+                Item: 'submit_new_items',
+                Person: 'submit_new_people',
+                Kill: 'submit_new_people',
+                Place: 'submit_new_places',
+                Tags: 'submit_new_tags',
+                Static: 'submit_static_facts',
+                Fact: 'submit_new_templates',
+                Admin: 'is_owner',
+                DMs: 'is_owner',
+                Insult: 'submit_insults',
+                Holiday: 'submit_holidays'
+            }
             Object.entries(permsTabMap).forEach(([ tabName, perm ]) => {
                 if (user[perm]) {
                     $(`#tab-${tabName}Tab`).removeClass('hidden')
@@ -324,7 +323,7 @@ function submitStaticFact() {
     submit('staticFact', [], 'staticFactInput')
 }
 
-const LONG_MONTHS = [1, 3, 5, 7, 8, 10, 12];
+const LONG_MONTHS = Object.freeze([1, 3, 5, 7, 8, 10, 12]);
 function holidayValidator() {
     try {
         let month = parseInt($('#holidayMonth').find(':selected').val())

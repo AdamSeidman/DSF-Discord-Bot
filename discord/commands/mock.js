@@ -21,6 +21,7 @@ const to = {
         }, '"') + '"'
     }
 }
+Object.freeze(to)
 
 const templateMap = {
     'Batman': {
@@ -64,6 +65,7 @@ const templateMap = {
         caption2: to.username
     }
 }
+Object.freeze(templateMap)
 
 if (Imgflip.isEnabled()) {
     module.exports = {
