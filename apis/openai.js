@@ -1,12 +1,31 @@
 const OpenAI = require("openai")
-const { postpone } = require("logic-kit")
+const logger = require("@adamseidman/logger")
+const { postpone, processHasArgument } = require("logic-kit")
 
 const POLL_INTERVAL_MSEC = 2500
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+let openai = null
 const assistantId = process.env.OPENAI_ASSISTANT_ID
+let enabled = (typeof assistantId === 'string') && (typeof process.env.OPENAI_API_KEY === 'string')
+
+if (enabled && processHasArgument('disable-ai')) {
+    logger.debug('Requested turning AI off in debug mode.')
+    enabled = false
+} else if (enabled) {
+    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    if (!openai) {
+        logger.warn('Failed making OpenAI object.')
+    }
+} else {
+    logger.warn('OpenAI not enabled!')
+}
+
 let pollingInterval = undefined
 let tryNext = () => {}
+
+function isEnabled() {
+    return enabled
+}
 
 async function createThread() {
     const thread = await openai.beta.threads.create()
@@ -66,4 +85,7 @@ function createMessageThread(subject, nextFn, resolve, reject) {
         .catch(reject)
 }
 
-module.exports = { createMessageThread }
+module.exports = {
+    createMessageThread,
+    isEnabled
+}
