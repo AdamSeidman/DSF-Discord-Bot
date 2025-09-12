@@ -67,7 +67,7 @@ if (global.DEBUG) {
 client.on(Events.Error, logger.error)
 
 client.init = async () => {
-    global.discordToken = global.DEBUG?
+    global.discordToken = (global.DEBUG && process.env.DISCORD_TOKEN_ALT)?
         process.env.DISCORD_TOKEN_ALT : process.env.DISCORD_TOKEN
     if (await storage.getItem('isMobile')) {
         DefaultWebSocketManagerOptions.identifyProperties.browser = 'Discord iOS'
