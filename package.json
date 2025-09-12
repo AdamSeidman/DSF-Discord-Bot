@@ -48,7 +48,7 @@
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
     "tmp": "^0.2.3",
-    "tzlookup": "^1.4.0"
+    "tz-lookup": "^6.1.25"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

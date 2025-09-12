@@ -80,9 +80,9 @@ importers:
       tmp:
         specifier: ^0.2.3
         version: 0.2.5
-      tzlookup:
-        specifier: ^1.4.0
-        version: 1.4.0
+      tz-lookup:
+        specifier: ^6.1.25
+        version: 6.1.25
     devDependencies:
       nodemon:
         specifier: ^3.1.10
@@ -1046,8 +1046,8 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  tzlookup@1.4.0:
-    resolution: {integrity: sha512-JIsOUO5HqtJ73KOee87Ui7UunYHq0AXxW2BhqyIZlkxRrBH1bscyVPnO/GspFUJHPBhkml/mTUAZzcBMBNLdQQ==}
+  tz-lookup@6.1.25:
+    resolution: {integrity: sha512-fFewT9o1uDzsW1QnUU1ValqaihFnwiUiiHr1S79/fxOzKXYYvX+EHeRnpvQJ9B3Qg67wPXT6QF2Esc4pFOrvLg==}
 
   uid-safe@2.1.5:
     resolution: {integrity: sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==}
@@ -2201,7 +2201,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  tzlookup@1.4.0: {}
+  tz-lookup@6.1.25: {}
 
   uid-safe@2.1.5:
     dependencies:
