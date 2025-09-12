@@ -188,7 +188,8 @@ function handlePopulationRequest(msg) {
         randomCity = randomArrayItem(cities)
     } while ((typeof randomCity.population !== 'number' || 
         input.join(' ').includes(stripPunctuation(randomCity.name).toLowerCase())) && timeout++ < 100)
-    return msg.reply(`The population of ${randomCity.name} is ${randomCity.population}. You do the math.`)
+    return msg.reply(`The population of ${randomCity.name}, ${getCountryName(randomCity.country)
+        } is ${randomCity.population}. You do the math.`)
 }
 
 function handleSoundEffect(msg) {
