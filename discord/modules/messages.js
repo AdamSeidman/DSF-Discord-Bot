@@ -4,8 +4,8 @@ const Discord = require("discord.js")
 const commands = require("./commands")
 const hosts = require("@tables/hosts")
 const logger = require("@adamseidman/logger")
+const { messageHandlers: extraHandlers } = require("./addons")
 const { copyObject, toParts, probabilityCheck } = require("logic-kit")
-const { messageHandlers: extraHandlers } = require("./extraMessageFns")
 
 const COMMAND_PREFIX = global.DEBUG? 'd!' : 'dsf!'
 const availableCommands = []
