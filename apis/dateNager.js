@@ -1,4 +1,5 @@
 const { copyObject } = require("logic-kit")
+const logger = require("@adamseidman/logger")
 const { getAll: getExtraHolidays } = require("@tables/holidays")
 
 let holidays = []
@@ -6,7 +7,7 @@ const BASE_URL = 'https://date.nager.at/api/v3'
 
 function getDateString() {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const parts = Intl.DateTimeFormat(undefined, {
+    const parts = Intl.DateTimeFormat(global.dsf.languageCode, {
         timeZone,
         year: 'numeric',
         month: '2-digit',
@@ -24,6 +25,7 @@ async function getCurrentHolidays() {
     }
     holidays = getExtraHolidays()
     const countries = { DSF: 'Global' }
+    logger.debug('Retrieving current holidays.')
     return await fetch(`${BASE_URL}/AvailableCountries`)
         .then(x => x.json())
         .then((data) => {
@@ -32,7 +34,7 @@ async function getCurrentHolidays() {
                 return fetch(`${BASE_URL}/PublicHolidays/${dateString.slice(0, 4)}/${countryCode}`)
                     .then(x => x.json())
                     .then(x => holidays.push(...x))
-                    .catch(console.error)
+                    .catch(logger.warn)
                 }
             ))
         })

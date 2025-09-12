@@ -22,6 +22,7 @@ async function registerSlashCommands(client) {
         testingGuild = {}
         logger.error('Could not find testing guild.', testingGuild)
     }
+    Object.freeze(testingGuild)
 
     const cmdDir = global.clearSlashCommands? '../logs' : '/commands'
     fs.readdirSync(path.join(__dirname, `../${cmdDir}`)).forEach((file) => {

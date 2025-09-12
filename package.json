@@ -1,6 +1,6 @@
 {
   "name": "dsf_bot",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Daily Stupid Facts REVAMPED",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "@discordjs/voice": "^0.18.0",
     "@pm2/io": "^6.1.0",
     "@supabase/supabase-js": "^2.49.4",
+    "all-the-cities": "^3.1.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "discord.js": "^14.19.3",
@@ -46,7 +47,8 @@
     "openai": "^4.100.0",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
-    "tmp": "^0.2.3"
+    "tmp": "^0.2.3",
+    "tzlookup": "^1.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

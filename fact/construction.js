@@ -16,8 +16,8 @@ const FACT_CACHE_SIZE = 5
 const usePrefix = 'use'
 const preparePrefix = 'prepare'
 const usageTerm = 'usage'
-const itemTypes = ['blank', 'item', 'food', 'inedible', 'animal']
-const personTypes = ['alive', 'dead', 'person', 'male', 'female']
+const itemTypes = Object.freeze(['blank', 'item', 'food', 'inedible', 'animal'])
+const personTypes = Object.freeze(['alive', 'dead', 'person', 'male', 'female'])
 
 let itemPrepared = false
 let personPrepared = false
@@ -52,6 +52,7 @@ tagDictionary.noun = () => {
     const term = tagDictionary[randomArrayItem(['person', 'place', 'blank'])]()
     return term.name ?? term
 }
+Object.freeze(tagDictionary)
 
 function getNextSubTemplate(mustNotRecurse=false) {
     let templates = facts.getAllTemplates().filter(x => !lastTemplateIds.includes(x.id))

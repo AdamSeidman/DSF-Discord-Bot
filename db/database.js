@@ -178,7 +178,7 @@ setInterval(() => {
 function backup() {
     logger.debug('Starting backup...')
     const out = {}
-    allTables.forEach((table) => {
+    allTables.filter(x => x.name !== 'webSessions').forEach((table) => {
         out[table.name] = table.data
     })
     const filename = `backup_${new Date().toISOString()
