@@ -49,8 +49,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 passport.use(new DiscordStrategy({
-    clientID: process.env.OAUTH_DISCORD_CLIENT_ID,
-    clientSecret: process.env.OAUTH_DISCORD_CLIENT_SECRET,
+    clientID: process.env.OAUTH_DISCORD_CLIENT_ID || '|',
+    clientSecret: process.env.OAUTH_DISCORD_CLIENT_SECRET || '',
     callbackURL: '/auth/discord/callback',
     scope: ['identify', 'email', 'guilds']
 }, async (accessToken, refreshToken, profile, done) => {
