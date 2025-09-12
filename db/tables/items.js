@@ -71,7 +71,7 @@ function getDictionary() {
 
 function getRandom() {
     const item = randomArrayItem(table.data)
-    if (probabilityCheck(0.5)) {
+    if (probabilityCheck()) {
         return `${item.usage} ${item.name}`
     } else {
         return item.plural

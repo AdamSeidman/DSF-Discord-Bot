@@ -119,7 +119,7 @@ function getTimeRequest(message) {
         showPopulation: false
     }
     if (!message.includes('population')) {
-        result.showPopulation = probabilityCheck(0.5)
+        result.showPopulation = probabilityCheck()
     }
     while (message.includes('what')) {
         message = message.slice(message.indexOf('what') + 1)
