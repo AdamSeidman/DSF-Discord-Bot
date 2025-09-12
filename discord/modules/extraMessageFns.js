@@ -175,7 +175,7 @@ function handleTimeRequest(msg) {
 }
 
 function handlePopulationRequest(msg) {
-    let input = cleanUpSpaces(stripPunctuation(msg.content).toLowerCase())
+    let input = cleanUpSpaces(stripPunctuation(msg.content).toLowerCase()).replace('whats', 'what is')
     const phrase = 'what is the population of '
     if (!input.includes(phrase)) return
     input = input.slice(input.indexOf(phrase) + phrase.length).trim()
