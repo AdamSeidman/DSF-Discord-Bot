@@ -54,8 +54,8 @@ importers:
         specifier: ^8.1.0
         version: 8.1.0
       logic-kit:
-        specifier: 1.0.6
-        version: 1.0.6
+        specifier: ^1.0.8
+        version: 1.0.8
       module-alias:
         specifier: ^2.2.3
         version: 2.2.3
@@ -665,8 +665,8 @@ packages:
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
-  logic-kit@1.0.6:
-    resolution: {integrity: sha512-PoFW6JsfX+DgS2h4tY/sIFbNx5YFYhVMIXQgNWJJsZlsDnRBljJgNJDuRH83MU8U1sYrx06ZAQuTGLNAmhlRUA==}
+  logic-kit@1.0.8:
+    resolution: {integrity: sha512-uRoyKfYAOGNPVbTMWvAYEdTOtosE3bMwVAvp81v/5PDrF8gWlPINGmvDCPQCRj1cUAiTgA9kvHAI1/qUTBOW2A==}
 
   long-timeout@0.1.1:
     resolution: {integrity: sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==}
@@ -1839,7 +1839,7 @@ snapshots:
 
   lodash@4.17.21: {}
 
-  logic-kit@1.0.6:
+  logic-kit@1.0.8:
     dependencies:
       emoji-dictionary: 1.0.12
       lodash: 4.17.21
