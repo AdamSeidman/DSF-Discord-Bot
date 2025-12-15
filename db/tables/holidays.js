@@ -2,6 +2,7 @@ const { Table } = require("../database")
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
 const { TextChannel, PermissionFlagsBits } = require("discord.js")
+const { isNthDayOfMonth } = require("logic-kit")
 
 const table = new Table('extraHolidays')
 
@@ -21,13 +22,21 @@ async function addHoliday(holiday, submitted_by) {
 
 function getAll() {
     const year = new Date().getFullYear()
-    return table.data.map(({ name, day, month }) => ({
-        name,
-        countryCode: 'DSF',
-        date: `${year}-${
-            String(month).padStart(2, '0')}-${
-            String(day).padStart(2, '0')}`
-    }))
+    return table.data.map(({ name, day, month, is_irregular }) => {
+        const ret = {
+            name,
+            countryCode: 'DSF'
+        }
+        if (is_irregular) {
+            ret.date = `${isNthDayOfMonth(Math.floor(day / 10), (day % 10)) && 
+                require("../../apis/dateNager").getDateString()}`
+        } else {
+            ret.date = `${year}-${
+                String(month).padStart(2, '0')}-${
+                String(day).padStart(2, '0')}`
+        }
+        return ret
+    })
 }
 
 function broadcastHolidayMessage(message) {
