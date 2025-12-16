@@ -74,7 +74,7 @@ async function sendDailyMessage() {
     }
 }
 
-if (global.dsf.dailyHolidaysTime?.hour) {
+if (global.dsf?.dailyHolidaysTime?.hour) {
     scheduler.scheduleJob(global.dsf.dailyHolidaysTime, sendDailyMessage)
 }
 
