@@ -36,6 +36,7 @@
             <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
             <button id="tab-InsultTab" class="tab-button hidden" onclick="openTab(event, 'InsultTab')">Insults</button>
             <button id="tab-HolidayTab" class="tab-button hidden" onclick="openTab(event, 'HolidayTab')">Holidays</button>
+            <button id="tab-IrregularHolidayTab" class="tab-button hidden" onclick="openTab(event, 'IrregularHolidayTab')">Irregular Holidays</button>
         </div>
 
         <div id="UserTab" class="tab-content">
@@ -216,7 +217,7 @@
         <div id="HolidayTab" class="tab-content">
             <div class="form">
                 <h3>Holiday</h3>
-                <label for="holidayNameInput">Name</label>
+                <label for="holidayNameInput">Name:</label>
                 <input type="text" id="holidayNameInput" name="holidayNameInput" maxlength="300" oninput="holidayValidator()">
                 <label for="holidayMonth">Month:</label>
                 <select name="holidayMonth" id="holidayMonth" onchange="holidayValidator()">
@@ -270,7 +271,53 @@
                     <option name="31">31</option>
                 </select>
                 <br>
-                <button type="submit" id="holiday-submit-btn" onclick="submitHoliday()" disabled>Submit</button>
+                <button type="submit" id="holiday-submit-btn" onclick="submitHoliday(false)" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="IrregularHolidayTab" class="tab-content">
+            <div class="form">
+                <h3>Irregular Holiday</h3>
+                <label for="irrHolidayNameInput">Name:</label>
+                <input type="text" id="irrHolidayNameInput" name="irrHolidayNameInput" maxlength="300" oninput="irrHolidayValidator()">
+                <label for="irrHolidayNumber">Day:</label>
+                <select name="irrHolidayNumber" id="irrHolidayNumber" onchange="irrHolidayValidator()">
+                    <option value="-1" class="holidayDefault" selected></option>
+                    <option value="1">First</option>
+                    <option value="2">Second</option>
+                    <option value="3">Third</option>
+                    <option value="4">Fourth</option>
+                    <option value="5">Fifth</option>
+                    <option value="6">Sixth</option>
+                </select>
+                <select name="irrHolidayDay" id="irrHolidayDay" onchange="irrHolidayValidator()">
+                    <option value="-1" class="holidayDefault" selected></option>
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                </select>
+                <label for="irrHolidayMonth">Month:</label>
+                <select name="irrHolidayMonth" id="irrHolidayMonth" onchange="irrHolidayValidator()">
+                    <option value="-1" class="holidayDefault" selected></option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <br>
+                <button type="submit" id="irr-holiday-submit-btn" onclick="submitHoliday(true)" disabled>Submit</button>
             </div>
         </div>
     </div>

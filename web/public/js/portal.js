@@ -15,7 +15,7 @@ function openTab(evt, tabName) {
 $(() => {
     let params = new URLSearchParams(window.location.search)
     const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'Kill Tab', 'PlaceTab', 'StaticTab', 'FactTab',
-        'AdminTab','DMsTab', 'InsultTab', 'HolidayTab']
+        'AdminTab','DMsTab', 'InsultTab', 'HolidayTab', 'IrregularHolidayTab']
     let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : validTabs[0];
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
@@ -53,7 +53,8 @@ $(() => {
                 Admin: 'is_owner',
                 DMs: 'is_owner',
                 Insult: 'submit_insults',
-                Holiday: 'submit_holidays'
+                Holiday: 'submit_holidays',
+                IrregularHoliday: 'submit_holidays'
             }
             Object.entries(permsTabMap).forEach(([ tabName, perm ]) => {
                 if (user[perm]) {
@@ -345,25 +346,55 @@ function holidayValidator() {
             throw null
         }
         $('#holiday-submit-btn').attr('disabled', false)
-        return { month, day, title, valid: true }
+        return { month, day, title, valid: true, is_irregular: false }
     } catch {
         $('#holiday-submit-btn').attr('disabled', true)
     }
     return { valid: false }
 }
 
-function submitHoliday() {
+function irrHolidayValidator() {
     try {
-        const { valid, month, day } = holidayValidator()
+        let month = parseInt($('#irrHolidayMonth').find(':selected').val())
+        if (month < 1 || month > 12 || isNaN(month)) {
+            throw null
+        }
+        let number = parseInt($('#irrHolidayNumber').find(':selected').val())
+        if (number < 1 || number > 6 || isNaN(number)) {
+            throw null
+        }
+        let day = parseInt($('#irrHolidayDay').find(':selected').val())
+        if (day < 0 || day > 6 || isNaN(day)) {
+            throw null
+        }
+        let title = $('#irrHolidayNameInput').val().trim()
+        if (typeof title !== 'string' || title.length < 1) {
+            throw null
+        }
+        $('#irr-holiday-submit-btn').attr('disabled', false)
+        return { month, day: ((number * 10) + day), title, valid: true, is_irregular: true }
+    } catch {
+        $('#irr-holiday-submit-btn').attr('disabled', true)
+    }
+    return { valid: false }
+}
+
+function submitHoliday(irregular) {
+    irregular = (!!irregular)
+    console.log(`Submitting ${irregular? 'irregular' : 'normal'} holiday...`)
+    try {
+        const { valid, month, day, is_irregular } = (irregular? irrHolidayValidator() : holidayValidator())
         if (!valid) {
             $('#holiday-submit-btn').attr('disabled', true)
-            console.error('Bad holiday input.', month, day)
+            $('#irr-holiday-submit-btn').attr('disabled', true)
+            console.error('Bad holiday input. irregular =', irregular, month, day)
             alert('Could not parse input to submit holiday!')
             return
         }
-        submit('holiday', [], 'holidayNameInput', { month, day }, ['HolidayTab select'])
+        submit('holiday', [], irregular? 'irrHolidayNameInput' : 'holidayNameInput', { month, day, is_irregular },
+            [(irregular? 'Irregular' : '') + 'HolidayTab select'])
     } catch (error) {
-        console.error('Error submitting holiday', error)
+        console.error('Error submitting holiday. irregular =', irregular, error)
     }
 }
 
