@@ -126,7 +126,7 @@ function getTimeRequest(message) {
         if (message.length < 3) {
             return result
         }
-        if (message[0] === 'time' || message[1] === 'is' || message[2] === 'it') {
+        if (message[0] === 'time' && message[1] === 'is' && message[2] === 'it') {
             result.hasPhrase = true
             break;
         }
