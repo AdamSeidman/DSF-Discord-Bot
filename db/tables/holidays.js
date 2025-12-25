@@ -51,7 +51,7 @@ function broadcastHolidayMessage(message) {
         if (channel) channels.push(channel)
     }
 
-    logger.debug(`Sending holiday broadcast to ${channels.length} channels.`)
+    logger.debug(`Sending holiday broadcast to ${channels.length} channel(s).`)
     return Promise.allSettled(channels.map((channel) =>
         channel.send(message).catch((error) => {
             logger.error(`Could not send holiday broadcast to ${channel?.id} in ${channel?.guild.id}`, error)

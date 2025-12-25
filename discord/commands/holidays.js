@@ -9,7 +9,7 @@ function createHolidayMessage(countryMap) {
             bold('Today\'s Holidays')}\n${italic(getDateString())}\n`)
         if (msg.length >= 2000) {
             const append = `...\n${italic('And more!')}`
-            return msg.slice(0, -(append.length + 1)) + append
+            return msg.slice(0, 2000 - (append.length + 1)) + append
         }
         return msg
     }
