@@ -64,10 +64,10 @@ async function sendDailyMessage() {
         const { response } = require("discord/commands/holidays")
         let message = null
         await response({ reply: (content) => {
-            if (Array.isArray(content?.embeds)) {
+            if (Array.isArray(content?.embeds) || typeof content === 'string') {
                 message = content
             }
-        }})
+        }, isDailyMessage: true })
         await broadcastHolidayMessage(message || 'I looked in my calendar, but there aren\'t holidays today :(')
     } catch (error) {
         logger.error('Error sending daily holiday message(s).', error)

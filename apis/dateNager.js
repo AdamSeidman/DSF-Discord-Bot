@@ -18,8 +18,11 @@ function getDateString() {
         parts.find(x => x.type === 'day').value}`
 }
 
-async function getCurrentHolidays() {
+async function getCurrentHolidays(isDaily) {
     const dateString = getDateString()
+    if (isDaily) {
+        holidays = []
+    }
     if (holidays.length > 0 && holidays[0].date === dateString) {
         return copyObject(holidays)
     }
@@ -49,6 +52,21 @@ async function getCurrentHolidays() {
                 }
                 return out
             }, [])
+            holidays = Object.values(holidays.reduce((acc, current) => {
+                const key = current.holiday
+                if (!acc[key]) {
+                    acc[key] = { ...current, country: [current.country] }
+                } else if (!acc[key].country.includes(current.country)) {
+                    acc[key].country.push(current.country)
+                }
+                return acc
+            }, {})).map((holiday) => {
+                if (Array.isArray(holiday.country)) {
+                    holiday.country.sort()
+                    holiday.country = holiday.country.join(', ')
+                }
+                return holiday
+            })
             return holidays
         })
         .catch((error) => logger.error('Error fetching holidays.', error))

@@ -3,7 +3,8 @@ const { EmbedBuilder, bold, italic } = require("discord.js")
 const { getCurrentHolidays, getDateString } = require("../../apis/dateNager")
 
 function createHolidayMessage(countryMap) {
-    if (Object.keys(countryMap).length >= 20) {
+    console.log(countryMap)
+    if (Object.keys(countryMap).length >= 20 || Object.keys(countryMap).some(x => x.length >= 256)) {
         let msg = Object.entries(countryMap).reduce((out, entry) => `${
             out}${entry[0]}\n> ${[...new Set(entry[1])].join('\n> ')}\n`, `${
             bold('Today\'s Holidays')}\n${italic(getDateString())}\n`)
@@ -29,7 +30,7 @@ module.exports = {
     response: async (msg) => {
         let holidays = []
         try {
-            holidays = await getCurrentHolidays()
+            holidays = await getCurrentHolidays(!!msg.isDailyMessage)
             if (!Array.isArray(holidays)) {
                 throw 'Not an array.'
             }
