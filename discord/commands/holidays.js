@@ -39,7 +39,7 @@ module.exports = {
             return msg.reply('Could not find my calendar...')
         }
         if (holidays.length < 1) {
-            return msg.reply('There aren\'t any holidays today :(')
+            return msg.reply(!msg.isDailyMessage && 'There aren\'t any holidays today :(')
         }
         const countryMap = {}
         holidays.forEach(({ holiday, country }) => (countryMap[country] ??= []).push(holiday))
