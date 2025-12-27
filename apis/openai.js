@@ -14,6 +14,7 @@ if (enabled && processHasArgument('disable-ai')) {
 } else if (enabled) {
     openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     if (!openai) {
+        enabled = false
         logger.warn('Failed making OpenAI object.')
     }
 } else {
