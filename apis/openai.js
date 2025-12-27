@@ -66,6 +66,11 @@ async function checkingStatus(resolve, threadId, runId) {
 
         resolve(messages[0][0].text.value)
         postpone(tryNext)
+    } else if (status == 'failed') {
+        clearInterval(pollingInterval)
+
+        resolve('OpenAI rejected this request.')
+        postpone(tryNext)
     }
 }
 

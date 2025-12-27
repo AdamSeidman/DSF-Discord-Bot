@@ -1,6 +1,6 @@
 {
   "name": "dsf_bot",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Daily Stupid Facts REVAMPED",
   "main": "index.js",
   "scripts": {
