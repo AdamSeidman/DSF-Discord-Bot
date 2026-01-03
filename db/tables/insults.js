@@ -1,4 +1,5 @@
 const { Table } = require("../database")
+const logger = require("@adamseidman/logger")
 const { randomArrayItem } = require("logic-kit")
 
 const table = new Table('insults')
