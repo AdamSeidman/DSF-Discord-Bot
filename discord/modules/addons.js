@@ -7,6 +7,7 @@ const fact = require("../commands/fact")
 const cities = require('all-the-cities')
 const effects = require("@media/effects")
 const phrases = require("@tables/phrases")
+const { isRank } = require("@tables/ranks")
 const logger = require("@adamseidman/logger")
 const adjectives = require("@tables/adjectives")
 const construction = require("@facts/construction")
@@ -39,6 +40,12 @@ function handlePlease(msg) {
         }
         commands.handleSlashCommand(msg)
             .catch(logger.error)
+    }
+}
+
+function handleSalutable(msg) {
+    if (stripPunctuation(msg.content).replace(/\?/g, '').split(' ').some(isRank)) {
+        msg.react('🫡')
     }
 }
 
@@ -209,6 +216,7 @@ module.exports = {
         handlePhrase,
         handleTimeRequest,
         handlePopulationRequest,
-        handleSoundEffect
+        handleSoundEffect,
+        handleSalutable
     ]
 }

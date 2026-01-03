@@ -1,6 +1,7 @@
 const items = require("@tables/items")
 const facts = require("@tables/facts")
 const override = require("./override")
+const ranks = require("@tables/ranks")
 const people = require("@tables/people")
 const places = require("@tables/places")
 const insults = require("@tables/insults")
@@ -40,6 +41,7 @@ const tagDictionary = {
     number: () => `${randomNumber()}`,
     person: () => people.getNextPerson(),
     place: () => places.getNextPlace(),
+    rank: () => ranks.getRandomRank(),
 }
 tagDictionary.gibberish = () => {
     let arr = []

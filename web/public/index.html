@@ -35,6 +35,7 @@
             <button id="tab-FactTab" class="tab-button hidden" onclick="openTab(event, 'FactTab')">Templates</button>
             <button id="tab-StaticTab" class="tab-button hidden" onclick="openTab(event, 'StaticTab')">Static Facts</button>
             <button id="tab-InsultTab" class="tab-button hidden" onclick="openTab(event, 'InsultTab')">Insults</button>
+            <button id="tab-RankTab" class="tab-button hidden" onclick="openTab(event, 'RankTab')">Ranks</button>
             <button id="tab-HolidayTab" class="tab-button hidden" onclick="openTab(event, 'HolidayTab')">Holidays</button>
             <button id="tab-IrregularHolidayTab" class="tab-button hidden" onclick="openTab(event, 'IrregularHolidayTab')">Irregular Holidays</button>
         </div>
@@ -211,6 +212,16 @@
                 </div>
                 <br>
                 <button type="submit" id="insult-submit-btn" onclick="submitInsult()" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="RankTab" class="tab-content">
+            <div class="form">
+                <br>
+                <label for="rankInput">Rank:</label>
+                <input type="text" id="rankInput" name="rankInput" maxLength="30" oninput="rankValidator()">
+                <br>
+                <button type="submit" id="rank-submit-btn" onclick="submitRank()" disabled>Submit</button>
             </div>
         </div>
 

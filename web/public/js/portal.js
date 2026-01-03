@@ -15,7 +15,7 @@ function openTab(evt, tabName) {
 $(() => {
     let params = new URLSearchParams(window.location.search)
     const validTabs = ['UserTab', 'ItemTab', 'PersonTab', 'Kill Tab', 'PlaceTab', 'StaticTab', 'FactTab',
-        'AdminTab','DMsTab', 'InsultTab', 'HolidayTab', 'IrregularHolidayTab']
+        'AdminTab','DMsTab', 'InsultTab', 'RankTab', 'HolidayTab', 'IrregularHolidayTab']
     let tabName = validTabs.includes(params.get('tab')) ? params.get('tab') : validTabs[0];
     openTab({ currentTarget: `#tab-${tabName}` }, tabName)
     standardGET('portalData')
@@ -53,6 +53,7 @@ $(() => {
                 Admin: 'is_owner',
                 DMs: 'is_owner',
                 Insult: 'submit_insults',
+                Rank: 'submit_ranks',
                 Holiday: 'submit_holidays',
                 IrregularHoliday: 'submit_holidays'
             }
@@ -250,6 +251,15 @@ function insultValidator() {
 
 function submitInsult() {
     submit('insult', [], 'insultInput', {}, ['insultExample'])
+}
+
+function rankValidator() {
+    const input = $('#rankInput').val()?.trim() || ''
+    $('button#rank-submit-btn').attr('disabled', input.length < 1 || input.includes(' '))
+}
+
+function submitRank() {
+    submit('rank', [], 'rankInput')
 }
 
 function personValidator() {
