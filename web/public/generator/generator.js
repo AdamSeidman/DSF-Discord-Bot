@@ -353,6 +353,22 @@ function resolveChainByName(name, forbidden) {
     return Array.from(target.querySelectorAll(':scope > .block:not(.start-block)')).map(b => compileBlock(b, forbidden)).flat().filter(x => x !== null);
 }
 
+function setExamples(facts, list, errorMessage='NO CONTENT') {
+    const exampleEls = document.getElementsByClassName(`${facts? 'true' : 'false'}-item`);
+    if (!Array.isArray(list)) {
+        list = [];
+    }
+    if (typeof errorMessage !== 'string' || errorMessage.length < 1) {
+        errorMessage = 'GENERAL';
+    }
+    while (list.length < exampleEls.length) {
+        list.push(`ERROR! - ${errorMessage}`);
+    }
+    Array.from(exampleEls).forEach((el, idx) => {
+        el.innerHTML = `${list[idx]}`;
+    });
+}
+
 function calculate() {
     const rootChain = document.querySelector('.chain-container.is-root');
     document.getElementById('copyBtn').disabled = true;
@@ -374,15 +390,28 @@ function calculate() {
             return acc;
         }, []);
         lastCompiledJSON = JSON.stringify(final, null);
+        let responded = false;
         standardPUT('factCheck', { template: lastCompiledJSON })
             .then((data) => {
-                console.log('Received fact check response') // TODO replace
-                console.log(data)
+                responded = true;
+                console.log('Fact template checked!', data);
+                setExamples(true, data?.facts);
+                setExamples(false, data?.lies);
             })
             .catch((err) => {
-                console.error('Fact check failed!', err)
-                // TODO replace facts/lies with error messages
+                responded = false;
+                console.error('Fact check failed!', err);
+                setExamples(true, null, 'BAD');
+                setExamples(false, null, 'BAD');
             })
+        setTimeout(() => {
+            if (!responded) {
+                responded = true;
+                console.error('Server did not respond to fact check request.', lastCompiledJSON);
+                setExamples(true, null, 'NO SERVER RESPONSE');
+                setExamples(false, null, 'NO SERVER RESPONSE');
+            }
+        }, 3500);
         document.getElementById('copyBtn').disabled = false;
     } catch (err) { alert("Error: " + err.message); }
 }
