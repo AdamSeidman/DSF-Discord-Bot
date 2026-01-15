@@ -1,0 +1,152 @@
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>DSF | Fact Generator</title>
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" type="text/css" href="generator.css">
+</head>
+<body onload="initWorkspace()">
+<div id="main-container">
+    <div id="palette" ondrop="handleDelete(event)" ondragover="allowDrop(event)">
+        <button class="add-btn" onclick="createChain()">+ Add Block</button>
+        <h3 class="palette-label">Block Library</h3>
+        <h4 class="palette-label">Objects</h4>
+        <div class="block logic-block" draggable="true" ondragstart="drag(event)" id="tpl_logic">
+            <div class="slot-label">True Path</div>
+            <div class="slot" ondrop="dropToSlot(event)" ondragover="allowDrop(event)"></div>
+            <div class="slot-label">False Path</div>
+            <div class="slot" ondrop="dropToSlot(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <div class="block logic-block num-logic" draggable="true" ondragstart="drag(event)" id="tpl_num">
+            <span>Number:</span>
+            <div class="input-row">
+                <input type="text" class="num-low" placeholder="Low" onblur="validateNumberBlock(this)" oninput="invalidateCalc()">
+                <input type="text" class="num-high" placeholder="High" onblur="validateNumberBlock(this)" oninput="invalidateCalc()">
+            </div>
+            <div class="radio-section">
+                <div class="radio-group" onchange="invalidateCalc()">
+                    <label><input type="radio" name="format" value="digits" checked> Digits</label>
+                    <label><input type="radio" name="format" value="words"> Words</label>
+                </div>
+                <div class="v-line"></div>
+                <div class="radio-group" onchange="invalidateCalc()">
+                    <label><input type="radio" name="type" value="cardinal" checked> Non-Ord</label>
+                    <label><input type="radio" name="type" value="ordinal"> Ordinal</label>
+                </div>
+            </div>
+        </div>
+        <h4 class="palette-label" style="padding-top:8px;">Arrays/Strings</h4>
+        <div class="block text-block" draggable="true" ondragstart="drag(event)" id="tpl_text">Text: <input type="text" style="width:100px" oninput="invalidateCalc()"></div>
+        
+        <div class="block text-block tag-block-style" draggable="true" ondragstart="drag(event)" id="tpl_tag">
+            Tag: 
+            <select class="tag-sel" onchange="invalidateCalc()">
+                <option value="acronym">acronym</option>
+                <option value="action">action</option>
+                <option value="alive">alive</option>
+                <option value="animal">animal</option>
+                <option value="basketball">basketball</option>
+                <option value="blank" selected>blank</option>
+                <option value="bread">bread</option>
+                <option value="color">color</option>
+                <option value="crime">crime</option>
+                <option value="day">day</option>
+                <option value="dead">dead</option>
+                <option value="demon">demon</option>
+                <option value="dictator">dictator</option>
+                <option value="extinct">extinct</option>
+                <option value="female">female</option>
+                <option value="food">food</option>
+                <option value="foods">foods</option>
+                <option value="gibberish">gibberish</option>
+                <option value="inedible">inedible</option>
+                <option value="insult">insult</option>
+                <option value="item">item</option>
+                <option value="male">male</option>
+                <option value="meal">meal</option>
+                <option value="month">month</option>
+                <option value="name">name</option>
+                <option value="noun">noun</option>
+                <option value="number">number</option>
+                <option value="park">park</option>
+                <option value="person">person</option>
+                <option value="place">place</option>
+                <option value="planet">planet</option>
+                <option value="rank">rank</option>
+                <option value="retail">retail</option>
+                <option value="sport">sport</option>
+                <option value="staff">staff</option>
+            </select>
+        </div>
+
+        <div class="block text-block ptag-block-style" draggable="true" ondragstart="drag(event)" id="tpl_ptag">
+            Plural Tag: 
+            <select class="ptag-sel" onchange="invalidateCalc()">
+                <option value="animals">animals</option>
+                <option value="blanks">blanks</option>
+                <option value="clothings">clothings</option>
+                <option value="currencies">currencies</option>
+                <option value="days">days</option>
+                <option value="foods">foods</option>
+                <option value="inedibles">inedibles</option>
+                <option value="items" selected>items</option>
+            </select>
+        </div>
+
+        <div class="block drop-block" draggable="true" ondragstart="drag(event)" id="tpl_dynamic">Link to: <select class="link-sel" disabled onchange="invalidateCalc()"><option>None</option></select></div>
+        <div class="block text-block fact-block-style" draggable="true" ondragstart="drag(event)" id="tpl_fact">New Fact/Lie</div>
+        
+        <div class="block multi-block" draggable="true" ondragstart="drag(event)" id="tpl_multi">
+            <span>Option List</span>
+            <div class="inner-inputs"><input type="text" style="width:100px" oninput="invalidateCalc()"><input type="text" style="width:100px" oninput="invalidateCalc()"></div>
+            <div class="controls">
+                <button class="btn-adjust" onclick="modInput(this, 1); invalidateCalc()">+</button>
+                <button class="btn-adjust" onclick="modInput(this, -1); invalidateCalc()">-</button>
+            </div>
+        </div>
+        <div class="block text-block" style="background: #eabb66" draggable="true" ondragstart="drag(event)" id="tpl_pronouns">
+            Pronouns: 
+            <input type="text" class="pro-male" placeholder="male" style="width:50px" oninput="invalidateCalc()">
+            <span>/</span>
+            <input type="text" class="pro-female" placeholder="female" style="width:50px" oninput="invalidateCalc()">
+        </div>
+        <div class="block static-block" draggable="true" ondragstart="drag(event)" id="tpl_static">(space)</div>
+        <div class="block text-block" style="background: #d35400;" draggable="true" ondragstart="drag(event)" id="tpl_prev">
+            Prev. Item: 
+            <input type="number" class="prev-num" min="1" max="10" step="1" value="1" style="width:50px" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, ''); invalidateCalc()"><span class="items-ago-text"> items ago</span>
+        </div>
+    </div>
+
+    <div id="workspace" ondrop="dropToWorkspace(event)" ondragover="allowDrop(event)"></div>
+</div>
+
+<div id="bottom-bar">
+    <button id="collapse-toggle" onclick="toggleBottomBar()">
+        <span class="chevron">▼</span> <span id="toggle-text">Minimize</span>
+    </button>
+    <div class="action-group">
+        <button class="btn-main btn-calc" onclick="calculate()">Calculate</button>
+        <button id="copyBtn" class="btn-main btn-copy" disabled onclick="copyToClipboard()">Copy to Clipboard</button>
+        <button class="btn-main" style="background: #e74c3c; color: white;" onclick="clearWorkspace()">Clear All</button>
+    </div>
+    <div class="example-group">
+        <div class="example-column">
+            <h5>True Examples</h5>
+            <div class="example-item true-item">Example Fact 1</div>
+            <div class="example-item true-item">Example Fact 2</div>
+        </div>
+        <div class="example-column">
+            <h5>False Examples</h5>
+            <div class="example-item false-item">Example Lie 1</div>
+            <div class="example-item false-item">Example Lie 2</div>
+        </div>
+    </div>
+</div>
+<script src="generator.js"></script>
+</body>
+</html>
