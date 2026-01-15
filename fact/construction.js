@@ -69,7 +69,7 @@ function getNextSubTemplate(mustNotRecurse=false) {
 function injectSubFacts(template) {
     const out = []
     template.forEach((tag) => {
-        if (Array.isArray(tag) && tag.length === 1 && tag[0].toLowerCase() === 'fact') {
+        if (Array.isArray(tag) && typeof tag[0] === 'string' && tag[0].toLowerCase() === 'fact') {
             const subTemplate = getNextSubTemplate(true)
             out.push(...subTemplate)
         } else {
