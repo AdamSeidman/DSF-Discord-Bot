@@ -373,7 +373,7 @@ function calculate() {
             acc.push(curr);
             return acc;
         }, []);
-        lastCompiledJSON = JSON.stringify(final, null, 2);
+        lastCompiledJSON = JSON.stringify(final, null);
         document.getElementById('copyBtn').disabled = false;
     } catch (err) { alert("Error: " + err.message); }
 }
