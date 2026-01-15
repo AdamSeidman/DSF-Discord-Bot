@@ -392,11 +392,11 @@ function calculate() {
         lastCompiledJSON = JSON.stringify(final, null);
         let responded = false;
         standardPUT('factCheck', { template: lastCompiledJSON })
-            .then((data) => {
+            .then((response) => {
                 responded = true;
-                console.log('Fact template checked!', data);
-                setExamples(true, data?.facts);
-                setExamples(false, data?.lies);
+                console.log('Fact template checked!', response);
+                setExamples(true, response?.data?.facts);
+                setExamples(false, response?.data?.lies);
             })
             .catch((err) => {
                 responded = false;
