@@ -374,6 +374,15 @@ function calculate() {
             return acc;
         }, []);
         lastCompiledJSON = JSON.stringify(final, null);
+        standardPUT('factCheck', { template: lastCompiledJSON })
+            .then((data) => {
+                console.log('Received fact check response') // TODO replace
+                console.log(data)
+            })
+            .catch((err) => {
+                console.error('Fact check failed!', err)
+                // TODO replace facts/lies with error messages
+            })
         document.getElementById('copyBtn').disabled = false;
     } catch (err) { alert("Error: " + err.message); }
 }
