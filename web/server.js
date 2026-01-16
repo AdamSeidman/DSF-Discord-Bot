@@ -77,8 +77,8 @@ app.use((req, res, next) => {
         if (req.isAuthenticated()) {
             return res.redirect('/')
         }
-    } else if ((req.path.endsWith('.html') || !req.path.includes('.'))
-        && !req.isAuthenticated() && !(['/privacy', '/tos', '/generator'].find(x => req.path.startsWith(x)))) {
+    } else if ((req.path.endsWith('.html') || !req.path.includes('.')) && !req.isAuthenticated()
+         && !(['/privacy', '/tos', '/generator', '/factCheck'].find(x => req.path.startsWith(x)))) {
             return req.logout(() => {
                 res.redirect('/login')
             })
