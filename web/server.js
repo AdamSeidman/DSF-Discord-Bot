@@ -72,13 +72,15 @@ app.get('/auth/discord/callback', passport.authenticate('discord', {
     failureRedirect: '/login'
 }))
 
+const LOGIN_EXCEPTIONS = Object.freeze(['/privacy', '/tos', '/generator', '/api/factCheck'])
+
 app.use((req, res, next) => {
     if (req.path.startsWith('/login')) {
         if (req.isAuthenticated()) {
             return res.redirect('/')
         }
     } else if ((req.path.endsWith('.html') || !req.path.includes('.')) && !req.isAuthenticated()
-         && !(['/privacy', '/tos', '/generator', '/factCheck'].find(x => req.path.startsWith(x)))) {
+        && !LOGIN_EXCEPTIONS.some(x => req.path.startsWith(x))) {
             return req.logout(() => {
                 res.redirect('/login')
             })
