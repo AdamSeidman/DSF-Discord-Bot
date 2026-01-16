@@ -399,10 +399,10 @@ function calculate() {
                 setExamples(false, response?.data?.lies);
             })
             .catch((err) => {
-                responded = false;
+                responded = true;
                 console.error('Fact check failed!', err);
-                setExamples(true, null, 'BAD');
-                setExamples(false, null, 'BAD');
+                setExamples(true, null, 'BAD: ' + err?.message);
+                setExamples(false, null, 'BAD: ' + err?.message);
             })
         setTimeout(() => {
             if (!responded) {
