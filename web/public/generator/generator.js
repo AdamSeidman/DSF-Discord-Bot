@@ -401,8 +401,8 @@ function calculate() {
             .catch((err) => {
                 responded = true;
                 console.error('Fact check failed!', err);
-                setExamples(true, null, 'BAD:' + err?.message);
-                setExamples(false, null, 'BAD:' + err?.message);
+                setExamples(true, null, 'BAD: ' + err?.message);
+                setExamples(false, null, 'BAD: ' + err?.message);
             })
         setTimeout(() => {
             if (!responded) {
