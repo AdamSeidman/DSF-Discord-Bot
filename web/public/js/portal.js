@@ -348,7 +348,7 @@ function holidayValidator() {
         if (day > 29 && month === 2) {
             throw null
         }
-        if (day === 30 && !(LONG_MONTHS.includes(month))) {
+        if (day > 30 && !(LONG_MONTHS.includes(month))) {
             throw null
         }
         let title = $('#holidayNameInput').val().trim()
