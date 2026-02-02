@@ -21,7 +21,7 @@ async function addHoliday(holiday, submitted_by) {
 }
 
 function getAll() {
-    const year = new Date().getFullYear()
+    const curDate = new Date()
     return table.data.map(({ name, day, month, is_irregular }) => {
         const ret = {
             name,
@@ -29,9 +29,10 @@ function getAll() {
         }
         if (is_irregular) {
             ret.date = `${isNthDayOfMonth(Math.floor(day / 10), (day % 10)) && 
+                ((curDate.getMonth() + 1) === month) &&
                 require("../../apis/dateNager").getDateString()}`
         } else {
-            ret.date = `${year}-${
+            ret.date = `${curDate.getFullYear()}-${
                 String(month).padStart(2, '0')}-${
                 String(day).padStart(2, '0')}`
         }
