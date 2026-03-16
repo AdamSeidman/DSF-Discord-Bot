@@ -1,18 +1,23 @@
 const storage = require("node-persist")
 const scheduler = require("node-schedule")
 const logger = require("@adamseidman/logger")
-const { TextChannel } = require("discord.js")
 const staticFacts = require("@tables/staticFacts")
 const { generateFact, generateLie } = require("./construction")
 const { probabilityCheck, isAprilFools } = require("logic-kit")
 
 let dailyChannels = []
-let clientChannels = []
 
-function scheduleDailyChannels(channelIds) {
-    clientChannels = require("discord").channels.cache.filter(x => x instanceof TextChannel)
-    clientChannels = [...clientChannels].map(x => x[1])
-    dailyChannels.push(...clientChannels.filter(x => channelIds.includes(`${x.id}`)))
+async function scheduleDailyChannels(channelIds) {
+    for (let id of channelIds) {
+        try {
+            const channel = await require("discord").channels.fetch(id)
+            if (channel?.isTextBased()) {
+                dailyChannels.push(channel)
+            }
+        } catch (error) {
+            logger.debug(`Could not add daily channel (${id})`, error.message)
+        }
+    }
     scheduler.scheduleJob(global.dsf.dailyFactTime, async () => {
         const aprilFools = isAprilFools()
         let fact = ((!aprilFools && await storage.getItem('dailyFact')) || '').trim()
