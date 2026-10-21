@@ -28,7 +28,7 @@ async function scheduleDailyChannels(channelIds) {
         } else if (aprilFools) {
             fact = generateLie()
             qualifier = 'April Fools!'
-        } else if (probabilityCheck(global.dsf.staticFactFrequency)) {
+        } else if (probabilityCheck(global.dsf.staticFactFrequency) && staticFacts.getNumUnused() > 0) {
             fact = await staticFacts.getAndMark()
             qualifier = 'Static Fact'
         } else {
