@@ -74,7 +74,11 @@ async function scheduleDailyChannels(channelIds) {
             }, (5 * 60 * 1000))
         }
         if (staticFacts.getNumUnused() <= 0) {
-            await global.owner.send('Static fact store depleted!')
+            try {
+                await global.owner.send('Static fact store depleted!')
+            } catch (error) {
+                logger.error('Could not send static fact depletion message.', error)
+            }
         }
     })
     logger.debug(`Scheduled daily facts job for ${dailyChannels.length} channel(s).`)
