@@ -15,7 +15,7 @@ async function scheduleDailyChannels(channelIds) {
                 dailyChannels.push(channel)
             }
         } catch (error) {
-            logger.debug(`Could not add daily channel (${id})`, error.message)
+            logger.error(`Could not add daily channel (${id})`, error.message)
         }
     }
     scheduler.scheduleJob(global.dsf.dailyFactTime, async () => {

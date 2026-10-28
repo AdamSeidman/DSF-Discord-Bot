@@ -115,10 +115,10 @@ async function submitRepick(userId, guild) {
             }
         }
     } else {
-        first = true
+        result.first = true
         try {
             result.hostId = await setupHost(userId, guild)
-            submitted = true
+            result.submitted = true
         } catch (error) {
             result.error = error
         }
