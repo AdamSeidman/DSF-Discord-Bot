@@ -17,10 +17,12 @@ module.exports = {
             const id = matchesDiscordId(params.params[0])
             if (id) {
                 user = await getUserById(id)
-                if (user.bot) {
+                if (user?.bot) {
                     args = user
                 } else if (user) {
                     user.avatar = user.displayAvatarURL()
+                } else {
+                    user = null
                 }
             }
             if (!id || !user) {

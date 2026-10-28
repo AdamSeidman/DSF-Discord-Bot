@@ -33,6 +33,8 @@ if (require.main === module) {
         console.error('Error initializing DSF!', error)
         process.exit(1)
     }
+    process.on('unhandledRejection', (reason) => require("@adamseidman/logger").error('Unhandled promise rejection', reason))
+    process.on('uncaughtException', (reason) => require("@adamseidman/logger").error('Uncaught exception', reason))
 }
 
 module.exports = { app }

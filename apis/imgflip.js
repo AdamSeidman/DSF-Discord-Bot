@@ -56,7 +56,8 @@ function getMeme(mainCaption, extraCaptionFn, template) {
                 }
                 return fetch(`${BASE_URL}/caption_image?template_id=${templateId
                     }&username=${process.env.IMGFLIP_USERNAME}&password=${process.env.IMGFLIP_PASSWORD
-                    }&${boxes.map((caption, idx) => `boxes[${idx}][text]=${caption}`).join('&')}`)
+                    }&${boxes.map((caption, idx) => `boxes[${idx}][text]=${encodeURIComponent(caption)
+                    }`).join('&')}`)
             })
             .then(x => x.json())
             .then(({ data, error_message }) => {
