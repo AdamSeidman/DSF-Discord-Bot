@@ -6,12 +6,12 @@ const { getMessageByUrl } = require("../modules/helpers")
 const DEFAULT_TEMPLATE = 'Spongebob'
 
 const to = {
-    message: (msg) => msg.content.trim(),
-    quoted: (msg) => `"${msg.content.trim()}"`,
+    message: (msg) => msg.cleanContent.trim(),
+    quoted: (msg) => `"${msg.cleanContent.trim()}"`,
     username: (msg) => msg.author.username,
     nothing: () => '',
     mocked: (msg) => {
-        return [...(msg.content.trim())].reduce((out, letter, idx) => {
+        return [...(msg.cleanContent.trim())].reduce((out, letter, idx) => {
             if (idx % 2 === 0) {
                 letter = letter.toLowerCase()
             } else {
@@ -95,9 +95,9 @@ if (Imgflip.isEnabled()) {
                         url = `${msg.channel.id}/${url}`
                     }
                     originalMessage = await getMessageByUrl(url, msg.guild?.id)
-                    if (typeof originalMessage?.content !== 'string') {
+                    if (typeof originalMessage?.cleanContent !== 'string') {
                         error = 'Could not find specified message by URL or ID.'
-                    } else if (originalMessage.content.trim().length < 3) {
+                    } else if (originalMessage.cleanContent.trim().length < 3) {
                         error = 'The message is not long enough to mock.'
                     } else {
                         const template = copyObject((!params.injected && templateMap[msg.options.getString('meme')])
