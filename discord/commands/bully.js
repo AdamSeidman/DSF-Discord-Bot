@@ -43,8 +43,12 @@ module.exports = {
                         Discord.bold(extraMessage)}"${isStringTerminated(extraMessage)? '' : '.'
                     }` : ''
                 }`
-                user.send(insult)
-                logger.info(`Bully message sent to ${user.username || user.id}`, insult)
+                try {
+                    await user.send(insult)
+                    logger.info(`Bully message sent to ${user.username || user.id}`, insult)
+                } catch {
+                    logger.warn(`Could not send bully message to ${user.username || user.id}`)
+                }
             }
         }
 

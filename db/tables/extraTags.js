@@ -4,16 +4,18 @@ const { randomArrayItem } = require("logic-kit")
 const tableLibrary = {}
 const tagTable = new Table('dynamicTags', loadTableLibrary)
 
+function addTableByRow(row) {
+    tableLibrary[row.table_name] = {
+        table: new Table(`tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`),
+        tag: row.table_name,
+        has_dictionary: row.has_dictionary,
+        id: row.id,
+        lastId: -1
+    }
+}
+
 function loadTableLibrary() {
-    tagTable.data.forEach((row) => {
-        tableLibrary[row.table_name] = {
-            table: new Table(`tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`),
-            tag: row.table_name,
-            has_dictionary: row.has_dictionary,
-            id: row.id,
-            lastId: -1
-        }
-    })
+    tagTable.data.forEach((row) => addTableByRow(row))
 }
 
 function getRandomTagItem(tag) {
@@ -28,8 +30,7 @@ async function refresh() {
     await tagTable.refresh()
     tagTable.data.forEach((row) => {
         if (!Object.keys(tableLibrary).includes(row.table_name)) {
-            tableLibrary[row.table_name] = new Table(
-                `tag${row.table_name.slice(0, 1).toUpperCase()}${row.table_name.slice(1)}`)
+            addTableByRow(row)
         }
     })
     let refreshPromises = []

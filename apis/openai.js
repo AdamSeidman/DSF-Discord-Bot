@@ -8,7 +8,10 @@ let openai = null
 const assistantId = process.env.OPENAI_ASSISTANT_ID
 let enabled = (typeof assistantId === 'string') && (typeof process.env.OPENAI_API_KEY === 'string')
 
-if (enabled && processHasArgument('disable-ai')) {
+if (new Date() > new Date('2026-09-01T00:00:00')) {
+    enabled = false
+    logger.warn('OpenAI assistant API has been deprecated. Cannot enable it.')
+} else if (enabled && processHasArgument('disable-ai')) {
     logger.debug('Requested turning AI off in debug mode.')
     enabled = false
 } else if (enabled) {

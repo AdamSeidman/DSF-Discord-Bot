@@ -10,7 +10,9 @@ function getUsableFacts() {
 }
 
 function getNumUnused() {
-    return getUsableFacts().length
+    const facts = getUsableFacts()
+    if (facts.length < 1 || !facts[0]?.id) return 0
+    return facts.length
 }
 
 async function addStaticFact(submission) {
