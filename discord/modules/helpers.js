@@ -8,7 +8,7 @@ async function getUserById(id) {
     try {
         user = await client.users.fetch(id)
     } catch {
-        logger.error(`Could not get user by ID (${id})`, error)
+        logger.error(`Could not get user by ID (${id})`)
     }
     return user
 }

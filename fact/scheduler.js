@@ -49,27 +49,32 @@ async function scheduleDailyChannels(channelIds) {
                 }
             }
         }
-        dailyChannels.forEach((channel) => {
+        dailyChannels.forEach(async (channel) => {
             try {
-                channel.send(`${isDSFDay? 'Happy DSF day!\n' : ''}It's time for the ${
+                await channel.send(`${isDSFDay? 'Happy DSF day!\n' : ''}It's time for the ${
                     (isDSFDay && extra.length > 0)? `${global.dsf.dsfHolidayTotalFacts} facts` : 'fact'
                     } of the day!\nAre you ready? Here ${(extra.length > 0)? 'they are' : 'it is'
                     }:\n${fact}`)
-                extra.forEach((part) => channel.send(part))
+                extra.forEach(async (part) => {
+                    channel.send(part)
+                })
             } catch (error) {
                 logger.error(`Could not send daily fact to '${channel.name}' (${channel.id})`, error)
             }
         })
         if (aprilFools) {
             setTimeout(() => {
-                dailyChannels.forEach((channel) => {
+                dailyChannels.forEach(async (channel) => {
                     try {
-                        channel.send('April fools!')
+                        await channel.send('April fools!')
                     } catch {
                         logger.warn('Could not send april fools follow up.')
                     }
                 })
             }, (5 * 60 * 1000))
+        }
+        if (staticFacts.getNumUnused() <= 0) {
+            await global.owner.send('Static fact store depleted!')
         }
     })
     logger.debug(`Scheduled daily facts job for ${dailyChannels.length} channel(s).`)
